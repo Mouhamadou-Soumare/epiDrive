@@ -9,6 +9,8 @@ import groceryDrive from "../../public/img/grocery_drive.webp";
 import scanFood from "../../public/img/scan_food.webp";
 import whatIWant from "../../public/img/what_i_want.webp";
 import epiDrive from "../../public/img/Epidrive.webp";
+import RecommendedProducts from '@/components/client/product/RecommendedProducts';
+import { useGetAllProducts } from '@/hooks/products/useGetAllProducts';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -18,7 +20,8 @@ const navigation = [
 ];
 
 export default function HomePage() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { products, loading, error } = useGetAllProducts(); 
+
   const faqs = [
     {
       id: 1,
@@ -203,6 +206,8 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+        
+        <RecommendedProducts allProducts={products} />
 
        
             {/* Featured Products Section */}
