@@ -39,6 +39,25 @@ $ cd epidrive
 # Installez les dépendances
 $ npm install
 
+```
+
+### Configurer le fichier `.env`
+
+Avant de lancer l'application, vous devez configurer le fichier `.env` qui contient les variables d'environnement nécessaires pour le bon fonctionnement du projet. Ces variables gèrent l'accès à la base de données, la configuration de Prisma, et d'autres paramètres sensibles.
+
+Créez un fichier `.env` à la racine du projet et configurez-le comme suit :
+
+```env
+# Variables d'environnement pour la base de données MySQL et Prisma
+MYSQL_USER=user
+MYSQL_PASSWORD=password
+MYSQL_ROOT_PASSWORD=rootpassword
+DATABASE_URL="mysql://user:password@db:3306/epidrive"
+SHADOW_DATABASE_URL="mysql://root:rootpassword@db:3306/shadow_epidrive"
+```
+
+```bash
+
 # Configurez Docker pour démarrer les services
 $ docker-compose up -d
 
