@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="#"><img src="https://github.com/Mouhamadou-Soumare/sportsync-node-react/blob/master/backend/public/assets/sportSyncLogo2.png" alt="SportSync" width="100"></a>
+  <a href="#"><img src="https://github.com/Mouhamadou-Soumare/epiDrive/blob/main/public/img/logo.png" alt="EpiDrive" width="100"></a>
   <br>
   EpiDrive
   <br>
@@ -12,26 +12,16 @@
 <br/>
 
 
-![screenshot](https://github.com/Mouhamadou-Soumare/sportsync-node-react/blob/master/backend/public/assets/sportsyncdemo.png)
+![screenshot](https://github.com/Mouhamadou-Soumare/epiDrive/blob/main/public/img/demo-epidrive.png)
 <br/>
 <br/>
 
 
 
-<h1 align="center">
-  <br>
-  <a href="#"><img src="https://yourlogo.com/epidrive-logo.png" alt="EpiDrive" width="100"></a>
-  <br>
-  EpiDrive
-  <br>
-</h1>
-
-<h4 align="center">EpiDrive - Simplifiez vos courses avec l'IA !</h4>
 
 <br/>
 <br/>
 
-![screenshot](https://yourimage.com/epidrive-screenshot.png)
 <br/>
 <br/>
 
