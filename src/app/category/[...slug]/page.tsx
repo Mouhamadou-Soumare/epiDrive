@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { ProductGrid } from '@/components/client/product/productGrid';
+import { ProductGrid } from '@/components/client/product/ProductGrid';
 
 type Product = { id: number; name: string; price: number; imageSrc: string; imageAlt: string, slug : string, description : string };
 type SubCategory = { name: string; slug: string; children?: SubCategory[]; produits?: Product[]   };

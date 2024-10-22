@@ -1,36 +1,142 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<h1 align="center">
+  <br>
+  <a href="#"><img src="https://github.com/Mouhamadou-Soumare/sportsync-node-react/blob/master/backend/public/assets/sportSyncLogo2.png" alt="SportSync" width="100"></a>
+  <br>
+  EpiDrive
+  <br>
+</h1>
 
-## Getting Started
+<h4 align="center">Epidrive -  Faites de vos courses un plaisir, alliant saveurs et praticité en un clic.</h4>
 
-First, run the development server:
+<br/>
+<br/>
+
+
+![screenshot](https://github.com/Mouhamadou-Soumare/sportsync-node-react/blob/master/backend/public/assets/sportsyncdemo.png)
+<br/>
+<br/>
+
+
+
+<h1 align="center">
+  <br>
+  <a href="#"><img src="https://yourlogo.com/epidrive-logo.png" alt="EpiDrive" width="100"></a>
+  <br>
+  EpiDrive
+  <br>
+</h1>
+
+<h4 align="center">EpiDrive - Simplifiez vos courses avec l'IA !</h4>
+
+<br/>
+<br/>
+
+![screenshot](https://yourimage.com/epidrive-screenshot.png)
+<br/>
+<br/>
+
+## Comment utiliser ce projet
+
+Pour cloner et exécuter cette application, vous aurez besoin de [Git](https://git-scm.com) et de [Node.js](https://nodejs.org/fr/download/) (qui inclut [npm](http://npmjs.com)) installés sur votre ordinateur. À partir de votre ligne de commande :
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clonez ce dépôt.
+$ git clone https://github.com/your-username/epidrive
+
+# Accédez à la racine du projet
+$ cd epidrive
+
+# Installez les dépendances
+$ npm install
+
+# Configurez Docker pour démarrer les services
+$ docker-compose up -d
+
+# Initialisez la base de données MySQL
+$ npx prisma migrate dev --name init
+
+# Générez le client Prisma
+$ npx prisma generate
+
+# Exécutez le script de seed pour insérer des données de base
+$ node seed.js
+
+# Lancez le serveur Next.js en mode développement
+$ npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Fonctionnalités et pages
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+L'application comprend les différentes pages suivantes :
 
-## Learn More
+/: Page d'accueil affichant les fonctionnalités principales et recommandations de produits.
+/categories: Page listant les catégories de produits disponibles.
+/category/[slug]: Page détaillée d'une catégorie, avec ses sous-catégories et produits.
+/product/[slug]: Page affichant les détails d'un produit spécifique.
+/shop: Page listant tous les produits disponibles.
+/contact: Page de contact pour les utilisateurs.
+404: Page d'erreur pour les routes non trouvées.
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Configuration des variables d'environnement (.env)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Pour configurer correctement l'application, vous devez créer un fichier .env à la racine du projet. Ce fichier contiendra les variables d'environnement nécessaires pour l'exécution de l'application.
+
+Assurez-vous de ne jamais partager ce fichier .env publiquement, car il contient des informations sensibles telles que les identifiants de la base de données.
+
+
+
+## Migrations et initialisation de la base de données
+
+Pour initialiser et gérer la base de données MySQL avec Prisma, suivez les étapes ci-dessous :
+
+```bash
+# Créer la base de données shadow (dans le conteneur de la base de données avec l'user root) :
+$ CREATE DATABASE shadow_epidrive;
+
+# Appliquer les migrations Prisma (dans le conteneur web) :
+$ npx prisma migrate dev --name init
+
+# Générer le client Prisma (dans le conteneur web):
+$ npx prisma generate
+
+# Insérer des données de base dans la base de données (dans le conteneur web):
+$ node seed.js
+
+# Initialisez la base de données MySQL (dans le conteneur web)
+$ npx prisma migrate dev --name init
+
+# Générez le client Prisma
+$ npx prisma generate
+
+# Exécutez le script de seed pour insérer des données de base
+$ node seed.js
+
+```
+
+## Développer en local avec Docker
+
+L'application utilise Docker pour la base de données et phpMyAdmin. Vous pouvez démarrer l'ensemble du projet avec la commande suivante :
+
+```
+docker-compose up -d
+
+```
+Cela lancera les services suivants :
+
+Base de données MySQL (port 3306)
+phpMyAdmin pour la gestion visuelle de la base de données (port 8080)
+Next.js (port 3000)
+
+## Contact
+
+Pour toute question ou suggestion, veuillez nous contacter via :
+- mouhamadou.etu@gmail.com
+- choeurtis.tchounga@gmail.com
+- ibrahimabarry1503@gmail.com
+
+
