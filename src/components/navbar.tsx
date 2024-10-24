@@ -125,7 +125,7 @@ export default function Navbar() {
                           className="group relative rounded-lg p-6 text-sm leading-6 hover:bg-gray-50"
                         >
                           <a
-                            href={`/categories/${category.slug}`}
+                            href={`/category/${category.slug}`}
                             className="mt-6 block font-semibold text-gray-900"
                           >
                             {category.name}
