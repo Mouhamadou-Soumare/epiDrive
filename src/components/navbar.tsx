@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
-import Image from 'next/image'
-import logoWhite from "../../public/img/logo_white_bg.png"
-import { useState } from 'react'
+import Image from "next/image";
+import logoWhite from "../../public/img/logo_white_bg.png";
+import { useState } from "react";
 import {
   Dialog,
   DialogPanel,
@@ -13,7 +13,7 @@ import {
   PopoverButton,
   PopoverGroup,
   PopoverPanel,
-} from '@headlessui/react'
+} from "@headlessui/react";
 import {
   Bars3Icon,
   ChartPieIcon,
@@ -21,50 +21,62 @@ import {
   FingerPrintIcon,
   SquaresPlusIcon,
   XMarkIcon,
-} from '@heroicons/react/24/outline'
-import { ChevronDownIcon, PhoneIcon, PlayCircleIcon, RectangleGroupIcon } from '@heroicons/react/20/solid'
+} from "@heroicons/react/24/outline";
+import {
+  ChevronDownIcon,
+  PhoneIcon,
+  PlayCircleIcon,
+  RectangleGroupIcon,
+} from "@heroicons/react/20/solid";
+
+import { useGetMainCategories } from "@/hooks/categories/useGetMainCategories";
 
 const products = [
   {
-    name: 'Analytics',
-    description: 'Get a better understanding where your traffic is coming from',
-    href: '#',
+    name: "Analytics",
+    description: "Get a better understanding where your traffic is coming from",
+    href: "#",
     icon: ChartPieIcon,
   },
   {
-    name: 'Engagement',
-    description: 'Speak directly to your customers with our engagement tool',
-    href: '#',
+    name: "Engagement",
+    description: "Speak directly to your customers with our engagement tool",
+    href: "#",
     icon: CursorArrowRaysIcon,
   },
-  { name: 'Security', description: 'Your customers’ data will be safe and secure', href: '#', icon: FingerPrintIcon },
   {
-    name: 'Integrations',
-    description: 'Your customers’ data will be safe and secure',
-    href: '#',
+    name: "Security",
+    description: "Your customers’ data will be safe and secure",
+    href: "#",
+    icon: FingerPrintIcon,
+  },
+  {
+    name: "Integrations",
+    description: "Your customers’ data will be safe and secure",
+    href: "#",
     icon: SquaresPlusIcon,
   },
-]
+];
 const callsToAction = [
-  { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
-  { name: 'Contact sales', href: '#', icon: PhoneIcon },
-  { name: 'View all products', href: '#', icon: RectangleGroupIcon },
-]
+  { name: "Watch demo", href: "#", icon: PlayCircleIcon },
+  { name: "Contact sales", href: "#", icon: PhoneIcon },
+  { name: "View all products", href: "#", icon: RectangleGroupIcon },
+];
 
 export default function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { categories, loading, error } = useGetMainCategories();
 
   return (
     <header className="relative isolate z-10 bg-white">
-      <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
+      <nav
+        aria-label="Global"
+        className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+      >
         <div className="flex lg:flex-1">
           <a href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
-            <Image
-              alt=""
-              src={logoWhite}
-              className="h-8 w-auto"
-            />
+            <Image alt="" src={logoWhite} className="h-8 w-auto" />
           </a>
         </div>
         <div className="flex lg:hidden">
@@ -77,31 +89,83 @@ export default function Navbar() {
             <Bars3Icon aria-hidden="true" className="h-6 w-6" />
           </button>
         </div>
-        <PopoverGroup className="hidden lg:flex lg:gap-x-12">
+        <PopoverGroup className="hidden lg:flex lg:gap-x-12 items-center">
           <Popover>
-            <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
-              Product
-              <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none text-gray-400" />
-            </PopoverButton>
+            <Popover.Button
+              type="button"
+              className={`inline-flex items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold shadow-sm 
+              ${
+                open()
+                  ? "bg-indigo-500 text-white"
+                  : "bg-indigo-600 text-white hover:bg-indigo-500"
+              } 
+              focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+            >
+              Rayons
+              <ChevronDownIcon
+                aria-hidden="true"
+                className={`h-5 w-5 flex-none text-white ${
+                  open() ? "rotate-180 transform" : ""
+                }`}
+              />
+            </Popover.Button>
 
             <PopoverPanel
               transition
               className="absolute inset-x-0 top-0 -z-10 bg-white pt-14 shadow-lg ring-1 ring-gray-900/5 transition data-[closed]:-translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
             >
-              <div className="mx-auto grid max-w-7xl grid-cols-4 gap-x-4 px-6 py-10 lg:px-8 xl:gap-x-8">
-                {products.map((item) => (
-                  <div key={item.name} className="group relative rounded-lg p-6 text-sm leading-6 hover:bg-gray-50">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                      <item.icon aria-hidden="true" className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" />
-                    </div>
-                    <a href={item.href} className="mt-6 block font-semibold text-gray-900">
-                      {item.name}
-                      <span className="absolute inset-0" />
-                    </a>
-                    <p className="mt-1 text-gray-600">{item.description}</p>
-                  </div>
-                ))}
-              </div>
+              <div className="flex flex-rpw space-y-12">
+  {/* Première grid avec le titre "Mes courses" */}
+  <div className="px-6 py-10 lg:px-8">
+    <h2 className="text-2xl font-bold text-gray-900 mb-6">Mes courses</h2>
+    <div className="mx-auto grid max-w-7xl grid-cols-2 gap-x-4  xl:gap-x-8">
+    {categories.map((category) => (
+                        <div
+                          key={category.slug}
+                          className="group relative rounded-lg p-6 text-sm leading-6 hover:bg-gray-50"
+                        >
+                          <a
+                            href={`/categories/${category.slug}`}
+                            className="mt-6 block font-semibold text-gray-900"
+                          >
+                            {category.name}
+                            <span className="absolute inset-0" />
+                          </a>
+                          <p className="mt-1 text-gray-600">{category.description}</p>
+                        </div>
+                      ))}
+    </div>
+  </div>
+
+  {/* Deuxième grid avec le titre "Maison & loisirs" */}
+  <div className="px-6 py-10 lg:px-8">
+    <h2 className="text-2xl font-bold text-gray-900 mb-6">Maison & loisirs</h2>
+    <div className="mx-auto grid max-w-7xl grid-cols-1 gap-x-4  xl:gap-x-8">
+      {products.map((item) => (
+        <div
+          key={item.name}
+          className="group relative rounded-lg p-6 text-sm leading-6 hover:bg-gray-50"
+        >
+          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+            <item.icon
+              aria-hidden="true"
+              className="h-6 w-6 text-gray-600 group-hover:text-indigo-600"
+            />
+          </div>
+          <a
+            href={item.href}
+            className="mt-6 block font-semibold text-gray-900"
+          >
+            {item.name}
+            <span className="absolute inset-0" />
+          </a>
+          <p className="mt-1 text-gray-600">{item.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
               <div className="bg-gray-50">
                 <div className="mx-auto max-w-7xl px-6 lg:px-8">
                   <div className="grid grid-cols-3 divide-x divide-gray-900/5 border-x border-gray-900/5">
@@ -111,7 +175,10 @@ export default function Navbar() {
                         href={item.href}
                         className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
                       >
-                        <item.icon aria-hidden="true" className="h-5 w-5 flex-none text-gray-400" />
+                        <item.icon
+                          aria-hidden="true"
+                          className="h-5 w-5 flex-none text-gray-400"
+                        />
                         {item.name}
                       </a>
                     ))}
@@ -137,17 +204,17 @@ export default function Navbar() {
           </a>
         </div>
       </nav>
-      <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
+      <Dialog
+        open={mobileMenuOpen}
+        onClose={setMobileMenuOpen}
+        className="lg:hidden"
+      >
         <div className="fixed inset-0 z-10" />
         <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
             <a href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
-              <Image
-                alt=""
-                src={logoWhite}
-                className="h-10 w-auto"
-              />
+              <Image alt="" src={logoWhite} className="h-10 w-auto" />
             </a>
             <button
               type="button"
@@ -164,7 +231,10 @@ export default function Navbar() {
                 <Disclosure as="div" className="-mx-3">
                   <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
                     Product
-                    <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-data-[open]:rotate-180" />
+                    <ChevronDownIcon
+                      aria-hidden="true"
+                      className="h-5 w-5 flex-none group-data-[open]:rotate-180"
+                    />
                   </DisclosureButton>
                   <DisclosurePanel className="mt-2 space-y-2">
                     {[...products, ...callsToAction].map((item) => (
@@ -211,5 +281,5 @@ export default function Navbar() {
         </DialogPanel>
       </Dialog>
     </header>
-  )
+  );
 }
