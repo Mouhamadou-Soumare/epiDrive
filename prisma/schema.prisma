@@ -12,7 +12,7 @@ model Categorie {
   id          Int         @id @default(autoincrement()) 
   name        String      
   slug        String      @unique 
-  description String?     
+  description String?   @db.Text 
   parentId    Int?        
   parent      Categorie?  @relation("CategoryParent", fields: [parentId], references: [id]) 
   children    Categorie[] @relation("CategoryParent") 

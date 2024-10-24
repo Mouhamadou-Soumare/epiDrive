@@ -66,6 +66,23 @@ const callsToAction = [
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { categories, loading, error } = useGetMainCategories();
+  const [open, setOpen] = useState(false); 
+
+  const mesCoursesCategories = [
+    "Produits régionaux et locaux",
+    "Bio et Ecologie",
+    "Pains et Pâtisseries",
+    "Marché frais",
+    "Boucherie, Volailles et Poissons",
+  ];
+
+  const mesCourses = categories.filter((category) =>
+    mesCoursesCategories.includes(category.name)
+  );
+
+  const maisonLoisirs = categories.filter(
+    (category) => !mesCoursesCategories.includes(category.name)
+  );
 
   return (
     <header className="relative isolate z-10 bg-white">
@@ -95,7 +112,7 @@ export default function Navbar() {
               type="button"
               className={`inline-flex items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold shadow-sm 
               ${
-                open()
+                open
                   ? "bg-indigo-500 text-white"
                   : "bg-indigo-600 text-white hover:bg-indigo-500"
               } 
@@ -105,28 +122,31 @@ export default function Navbar() {
               <ChevronDownIcon
                 aria-hidden="true"
                 className={`h-5 w-5 flex-none text-white ${
-                  open() ? "rotate-180 transform" : ""
+                  open ? "rotate-180 transform" : ""
                 }`}
               />
             </Popover.Button>
 
             <PopoverPanel
               transition
-              className="absolute inset-x-0 top-0 -z-10 bg-white pt-14 shadow-lg ring-1 ring-gray-900/5 transition data-[closed]:-translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
+              className="absolute inset-x-0 top-0 -z-10 bg-white pt-14 shadow-lg ring-1 ring-gray-900/5 transition data-[closed]:-translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in rounded-lg	mt-20 w-11/12	mx-auto"
             >
-              <div className="flex flex-rpw space-y-12">
+              <div className="flex flex-rpw">
   {/* Première grid avec le titre "Mes courses" */}
-  <div className="px-6 py-10 lg:px-8">
+  <div className="px-6 py-10 lg:px-8 pt-8">
     <h2 className="text-2xl font-bold text-gray-900 mb-6">Mes courses</h2>
     <div className="mx-auto grid max-w-7xl grid-cols-2 gap-x-4  xl:gap-x-8">
-    {categories.map((category) => (
+    {mesCourses.map((category) => (
                         <div
                           key={category.slug}
-                          className="group relative rounded-lg p-6 text-sm leading-6 hover:bg-gray-50"
+                          className="group relative rounded-lg p-6 pl-0 text-sm leading-6 hover:bg-gray-50 flex items-center gap-5 pl-0 "
                         >
+                           <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-gray-100 group-hover:bg-white ">
+           
+           </div>
                           <a
                             href={`/category/${category.slug}`}
-                            className="mt-6 block font-semibold text-gray-900"
+                            className=" block font-semibold text-gray-900"
                           >
                             {category.name}
                             <span className="absolute inset-0" />
@@ -138,28 +158,25 @@ export default function Navbar() {
   </div>
 
   {/* Deuxième grid avec le titre "Maison & loisirs" */}
-  <div className="px-6 py-10 lg:px-8">
+  <div className="px-6 py-10 lg:px-8 pt-8">
     <h2 className="text-2xl font-bold text-gray-900 mb-6">Maison & loisirs</h2>
     <div className="mx-auto grid max-w-7xl grid-cols-1 gap-x-4  xl:gap-x-8">
-      {products.map((item) => (
+      {maisonLoisirs.map((category) => (
         <div
-          key={item.name}
-          className="group relative rounded-lg p-6 text-sm leading-6 hover:bg-gray-50"
+          key={category.name}
+          className="group relative rounded-lg p-6 text-sm leading-6 hover:bg-gray-50 flex items-center gap-5 pl-0"
         >
-          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-            <item.icon
-              aria-hidden="true"
-              className="h-6 w-6 text-gray-600 group-hover:text-indigo-600"
-            />
+          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-gray-100 group-hover:bg-white">
+           
           </div>
           <a
-            href={item.href}
-            className="mt-6 block font-semibold text-gray-900"
+                            href={`/category/${category.slug}`}
+                            className="block font-semibold text-gray-900"
           >
-            {item.name}
+            {category.name}
             <span className="absolute inset-0" />
           </a>
-          <p className="mt-1 text-gray-600">{item.description}</p>
+          <p className="mt-1 text-gray-600">{category.description}</p>
         </div>
       ))}
     </div>
