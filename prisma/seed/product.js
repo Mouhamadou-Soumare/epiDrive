@@ -11,20 +11,24 @@ export async function createProducts(subCategory, existingSubCategory) {
         });
 
         if (!existingProduct) {
-            await prisma.produit.create({
-                data: {
-                    name: product.name,
-                    slug: generateSlug(product.name),
-                    description: product.description,
-                    price: product.price,
-                    categorie: {
-                        connect: {
-                            id: existingSubCategory.id
+            try {
+                await prisma.produit.create({
+                    data: {
+                        name: product.name,
+                        slug: generateSlug(product.name),
+                        description: product.description,
+                        price: product.price,
+                        categorie: {
+                            connect: {
+                                id: existingSubCategory.id
+                            },
                         },
                     },
-                },
-            });
-            console.log(`Produit ${product.name} ajouté sous ${subCategory.name}`);
+                });
+                console.log(`Produit ${product.name} ajouté sous ${subCategory.name}`);
+            } catch (error) {
+                console.error(`Erreur lors de la création du produit ${product.name}:`, error.meta?.target);
+            }
         } else {
             console.log(`Le produit ${product.name} existe déjà sous ${subCategory.name}`);
         }
