@@ -4,7 +4,7 @@ import prisma from '../../../../lib/prisma';
 type Product = { 
   id: number; 
   name: string; 
-  price: number; 
+  prix: number;      
   imageSrc: string; 
   imageAlt: string; 
   slug: string;  
@@ -15,7 +15,11 @@ export async function GET() {
   try {
     console.log("Fetching all products...");
 
-    const products = await prisma.produit.findMany();
+    const products = await prisma.produit.findMany({
+      include: {
+        image: true,
+      },
+    });
 
     console.log("Products found:", products);
 
@@ -33,24 +37,27 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, description, price, imageSrc, imageAlt, categorieId } = body;
+    const { name, description, prix, imageSrc, imageAlt, categorieId } = body;
 
-    if (!name || !price || !imageSrc || !imageAlt || !description || !categorieId) {
+    if (!name || !prix || !imageSrc || !imageAlt || !description || !categorieId) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
     const slug = name.toLowerCase().replace(/ /g, '-');
 
-    console.log('Creating product body:', body);
+    console.log('Creating product with body:', body);
     const newProduct = await prisma.produit.create({
       data: {
         name: name,
         description: description,
-        price: parseFloat(price),
+        prix: parseFloat(prix), 
         slug: slug,
         categorieId: categorieId,
-        createdAt: new Date(),
-        updatedAt: new Date() 
+        image: {                  
+          create: {
+            path: imageSrc,       
+          },
+        },
       },
     });
 

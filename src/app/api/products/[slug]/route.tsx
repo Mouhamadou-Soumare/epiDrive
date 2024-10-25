@@ -4,13 +4,12 @@ import prisma from '../../../../../lib/prisma';
 type Product = { 
   id: number; 
   name: string; 
-  price: number; 
+  prix: number;
   imageSrc: string; 
   imageAlt: string; 
   slug: string;  
   description: string; 
 };
-
 
 export async function GET(req: NextRequest, { params }: { params: { slug: string } }) {
   const { slug } = params;
@@ -22,14 +21,14 @@ export async function GET(req: NextRequest, { params }: { params: { slug: string
   }
 
   try {
-    console.log("Prisma Client:", prisma);
-
     console.log("Searching for product with slug:", slug);
 
     const product = await prisma.produit.findUnique({
-      where: { slug },  
+      where: { slug },
+      include: {
+        image: true, 
+      },
     });
-
 
     if (!product) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
@@ -42,26 +41,50 @@ export async function GET(req: NextRequest, { params }: { params: { slug: string
   }
 }
 
+
+
 export async function PATCH(req: NextRequest, { params }: { params: { slug: string } }) {
   const { slug } = params;
-  const data: Partial<Product> = await req.json();
+  const data = await req.json();
 
   if (!slug) {
     return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
   }
 
+  const { id, imageSrc, prix, ...updateData } = data;
+
   try {
+    const existingProduct = await prisma.produit.findUnique({
+      where: { slug },
+      include: { image: true },
+    });
+
+    if (!existingProduct) {
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+    }
+
+    const imageData = imageSrc
+      ? existingProduct.image
+        ? { update: { path: imageSrc } } 
+        : { create: { path: imageSrc } } 
+      : undefined;
+
     const updatedProduct = await prisma.produit.update({
       where: { slug },
-      data,
+      data: {
+        ...updateData,
+        prix: prix ? parseFloat(prix.toString()) : undefined,
+        image: imageData,
+      },
     });
 
     return NextResponse.json(updatedProduct);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error updating product:", error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal Server Error', details: error.message }, { status: 500 });
   }
 }
+
 
 export async function DELETE(req: NextRequest, { params }: { params: { slug: string } }) {
   const { slug } = params;

@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation';
 type Product = { 
     id: number; 
     name: string; 
-    price: number; 
+    prix: number;          
     imageSrc: string; 
     imageAlt: string; 
     slug: string;  
@@ -24,8 +24,7 @@ export default function UpdateProductPage() {
             const productSlug = Array.isArray(slug) ? slug[slug.length - 1] : slug;
             const formattedSlug = productSlug ? productSlug.replace('/update', '') : '';
             console.log('Fetching product for slug:', productSlug);
-            console.log('formattedSlug', formattedSlug);
-  
+
             try {
                 const res = await fetch(`/api/products/${formattedSlug}`);
                 const data = await res.json();
@@ -40,7 +39,7 @@ export default function UpdateProductPage() {
                 setLoading(false);
             }
         }
-  
+
         fetchProduct();
     }, [slug]);
 
@@ -50,7 +49,7 @@ export default function UpdateProductPage() {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         if (product) {
-            setProduct({ ...product, [name]: value });
+            setProduct({ ...product, [name]: name === "prix" ? parseFloat(value) : value });
         }
     };
 
@@ -64,13 +63,15 @@ export default function UpdateProductPage() {
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify(product),
+                    body: JSON.stringify({
+                        ...product,
+                        prix: product.prix, 
+                    }),
                 });
 
                 const data = await res.json();
                 if (res.ok) {
                     setSubmitResult('200');
-                    //window.location.assign(`/backoffice/products/${product.slug}`);
                 } else {
                     console.error('Error updating product:', data.error);
                     setSubmitResult(res.status.toString());
@@ -122,14 +123,14 @@ export default function UpdateProductPage() {
                     />
                 </div>
                 <div className="mb-5">
-                    <label htmlFor="price" 
+                    <label htmlFor="prix" 
                         className="block mb-2 text-sm font-medium text-gray-900">Prix</label>
                     <input
                         type="number"
                         min="0" max="1000" step="0.01"
-                        id="price"
-                        name="price"
-                        value={product.price}
+                        id="prix"
+                        name="prix"
+                        value={product.prix}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         onChange={handleInputChange}
                     />
@@ -139,4 +140,4 @@ export default function UpdateProductPage() {
             </form>
         </>
     );
-};
+}

@@ -6,7 +6,7 @@ export async function createProducts(subCategory, existingSubCategory) {
         const existingProduct = await prisma.produit.findFirst({
             where: {
                 name: product.name,
-                categorieId: existingSubCategory.id,
+                sousCategorieId: existingSubCategory.id,
             },
         });
 
@@ -17,8 +17,8 @@ export async function createProducts(subCategory, existingSubCategory) {
                         name: product.name,
                         slug: generateSlug(product.name),
                         description: product.description,
-                        price: product.price,
-                        categorie: {
+                        prix: product.price,
+                        sousCategorie: {
                             connect: {
                                 id: existingSubCategory.id
                             },
@@ -27,7 +27,7 @@ export async function createProducts(subCategory, existingSubCategory) {
                 });
                 console.log(`Produit ${product.name} ajouté sous ${subCategory.name}`);
             } catch (error) {
-                console.error(`Erreur lors de la création du produit ${product.name}:`, error.meta?.target);
+                console.error(`Erreur lors de la création du produit ${product.name}:`, error);
             }
         } else {
             console.log(`Le produit ${product.name} existe déjà sous ${subCategory.name}`);
