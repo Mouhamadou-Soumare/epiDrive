@@ -89,8 +89,8 @@ export default function ProductDetailPage() {
         </div>
 
         {/* Product image */}
-        <div className="mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center">
-          <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg">
+        <div className="mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center bg-dark-500">
+          <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg h-96	">
             <img src={product.imageSrc} alt={product.imageAlt} className="h-full w-full object-cover object-center" />
           </div>
         </div>
@@ -118,7 +118,7 @@ export default function ProductDetailPage() {
               <div className="mt-10">
                 <button
                   type="submit"
-                  className="flex w-full items-center justify-center rounded-md bg-indigo-600 px-8 py-3 text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500"
+                  className="flex w-full items-center justify-center rounded-md px-8 py-3 text-white bg-orange-300 text-dark hover:bg-orange-500 text-black focus:ring-2 focus:ring-indigo-500"
                 >
                   Ajouter au panier
                 </button>

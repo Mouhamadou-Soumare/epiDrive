@@ -114,7 +114,7 @@ export default function Navbar() {
               ${
                 open
                   ? "bg-indigo-500 text-dark"
-                  : "bg-orange-300 text-dark hover:bg-orange-'00"
+                  : "bg-orange-300 text-dark hover:bg-orange-500"
               } 
               focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
             >
