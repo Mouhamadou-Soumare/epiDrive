@@ -11,6 +11,7 @@ type Product = {
   description: string; 
 };
 
+
 export async function GET(req: NextRequest, { params }: { params: { slug: string } }) {
   const { slug } = params;
 
@@ -29,7 +30,6 @@ export async function GET(req: NextRequest, { params }: { params: { slug: string
       where: { slug },  
     });
 
-    console.log("Product found:", product);
 
     if (!product) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
