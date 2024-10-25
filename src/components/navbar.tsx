@@ -113,8 +113,8 @@ export default function Navbar() {
               className={`inline-flex items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold shadow-sm 
               ${
                 open
-                  ? "bg-indigo-500 text-white"
-                  : "bg-indigo-600 text-white hover:bg-indigo-500"
+                  ? "bg-indigo-500 text-dark"
+                  : "bg-orange-300 text-dark hover:bg-orange-'00"
               } 
               focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
             >
