@@ -4,7 +4,7 @@ import prisma from '../../../../../lib/prisma';
 export async function GET(req: NextRequest, { params }: { params: { slug: string } }) {
   const { slug } = params;
 
-  console.log("Received slug:", slug);  
+  console.log("Received slug:", slug);   
 
   if (!slug) {
     return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
