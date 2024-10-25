@@ -3,10 +3,10 @@
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { ProductGrid } from '@/components/client/product/ProductGrid';
+import { ProductGrid } from '@/components/client/product/productGrid';
 
-type Product = { id: number; name: string; price: number; imageSrc: string; imageAlt: string, slug : string, description : string };
-type SubCategory = { name: string; slug: string; children?: SubCategory[]; produits?: Product[]   };
+type Product = { id: number; name: string; price: number; imageSrc: string; imageAlt: string, slug: string, description: string };
+type SubCategory = { name: string; slug: string; imageSrc?: string; imageAlt?: string; children?: SubCategory[]; produits?: Product[] };
 
 export default function CategoryPage() {
   const { slug } = useParams();
@@ -39,24 +39,32 @@ export default function CategoryPage() {
   if (!currentCategory) return <div>Catégorie non trouvée</div>;
 
   return (
-    <div>
-      <h1>{currentCategory.name}</h1>
+    <div className="bg-white">
+      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+        <h1 className="text-2xl font-bold text-gray-900">{currentCategory.name}</h1>
 
-      {currentCategory.children && currentCategory.children.length > 0 ? (
-        <ul>
-          {currentCategory.children.map((subCategory) => (
-            <li key={subCategory.slug}>
-              <Link href={`/category/${Array.isArray(slug) ? slug.join('/') : slug}/${subCategory.slug}`}>
-                {subCategory.name}
+        {/* Affichage des sous-catégories */}
+        {currentCategory.children && currentCategory.children.length > 0 ? (
+          <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 mt-8">
+            {currentCategory.children.map((subCategory) => (
+              <Link key={subCategory.slug} href={`/category/${Array.isArray(slug) ? slug.join('/') : slug}/${subCategory.slug}`} className="group">
+                <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                  <img
+                    alt={subCategory.imageAlt || `Image de la sous-catégorie ${subCategory.name}`}
+                    src={subCategory.imageSrc || 'https://via.placeholder.com/300'}
+                    className="h-full w-full object-cover object-center group-hover:opacity-75"
+                  />
+                </div>
+                <h3 className="mt-4 text-sm text-gray-700">{subCategory.name}</h3>
               </Link>
-            </li>
-          ))}
-        </ul>
-      ) : currentCategory.produits && currentCategory.produits.length > 0 ? (
+            ))}
+          </div>
+        ) : currentCategory.produits && currentCategory.produits.length > 0 ? (
           <ProductGrid products={currentCategory.produits} />
-      ) : (
-        <div>Aucun produit ou sous-catégorie trouvé</div>
-      )}
+        ) : (
+          <div>Aucun produit ou sous-catégorie trouvé</div>
+        )}
+      </div>
     </div>
   );
 }
