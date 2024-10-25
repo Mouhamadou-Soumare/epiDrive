@@ -66,6 +66,7 @@ const callsToAction = [
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { categories, loading, error } = useGetMainCategories();
+  const [open, setOpen] = useState(false);
 
   return (
     <header className="relative isolate z-10 bg-white">
@@ -95,7 +96,7 @@ export default function Navbar() {
               type="button"
               className={`inline-flex items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold shadow-sm 
               ${
-                open()
+                open
                   ? "bg-indigo-500 text-white"
                   : "bg-indigo-600 text-white hover:bg-indigo-500"
               } 
@@ -105,7 +106,7 @@ export default function Navbar() {
               <ChevronDownIcon
                 aria-hidden="true"
                 className={`h-5 w-5 flex-none text-white ${
-                  open() ? "rotate-180 transform" : ""
+                  open ? "rotate-180 transform" : ""
                 }`}
               />
             </Popover.Button>
