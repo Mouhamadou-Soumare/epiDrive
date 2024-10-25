@@ -61,17 +61,17 @@ SHADOW_DATABASE_URL="mysql://root:rootpassword@db:3306/shadow_epidrive"
 # Configurez Docker pour démarrer les services
 $ docker-compose up -d
 
-# Initialisez la base de données MySQL
+# Se rendre sur le container mysql et se connecter avec le user root
+$ CREATE DATABASE shadow_epidrive;
+
+# Initialisez la base de données MySQL (depuis le container web)
 $ npx prisma migrate dev --name init
 
-# Générez le client Prisma
+# Générez le client Prisma (depuis le container web)
 $ npx prisma generate
 
-# Exécutez le script de seed pour insérer des données de base
-$ node seed.js
-
-# Lancez le serveur Next.js en mode développement
-$ npm run dev
+# Exécutez le script de seed pour insérer des données de base (depuis le container web)
+$ npx prisma db seed
 ```
 
 

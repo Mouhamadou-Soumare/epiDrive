@@ -8,29 +8,99 @@ datasource db {
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
-model Categorie {
-  id          Int         @id @default(autoincrement()) 
-  name        String      
-  slug        String      @unique 
-  description String?   @db.Text 
-  parentId    Int?        
-  parent      Categorie?  @relation("CategoryParent", fields: [parentId], references: [id]) 
-  children    Categorie[] @relation("CategoryParent") 
-  produits    Produit[]  
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+enum Role {
+  USER
+  ADMIN
 }
 
+model User {
+  id          Int       @id @default(autoincrement())
+  username    String
+  email       String     @unique
+  password    String
+  role        Role       @default(USER)
+  recettes    Recette[]
+  commandes   Commande[]
+  image       Image?     @relation(fields: [imageId], references: [id], map: "User_Image_fkey")
+  imageId     Int?
+}
+
+model Recette {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String
+  instructions String
+  image       String?
+  produits    Produit[] @relation("RecetteProduit")
+  user        User      @relation(fields: [userId], references: [id], map: "Recette_User_fkey")
+  userId      Int
+}
+
+model Commande {
+  id          Int       @id @default(autoincrement())
+  status      String
+  paymentId   String?
+  createdAt   DateTime  @default(now())
+  user        User      @relation(fields: [userId], references: [id], map: "Commande_User_fkey")
+  userId      Int
+  quantites   QuantiteCommande[]
+}
 
 model Produit {
-  id          Int        @id @default(autoincrement()) 
-  name        String   
-  description String?    
-  price       Float   
-  slug        String     @unique 
-  categorieId Int       
-  categorie   Categorie  @relation(fields: [categorieId], references: [id]) 
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  id             Int             @id @default(autoincrement())
+  name           String
+  slug           String           @unique
+  description    String
+  prix           Float
+  image          Image?          @relation(fields: [imageid], references: [id], map: "Produit_Image_fkey")
+  imageid        Int?
+  categorie      Categorie       @relation(fields: [categorieId], references: [id], map: "Produit_Categorie_fkey")
+  categorieId    Int             
+  quantitePaniers  QuantitePanier[]  
+  quantiteCommandes QuantiteCommande[] 
+  recettes       Recette[]       @relation("RecetteProduit")
 }
 
+
+model QuantitePanier {
+  id          Int      @id @default(autoincrement())
+  quantite    Int
+  prix        Float
+  produit     Produit  @relation(fields: [produitId], references: [id], map: "QuantitePanier_Produit_fkey")
+  produitId   Int
+}
+
+model QuantiteCommande {
+  id          Int      @id @default(autoincrement())
+  quantite    Int
+  prix        Float
+  produit     Produit  @relation(fields: [produitId], references: [id], map: "QuantiteCommande_Produit_fkey")
+  produitId   Int
+  commande    Commande @relation(fields: [commandeId], references: [id], map: "QuantiteCommande_Commande_fkey")
+  commandeId  Int
+}
+
+model Image {
+  id          Int          @id @default(autoincrement())
+  path        String
+
+  produits    Produit[]
+  categories  Categorie[]
+  users       User[]
+}
+
+
+model Categorie {
+  id              Int              @id @default(autoincrement())
+  name            String
+  slug            String           @unique
+  description     String?          @db.Text
+  image           Image?           @relation(fields: [imageId], references: [id], map: "Categorie_Image_fkey")
+  imageId         Int?
+
+  parentId        Int?            
+  parent          Categorie?       @relation("CategorieParent", fields: [parentId], references: [id])
+  subcategories   Categorie[]      @relation("CategorieParent") 
+
+  produits        Produit[]       
+}

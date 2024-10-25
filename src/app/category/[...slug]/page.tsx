@@ -5,8 +5,23 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { ProductGrid } from '@/components/client/product/productGrid';
 
-type Product = { id: number; name: string; price: number; imageSrc: string; imageAlt: string, slug: string, description: string };
-type SubCategory = { name: string; slug: string; imageSrc?: string; imageAlt?: string; children?: SubCategory[]; produits?: Product[] };
+type Product = { 
+  id: number; 
+  name: string; 
+  prix: number; 
+  imageSrc: string; 
+  imageAlt: string; 
+  slug: string; 
+  description: string 
+};
+type SubCategory = { 
+  name: string; 
+  slug: string; 
+  imageSrc?: string; 
+  imageAlt?: string; 
+  subcategories?: SubCategory[]; 
+  produits?: Product[] 
+};
 
 export default function CategoryPage() {
   const { slug } = useParams();
@@ -44,9 +59,9 @@ export default function CategoryPage() {
         <h1 className="text-2xl font-bold text-gray-900">{currentCategory.name}</h1>
 
         {/* Affichage des sous-catégories */}
-        {currentCategory.children && currentCategory.children.length > 0 ? (
+        {currentCategory.subcategories && currentCategory.subcategories.length > 0 ? (
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 mt-8">
-            {currentCategory.children.map((subCategory) => (
+            {currentCategory.subcategories.map((subCategory) => (
               <Link key={subCategory.slug} href={`/category/${Array.isArray(slug) ? slug.join('/') : slug}/${subCategory.slug}`} className="group">
                 <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
                   <img

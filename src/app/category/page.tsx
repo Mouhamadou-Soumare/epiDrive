@@ -6,8 +6,8 @@ import Link from 'next/link';
 type Category = { 
   name: string; 
   slug: string; 
-  imageSrc?: string;  // Image de la catégorie (optionnelle)
-  imageAlt?: string;  // Texte alternatif pour l'image (optionnel)
+  imageSrc?: string;   
+  imageAlt?: string; 
 };
 
 export default function AllCategoriesPage() {

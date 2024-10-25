@@ -1,18 +1,17 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from "../lib/prisma.js";
 import { generateSlug } from './seed/generateSlug.js';
 import { categories } from './seed/categories.js';
 import { createSubcategories } from './seed/subcategories.js';
-
-const prisma = new PrismaClient();
+import {createUsers} from './seed/users.js';
 
 async function main() {
+    await createUsers();
+
     for (const category of categories) {
         const slug = generateSlug(category.title);
 
         const existingCategory = await prisma.categorie.findUnique({
-            where: {
-                slug
-            },
+            where: { slug },
         });
 
         if (!existingCategory) {
@@ -21,8 +20,14 @@ async function main() {
                     name: category.title,
                     slug,
                     description: category.description || null,
+                    image: {
+                        create: {
+                            path: category.imageSrc || "default-image-path.jpg",  // Utilise l'image spécifiée ou une image par défaut
+                        },
+                    },
                 },
             });
+            
             console.log(`Catégorie ${parentCategory.name} créée`);
             await createSubcategories(category, parentCategory);
         } else {
@@ -32,11 +37,9 @@ async function main() {
     }
 }
 
-main()
-    .catch((e) => {
-        console.error(e);
-        process.exit(1);
-    })
-    .finally(async () => {
-        await prisma.$disconnect();
-    });
+main().catch((e) => {
+    console.error(e);
+    process.exit(1);
+}).finally(async () => {
+    await prisma.$disconnect();
+});

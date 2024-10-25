@@ -2,6 +2,7 @@
   "name": "epidrive",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "CHOKIDAR_USEPOLLING=true next dev",
     "devlocal": "next dev",
@@ -10,9 +11,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.0.3",
     "@headlessui/react": "^2.1.10",
     "@heroicons/react": "^2.1.5",
     "@prisma/client": "^5.21.1",
+    "bcrypt": "^5.1.1",
     "next": "14.2.15",
     "react": "^18",
     "react-dom": "^18"
@@ -29,6 +32,6 @@
     "typescript": "^5"
   },
   "prisma": {
-  "seed": "node ./prisma/seed.js"
+    "seed": "node ./prisma/seed.js"
   }
 }

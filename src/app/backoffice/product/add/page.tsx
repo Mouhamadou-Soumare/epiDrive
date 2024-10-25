@@ -10,7 +10,7 @@ type Product = {
     imageAlt: string; 
     slug: string;  
     description: string; 
-    categoryId: number; // Ajout de la catégorie
+    categoryId: number; 
 };
 type SubCategory = { id: number, name: string; slug: string };
 
@@ -24,7 +24,7 @@ export default function AddProductPage() {
         imageAlt: '',
         slug: '',
         description: '',
-        categoryId: 0 // Initialisation de la catégorie
+        categoryId: 0 
     });
     const [submitResult, setSubmitResult] = useState<string>('');
 

@@ -3,27 +3,25 @@ import Link from "next/link";
 type Product = { 
     id: number; 
     name: string; 
-    price: number; 
+    prix: number;     
     imageSrc: string; 
     imageAlt: string; 
     slug: string;  
     description: string; 
-  };
+};
   
-
 export const ProductGrid = ({ products }: { products: Product[] }) => {
     return (
       <div className="bg-white">
-        <div className="mx-auto max-w-2xl  py-16  sm:py-20 lg:max-w-7xl ">
-  
-          <div className=" grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+        <div className="mx-auto max-w-2xl py-16 sm:py-20 lg:max-w-7xl">
+          <div className="grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
             {products.map((product) => (
               <div key={product.name}>
                 <div className="relative">
                   <div className="relative h-72 w-full overflow-hidden rounded-lg">
                     <img
-                      alt={product.name}
-                      src={'https://via.placeholder.com/300x300'} 
+                      alt={product.imageAlt || `Image de ${product.name}`}
+                      src={product.imageSrc || 'https://via.placeholder.com/300x300'} 
                       className="h-full w-full object-cover object-center"
                     />
                   </div>
@@ -36,7 +34,7 @@ export const ProductGrid = ({ products }: { products: Product[] }) => {
                       aria-hidden="true"
                       className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50"
                     />
-                    <p className="relative text-lg font-semibold text-white">{product.price}€</p>
+                    <p className="relative text-lg font-semibold text-white">{product.prix}€</p> {/* Remplace `price` par `prix` */}
                   </div>
                 </div>
                 <div className="mt-6">
@@ -53,5 +51,4 @@ export const ProductGrid = ({ products }: { products: Product[] }) => {
         </div>
       </div>
     );
-  };
-  
+};
