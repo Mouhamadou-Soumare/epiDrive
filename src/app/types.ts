@@ -60,6 +60,7 @@ export interface Image {
 }
 
 export interface Categorie {
+    subcategories: any;
     id: number;
     name: string; 
     slug: string; 

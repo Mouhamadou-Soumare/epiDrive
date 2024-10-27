@@ -28,23 +28,28 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body: Produit = await request.json();
-    const { name, description, price, imageId, categorieId } = body;
+    const { name, description, prix, categorieId } = body;
 
-    if (!name || !price || !description || !categorieId) {
+    console.log('Received body:', body);
+    if (!name || !prix || !description || !categorieId) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
+    console.log('***********************');
     const slug = name.toLowerCase().replace(/ /g, '-');
 
+    if ('id' in body) {
+      delete body.id;
+    }
     console.log('Creating product with body:', body);
     const newProduct = await prisma.produit.create({
       data: {
         name: name,
         description: description,
-        prix: price, 
+        prix: parseFloat(prix.toString()), 
         slug: slug,
-        categorieId: categorieId,
-        imageid: imageId
+        categorieId: parseInt(categorieId.toString()),
+        imageid: null
       },
     });
 
