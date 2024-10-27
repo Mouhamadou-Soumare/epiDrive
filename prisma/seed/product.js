@@ -17,7 +17,7 @@ export async function createProducts(subCategory, existingSubCategory) {
                         name: product.name,
                         slug: generateSlug(product.name),
                         description: product.description,
-                        prix: product.price,
+                        price: product.price,
                         sousCategorie: {
                             connect: {
                                 id: existingSubCategory.id

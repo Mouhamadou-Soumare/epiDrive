@@ -1,16 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '../../../../../lib/prisma';
 
-type Product = { 
-  id: number; 
-  name: string; 
-  prix: number;
-  imageSrc: string; 
-  imageAlt: string; 
-  slug: string;  
-  description: string; 
-};
-
 export async function GET(req: NextRequest, { params }: { params: { slug: string } }) {
   const { slug } = params;
 
@@ -26,7 +16,8 @@ export async function GET(req: NextRequest, { params }: { params: { slug: string
     const product = await prisma.produit.findUnique({
       where: { slug },
       include: {
-        image: true, 
+      image: true,
+      categorie: true,
       },
     });
 
