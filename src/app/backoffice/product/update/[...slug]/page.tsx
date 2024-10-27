@@ -3,19 +3,12 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 
-type Product = { 
-    id: number; 
-    name: string; 
-    prix: number;          
-    imageSrc: string; 
-    imageAlt: string; 
-    slug: string;  
-    description: string; 
-};
+import { Produit, Categorie } from "../../../../types"
 
 export default function UpdateProductPage() {
     const { slug } = useParams(); 
-    const [product, setProduct] = useState<Product | null>(null);
+    const [product, setProduct] = useState<Produit | null>(null);
+    const [categories, setCategories] = useState<Categorie[]>([]);
     const [loading, setLoading] = useState(true);
     const [submitResult, setSubmitResult] = useState<string>('');
 
@@ -39,17 +32,26 @@ export default function UpdateProductPage() {
                 setLoading(false);
             }
         }
-
         fetchProduct();
+
+
+        fetch("http://localhost:3000/api/categories")
+        .then((response) => response.json())
+        .then((data) => {
+            const subcategories = data.flatMap((category: Categorie) => category.subcategories);
+            setCategories(subcategories);
+        });
     }, [slug]);
+
+
 
     if (loading) return <div className="lg:pl-72">Chargement...</div>;
     if (!product) return <div className="lg:pl-72">Produit non trouvé</div>;
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         if (product) {
-            setProduct({ ...product, [name]: name === "prix" ? parseFloat(value) : value });
+            setProduct({ ...product, [name]: name === "prix" || name === "imageId" || name === "categorieId" ? parseInt(value) : value });
         }
     };
 
@@ -92,7 +94,7 @@ export default function UpdateProductPage() {
                 </div>
             }
             {
-                submitResult === '404' && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                submitResult === '404' || submitResult === '500' && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
                     <strong className="font-bold">Error!</strong>
                     <span className="block sm:inline">Product not found</span>
                 </div>
@@ -134,6 +136,40 @@ export default function UpdateProductPage() {
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         onChange={handleInputChange}
                     />
+                </div>
+                {/* En attente de la gestion des images
+
+                <div className="mb-5">
+                    <label htmlFor="imageId" 
+                        className="block mb-2 text-sm font-medium text-gray-900">Image ID</label>
+                    <input
+                        type="number"
+                        id="imageId"
+                        name="imageId"
+                        value={product.imageId || ''}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        onChange={handleInputChange}
+                    />
+                </div>
+                
+                */}
+                <div className="mb-5">
+                    <label htmlFor="categorieId" 
+                        className="block mb-2 text-sm font-medium text-gray-900">Categorie</label>
+                    <select
+                        id="categorieId"
+                        name="categorieId"
+                        value={product.categorieId}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        onChange={handleInputChange}
+                    >
+                        <option value="">Select a category</option>
+                        {categories.map((category) => (
+                            <option key={category.id} value={category.id}>
+                                {category.name}
+                            </option>
+                        ))}
+                    </select>
                 </div>
                 <button type="submit" 
                     className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Update Product</button>

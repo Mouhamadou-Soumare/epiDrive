@@ -1,16 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '../../../../../lib/prisma';
 
-type Product = { 
-  id: number; 
-  name: string; 
-  prix: number;
-  imageSrc: string; 
-  imageAlt: string; 
-  slug: string;  
-  description: string; 
-};
-
 export async function GET(req: NextRequest, { params }: { params: { slug: string } }) {
   const { slug } = params;
 
@@ -26,7 +16,8 @@ export async function GET(req: NextRequest, { params }: { params: { slug: string
     const product = await prisma.produit.findUnique({
       where: { slug },
       include: {
-        image: true, 
+      image: true,
+      categorie: true,
       },
     });
 
@@ -51,30 +42,34 @@ export async function PATCH(req: NextRequest, { params }: { params: { slug: stri
     return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
   }
 
-  const { id, imageSrc, prix, ...updateData } = data;
+  const { name, prix, description, categorieId } = data;
 
   try {
+    console.log("Updating product with slug:", slug);
     const existingProduct = await prisma.produit.findUnique({
       where: { slug },
-      include: { image: true },
+      /*include: { image: true },*/
     });
 
     if (!existingProduct) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
 
-    const imageData = imageSrc
+    /*const imageData = imageSrc
       ? existingProduct.image
         ? { update: { path: imageSrc } } 
         : { create: { path: imageSrc } } 
       : undefined;
-
+    */
     const updatedProduct = await prisma.produit.update({
       where: { slug },
       data: {
-        ...updateData,
+        name: name, 
         prix: prix ? parseFloat(prix.toString()) : undefined,
-        image: imageData,
+        slug: slug,  
+        description: description, 
+        categorieId: categorieId,
+        //image: imageData,
       },
     });
 

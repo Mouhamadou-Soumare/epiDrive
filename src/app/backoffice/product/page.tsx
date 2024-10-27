@@ -4,21 +4,12 @@ import Link from "next/link";
 
 import { useState, useEffect } from "react";
 
-type Product = { 
-  id: number; 
-  name: string; 
-  price: number; 
-  imageSrc: string; 
-  imageAlt: string; 
-  slug: string;  
-  description: string; 
-};
-  
+import { Produit } from "../../types";
 
 const ProductList = () => {
     const [searchValue, setSearchValue] = useState('')
-    const [products, setProduct] = useState<Product[]>([]);
-    const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+    const [products, setProduct] = useState<Produit[]>([]);
+    const [filteredProducts, setFilteredProducts] = useState<Produit[]>([]);
 
     useEffect(() => {
         fetch("http://localhost:3000/api/products")
@@ -64,7 +55,7 @@ const ProductList = () => {
                     aria-hidden="true"
                     className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50"
                   />
-                  <p className="relative text-lg font-semibold text-white">{product.price}€</p>
+                  <p className="relative text-lg font-semibold text-white">{product.prix}€</p>
                 </div>
               </div>
               <div className="mt-6">

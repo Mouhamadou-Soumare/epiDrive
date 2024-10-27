@@ -2,29 +2,15 @@
 
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { CheckIcon, QuestionMarkCircleIcon, StarIcon, ShieldCheckIcon } from '@heroicons/react/20/solid';
-import { Radio, RadioGroup } from '@headlessui/react';
+import { CheckIcon, ShieldCheckIcon } from '@heroicons/react/20/solid';
 
-type Product = { 
-  name: string; 
-  price: number; 
-  description: string; 
-  imageSrc: string; 
-  imageAlt: string; 
-  breadcrumbs: { id: number; name: string; href: string }[]; 
-  sizes?: { name: string; description: string }[]; 
-  reviews?: { average: number; totalCount: number }; 
-};
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
-}
+import { Produit, Image } from "../../types"
 
 export default function ProductDetailPage() {
   const { slug } = useParams(); 
-  const [product, setProduct] = useState<Product | null>(null);
+  const [product, setProduct] = useState<Produit | null>(null);
+  const [image, setImage] = useState<Image | null>(null);
   const [loading, setLoading] = useState(true);
-  const [selectedSize, setSelectedSize] = useState(product?.sizes?.[0]);
 
   useEffect(() => {
     async function fetchProduct() {
@@ -35,7 +21,7 @@ export default function ProductDetailPage() {
         const data = await res.json();
         if (res.ok) {
           setProduct(data);
-          setSelectedSize(data.sizes?.[0]);
+          console.log("Product found:", data);
         } else {
           console.error('Error fetching product:', data.error);
         }
@@ -43,6 +29,22 @@ export default function ProductDetailPage() {
         console.error('Error fetching product:', error);
       } finally {
         setLoading(false);
+      }
+
+      if (product) {
+        try {
+          const res = await fetch(`/api/images/${product.imageId}`);
+          const data = await res.json();
+          if (res.ok) {
+            setImage(data);
+          } else {
+            console.error('Error fetching image:', data.error);
+          }
+        } catch (error) {
+          console.error('Error fetching image:', error);
+        } finally {
+          setLoading(false);
+        }
       }
     }
 
@@ -66,15 +68,7 @@ export default function ProductDetailPage() {
 
           <section aria-labelledby="information-heading" className="mt-4">
             <div className="flex items-center">
-              <p className="text-lg text-gray-900 sm:text-xl">{product.price}€</p>
-
-              {product.reviews && (
-                <div className="ml-4 border-l border-gray-300 pl-4">
-                  <div className="flex items-center">
-                  
-                  </div>
-                </div>
-              )}
+              <p className="text-lg text-gray-900 sm:text-xl">{product.prix}€</p>
             </div>
 
             <div className="mt-4 space-y-6">
@@ -91,7 +85,7 @@ export default function ProductDetailPage() {
         {/* Product image */}
         <div className="mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center bg-dark-500">
           <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg h-96	">
-            <img src={product.imageSrc} alt={product.imageAlt} className="h-full w-full object-cover object-center" />
+            <img src={image?.path} alt={image?.path} className="h-full w-full object-cover object-center" />
           </div>
         </div>
 
@@ -101,20 +95,6 @@ export default function ProductDetailPage() {
             <h2 id="options-heading" className="sr-only">Options de produit</h2>
 
             <form>
-              {product.sizes && (
-                <fieldset className="mt-4">
-                  <legend className="block text-sm font-medium text-gray-700">Taille</legend>
-                  <RadioGroup value={selectedSize} onChange={setSelectedSize} className="mt-1 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    {product.sizes.map((size) => (
-                      <Radio key={size.name} value={size} className="group relative block cursor-pointer rounded-lg border p-4">
-                        <p className="text-base font-medium text-gray-900">{size.name}</p>
-                        <p className="text-sm text-gray-500">{size.description}</p>
-                      </Radio>
-                    ))}
-                  </RadioGroup>
-                </fieldset>
-              )}
-
               <div className="mt-10">
                 <button
                   type="submit"
@@ -137,3 +117,4 @@ export default function ProductDetailPage() {
     </div>
   );
 }
+ 
