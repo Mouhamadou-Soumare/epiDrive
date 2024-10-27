@@ -1,15 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from '../../../../lib/prisma';
-
-type Product = { 
-  id: number; 
-  name: string; 
-  prix: number;      
-  imageSrc: string; 
-  imageAlt: string; 
-  slug: string;  
-  description: string; 
-};
+import { Produit } from '../../types';
 
 export async function GET() {
   try {
@@ -36,10 +27,10 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { name, description, prix, imageSrc, imageAlt, categorieId } = body;
+    const body: Produit = await request.json();
+    const { name, description, price, imageId, categorieId } = body;
 
-    if (!name || !prix || !imageSrc || !imageAlt || !description || !categorieId) {
+    if (!name || !price || !description || !categorieId) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
@@ -50,14 +41,10 @@ export async function POST(request: Request) {
       data: {
         name: name,
         description: description,
-        prix: parseFloat(prix), 
+        prix: price, 
         slug: slug,
         categorieId: categorieId,
-        image: {                  
-          create: {
-            path: imageSrc,       
-          },
-        },
+        imageid: imageId
       },
     });
 

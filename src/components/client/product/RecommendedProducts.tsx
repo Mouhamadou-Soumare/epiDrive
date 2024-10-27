@@ -2,17 +2,10 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import React from 'react';
 
-type Product = {
-  id: number;
-  name: string;
-  slug: string;
-  price: number;
-  imageSrc: string;
-  imageAlt: string;
-};
+import { Produit } from "../../../app/types";
 
-const RecommendedProducts = ({ allProducts }: { allProducts: Product[] }) => {
-  const [recommendedProducts, setRecommendedProducts] = useState<Product[]>([]);
+const RecommendedProducts = ({ allProducts }: { allProducts: Produit[] }) => {
+  const [recommendedProducts, setRecommendedProducts] = useState<Produit[]>([]);
   console.log(recommendedProducts);
   useEffect(() => {
     if (allProducts.length > 0) {
@@ -32,8 +25,8 @@ const RecommendedProducts = ({ allProducts }: { allProducts: Product[] }) => {
               <div className="relative">
                 <div className="relative h-72 w-full overflow-hidden rounded-lg">
                   <img
-                    alt={product.imageAlt}
-                    src={product.imageSrc}
+                    alt={product.name}
+                    src={product.name}
                     className="h-full w-full object-cover object-center"
                   />
                 </div>
@@ -45,7 +38,7 @@ const RecommendedProducts = ({ allProducts }: { allProducts: Product[] }) => {
                     aria-hidden="true"
                     className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50"
                   />
-                  <p className="relative text-lg font-semibold text-white">{product.price}€</p>
+                  <p className="relative text-lg font-semibold text-white">{product.prix}€</p>
                 </div>
               </div>
               <div className="mt-6">
