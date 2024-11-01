@@ -19,6 +19,7 @@ export interface Recette {
     instructions: string;
     imageId?: number;
     userId: number;
+    produits: Produit[];
 }
 
 export interface Commande {
