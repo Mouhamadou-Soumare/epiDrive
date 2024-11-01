@@ -9,11 +9,16 @@ export async function GET(req: NextRequest, { params }: { params: { slug: string
   }
 
   try {
-    const category = await prisma.categorie.findUnique({
-      where: { slug },
+    const category = await prisma.categorie.findFirst({
+      where: {
+        OR: [
+          { slug },
+          { id: parseInt(slug, 10) || -1 } 
+        ],
+      },
       include: {
-        subcategories: true,   
-        produits: true,       
+        subcategories: true,
+        produits: true,
       },
     });
 
