@@ -29,7 +29,7 @@ import Link from 'next/link';
 
 const navigation = [
   { name: 'Dashboard', href: '/backoffice', icon: HomeIcon, current: true },
-  { name: 'Utilisateurs', href: '#', icon: UsersIcon, current: false },
+  { name: 'Utilisateurs', href: '/backoffice/utilisateur', icon: UsersIcon, current: false },
   { name: 'Produits', href: '/backoffice/product', icon: Squares2X2Icon, current: false },
   { name: 'Recettes', href: '/backoffice/recette', icon: CakeIcon, current: false },
   { name: 'Commandes', href: '#', icon: ChartPieIcon, current: false },
