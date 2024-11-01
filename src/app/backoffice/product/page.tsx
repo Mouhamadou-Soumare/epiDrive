@@ -34,7 +34,21 @@ const ProductList = () => {
     return (
       <div className="mx-auto max-w-2xl py-4 sm:py-4 lg:max-w-7xl">
         <h2 className="text-xl font-bold text-gray-900">Liste des produits</h2>
-
+        <div className="flex justify-between items-center mt-4 gap-4">
+          <Link
+            href="/backoffice/product/add"
+            className="w-44 flex items-center justify-center rounded-md border border-transparent bg-green-100 py-2 text-sm font-medium text-green-900 hover:bg-green-200"
+          >
+            Créer un produit
+          </Link>
+          <input
+            type="text"
+            placeholder="Rechercher un produit"
+            value={searchValue}
+            onChange={handleSearch}
+            className="w-full px-4 py-2 text-sm border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+          /> 
+        </div>
         <div className="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
           {filteredProducts.map((product) => (
             <div key={product.name}>
