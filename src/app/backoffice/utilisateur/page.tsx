@@ -62,6 +62,9 @@ const UtilisateurList = () => {
                 <h5>{utilisateur.username}</h5>
               </div>
               <p className="text-gray-500 my-2">{utilisateur.email}</p>
+              <Link href={`/backoffice/utilisateur/`+utilisateur.id} className="whitespace-nowrap text-indigo-600 hover:text-indigo-500">
+                Voir l'utilisateur
+              </Link>
             </div>
           </div>
         ))}

@@ -10,6 +10,7 @@ export interface User {
     password: string;
     role: Role;
     imageId: number;
+    commandes: Commande[];
 }
 
 export interface Recette {
@@ -23,6 +24,8 @@ export interface Recette {
 }
 
 export interface Commande {
+    forEach(arg0: (commande: any) => void): unknown;
+    quantites: QuantiteCommande;
     id: number;
     status: string;
     paymentId?: string;
@@ -48,6 +51,8 @@ export interface QuantitePanier {
 }
 
 export interface QuantiteCommande {
+    reduce(arg0: (total: any, quantite: any) => any, arg1: number): number;
+    map(arg0: (quantite: any) => any): Produit[];
     id: number;
     quantite: number;
     prix: number;

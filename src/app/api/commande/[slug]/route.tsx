@@ -11,31 +11,27 @@ export async function GET(req: NextRequest, { params }: { params: { slug: string
   }
 
   try {
-    console.log("Searching for user with slug:", slug);
+    console.log("Searching for commande with slug:", slug);
 
-    const user = await prisma.user.findUnique({
+    const commande = await prisma.commande.findUnique({
       where: { id: parseInt(slug) },
       include: {
-        image: true,
-        commandes: {
+        user: true,
+        quantites: {
           include: {
-            quantites: {
-              include: {
-                produit: true,
-              },
-            },
+            produit: true,
           },
         },
       },
     });
 
-    if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    if (!commande) {
+      return NextResponse.json({ error: 'Commande not found' }, { status: 404 });
     }
 
-    return NextResponse.json(user);
+    return NextResponse.json(commande);
   } catch (error) {
-    console.error("Error fetching user:", error);
+    console.error("Error fetching commande:", error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
@@ -48,36 +44,33 @@ export async function PATCH(req: NextRequest, { params }: { params: { slug: stri
     return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
   }
 
-  const { username, email, password, role, imageId } = data;
+  const { status, paymentId, userId } = data;
 
   try {
-    console.log("Updating user with slug:", slug);
-    const existingUser = await prisma.user.findUnique({
+    console.log("Updating commande with slug:", slug);
+    const existingCommande = await prisma.commande.findUnique({
       where: { id: parseInt(slug) },
     });
 
-    if (!existingUser) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    if (!existingCommande) {
+      return NextResponse.json({ error: 'Commande not found' }, { status: 404 });
     }
 
-    const updatedUser = await prisma.user.update({
+    const updatedCommande = await prisma.commande.update({
       where: { id: parseInt(slug) },
       data: {
-        username,
-        email,
-        password,
-        role,
-        imageId,
+        status,
+        paymentId,
+        userId,
       },
     });
 
-    return NextResponse.json(updatedUser);
+    return NextResponse.json(updatedCommande);
   } catch (error: any) {
-    console.error("Error updating user:", error);
+    console.error("Error updating commande:", error);
     return NextResponse.json({ error: 'Internal Server Error', details: error.message }, { status: 500 });
   }
 }
-
 
 export async function DELETE(req: NextRequest, { params }: { params: { slug: string } }) {
   const { slug } = params;
@@ -87,23 +80,21 @@ export async function DELETE(req: NextRequest, { params }: { params: { slug: str
   }
 
   try {
-    const user = await prisma.user.findUnique({
+    const commande = await prisma.commande.findUnique({
       where: { id: parseInt(slug) },
     });
 
-    if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    if (!commande) {
+      return NextResponse.json({ error: 'Commande not found' }, { status: 404 });
     }
 
-    await prisma.user.delete({
+    await prisma.commande.delete({
       where: { id: parseInt(slug) },
     });
 
-    return NextResponse.json({ message: 'User deleted successfully' });
+    return NextResponse.json({ message: 'Commande deleted successfully' });
   } catch (error) {
-    console.error("Error deleting user:", error);
+    console.error("Error deleting commande:", error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
-
-
