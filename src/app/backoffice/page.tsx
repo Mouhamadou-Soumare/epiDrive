@@ -11,9 +11,7 @@ export default function Backoffice() {
           <Link href="/backoffice/product">Liste des produits</Link>
           <Link href="/backoffice/recette">Liste des recettes</Link>
           <Link href="/backoffice/categorie">Liste des catégories</Link>
-          <Link href="/backoffice">Liste des sous catégories</Link>
-          <Link href="/backoffice">Liste des recettes</Link>
-          <Link href="/backoffice">Liste des commandes</Link>
+          <Link href="/backoffice/commande">Liste des commandes</Link>
         </div>
       </main>
     </div>

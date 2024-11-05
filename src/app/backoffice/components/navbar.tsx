@@ -32,7 +32,7 @@ const navigation = [
   { name: 'Utilisateurs', href: '/backoffice/utilisateur', icon: UsersIcon, current: false },
   { name: 'Produits', href: '/backoffice/product', icon: Squares2X2Icon, current: false },
   { name: 'Recettes', href: '/backoffice/recette', icon: CakeIcon, current: false },
-  { name: 'Commandes', href: '#', icon: ChartPieIcon, current: false },
+  { name: 'Commandes', href: '/backoffice/commande', icon: ChartPieIcon, current: false },
   { name: 'Catégories', href: '/backoffice/categorie', icon: FolderIcon, current: false },
 ]
 
