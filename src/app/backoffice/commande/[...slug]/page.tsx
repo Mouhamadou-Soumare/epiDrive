@@ -1,10 +1,10 @@
 'use client';
 
-import { CursorArrowRaysIcon, EnvelopeOpenIcon, UsersIcon } from '@heroicons/react/24/outline';
+import { CursorArrowRaysIcon, UsersIcon } from '@heroicons/react/24/outline';
 import { useState, useEffect } from "react";
 import { useParams } from 'next/navigation';
 import Link from "next/link";
-
+import ProduitRow from "../components/ProduitRow";
 import { Commande, User, Produit } from "../../../types";
 
 const CommandeDetail = () => {
@@ -18,7 +18,6 @@ const CommandeDetail = () => {
   useEffect(() => {
     const fetchCommande = async () => {
       const commandeSlug = Array.isArray(slug) ? slug[slug.length - 1] : slug;
-      console.log('Fetching commande for slug:', commandeSlug);
 
       try {
         const res = await fetch(`/api/commande/${commandeSlug}`);
@@ -26,14 +25,14 @@ const CommandeDetail = () => {
 
         if (res.ok) {
           setCommande(data);
-          setCommandePrice(getPriceCommande(data));
+          setCommandePrice(data.quantites.reduce((total: number, quantite: { prix: any; }) => total + quantite.prix, 0));
           await fetchUser(data.userId);
-          getProduits(data);
+          setProduits(data.quantites.map((quantite: { produit: Produit; prix: number; }) => ({ ...quantite.produit, prix: quantite.prix })));
         } else {
-          console.error('Error fetching commande:', data.error);
+          console.error('Erreur lors de la récupération de la commande:', data.error);
         }
       } catch (error) {
-        console.error('Error fetching commande:', error);
+        console.error('Erreur lors de la récupération de la commande:', error);
       } finally {
         setLoading(false);
       }
@@ -47,29 +46,11 @@ const CommandeDetail = () => {
         if (res.ok) {
           setUser(data);
         } else {
-          console.error('Error fetching user:', data.error);
+          console.error('Erreur lors de la récupération de l\'utilisateur:', data.error);
         }
       } catch (error) {
-        console.error('Error fetching user:', error);
+        console.error('Erreur lors de la récupération de l\'utilisateur:', error);
       }
-    };
-
-    const getPriceCommande = (commande: Commande | null): number => {
-      if (!commande || !commande.quantites) return 0;
-      return commande.quantites.reduce((total, quantite) => total + quantite.prix, 0);
-    };
-
-    const getProduits = (commande: Commande | null) => {
-      if (!commande || !commande.quantites) {
-        setProduits([]);
-        return;
-      }
-      const produitsList = commande.quantites.map((quantite) => {
-        quantite.produit.prix = quantite.prix;
-        quantite.produit
-        return quantite.produit;
-      });
-      setProduits(produitsList);
     };
 
     fetchCommande();
@@ -93,7 +74,7 @@ const CommandeDetail = () => {
               <p className="text-2xl font-semibold text-gray-900">{user.username}</p>
               <div className="absolute inset-x-0 bottom-0 bg-gray-50 px-4 py-4 sm:px-6">
                 <Link href={`/backoffice/utilisateur/${user.id}`} className="font-medium text-indigo-600 hover:text-indigo-500">
-                  View l'utilisateur
+                  Voir l'utilisateur
                 </Link>
               </div>
             </dd>
@@ -120,23 +101,14 @@ const CommandeDetail = () => {
           <thead className="text-left text-sm text-gray-500">
             <tr>
               <th scope="col" className="py-3 pr-2 font-bold w-1/5">Id</th>
-              <th scope="col" className="py-3 pr-2 font-bold w-1/5">Name</th>
-              <th scope="col" className="py-3 pr-2 font-bold w-1/5">Price</th>
+              <th scope="col" className="py-3 pr-2 font-bold w-1/5">Nom</th>
+              <th scope="col" className="py-3 pr-2 font-bold w-1/5">Prix</th>
               <th scope="col" className="py-3 font-bold">Info</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 border-b border-gray-200 text-sm sm:border-t">
             {produits.map((produit) => (
-              <tr key={produit.id}>
-                <td className="py-6 pr-2 font-bold">{produit.id}</td>
-                <td className="py-6 pr-2 sm:table-cell">{produit.name}</td>
-                <td className="py-6 pr-2 sm:table-cell">{produit.prix} €</td>
-                <td className="py-6 font-medium">
-                  <Link href={`/backoffice/product/${produit.slug}`} className="text-indigo-600">
-                    Voir le produit
-                  </Link>
-                </td>
-              </tr>
+              <ProduitRow key={produit.id} produit={produit} />
             ))}
           </tbody>
         </table>
