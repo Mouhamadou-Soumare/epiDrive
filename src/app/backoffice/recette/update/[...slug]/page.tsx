@@ -2,189 +2,132 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-
-import { Produit, Recette } from "../../../../types"
+import { Produit, Recette } from "../../../../types";
+import FormInputField from "../../components/FormInputField";
+import ProduitList from "../../components/ProduitList";
+import Alert from "../../components/Alert";
 
 export default function UpdateRecettePage() {
-    const { slug } = useParams(); 
-    const [recette, setRecette] = useState<Recette | null>(null);
-    const [produits, setProduits] = useState<Produit[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [submitResult, setSubmitResult] = useState<string>('');
+  const { slug } = useParams();
+  const [recette, setRecette] = useState<Recette | null>(null);
+  const [produits, setProduits] = useState<Produit[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [submitResult, setSubmitResult] = useState<string>('');
 
-    useEffect(() => {    
-        async function fetchRecette() {
-            const recetteSlug = Array.isArray(slug) ? slug[slug.length - 1] : slug;
-            const formattedSlug = recetteSlug ? recetteSlug.replace('/update', '') : '';
-            console.log('Fetching recette for slug:', recetteSlug);
-
-            try {
-                const res = await fetch(`/api/recettes/${formattedSlug}`);
-                const data = await res.json();
-                if (res.ok) {
-                    setRecette(data);
-                } else {
-                    console.error('Error fetching recette:', data.error);
-                }
-            } catch (error) {
-                console.error('Error fetching recette:', error);
-            } finally {
-                setLoading(false);
-            }
+  useEffect(() => {
+    const fetchRecette = async () => {
+      const recetteSlug = Array.isArray(slug) ? slug[slug.length - 1] : slug;
+      try {
+        const res = await fetch(`/api/recettes/${recetteSlug}`);
+        const data = await res.json();
+        if (res.ok) {
+          setRecette(data);
+        } else {
+          console.error('Erreur lors de la récupération de la recette:', data.error);
         }
-        fetchRecette();
+      } catch (error) {
+        console.error('Erreur lors de la récupération de la recette:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-        fetch("http://localhost:3000/api/products")
-        .then((response) => response.json())
-        .then((data) => {
-            setProduits(data);
-            console.log('Produits:', produits);
+    const fetchProduits = async () => {
+      try {
+        const res = await fetch("/api/products");
+        const data = await res.json();
+        setProduits(data);
+      } catch (error) {
+        console.error('Erreur lors de la récupération des produits:', error);
+      }
+    };
+
+    fetchRecette();
+    fetchProduits();
+  }, [slug]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    if (recette) {
+      setRecette({ ...recette, [name]: name === "imageId" || name === "userId" ? parseInt(value) : value });
+    }
+  };
+
+  const handleAddProduit = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const produitId = parseInt(e.target.value);
+    const produit = produits.find(p => p.id === produitId);
+    if (produit && recette && !recette.produits.some(p => p.id === produitId)) {
+      setRecette({ ...recette, produits: [...recette.produits, produit] });
+    }
+    e.target.value = ''; // Reset selection after adding
+  };
+
+  const handleRemoveProduit = (produitId: number) => {
+    if (recette) {
+      setRecette({ ...recette, produits: recette.produits.filter(p => p.id !== produitId) });
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (recette) {
+      try {
+        const res = await fetch(`/api/recettes/${recette.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(recette),
         });
-    }, [slug]);
 
-    if (loading) return <div className="lg:pl-72">Chargement...</div>;
-    if (!recette) return <div className="lg:pl-72">Recette non trouvée</div>;
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        if (recette) {
-            setRecette({ ...recette, [name]: name === "imageId" || name === "userId" ? parseInt(value) : value });
+        if (res.ok) {
+          setSubmitResult('200');
+        } else {
+          console.error('Erreur lors de la mise à jour de la recette');
+          setSubmitResult('error');
         }
-    };
+      } catch (error) {
+        console.error('Erreur lors de la mise à jour de la recette:', error);
+        setSubmitResult('error');
+      }
+    }
+  };
 
-    const handleAddProduit = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const produitId = parseInt(e.target.value);
-        const produit = produits.find(p => p.id === produitId);
-        if (produit && recette) {
-            setRecette({ ...recette, produits: [...recette.produits, produit] });
-        }
-    };
+  if (loading) return <div className="lg:pl-72">Chargement...</div>;
+  if (!recette) return <div className="lg:pl-72">Recette non trouvée</div>;
 
-    const handleRemoveProduit = (produitId: number) => {
-        if (recette) {
-            setRecette({ ...recette, produits: recette.produits.filter(p => p.id !== produitId) });
-        }
-    };
+  return (
+    <>
+      {submitResult && (
+        <Alert
+          message={submitResult === '200' ? 'Recette mise à jour avec succès!' : 'Une erreur est survenue.'}
+          type={submitResult === '200' ? 'success' : 'error'}
+        />
+      )}
+      <h1 className='text-3xl font-extrabold leading-tight text-gray-900'>Modifier la recette</h1>
+      <form onSubmit={handleSubmit} className="my-6">
+        <FormInputField id="title" name="title" value={recette.title} label="Titre" onChange={handleInputChange} />
+        <FormInputField id="description" name="description" value={recette.description} label="Description" type="textarea" onChange={handleInputChange} />
+        <FormInputField id="instructions" name="instructions" value={recette.instructions} label="Instructions" type="textarea" onChange={handleInputChange} />
+        
+        <div className="mb-5">
+          <label htmlFor="produit" className="block mb-2 text-sm font-medium text-gray-900">Ingrédients</label>
+          <select
+            id="produit"
+            name="produit"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            onChange={handleAddProduit}
+          >
+            <option value="">Ajouter un produit</option>
+            {produits.map((produit) => (
+              <option key={produit.id} value={produit.id}>{produit.name}</option>
+            ))}
+          </select>
+          <ProduitList produits={recette.produits} onRemoveProduit={handleRemoveProduit} />
+        </div>
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (recette) {
-            try {
-                console.log('Updating recette:', recette);
-                const res = await fetch(`/api/recettes/${recette.id}`, {
-                    method: "PATCH",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(recette),
-                });
-
-                const data = await res.json();
-                if (res.ok) {
-                    setSubmitResult('200');
-                } else {
-                    console.error('Error updating recette:', data.error);
-                    setSubmitResult(res.status.toString());
-                }
-            } catch (error) {
-                console.error('Error updating recette:', error);
-                setSubmitResult('500');
-            }
-        }
-    };
-
-    return (
-        <>
-            {
-                submitResult === '200' && <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-                    <span className="font-bold">Success!</span>
-                    <span className="block sm:inline"> Recette updated successfully</span>
-                </div>
-            }
-            {
-                submitResult === '404' || submitResult === '500' && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-                    <strong className="font-bold">Error!</strong>
-                    <span className="block sm:inline">Recette not found</span>
-                </div>
-            }
-            <h1 className='text-3xl font-extrabold leading-tight text-gray-900'>Update Recette</h1>
-            <form onSubmit={handleSubmit} className="my-6">
-                <div className="mb-5">
-                    <label htmlFor="title" 
-                        className="block mb-2 text-sm font-medium text-gray-900">Title</label>
-                    <input
-                        type="text"
-                        id="title"
-                        name="title"
-                        value={recette.title}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <div className="mb-5">
-                    <label htmlFor="description"
-                        className="block mb-2 text-sm font-medium text-gray-900">Description</label>
-                    <textarea
-                        id="description"
-                        name="description"
-                        value={recette.description}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <div className="mb-5">
-                    <label htmlFor="instructions" 
-                        className="block mb-2 text-sm font-medium text-gray-900">Instructions</label>
-                    <textarea
-                        id="instructions"
-                        name="instructions"
-                        value={recette.instructions}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <div className="mb-5">
-                    <label htmlFor="produit" 
-                        className="block mb-2 text-sm font-medium text-gray-900">Ingrédient</label>
-                    
-                    <select
-                        id="produit"
-                        name="produit"
-                        value={''}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        onChange={handleAddProduit}
-                    >
-                        <option value="">Ajouter un produit</option>
-                        {produits.map((produit) => (
-                            <option key={produit.id} value={produit.id}>
-                                {produit.name}
-                            </option>
-                        ))}
-                    </select>
-
-                    <ul role="list" className="divide-y divide-gray-200 my-4">
-                        {recette.produits.map((produit) => (
-                            <li key={produit.id} className="py-1 flex items-center justify-between">
-                                <div className="flex w-full items-center justify-between">
-                                    <div className="flex w-full items-center justify-between">
-                                        <p className="text-base text-gray-500">{produit.name}</p>
-                                        <p className="text-base text-gray-500">{produit.prix} €</p>
-                                    </div>
-                                    <button
-                                        type="button"
-                                        className="text-red-500 hover:text-red-700 ml-4"
-                                        onClick={() => handleRemoveProduit(produit.id)}
-                                    >
-                                        Supprimer
-                                    </button>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-                <button type="submit" 
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Update Recette</button>
-            </form>
-        </>
-    );
+        <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+          Mettre à jour la recette
+        </button>
+      </form>
+    </>
+  );
 }
