@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
+import UserCard from "./components/UserCard";
+import SearchInput from "../components/SearchInput";
 import { User } from "../../types";
 
 const UtilisateurList = () => {
@@ -13,6 +14,7 @@ const UtilisateurList = () => {
     const fetchUtilisateurs = async () => {
       try {
         const response = await fetch("http://localhost:3000/api/users");
+        if (!response.ok) throw new Error('Erreur lors du chargement des utilisateurs');
         const data = await response.json();
         setUtilisateurs(data);
         setFilteredUtilisateurs(data);
@@ -40,35 +42,24 @@ const UtilisateurList = () => {
       <h2 className="text-xl font-bold text-gray-900">Liste des utilisateurs</h2>
       <div className="flex justify-between items-center mt-4 gap-4">
         <div className="flex flex-col sm:flex-row gap-4 w-full">
-          <input
-            type="text"
-            placeholder="Rechercher une utilisateur"
-            value={searchQuery}
-            onChange={handleSearchChange}
-            className="w-full px-4 py-2 text-sm border border-gray-300 rounded-md"
+        <div className="flex flex-col sm:flex-row gap-4 w-full">
+          <SearchInput 
+            searchQuery={searchQuery} 
+            onSearchChange={handleSearchChange} 
+            placeholder="Rechercher un utilisateur"
           />
         </div>
+        </div>
       </div>
-      <div className="mt-6 grid grid-cols-1 gap-y-8 lg:grid-cols-2 sm:gap-x-6 xl:gap-x-8">
-        {filteredUtilisateurs.map((utilisateur) => (
-          <div key={utilisateur.id} className="flex flex-col items-center sm:items-start">
-            <div className="h-40 w-full overflow-hidden rounded-lg bg-gray-200">
-              <img
-                className="h-full w-full object-cover object-center"
-              />
-            </div>
-            <div className="flex flex-col mt-4 ssm:mt-0 flex-1 text-sm w-full">
-              <div className="font-bold text-gray-900 sm:flex sm:justify-between">
-                <h5>{utilisateur.username}</h5>
-              </div>
-              <p className="text-gray-500 my-2">{utilisateur.email}</p>
-              <Link href={`/backoffice/utilisateur/`+utilisateur.id} className="whitespace-nowrap text-indigo-600 hover:text-indigo-500">
-                Voir l'utilisateur
-              </Link>
-            </div>
-          </div>
-        ))}
-      </div>
+      {filteredUtilisateurs.length > 0 ? (
+        <div className="mt-6 grid grid-cols-1 gap-y-8 lg:grid-cols-2 sm:gap-x-6 xl:gap-x-8">
+          {filteredUtilisateurs.map((utilisateur) => (
+            <UserCard key={utilisateur.id} utilisateur={utilisateur} />
+          ))}
+        </div>
+      ) : (
+        <p className="text-center text-gray-500 mt-4">Aucun utilisateur trouvé.</p>
+      )}
     </div>
   );
 };
