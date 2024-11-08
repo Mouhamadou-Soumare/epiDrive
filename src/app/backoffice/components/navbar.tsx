@@ -1,30 +1,10 @@
 'use client';
 
-import { useState } from 'react'
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-  TransitionChild,
-} from '@headlessui/react'
-import {
-  Bars3Icon,
-  BellIcon,
-  ChartPieIcon,
-  Cog6ToothIcon,
-  DocumentDuplicateIcon,
-  FolderIcon,
-  HomeIcon,
-  Squares2X2Icon,
-  UsersIcon,
-  XMarkIcon,
-  CakeIcon,
-} from '@heroicons/react/24/outline'
-import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
+import { useState, useEffect } from 'react';
+
+import { Dialog, DialogBackdrop, DialogPanel, TransitionChild } from '@headlessui/react'
+import { Bars3Icon, BellIcon, ChartPieIcon, Cog6ToothIcon, FolderIcon, HomeIcon, Squares2X2Icon, UsersIcon, XMarkIcon, CakeIcon } from '@heroicons/react/24/outline'
+
 import Link from 'next/link';
 
 const navigation = [
@@ -41,7 +21,15 @@ function classNames(...classes: string[]) {
 }
 
 export default function Navbar() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Mise à jour dynamique de la propriété `current`
+  useEffect(() => {
+    navigation.forEach(item => {
+      if(window.location.pathname === item.href) item.current = true;
+      else item.current = false;
+    });
+  }, []);
 
   return (
     <div>
@@ -143,22 +131,13 @@ export default function Navbar() {
         <div aria-hidden="true" className="h-6 w-px bg-gray-200 lg:hidden" />
 
         <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-          <form action="#" method="GET" className="relative flex flex-1">
-            <label htmlFor="search-field" className="sr-only">
-              Search
-            </label>
-            <MagnifyingGlassIcon
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-gray-400"
+          <Link href={"/"} className="flex h-16 shrink-0 items-center">
+            <img
+              alt="Your Company"
+              src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
+              className="h-8 w-auto"
             />
-            <input
-              id="search-field"
-              name="search"
-              type="search"
-              placeholder="Search..."
-              className="block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
-            />
-          </form>
+          </Link>
         </div>
       </div>
 
