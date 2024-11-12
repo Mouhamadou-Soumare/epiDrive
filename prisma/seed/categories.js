@@ -3,7 +3,6 @@ export const categories = [
       title: "Produits régionaux et locaux",
       description:
         "Découvrez les produits authentiques de nos régions, avec une traçabilité complète pour vous garantir le meilleur de chez nous. Chaque produit est sélectionné avec soin pour refléter la richesse de nos terroirs.",
-      imageSrc: "../../public/img/category/fruits-de-nos-regions.webp", 
 
         subcategories: [
         {
@@ -189,233 +188,10 @@ export const categories = [
       ],
     },
     {
-      title: "Produits régionaux et locaux",
-      description:
-        "Découvrez les produits authentiques de nos régions, avec une traçabilité complète pour vous garantir le meilleur de chez nous. Nos produits sont sélectionnés directement auprès des producteurs locaux pour garantir une qualité inégalée.",
-      subcategories: [
-        {
-          name: "Fruits de nos régions",
-          slug: "fruits-de-nos-regions",
-          produits: [
-            {
-              name: "Pommes de Normandie",
-              description:
-                "Pommes fraîches et croquantes issues des vergers de Normandie, cultivées selon des méthodes durables.",
-              price: 3.99,
-            },
-            {
-              name: "Poires du Limousin",
-              description:
-                "Poires juteuses et sucrées, parfaites pour les desserts ou à consommer nature.",
-              price: 4.5,
-            },
-            {
-              name: "Prunes de Lorraine",
-              description:
-                "Prunes gorgées de soleil et de saveur, cueillies dans les vergers de Lorraine.",
-              price: 5.5,
-            },
-            {
-              name: "Fraises de Plougastel",
-              description:
-                "Fraises délicieusement sucrées, cultivées avec soin en Bretagne.",
-              price: 7.99,
-            },
-            {
-              name: "Pêches de Provence",
-              description: "Pêches juteuses et parfumées, parfaites pour l’été.",
-              price: 6.49,
-            },
-          ],
-        },
-        {
-          name: "Légumes de nos régions",
-          slug: "legumes-de-nos-regions",
-          produits: [
-            {
-              name: "Tomates de Provence",
-              description:
-                "Tomates savoureuses et pleines de soleil, cultivées en Provence.",
-              price: 4.99,
-            },
-            {
-              name: "Carottes de la Beauce",
-              description:
-                "Carottes croquantes et sucrées, parfaites pour les plats mijotés ou en salade.",
-              price: 2.99,
-            },
-            {
-              name: "Oignons doux des Cévennes",
-              description:
-                "Oignons doux et savoureux, parfaits pour accompagner vos plats régionaux.",
-              price: 3.99,
-            },
-            {
-              name: "Ail rose de Lautrec",
-              description:
-                "Ail rose au goût délicat et raffiné, cultivé dans la tradition du Tarn.",
-              price: 5.49,
-            },
-            {
-              name: "Haricots verts du Périgord",
-              description:
-                "Haricots frais et croquants, cultivés dans le Périgord.",
-              price: 4.99,
-            },
-          ],
-        },
-        {
-          name: "Fromages de nos régions",
-          slug: "fromages-de-nos-regions",
-          produits: [
-            {
-              name: "Camembert de Normandie",
-              description:
-                "Camembert au lait cru, produit selon la tradition Normande avec une texture fondante.",
-              price: 5.99,
-            },
-            {
-              name: "Roquefort AOP",
-              description:
-                "Roquefort AOP, fromage à pâte persillée fabriqué dans les caves naturelles de l’Aveyron.",
-              price: 7.5,
-            },
-            {
-              name: "Reblochon de Savoie",
-              description:
-                "Reblochon fermier, idéal pour les tartiflettes ou à savourer en plateau.",
-              price: 6.99,
-            },
-            {
-              name: "Cantal entre-deux",
-              description:
-                "Cantal à mi-affinage, offrant une texture fondante et un goût fruité.",
-              price: 8.49,
-            },
-            {
-              name: "Munster d’Alsace",
-              description:
-                "Fromage au lait cru à la texture crémeuse et au goût prononcé, produit en Alsace.",
-              price: 6.99,
-            },
-          ],
-        },
-        {
-          name: "Charcuteries régionales",
-          slug: "charcuteries-regionales",
-          produits: [
-            {
-              name: "Saucisson sec d’Auvergne",
-              description:
-                "Saucisson sec traditionnel, fabriqué dans le Massif Central à partir de viande de porc de qualité.",
-              price: 7.99,
-            },
-            {
-              name: "Jambon de Bayonne IGP",
-              description:
-                "Jambon de Bayonne affiné selon les méthodes traditionnelles, légèrement salé et délicat.",
-              price: 11.99,
-            },
-            {
-              name: "Andouille de Guémené",
-              description:
-                "Andouille de Guémené, spécialité charcutière bretonne aux saveurs fumées.",
-              price: 9.99,
-            },
-            {
-              name: "Rillettes de Tours",
-              description:
-                "Rillettes de porc fondantes et savoureuses, parfaites pour accompagner du pain frais.",
-              price: 6.5,
-            },
-            {
-              name: "Pâté en croûte Lorrain",
-              description:
-                "Pâté en croûte fait maison, aux saveurs de viande et d’épices.",
-              price: 7.5,
-            },
-          ],
-        },
-        {
-          name: "Vins régionaux",
-          slug: "vins-regionaux",
-          produits: [
-            {
-              name: "Bordeaux Supérieur",
-              description:
-                "Vin rouge puissant et complexe, idéal pour accompagner les viandes rouges et les fromages.",
-              price: 12.99,
-            },
-            {
-              name: "Sancerre Blanc",
-              description:
-                "Vin blanc sec et minéral, parfait pour accompagner des fruits de mer ou des poissons grillés.",
-              price: 14.99,
-            },
-            {
-              name: "Chablis Grand Cru",
-              description:
-                "Vin blanc de Bourgogne aux arômes de fruits blancs et d’agrumes, parfait pour les repas de fête.",
-              price: 22.99,
-            },
-            {
-              name: "Côtes du Rhône Village",
-              description:
-                "Vin rouge généreux et épicé, parfait pour les grillades et plats mijotés.",
-              price: 11.99,
-            },
-            {
-              name: "Champagne Brut Premier Cru",
-              description:
-                "Champagne d’exception, idéal pour les grandes occasions et les apéritifs raffinés.",
-              price: 39.99,
-            },
-          ],
-        },
-        {
-          name: "Épicerie fine régionale",
-          slug: "epicerie-fine-regionale",
-          produits: [
-            {
-              name: "Miel de Lavande de Provence",
-              description:
-                "Miel doux et floral, produit par des apiculteurs de Provence selon des méthodes artisanales.",
-              price: 7.99,
-            },
-            {
-              name: "Confiture de Mirabelles de Lorraine",
-              description:
-                "Confiture artisanale à base de mirabelles de Lorraine, idéale pour vos petits déjeuners.",
-              price: 6.5,
-            },
-            {
-              name: "Huile d’Olive AOP de Nyons",
-              description:
-                "Huile d’olive extra vierge, pressée à froid, produite dans les oliveraies de Nyons.",
-              price: 14.99,
-            },
-            {
-              name: "Herbes de Provence",
-              description:
-                "Mélange d’herbes aromatiques récoltées en Provence, parfait pour assaisonner vos plats.",
-              price: 3.99,
-            },
-            {
-              name: "Piment d’Espelette AOP",
-              description:
-                "Piment d’Espelette, une épice douce et parfumée pour relever vos plats avec finesse.",
-              price: 5.99,
-            },
-          ],
-        },
-      ],
-    },
-  
-    {
       title: "Marché frais",
       description:
         "Découvrez une sélection de produits frais de saison, directement issus de nos producteurs locaux. Chaque produit est sélectionné pour sa qualité et sa fraîcheur, afin de garantir des saveurs authentiques à chaque repas.",
-      subcategories: [
+        subcategories: [
         {
           name: "Fruits et Légumes",
           slug: "fruits-et-legumes",
@@ -581,7 +357,7 @@ export const categories = [
       title: "Bio et Ecologie",
       description:
         "Un large choix de produits respectueux de l’environnement, pour une consommation plus responsable et durable. Nos produits bio sont issus de l’agriculture biologique certifiée, garantissant une qualité optimale pour vous et votre famille.",
-      subcategories: [
+        subcategories: [
         {
           name: "Fruits et Légumes Bio",
           slug: "fruits-et-legumes-bio",
@@ -729,228 +505,128 @@ export const categories = [
         },
       ],
     },
-  
+
     {
-      title: "Boucherie, Volailles et Poissons",
+      title: "Épicerie Salée",
       description:
-        "Sélection de viandes locales, volailles et poissons frais pour tous vos repas, avec une traçabilité complète pour une qualité garantie.",
+        "Découvrez une sélection d'épicerie salée pour vos plats gourmands. Des produits de qualité pour préparer vos recettes salées favorites, que ce soit des pâtes, sauces, huiles ou épices.",
       subcategories: [
         {
-          name: "Bœuf et Veau",
-          slug: "boeuf-et-veau",
-          produits: [
-            {
-              name: "Entrecôte de Bœuf",
-              description:
-                "Entrecôte de bœuf tendre, idéale pour le barbecue ou les grillades.",
-              price: 18.99,
-            },
-            {
-              name: "Escalope de Veau",
-              description:
-                "Escalope de veau tendre et savoureuse, parfaite pour une escalope milanaise.",
-              price: 14.99,
-            },
-            {
-              name: "Bavette d’Aloyau",
-              description:
-                "Bavette d’aloyau, une viande de bœuf tendre à griller ou à poêler.",
-              price: 13.5,
-            },
-            {
-              name: "Filet de Bœuf",
-              description:
-                "Filet de bœuf de qualité supérieure, idéal pour les repas festifs.",
-              price: 29.99,
-            },
-            {
-              name: "Côte de Veau",
-              description:
-                "Côte de veau épaisse, idéale pour les grillades ou les plats en sauce.",
-              price: 21.99,
-            },
-            {
-              name: "Tournedos de Bœuf",
-              description:
-                "Tournedos de bœuf, parfait pour une cuisson rapide et tendre.",
-              price: 24.5,
-            },
-            {
-              name: "Jarret de Veau",
-              description:
-                "Jarret de veau à mijoter pour une viande fondante et savoureuse.",
-              price: 19.99,
-            },
-          ],
-        },
+  "name": "Pâtes, Riz et Féculents",
+  "slug": "pates-riz-feculents",
+  "description": "Une sélection de pâtes, riz et féculents pour accompagner tous vos plats, qu'ils soient italiens, asiatiques ou traditionnels. Parfaits pour une cuisine variée et savoureuse.",
+  "produits": [
+    {
+      "name": "Spaghetti Bio",
+      "description": "Spaghetti biologiques, idéals pour vos plats italiens et respectueux de l'environnement.",
+      "price": 2.99
+    },
+    {
+      "name": "Riz Basmati",
+      "description": "Riz basmati long grain, parfumé et léger, idéal pour accompagner vos plats de curry ou autres recettes exotiques.",
+      "price": 3.49
+    },
+    {
+      "name": "Penne Rigate",
+      "description": "Penne rigate, parfaites pour les sauces riches comme la sauce tomate ou la sauce à la crème.",
+      "price": 2.89
+    },
+    {
+      "name": "Riz Complet",
+      "description": "Riz complet, riche en fibres et en nutriments, idéal pour des repas sains et équilibrés.",
+      "price": 3.99
+    },
+    {
+      "name": "Couscous",
+      "description": "Couscous de blé, parfait pour les recettes traditionnelles nord-africaines, à servir avec des légumes ou de la viande.",
+      "price": 2.79
+    }
+  ]
+},
+
         {
-          name: "Volaille",
-          slug: "volaille",
+          name: "Sauces et Condiments",
+          slug: "sauces-et-condiments",
+          description:
+            "Une gamme de sauces et condiments pour relever vos plats avec des saveurs uniques. Choisissez parmi une sélection d’huiles, vinaigres et sauces.",
           produits: [
             {
-              name: "Poulet Fermier Label Rouge",
-              description:
-                "Poulet fermier élevé en plein air, certifié Label Rouge, pour un goût authentique.",
-              price: 14.99,
+              name: "Sauce Tomate Bio",
+              description: "Sauce tomate biologique, idéale pour les pâtes ou pizzas.",
+              price: 4.5,
             },
             {
-              name: "Dinde Bio",
-              description:
-                "Dinde biologique, nourrie sans OGM, parfaite pour les repas sains.",
-              price: 16.99,
-            },
-            {
-              name: "Canard Confit",
-              description:
-                "Cuisses de canard confites, prêtes à réchauffer pour un plat traditionnel.",
-              price: 19.99,
-            },
-            {
-              name: "Filet de Poulet",
-              description:
-                "Filet de poulet tendre et juteux, idéal pour toutes vos recettes.",
-              price: 9.99,
-            },
-            {
-              name: "Magret de Canard",
-              description:
-                "Magret de canard savoureux, parfait pour les repas gourmands.",
-              price: 17.99,
-            },
-            {
-              name: "Pintade Fermière",
-              description:
-                "Pintade fermière, idéale pour un plat familial savoureux.",
-              price: 18.5,
-            },
-            {
-              name: "Poulet Rôti",
-              description:
-                "Poulet rôti prêt à servir, pour un repas rapide et délicieux.",
-              price: 11.99,
-            },
-          ],
-        },
-        {
-          name: "Agneau",
-          slug: "agneau",
-          produits: [
-            {
-              name: "Côtelettes d’Agneau",
-              description:
-                "Côtelettes d’agneau, idéales pour le grill ou le barbecue.",
-              price: 22.5,
-            },
-            {
-              name: "Épaule d’Agneau",
-              description: "Épaule d’agneau pour rôtir, tendre et savoureuse.",
-              price: 25.99,
-            },
-            {
-              name: "Gigot d’Agneau",
-              description:
-                "Gigot d’agneau entier, parfait pour les repas en famille.",
-              price: 34.99,
-            },
-            {
-              name: "Navarin d’Agneau",
-              description:
-                "Navarin d’agneau à mijoter, pour des plats réconfortants et savoureux.",
-              price: 19.99,
-            },
-            {
-              name: "Souris d’Agneau",
-              description:
-                "Souris d’agneau fondante, parfaite pour une cuisson lente.",
-              price: 28.99,
-            },
-          ],
-        },
-        {
-          name: "Poissons",
-          slug: "poissons",
-          produits: [
-            {
-              name: "Saumon Atlantique",
-              description:
-                "Filet de saumon frais, idéal pour les grillades ou au four.",
-              price: 19.99,
-            },
-            {
-              name: "Cabillaud",
-              description:
-                "Filet de cabillaud, parfait pour un dîner sain et léger.",
-              price: 17.5,
-            },
-            {
-              name: "Thon Albacore",
-              description: "Filet de thon Albacore frais, à griller ou à poêler.",
-              price: 24.99,
-            },
-            {
-              name: "Bar de Ligne",
-              description:
-                "Bar de ligne entier, idéal pour les amateurs de poisson frais.",
-              price: 29.99,
-            },
-            {
-              name: "Sole Meunière",
-              description: "Sole fraîche, idéale pour être cuisinée meunière.",
-              price: 26.99,
-            },
-            {
-              name: "Crevettes Roses",
-              description:
-                "Crevettes roses fraîches, parfaites pour un apéritif ou un plat de fruits de mer.",
-              price: 15.99,
-            },
-            {
-              name: "Moules de Bouchot",
-              description:
-                "Moules de Bouchot fraîches, idéales pour une mouclade ou une marinière.",
-              price: 12.99,
-            },
-          ],
-        },
-        {
-          name: "Charcuterie de Bœuf et de Volaille",
-          slug: "charcuterie-boeuf-volaille",
-          produits: [
-            {
-              name: "Rillettes de Canard",
-              description:
-                "Rillettes de canard onctueuses, parfaites pour un apéritif gourmand.",
-              price: 6.99,
-            },
-            {
-              name: "Saucisson Sec de Bœuf",
-              description:
-                "Saucisson sec de bœuf de qualité, affiné pendant plusieurs semaines.",
-              price: 8.99,
-            },
-            {
-              name: "Terrine de Volaille",
-              description:
-                "Terrine de volaille artisanale, idéale pour vos entrées.",
-              price: 7.5,
-            },
-            {
-              name: "Pâté en Croûte",
-              description:
-                "Pâté en croûte traditionnel, garni de viande de volaille.",
+              name: "Vinaigre Balsamique",
+              description: "Vinaigre balsamique traditionnel, parfait pour vos salades.",
               price: 5.99,
             },
             {
-              name: "Boudin Noir",
-              description:
-                "Boudin noir délicatement assaisonné, idéal pour un repas simple et savoureux.",
-              price: 4.99,
+              name: "Huile d'Olive Bio",
+              description: "Huile d'olive extra vierge, riche en goût et parfaite pour vos plats méditerranéens.",
+              price: 8.49,
             },
             {
-              name: "Jambon de Pays",
+              name: "Moutarde de Dijon",
+              description: "Moutarde de Dijon traditionnelle, idéale pour vos viandes et sauces.",
+              price: 2.49,
+            },
+          ],
+        },
+        {
+          name: "Epices et Herbes",
+          slug: "epices-et-herbes",
+          description:
+            "Des épices et herbes séchées pour donner du goût et de la couleur à vos plats. Découvrez notre sélection d'épices d'origine biologique.",
+          produits: [
+            {
+              name: "Sel de Mer",
+              description: "Sel de mer naturel, pour assaisonner tous vos plats.",
+              price: 1.99,
+            },
+            {
+              name: "Poivre Noir",
               description:
-                "Jambon de pays affiné, tranché fin pour un goût intense.",
-              price: 9.99,
+                "Poivre noir moulu de qualité supérieure, idéal pour vos plats salés.",
+              price: 2.99,
+            },
+            {
+              name: "Paprika Fumé",
+              description: "Paprika fumé, idéal pour les plats épicés ou les grillades.",
+              price: 3.29,
+            },
+            {
+              name: "Herbes de Provence",
+              description: "Mélange d'herbes de Provence séchées, parfait pour les plats méditerranéens.",
+              price: 3.99,
+            },
+          ],
+        },
+        {
+          name: "Produits en conserve",
+          slug: "produits-en-conserve",
+          description:
+            "Des produits en conserve pour vous offrir une solution rapide et pratique tout en gardant une excellente qualité.",
+          produits: [
+            {
+              name: "Tomates Concassées",
+              description: "Tomates concassées en conserve, parfaites pour les sauces et les plats cuisinés.",
+              price: 2.49,
+            },
+            {
+              name: "Pois Chiches",
+              description: "Pois chiches en conserve, idéals pour les salades, couscous ou houmous.",
+              price: 2.99,
+            },
+            {
+              name: "Maïs en Conserve",
+              description: "Maïs en conserve, délicieux pour accompagner vos salades ou vos plats mexicains.",
+              price: 1.99,
+            },
+            {
+              name: "Thon à l'Huile",
+              description:
+                "Thon en conserve, préparé dans de l'huile d'olive, parfait pour les salades ou les pâtes.",
+              price: 3.99,
             },
           ],
         },
@@ -961,7 +637,8 @@ export const categories = [
       title: "Pains et Pâtisseries",
       description:
         "Découvrez nos pains et pâtisseries artisanales, préparés quotidiennement pour vous offrir une fraîcheur et une qualité incomparables.",
-      subcategories: [
+
+        subcategories: [
         {
           name: "Pains",
           slug: "pains",
@@ -1077,7 +754,8 @@ export const categories = [
       title: "Maison et Hygiène",
       description:
         "Retrouvez une large gamme de produits pour l’entretien de votre maison et votre hygiène personnelle, avec une sélection respectueuse de l’environnement.",
-      subcategories: [
+
+        subcategories: [
         {
           name: "Entretien de la Maison",
           slug: "entretien-de-la-maison",
@@ -1224,194 +902,118 @@ export const categories = [
         },
       ],
     },
-  
     {
-      title: "Parapharmacie",
+      title: "Mode, Bijoux, Bagagerie",
       description:
-        "Découvrez une sélection complète de produits de soin et de bien-être pour toute la famille, avec une attention particulière aux formulations naturelles et écologiques.",
-      subcategories: [
+        "Découvrez notre collection de mode, bijoux et bagagerie, alliant élégance, qualité et diversité pour répondre à tous les goûts et occasions.",
+        subcategories: [
         {
-          name: "Soins Visage",
-          slug: "soins-visage",
+          name: "Vêtements Femme",
+          slug: "vetements-femme",
           produits: [
             {
-              name: "Crème Hydratante Bio",
-              description:
-                "Crème hydratante bio, formulée pour tous types de peaux, à base d’ingrédients naturels pour une hydratation en profondeur.",
-              price: 14.99,
+              name: "Robe d'Été Fleurie",
+              description: "Robe légère et fluide avec un imprimé floral, parfaite pour les journées ensoleillées.",
+              price: 29.99,
             },
             {
-              name: "Sérum Anti-âge",
-              description:
-                "Sérum anti-âge concentré, riche en antioxydants pour lutter contre les signes de l’âge et revitaliser la peau.",
-              price: 24.99,
+              name: "Jean Slim Taille Haute",
+              description: "Jean slim classique, taille haute, avec une coupe flatteuse pour toutes les morphologies.",
+              price: 49.99,
             },
             {
-              name: "Gel Nettoyant Purifiant",
-              description:
-                "Gel nettoyant doux pour le visage, élimine les impuretés et réduit l’excès de sébum.",
-              price: 9.99,
-            },
-            {
-              name: "Masque Visage à l’Argile",
-              description:
-                "Masque à l’argile purifiant, idéal pour les peaux mixtes à grasses.",
-              price: 12.5,
-            },
-            {
-              name: "Contour des Yeux Hydratant",
-              description:
-                "Contour des yeux hydratant et défatiguant, pour un regard éclatant.",
-              price: 18.99,
+              name: "Pull en Cachemire",
+              description: "Pull doux en cachemire, idéal pour les jours frais, offrant confort et élégance.",
+              price: 89.99,
             },
           ],
         },
         {
-          name: "Soins Corps",
-          slug: "soins-corps",
+          name: "Bijoux Fantaisie",
+          slug: "bijoux-fantaisie",
           produits: [
             {
-              name: "Lotion Hydratante Corps",
-              description:
-                "Lotion hydratante pour le corps, enrichie en huiles végétales pour nourrir et adoucir la peau.",
-              price: 10.99,
-            },
-            {
-              name: "Huile de Massage",
-              description:
-                "Huile de massage relaxante, à base d’huiles essentielles pour un moment de détente.",
+              name: "Bracelet en Perles",
+              description: "Bracelet en perles naturelles, conçu pour sublimer votre poignet avec une touche élégante.",
               price: 15.99,
             },
             {
-              name: "Gel Douche surgras",
-              description:
-                "Gel douche surgras formulé pour respecter les peaux sensibles, enrichi en agents nourrissants.",
-              price: 6.99,
+              name: "Collier Pendentif Coeur",
+              description: "Collier avec pendentif en forme de cœur, un bijou romantique pour toutes les occasions.",
+              price: 19.99,
             },
             {
-              name: "Crème Réparatrice Pieds",
-              description:
-                "Crème réparatrice pour les pieds, spécialement conçue pour adoucir et hydrater les pieds secs et abîmés.",
-              price: 8.5,
-            },
-            {
-              name: "Exfoliant Corporel",
-              description:
-                "Exfoliant doux pour le corps, à base de sucre et d’huiles naturelles, pour une peau douce et lisse.",
+              name: "Boucles d'Oreilles Créoles",
+              description: "Boucles d'oreilles créoles dorées, un accessoire intemporel pour un look chic.",
               price: 12.99,
             },
           ],
         },
         {
-          name: "Produits Capillaires",
-          slug: "produits-capillaires",
+          name: "Sacs à Main",
+          slug: "sacs-a-main",
           produits: [
             {
-              name: "Shampoing Antipelliculaire",
-              description:
-                "Shampoing antipelliculaire doux, formulé pour apaiser les cuirs chevelus sensibles et éliminer les pellicules.",
-              price: 8.99,
+              name: "Sac Bandoulière en Cuir",
+              description: "Sac en cuir véritable avec bandoulière ajustable, parfait pour un style urbain et élégant.",
+              price: 59.99,
             },
             {
-              name: "Après-shampoing Nourrissant",
-              description:
-                "Après-shampoing nourrissant, riche en huiles naturelles, pour des cheveux doux et brillants.",
-              price: 7.99,
+              name: "Pochette de Soirée",
+              description: "Pochette élégante pour les soirées et occasions spéciales, avec des détails scintillants.",
+              price: 34.99,
             },
             {
-              name: "Masque Capillaire Réparateur",
-              description:
-                "Masque capillaire intensif, répare les cheveux abîmés et redonne de la brillance.",
-              price: 14.99,
-            },
-            {
-              name: "Huile Capillaire Protectrice",
-              description:
-                "Huile capillaire protectrice, idéale pour protéger les cheveux contre les agressions extérieures.",
-              price: 11.5,
-            },
-            {
-              name: "Shampoing Sec",
-              description:
-                "Shampoing sec rafraîchissant, pour nettoyer les cheveux sans eau en un instant.",
-              price: 6.5,
+              name: "Sac Cabas en Toile",
+              description: "Sac cabas spacieux en toile, idéal pour transporter vos essentiels au quotidien.",
+              price: 24.99,
             },
           ],
         },
         {
-          name: "Hygiène et Soins Quotidiens",
-          slug: "hygiene-et-soins-quotidiens",
+          name: "Montres",
+          slug: "montres",
           produits: [
             {
-              name: "Déodorant Naturel",
-              description:
-                "Déodorant sans aluminium, formulé à base d’ingrédients naturels pour une protection efficace toute la journée.",
-              price: 7.5,
+              name: "Montre Classique en Acier",
+              description: "Montre avec bracelet en acier inoxydable, style classique et intemporel.",
+              price: 129.99,
             },
             {
-              name: "Brosse à Dents Écologique",
-              description:
-                "Brosse à dents en bambou, respectueuse de l’environnement, avec des poils souples pour un brossage en douceur.",
-              price: 3.99,
+              name: "Montre Connectée Sport",
+              description: "Montre connectée avec suivi des activités, idéale pour les sportifs.",
+              price: 89.99,
             },
             {
-              name: "Dentifrice Bio",
-              description:
-                "Dentifrice bio à base de menthe poivrée, pour des dents propres et une haleine fraîche.",
-              price: 4.99,
-            },
-            {
-              name: "Coton-tiges Biodégradables",
-              description:
-                "Coton-tiges biodégradables en papier, respectueux de l’environnement.",
-              price: 2.99,
-            },
-            {
-              name: "Gel Désinfectant pour les Mains",
-              description:
-                "Gel hydroalcoolique désinfectant, enrichi en aloe vera pour hydrater les mains.",
-              price: 5.5,
+              name: "Montre Cuir Vintage",
+              description: "Montre avec bracelet en cuir vintage, pour un style élégant et rétro.",
+              price: 79.99,
             },
           ],
         },
         {
-          name: "Compléments Alimentaires",
-          slug: "complements-alimentaires",
+          name: "Valises et Bagages",
+          slug: "valises-et-bagages",
           produits: [
             {
-              name: "Vitamines C Bio",
-              description:
-                "Complément alimentaire à base de vitamine C bio, pour renforcer les défenses immunitaires.",
-              price: 12.99,
+              name: "Valise Rigide Cabine",
+              description: "Valise rigide taille cabine, résistante aux chocs, idéale pour les voyages en avion.",
+              price: 99.99,
             },
             {
-              name: "Magnésium Marin",
-              description:
-                "Complément à base de magnésium marin, idéal pour réduire la fatigue et le stress.",
-              price: 9.99,
+              name: "Sac de Voyage Weekender",
+              description: "Sac de voyage en toile, spacieux et pratique pour les escapades de fin de semaine.",
+              price: 49.99,
             },
             {
-              name: "Oméga 3",
-              description:
-                "Capsules d’oméga 3, issues d’huile de poisson, pour un bon équilibre cardio-vasculaire.",
-              price: 14.5,
-            },
-            {
-              name: "Probiotiques",
-              description:
-                "Complément en probiotiques, pour soutenir la santé digestive et renforcer le microbiote.",
-              price: 18.99,
-            },
-            {
-              name: "Ginseng et Guarana",
-              description:
-                "Ginseng et guarana pour un boost d’énergie naturel et une meilleure concentration.",
-              price: 16.99,
+              name: "Set de Valises",
+              description: "Set de trois valises de différentes tailles, idéal pour les longs voyages.",
+              price: 199.99,
             },
           ],
         },
       ],
-    },
+    }
     
   ];
   

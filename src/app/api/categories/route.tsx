@@ -7,44 +7,47 @@ export async function GET() {
     console.log("Fetching all categories...");
 
     const categories = await prisma.categorie.findMany({
-      where: { parentId: null },
+      where: { parentId: null }, 
       select: {
         id: true,
         name: true,
         slug: true,
-        description: true,
-        imageId: true,
-        subcategories: { 
+        image: {
+          select: { path: true },  
+        },
+        subcategories: {
+
           select: {
             id: true,
             name: true,
             slug: true,
-            description: true,
-            imageId: true,
-            subcategories: { 
-              select: {
-                id: true,
-                name: true,
-                slug: true,
-                description: true,
-                imageId: true,
-              },
+            image: {
+              select: { path: true },  
             },
           },
         },
       },
     });
 
-    console.log("Categories found:", categories);
+    const formattedCategories = categories.map(category => ({
+      name: category.name,
+      slug: category.slug,
+      imageSrc: category.image?.path || 'https://via.placeholder.com/300',
+      imageAlt: `Image de la catégorie ${category.name}`,
+      subcategories: category.subcategories.map(subcategory => ({
+        name: subcategory.name,
+        slug: subcategory.slug,
+        imageSrc: subcategory.image?.path || 'https://via.placeholder.com/300',
+        imageAlt: `Image de la sous-catégorie ${subcategory.name}`,
+      })),
+    }));
 
-    if (categories.length === 0) {
-      return NextResponse.json({ message: 'No categories found' }, { status: 404 });
-    }
-
-    return NextResponse.json(categories, { status: 200 });
+    return NextResponse.json(formattedCategories, { status: 200 });
   } catch (error) {
-    console.error('Error fetching categories:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error("Erreur lors de la récupération des catégories et sous-catégories :", error);
+    return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
+
+        
   }
 }
 
