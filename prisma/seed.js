@@ -22,7 +22,7 @@ async function main() {
                     description: category.description || null,
                     image: {
                         create: {
-                            path: category.imageSrc || "default-image-path.jpg",  // Utilise l'image spécifiée ou une image par défaut
+                            path: `/img/category/${slug}.webp` || "default-image-path.jpg",  // Utilise l'image spécifiée ou une image par défaut
                         },
                     },
                 },
