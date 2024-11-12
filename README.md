@@ -54,6 +54,7 @@ MYSQL_PASSWORD=password
 MYSQL_ROOT_PASSWORD=rootpassword
 DATABASE_URL="mysql://user:password@db:3306/epidrive"
 SHADOW_DATABASE_URL="mysql://root:rootpassword@db:3306/shadow_epidrive"
+RESEND_API_KEY=""
 ```
 
 ```bash
