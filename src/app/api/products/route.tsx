@@ -12,25 +12,46 @@ export async function GET() {
       },
     });
 
-    console.log("Products found:", products);
+    const transformedProducts = products.map(product => ({
+      id: product.id,
+      name: product.name,
+      prix: product.prix,
+      imageSrc: product.image?.path || '',
+      imageAlt: product.imageAlt || product.name,
+      slug: product.slug,
+      description: product.description,
+    }));
 
-    if (products.length === 0) {
+    console.log("Products found:", transformedProducts);
+
+    if (transformedProducts.length === 0) {
       return NextResponse.json({ message: 'No products found' }, { status: 404 });
     }
 
-    return NextResponse.json(products, { status: 200 });
+    return NextResponse.json(transformedProducts, { status: 200 });
   } catch (error) {
     console.error('Error fetching products:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
-<<<<<<< Updated upstream
+
+    const { ingredients } = await request.json();
+
+    if (!ingredients || !Array.isArray(ingredients) || ingredients.length === 0) {
+      return NextResponse.json({ error: 'No ingredients provided' }, { status: 400 });
+    }
+
+    const products = await prisma.produit.findMany({
+      where: {
+        name: {
+          in: ingredients,
+        },
     const body: Produit = await request.json();
     const { name, description, prix, categorieId } = body;
-=======
+
     const body = await request.json();
 
     // Vérifier si l'appel concerne les ingrédients
@@ -61,7 +82,6 @@ export async function POST(request: Request) {
 
     // Vérifier si l'appel concerne la création d'un nouveau produit
     const { name, description, prix, categorieId } = body as Produit;
->>>>>>> Stashed changes
 
     if (!name || !prix || !description || !categorieId) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -77,17 +97,25 @@ export async function POST(request: Request) {
         prix: parseFloat(prix.toString()),
         slug: slug,
         categorieId: parseInt(categorieId.toString()),
-<<<<<<< Updated upstream
         imageid: null
+
+      },
+      include: {
+        image: true,
       },
     });
 
-    console.log('Product created:', newProduct);
+    const transformedProducts = products.map((product) => ({
+      id: product.id,
+      name: product.name,
+      prix: product.prix,
+      imageSrc: product.image?.path || '',
+      slug: product.slug,
+    }));
 
-    return NextResponse.json(newProduct, { status: 201 });
+    return NextResponse.json(transformedProducts, { status: 200 });
   } catch (error) {
     console.error('Error creating product:', error);
-=======
         imageid: null,
       },
       include: {
@@ -98,7 +126,8 @@ export async function POST(request: Request) {
     return NextResponse.json(newProduct, { status: 201 });
   } catch (error) {
     console.error('Error handling POST request:', error);
->>>>>>> Stashed changes
+
+    console.error('Error fetching matching products:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

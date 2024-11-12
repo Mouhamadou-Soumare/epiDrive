@@ -24,6 +24,16 @@ model User {
   commandes   Commande[]
   image       Image?     @relation(fields: [imageId], references: [id], map: "User_Image_fkey")
   imageId     Int?
+  panier       Panier?    // Relation one-to-one with Panier
+
+}
+
+model Panier {
+  id          Int             @id @default(autoincrement())
+  userId      Int?            @unique
+  sessionId   String?         @unique // Utilisé pour les utilisateurs non authentifiés
+  user        User?           @relation(fields: [userId], references: [id], map: "Panier_User_fkey")
+  produits    QuantitePanier[] // Liste de produits avec quantités
 }
 
 model Recette {
@@ -68,6 +78,10 @@ model QuantitePanier {
   prix        Float
   produit     Produit  @relation(fields: [produitId], references: [id], map: "QuantitePanier_Produit_fkey")
   produitId   Int
+  panier      Panier    @relation(fields: [panierId], references: [id], map: "QuantitePanier_Panier_fkey")
+  panierId    Int
+  @@unique([panierId, produitId], map: "PanierProduit_unique")
+
 }
 
 model QuantiteCommande {

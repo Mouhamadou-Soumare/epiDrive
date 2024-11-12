@@ -9,8 +9,9 @@ type Product = {
     slug: string;  
     description: string; 
 };
-  
+
 export const ProductGrid = ({ products }: { products: Product[] }) => {
+
     return (
       <div className="bg-white">
         <div className="mx-auto max-w-2xl py-16 sm:py-20 lg:max-w-7xl">

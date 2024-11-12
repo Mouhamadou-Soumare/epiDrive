@@ -14,20 +14,16 @@ async function main() {
         for (const category of categories) {
             const slug = generateSlug(category.title);
 
-            const existingCategory = await prisma.categorie.findUnique({
-                where: { slug },
-            });
+        if (!existingCategory) {
+            const parentCategory = await prisma.categorie.create({
+                data: {
+                    name: category.title,
+                    slug,
+                    description: category.description || null,
+                    image: {
+                        create: {
+                            path: `/img/category/${slug}.webp` || "default-image-path.jpg",  // Utilise l'image spécifiée ou une image par défaut
 
-            if (!existingCategory) {
-                const parentCategory = await prisma.categorie.create({
-                    data: {
-                        name: category.title,
-                        slug,
-                        description: category.description || null,
-                        image: {
-                            create: {
-                                path: category.imageSrc || "default-image-path.jpg",
-                            },
                         },
                     },
                 });
