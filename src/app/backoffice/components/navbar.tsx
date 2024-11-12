@@ -1,40 +1,19 @@
 'use client';
 
-import { useState } from 'react'
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-  TransitionChild,
-} from '@headlessui/react'
-import {
-  Bars3Icon,
-  BellIcon,
-  ChartPieIcon,
-  Cog6ToothIcon,
-  DocumentDuplicateIcon,
-  FolderIcon,
-  HomeIcon,
-  Squares2X2Icon,
-  UsersIcon,
-  XMarkIcon,
-  CakeIcon,
-} from '@heroicons/react/24/outline'
-import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
+import { useState, useEffect } from 'react';
+
+import { Dialog, DialogBackdrop, DialogPanel, TransitionChild } from '@headlessui/react'
+import { Bars3Icon, BellIcon, ChartPieIcon, Cog6ToothIcon, FolderIcon, HomeIcon, Squares2X2Icon, UsersIcon, XMarkIcon, CakeIcon } from '@heroicons/react/24/outline'
+
 import Link from 'next/link';
 
 const navigation = [
   { name: 'Dashboard', href: '/backoffice', icon: HomeIcon, current: true },
-  { name: 'Utilisateurs', href: '#', icon: UsersIcon, current: false },
+  { name: 'Utilisateurs', href: '/backoffice/utilisateur', icon: UsersIcon, current: false },
   { name: 'Produits', href: '/backoffice/product', icon: Squares2X2Icon, current: false },
-  { name: 'Recettes', href: '#', icon: CakeIcon, current: false },
-  { name: 'Commandes', href: '#', icon: ChartPieIcon, current: false },
-  { name: 'Catégories', href: '#', icon: FolderIcon, current: false },
-  { name: 'Sous-Catégories', href: '#', icon: DocumentDuplicateIcon, current: false },
+  { name: 'Recettes', href: '/backoffice/recette', icon: CakeIcon, current: false },
+  { name: 'Commandes', href: '/backoffice/commande', icon: ChartPieIcon, current: false },
+  { name: 'Catégories', href: '/backoffice/categorie', icon: FolderIcon, current: false },
 ]
 
 function classNames(...classes: string[]) {
@@ -42,7 +21,15 @@ function classNames(...classes: string[]) {
 }
 
 export default function Navbar() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Mise à jour dynamique de la propriété `current`
+  useEffect(() => {
+    navigation.forEach(item => {
+      if(window.location.pathname === item.href) item.current = true;
+      else item.current = false;
+    });
+  }, []);
 
   return (
     <div>
@@ -68,13 +55,13 @@ export default function Navbar() {
             
             {/* Sidebar component, swap this element with another sidebar if you like */}
             <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
-              <div className="flex h-16 shrink-0 items-center">
+              <Link href={"/"} className="flex h-16 shrink-0 items-center">
                 <img
                   alt="Your Company"
                   src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
                   className="h-8 w-auto"
                 />
-              </div>
+              </Link>
               <nav className="flex flex-1 flex-col">
                 <ul role="list" className="flex flex-1 flex-col gap-y-7">
                   <li>
@@ -144,36 +131,27 @@ export default function Navbar() {
         <div aria-hidden="true" className="h-6 w-px bg-gray-200 lg:hidden" />
 
         <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-          <form action="#" method="GET" className="relative flex flex-1">
-            <label htmlFor="search-field" className="sr-only">
-              Search
-            </label>
-            <MagnifyingGlassIcon
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-gray-400"
-            />
-            <input
-              id="search-field"
-              name="search"
-              type="search"
-              placeholder="Search..."
-              className="block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
-            />
-          </form>
-        </div>
-      </div>
-
-      {/* Static sidebar for desktop */}
-      <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-        {/* Sidebar component, swap this element with another sidebar if you like */}
-        <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
-          <div className="flex h-16 shrink-0 items-center">
+          <Link href={"/"} className="flex h-16 shrink-0 items-center">
             <img
               alt="Your Company"
               src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
               className="h-8 w-auto"
             />
-          </div>
+          </Link>
+        </div>
+      </div>
+
+      {/* Static sidebar for desktop */}
+      <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+        {/* Sidebar component, swap this element with another sidebar if you like */} 
+        <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
+          <Link href={"/"} className="flex h-16 shrink-0 items-center">
+            <img
+              alt="Your Company"
+              src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
+              className="h-8 w-auto"
+            />
+          </Link>
           <nav className="flex flex-1 flex-col">
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
               <li>

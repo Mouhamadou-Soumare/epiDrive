@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -57,20 +58,19 @@ model Commande {
 }
 
 model Produit {
-  id             Int             @id @default(autoincrement())
-  name           String
-  slug           String           @unique
-  description    String
-  prix           Float
-  image          Image?          @relation(fields: [imageid], references: [id], map: "Produit_Image_fkey")
-  imageid        Int?
-  categorie      Categorie       @relation(fields: [categorieId], references: [id], map: "Produit_Categorie_fkey")
-  categorieId    Int             
-  quantitePaniers  QuantitePanier[]  
+  id              Int             @id @default(autoincrement())
+  name            String
+  slug            String           @unique
+  description     String
+  prix            Float
+  image           Image?           @relation(fields: [imageid], references: [id], map: "Produit_Image_fkey")
+  imageid         Int?
+  categorie       Categorie        @relation(fields: [categorieId], references: [id], map: "Produit_Categorie_fkey")
+  categorieId     Int             
+  quantitePaniers QuantitePanier[]  
   quantiteCommandes QuantiteCommande[] 
-  recettes       Recette[]       @relation("RecetteProduit")
+  recettes        Recette[]        @relation("RecetteProduit")
 }
-
 
 model QuantitePanier {
   id          Int      @id @default(autoincrement())
@@ -102,7 +102,6 @@ model Image {
   categories  Categorie[]
   users       User[]
 }
-
 
 model Categorie {
   id              Int              @id @default(autoincrement())

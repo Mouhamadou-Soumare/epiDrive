@@ -39,6 +39,7 @@ export default function ProductDetailPage() {
     }
   }, []);
 
+
   useEffect(() => {
     async function fetchProduct() {
       const productSlug = Array.isArray(slug) ? slug[slug.length - 1] : slug;
@@ -48,7 +49,7 @@ export default function ProductDetailPage() {
         const data = await res.json();
         if (res.ok) {
           setProduct(data);
-          setSelectedSize(data.sizes?.[0]);
+          console.log("Product found:", data);
         } else {
           console.error('Erreur lors de la récupération du produit:', data.error);
         }
@@ -56,6 +57,22 @@ export default function ProductDetailPage() {
         console.error('Erreur lors de la récupération du produit:', error);
       } finally {
         setLoading(false);
+      }
+
+      if (product) {
+        try {
+          const res = await fetch(`/api/images/${product.imageId}`);
+          const data = await res.json();
+          if (res.ok) {
+            setImage(data);
+          } else {
+            console.error('Error fetching image:', data.error);
+          }
+        } catch (error) {
+          console.error('Error fetching image:', error);
+        } finally {
+          setLoading(false);
+        }
       }
     }
 
@@ -84,6 +101,7 @@ export default function ProductDetailPage() {
           <section aria-labelledby="information-heading" className="mt-4">
             <p className="text-lg text-gray-900 sm:text-xl">{product.prix}€</p>
             <p className="mt-4 text-base text-gray-500">{product.description}</p>
+
             <div className="mt-6 flex items-center">
               <CheckIcon aria-hidden="true" className="h-5 w-5 text-green-500" />
               <p className="ml-2 text-sm text-gray-500">En stock et prêt à être expédié</p>
@@ -95,6 +113,7 @@ export default function ProductDetailPage() {
         <div className="mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center">
           <div className="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg h-96">
             <img src={product.image.path} alt={product.name} className="h-full w-full object-cover object-center" />
+
           </div>
         </div>
 
@@ -124,6 +143,7 @@ export default function ProductDetailPage() {
               </button>
             </div>
 
+
             <div className="mt-6 text-center">
               <a href="#" className="inline-flex items-center text-base font-medium text-gray-500 hover:text-gray-700">
                 <ShieldCheckIcon aria-hidden="true" className="mr-2 h-6 w-6" />
@@ -136,3 +156,4 @@ export default function ProductDetailPage() {
     </div>
   );
 }
+ 
