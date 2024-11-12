@@ -1,5 +1,6 @@
 import prisma from "../../lib/prisma.js";
 import { generateSlug } from './generateSlug.js';
+import { createProducts } from './product.js'; // Importez la fonction createProducts
 
 export async function createSubcategories(category, existingCategory) {
     for (const subCategory of category.subcategories || []) {
@@ -7,7 +8,7 @@ export async function createSubcategories(category, existingCategory) {
         const existingSubCategory = await prisma.categorie.findFirst({
             where: {
                 slug: subCategory.slug,
-                parentId: existingCategory.id, // Nouvelle référence au parent
+                parentId: existingCategory.id, // Référence au parent
             },
         });
 
@@ -21,36 +22,25 @@ export async function createSubcategories(category, existingCategory) {
                         parent: {
                             connect: { id: existingCategory.id }, // Connexion à la catégorie parent
                         },
+                        image: {
+                            create: {
+                                path: `/img/category/${generateSlug(subCategory.name)}.webp`, // Chemin d'image dynamique pour la sous-catégorie
+                            },
+                        },
                     },
                 });
                 console.log(`Sous-catégorie ${createdSubCategory.name} ajoutée sous ${category.title}`);
 
-                // Ajoutez les produits à la sous-catégorie créée
-                if (subCategory.produits) {
-                    for (const product of subCategory.produits) {
-                        try {
-                            await prisma.produit.create({
-                                data: {
-                                    name: product.name,
-                                    slug: generateSlug(product.name),
-                                    description: product.description,
-                                    prix: product.price,
-                                    categorie: {
-                                        connect: { id: createdSubCategory.id }, // Associe le produit à la sous-catégorie
-                                    },
-                                },
-                            });
-                            console.log(`Produit ${product.name} ajouté sous ${subCategory.name}`);
-                        } catch (error) {
-                            console.error(`Erreur lors de la création du produit ${product.name}:`, error.message);
-                        }
-                    }
-                }
+                // Utilisez createProducts pour ajouter les produits à la sous-catégorie créée
+                await createProducts(subCategory, createdSubCategory);
+
             } catch (error) {
                 console.error(`Erreur lors de la création de la sous-catégorie ${subCategory.name}:`, error.message);
             }
         } else {
             console.log(`La sous-catégorie ${subCategory.name} existe déjà.`);
+            // Utilisez createProducts pour ajouter les produits à la sous-catégorie existante
+            await createProducts(subCategory, existingSubCategory);
         }
     }
 }
