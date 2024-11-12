@@ -16,6 +16,7 @@ import {
 } from "@headlessui/react";
 import {
   Bars3Icon,
+  CameraIcon,
   ChartPieIcon,
   CursorArrowRaysIcon,
   FingerPrintIcon,
@@ -206,6 +207,7 @@ export default function Navbar() {
             </PopoverPanel>
           </Popover>
 
+<<<<<<< Updated upstream
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
             Features
           </a>
@@ -215,6 +217,29 @@ export default function Navbar() {
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
             Company
           </a>
+=======
+          <a href="/snap-and-cook" className="flex items-center gap-2 px-4 py-2.5 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 transition-colors duration-200">
+            <CameraIcon className="h-6 w-6" aria-hidden="true" />
+            Snap & Cook
+          </a>
+        
+          <SearchBar/>
+
+          <button
+            onClick={() => setCartOpen(true)} 
+            className="relative -m-2 flex items-center p-2"
+          >
+            <ShoppingBagIcon aria-hidden="true" className={`h-7 w-7 flex-shrink-0 ${
+              totalItems > 0 ? "text-yellow-500" : "text-orange-400 hover:text-gray-500"
+            }`} />
+            {totalItems > 0 && (
+              <span className="ml-2 text-md font-medium text-gray-700 hover:text-gray-800">
+                {totalItems}
+              </span>
+            )}            <span className="sr-only">Voir le panier</span>
+          </button>
+          
+>>>>>>> Stashed changes
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
