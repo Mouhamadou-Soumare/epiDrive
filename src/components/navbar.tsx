@@ -16,6 +16,7 @@ import {
 } from "@headlessui/react";
 import {
   Bars3Icon,
+  CameraIcon,
   ChartPieIcon,
   CursorArrowRaysIcon,
   FingerPrintIcon,
@@ -229,7 +230,12 @@ export default function Navbar() {
             </PopoverPanel>
           </Popover>
 
-        
+
+          <a href="/snap-and-cook" className="flex items-center gap-2 px-4 py-2.5 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 transition-colors duration-200">
+            <CameraIcon className="h-6 w-6" aria-hidden="true" />
+            Snap & Cook
+          </a>
+
           <SearchBar/>
 
           <button
@@ -246,6 +252,7 @@ export default function Navbar() {
             )}            <span className="sr-only">Voir le panier</span>
           </button>
           
+
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">

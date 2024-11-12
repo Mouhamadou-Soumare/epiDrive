@@ -23,7 +23,9 @@
     "next-auth": "^4.24.10",
     "react": "^18",
     "react-dom": "^18",
-    "torch": "^0.2.7"
+
+    "torch": "^0.2.7",
+
     "resend": "^4.0.1-alpha.0"
   },
   "devDependencies": {
