@@ -20,6 +20,7 @@ import {
   ChartPieIcon,
   CursorArrowRaysIcon,
   FingerPrintIcon,
+  ShoppingBagIcon,
   SquaresPlusIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -30,7 +31,10 @@ import {
   RectangleGroupIcon,
 } from "@heroicons/react/20/solid";
 
+import SearchBar from "./SearchBar";
 import { useGetMainCategories } from "@/hooks/categories/useGetMainCategories";
+import CartSlideOver from "./client/product/cart/CartSlideOver";
+import { useGetCart } from "@/hooks/cart/useGetCart";
 
 const products = [
   {
@@ -66,8 +70,12 @@ const callsToAction = [
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { categories, loading, error } = useGetMainCategories();
+  const { categories, loading: categoriesLoading, error } = useGetMainCategories();
   const [open, setOpen] = useState(false); 
+  const [cartOpen, setCartOpen] = useState(false);
+  const { cartItems, loading: cartLoading  } = useGetCart(); 
+
+  const totalItems = cartItems.reduce((sum, item) => sum + item.quantite, 0);
 
   const mesCoursesCategories = [
     "Produits régionaux et locaux",
@@ -75,6 +83,7 @@ export default function Navbar() {
     "Pains et Pâtisseries",
     "Marché frais",
     "Boucherie, Volailles et Poissons",
+    "Épicerie Salée"
   ];
 
   const mesCourses = categories.filter((category) =>
@@ -143,8 +152,15 @@ export default function Navbar() {
                           key={category.slug}
                           className="group relative rounded-lg p-6 pl-0 text-sm leading-6 hover:bg-gray-50 flex items-center gap-5 pl-0 "
                         >
-                           <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-gray-100 group-hover:bg-white ">
-           
+                           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100 group-hover:bg-white ">
+                           <Image
+                            src={`/img/category/${category.slug}-nav.webp`}
+                            alt={`Image de ${category.name}`}
+                            width={44}
+                            height={44}
+                            className="object-cover rounded-lg"
+                          />
+
            </div>
                           <a
                             href={`/category/${category.slug}`}
@@ -169,7 +185,14 @@ export default function Navbar() {
           className="group relative rounded-lg p-6 text-sm leading-6 hover:bg-gray-50 flex items-center gap-5 pl-0"
         >
           <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-gray-100 group-hover:bg-white">
-           
+          <Image
+                            src={`/img/category/${category.slug}-nav.webp`}
+                            alt={`Image de ${category.name}`}
+                            width={44}
+                            height={44}
+                            className="object-cover rounded-lg"
+                          />
+
           </div>
           <a
                             href={`/category/${category.slug}`}
@@ -207,22 +230,12 @@ export default function Navbar() {
             </PopoverPanel>
           </Popover>
 
-<<<<<<< Updated upstream
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            Features
-          </a>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            Marketplace
-          </a>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            Company
-          </a>
-=======
+
           <a href="/snap-and-cook" className="flex items-center gap-2 px-4 py-2.5 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 transition-colors duration-200">
             <CameraIcon className="h-6 w-6" aria-hidden="true" />
             Snap & Cook
           </a>
-        
+
           <SearchBar/>
 
           <button
@@ -239,7 +252,7 @@ export default function Navbar() {
             )}            <span className="sr-only">Voir le panier</span>
           </button>
           
->>>>>>> Stashed changes
+
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
@@ -247,6 +260,9 @@ export default function Navbar() {
           </a>
         </div>
       </nav>
+
+      <CartSlideOver open={cartOpen} setOpen={setCartOpen} />
+
       <Dialog
         open={mobileMenuOpen}
         onClose={setMobileMenuOpen}
@@ -323,6 +339,7 @@ export default function Navbar() {
           </div>
         </DialogPanel>
       </Dialog>
+
     </header>
   );
 }
