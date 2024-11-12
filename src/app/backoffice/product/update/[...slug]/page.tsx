@@ -1,55 +1,60 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
-
-type Product = { 
-    id: number; 
-    name: string; 
-    prix: number;          
-    imageSrc: string; 
-    imageAlt: string; 
-    slug: string;  
-    description: string; 
-};
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
+import TextInput from "../../components/TextInput";
+import TextareaInput from "../../components/TextareaInput";
+import SelectInput from "../../components/SelectInput";
+import { Produit, Categorie } from "../../../../types";
 
 export default function UpdateProductPage() {
-    const { slug } = useParams(); 
-    const [product, setProduct] = useState<Product | null>(null);
+    const { slug } = useParams();
+    const [product, setProduct] = useState<Produit | null>(null);
+    const [categories, setCategories] = useState<Categorie[]>([]);
     const [loading, setLoading] = useState(true);
-    const [submitResult, setSubmitResult] = useState<string>('');
+    const [submitResult, setSubmitResult] = useState<string>("");
 
-    useEffect(() => {    
+    useEffect(() => {
         async function fetchProduct() {
             const productSlug = Array.isArray(slug) ? slug[slug.length - 1] : slug;
-            const formattedSlug = productSlug ? productSlug.replace('/update', '') : '';
-            console.log('Fetching product for slug:', productSlug);
+            const formattedSlug = productSlug ? productSlug.replace("/update", "") : "";
 
             try {
                 const res = await fetch(`/api/products/${formattedSlug}`);
-                const data = await res.json();
                 if (res.ok) {
+                    const data = await res.json();
                     setProduct(data);
                 } else {
-                    console.error('Error fetching product:', data.error);
+                    console.error("Erreur lors de la récupération du produit :", await res.json());
                 }
             } catch (error) {
-                console.error('Error fetching product:', error);
+                console.error("Erreur lors de la récupération du produit :", error);
             } finally {
                 setLoading(false);
             }
         }
 
+        async function fetchCategories() {
+            try {
+                const res = await fetch("http://localhost:3000/api/categories");
+                const data = await res.json();
+                setCategories(data.flatMap((cat: Categorie) => cat.subcategories));
+            } catch (error) {
+                console.error("Erreur lors de la récupération des catégories :", error);
+            }
+        }
+
         fetchProduct();
+        fetchCategories();
     }, [slug]);
 
-    if (loading) return <div className="lg:pl-72">Chargement...</div>;
-    if (!product) return <div className="lg:pl-72">Produit non trouvé</div>;
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         if (product) {
-            setProduct({ ...product, [name]: name === "prix" ? parseFloat(value) : value });
+            setProduct({
+                ...product,
+                [name]: name === "prix" ? parseFloat(value) : ["imageId", "categorieId"].includes(name) ? parseInt(value) : value,
+            });
         }
     };
 
@@ -57,86 +62,53 @@ export default function UpdateProductPage() {
         e.preventDefault();
         if (product) {
             try {
-                console.log('Updating product:', product);
                 const res = await fetch(`/api/products/${product.slug}`, {
                     method: "PATCH",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({
-                        ...product,
-                        prix: product.prix, 
-                    }),
+                    body: JSON.stringify(product),
                 });
 
-                const data = await res.json();
-                if (res.ok) {
-                    setSubmitResult('200');
-                } else {
-                    console.error('Error updating product:', data.error);
+                if (res.ok) setSubmitResult("200");
+                else {
+                    console.error("Erreur lors de la mise à jour du produit :", await res.json());
                     setSubmitResult(res.status.toString());
                 }
             } catch (error) {
-                console.error('Error updating product:', error);
-                setSubmitResult('500');
+                console.error("Erreur lors de la mise à jour du produit :", error);
+                setSubmitResult("500");
             }
         }
     };
 
+    if (loading) return <div className="lg:pl-72">Chargement...</div>;
+    if (!product) return <div className="lg:pl-72">Produit non trouvé</div>;
+
     return (
         <>
-            {
-                submitResult === '200' && <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-                    <span className="font-bold">Success!</span>
-                    <span className="block sm:inline"> Product updated successfully</span>
+            {submitResult === "200" && (
+                <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    <span className="font-bold">Succès!</span> Le produit a été mis à jour avec succès.
                 </div>
-            }
-            {
-                submitResult === '404' && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-                    <strong className="font-bold">Error!</strong>
-                    <span className="block sm:inline">Product not found</span>
+            )}
+            {(submitResult === "404" || submitResult === "500") && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    <strong className="font-bold">Erreur!</strong> Une erreur s'est produite lors de la mise à jour du produit.
                 </div>
-            }
-            <h1 className='text-3xl font-extrabold leading-tight text-gray-900'>Update Product</h1>
+            )}
+            <h1 className="text-3xl font-extrabold leading-tight text-gray-900">Mettre à jour le produit</h1>
             <form onSubmit={handleSubmit} className="my-6">
-                <div className="mb-5">
-                    <label htmlFor="name" 
-                        className="block mb-2 text-sm font-medium text-gray-900">Name</label>
-                    <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={product.name}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <div className="mb-5">
-                    <label htmlFor="description"
-                        className="block mb-2 text-sm font-medium text-gray-900">Description</label>
-                    <textarea
-                        id="description"
-                        name="description"
-                        value={product.description}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <div className="mb-5">
-                    <label htmlFor="prix" 
-                        className="block mb-2 text-sm font-medium text-gray-900">Prix</label>
-                    <input
-                        type="number"
-                        min="0" max="1000" step="0.01"
-                        id="prix"
-                        name="prix"
-                        value={product.prix}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        onChange={handleInputChange}
-                    />
-                </div>
-                <button type="submit" 
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Update Product</button>
+                <TextInput label="Nom" id="name" name="name" value={product.name} onChange={handleInputChange} required />
+                <TextareaInput label="Description" id="description" name="description" value={product.description} onChange={handleInputChange} required />
+                <TextInput label="Prix" id="prix" name="prix" type="number" value={product.prix} onChange={handleInputChange} min={0} max={1000} step={0.01} required />
+                <SelectInput label="Catégorie" id="categorieId" name="categorieId" value={product.categorieId} options={categories.map((cat) => ({ value: cat.id, label: cat.name }))} onChange={handleInputChange} required />
+                <button
+                    type="submit"
+                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+                >
+                    Mettre à jour le produit
+                </button>
             </form>
         </>
     );

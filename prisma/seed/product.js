@@ -26,6 +26,7 @@ export async function createProducts(subCategory, existingSubCategory) {
                         description: product.description,
                         prix: product.price,
                         categorie: {
+
                             connect: {
                                 id: existingSubCategory.id // Connexion à la sous-catégorie existante
                             },

@@ -8,6 +8,8 @@ services:
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:3000
       - NODE_ENV=development
+      - DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@db:3306/epidrive
+      - SHADOW_DATABASE_URL=mysql://root:${MYSQL_ROOT_PASSWORD}@db:3306/shadow_epidrive
     depends_on:
       - db
     volumes:
@@ -19,10 +21,10 @@ services:
     image: mysql:latest
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} 
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: epidrive
-      MYSQL_USER: ${MYSQL_USER} 
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD} 
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - "3306:3306"
     volumes:
@@ -34,8 +36,8 @@ services:
     ports:
       - "8080:80"
     environment:
-      PMA_HOST: db  
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} 
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
 
 volumes:
   db-data:
