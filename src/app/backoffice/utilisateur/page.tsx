@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import UserCard from "./components/UserCard";
+import Link from "next/link";
+
 import SearchInput from "../components/SearchInput";
 import { User } from "../../types";
+import UtilisateurRow from "./components/UtilisateurRow";
 
 const UtilisateurList = () => {
   const [utilisateurs, setUtilisateurs] = useState<User[]>([]);
@@ -14,12 +16,11 @@ const UtilisateurList = () => {
     const fetchUtilisateurs = async () => {
       try {
         const response = await fetch("http://localhost:3000/api/users");
-        if (!response.ok) throw new Error('Erreur lors du chargement des utilisateurs');
         const data = await response.json();
         setUtilisateurs(data);
         setFilteredUtilisateurs(data);
       } catch (error) {
-        console.error('Erreur lors du chargement des utilisateurs :', error);
+        console.error('Erreur lors du chargement des produits :', error);
       }
     };
 
@@ -39,28 +40,52 @@ const UtilisateurList = () => {
 
   return (
     <div className="mx-auto max-w-2xl py-4 sm:py-4 lg:max-w-7xl">
-      <h2 className="text-xl font-bold text-gray-900">Liste des utilisateurs</h2>
-      <div className="flex justify-between items-center mt-4 gap-4">
-        <div className="flex flex-col sm:flex-row gap-4 w-full">
-        <div className="flex flex-col sm:flex-row gap-4 w-full">
-          <SearchInput 
-            searchQuery={searchQuery} 
-            onSearchChange={handleSearchChange} 
-            placeholder="Rechercher un utilisateur"
-          />
-        </div>
+      <div className="sm:flex sm:items-center">
+        <div className="sm:flex-auto">
+          <h1 className="text-base font-semibold text-gray-900">Liste des utilisateurs</h1>
+          <p className="mt-2 text-sm text-gray-700">
+            listing des utilisateurs du commerce
+          </p>
         </div>
       </div>
+
+      <div className="flex flex-col mt-4 sm:flex-row gap-4 w-full">
+        <SearchInput 
+          searchQuery={searchQuery} 
+          onSearchChange={handleSearchChange} 
+          placeholder="Rechercher un utilisateur"
+        />
+      </div>
+
       {filteredUtilisateurs.length > 0 ? (
-        <div className="mt-6 grid grid-cols-1 gap-y-8 lg:grid-cols-2 sm:gap-x-6 xl:gap-x-8">
-          {filteredUtilisateurs.map((utilisateur) => (
-            <UserCard key={utilisateur.id} utilisateur={utilisateur} />
-          ))}
+        <div className="mt-8 flow-root">
+          <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+              <table className="min-w-full divide-y divide-gray-300">
+                <thead>
+                  <tr>
+                    <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Id</th>
+                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Nom</th>
+                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>
+                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Prenom</th>
+                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Rôle</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                {filteredUtilisateurs.map((utilisateur) => (
+                  <UtilisateurRow key={utilisateur.id} utilisateur={utilisateur} />
+                ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-      ) : (
-        <p className="text-center text-gray-500 mt-4">Aucun utilisateur trouvé.</p>
-      )}
+        ) : (
+          <div className="mt-8 text-center text-gray-500">Aucun utilisateur trouvé</div>
+        )
+      }
     </div>
+
   );
 };
 
