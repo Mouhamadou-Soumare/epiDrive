@@ -12,10 +12,10 @@ const CommandeCard: React.FC<CommandeCardProps> = ({ commande }) => {
 
   return (
     <tr>
-      <td className="py-6 pr-2 font-bold">{commande.id}</td>
-      <td className="py-6 pr-2 sm:table-cell">{getPriceCommande()} €</td>
-      <td className="py-6 pr-2 sm:table-cell">{commande.status}</td>
-      <td className="py-6 font-medium">
+      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{commande.id}</td>
+      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{getPriceCommande()} €</td>
+      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{commande.status}</td>
+      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
         <Link href={`/backoffice/commande/${commande.id}`} className="text-indigo-600">
           Voir la commande
         </Link>
