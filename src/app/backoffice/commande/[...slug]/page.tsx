@@ -147,22 +147,30 @@ const CommandeDetail = () => {
       </div>
       {/* Table of products */}
       <div className="mt-6">
-        <h2 className="text-xl font-bold text-gray-900">Détails de la commande</h2>
-        <table className="mt-4 w-full text-gray-500 sm:mt-6">
-          <thead className="text-left text-sm text-gray-500">
-            <tr>
-              <th scope="col" className="py-3 pr-2 font-bold w-1/5">Id</th>
-              <th scope="col" className="py-3 pr-2 font-bold w-1/5">Nom</th>
-              <th scope="col" className="py-3 pr-2 font-bold w-1/5">Prix</th>
-              <th scope="col" className="py-3 font-bold">Info</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200 border-b border-gray-200 text-sm sm:border-t">
-            {produits.map((produit) => (
-              <ProduitRow key={produit.id} produit={produit} />
-            ))}
-          </tbody>
-        </table>
+        <div className="sm:flex sm:items-center">
+          <h1 className="text-base font-semibold text-gray-900">Détails de la commande</h1>
+        </div>
+        <div className="mt-8 flow-root">
+          <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+              <table className="min-w-full divide-y divide-gray-300">
+                <thead>
+                  <tr>
+                    <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Id</th>
+                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Nom</th>
+                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Prix</th>
+                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Statut</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                {produits.map((produit) => (
+                  <ProduitRow key={produit.id} produit={produit} />
+                ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
