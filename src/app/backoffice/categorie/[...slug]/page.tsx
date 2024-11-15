@@ -7,6 +7,7 @@ import Alert from "../components/Alert";
 import DeleteButton from "../components/DeleteButton";
 import { CheckIcon } from '@heroicons/react/20/solid';
 import { Categorie } from "../../../types";
+import CategorieRow from "../components/CategorieRow";
 
 export default function CategoryDetails() {
   const { slug } = useParams(); 
@@ -80,16 +81,35 @@ export default function CategoryDetails() {
       </div>
       {/* Subcategories */}
       <div className="mx-auto p-4 sm:p-6 lg:p-8">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Sous-catégories</h2>
-        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
-          {category.subcategories.length === 0 ? <p>Aucune sous-catégorie</p> : (
-            category.subcategories.map((subcategory : Categorie) => (
-              <Link key={subcategory.id} href={`/backoffice/categorie/${subcategory.slug}`} className="group block">
-                {subcategory.name}
-              </Link>
-            ))
-          )}
+        <div className="sm:flex sm:items-center">
+            <h1 className="text-base font-semibold text-gray-900">Liste des Sous-categorie</h1>
         </div>
+
+        {category.subcategories.length > 0 ? (
+        <div className="mt-4 flow-root">
+          <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+              <table className="min-w-full divide-y divide-gray-300">
+                <thead>
+                  <tr>
+                    <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">ID</th>
+                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Nom</th>
+                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">slug</th>
+                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Info</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                {category.subcategories.map((subcategory : Categorie) => (
+                  <CategorieRow key={subcategory.id} categorie={subcategory} />
+                ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        ) : (
+          <p className="text-center text-gray-500 mt-4">Aucune sous-categorie trouvée.</p>
+        )}
       </div>
     </div>
   );

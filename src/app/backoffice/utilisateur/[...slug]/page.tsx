@@ -3,7 +3,6 @@
 import { CursorArrowRaysIcon, UsersIcon } from '@heroicons/react/24/outline';
 import { useState, useEffect } from "react";
 import { useParams } from 'next/navigation';
-import Link from "next/link";
 import CommandeCard from "../components/CommandeCard";
 import { Commande, User } from "../../../types";
 
@@ -74,23 +73,39 @@ const UserDetail = () => {
         )}
       </div>
 
-      <div className="mt-6">
-        <h2 className="text-xl font-bold text-gray-900">Détails des commandes</h2>
-        <table className="mt-4 w-full text-gray-500 sm:mt-6">
-          <thead className="text-left text-sm text-gray-500">
-            <tr>
-              <th scope="col" className="py-3 pr-2 font-bold w-1/5">Id</th>
-              <th scope="col" className="py-3 pr-2 font-bold w-1/5">Prix</th>
-              <th scope="col" className="py-3 pr-2 font-bold w-1/5">Statut</th>
-              <th scope="col" className="py-3 font-bold">Info</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200 border-b border-gray-200 text-sm sm:border-t">
-            {commandes.map((commande) => (
-              <CommandeCard key={commande.id} commande={commande} />
-            ))}
-          </tbody>
-        </table>
+      <div className="mx-auto p-4 sm:p-6 lg:p-8">
+        <div className="sm:flex sm:items-center">
+            <h1 className="text-base font-semibold text-gray-900">Liste commandes de l'utilisateur</h1>
+        </div>
+
+        {commandes.length > 0  ? (
+          <div className="mt-8 flow-root">
+            <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+              <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                <table className="min-w-full divide-y divide-gray-300">
+                  <thead className="text-left text-sm text-gray-500">
+                    <tr>
+                      <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Id</th>
+                      <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Prix</th>
+                      <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Statut</th>
+                      <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Info</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 border-b border-gray-200 text-sm sm:border-t">
+                    {commandes.map((commande) => (
+                      <CommandeCard key={commande.id} commande={commande} />
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          ) : (
+            <div className="mt-4 text-sm text-gray-700">
+              Cet utilisateur n'a pas encore passé de commande.
+            </div>
+          )
+        }
       </div>
     </div>
   );
