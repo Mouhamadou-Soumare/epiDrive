@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { ProductGrid } from '@/components/client/product/productGrid';
+import { ProductGrid } from '@/app/components/client/product/productGrid';
 
 type Product = { 
   id: number; 
