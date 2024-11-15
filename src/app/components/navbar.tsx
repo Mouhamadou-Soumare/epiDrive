@@ -1,7 +1,6 @@
+// app/components/Navbar.tsx
 "use client";
 
-import Image from "next/image";
-import logoWhite from "../../public/img/logo_white_bg.png";
 import { useState } from "react";
 import {
   Dialog,
@@ -10,7 +9,6 @@ import {
   DisclosureButton,
   DisclosurePanel,
   Popover,
-  PopoverButton,
   PopoverGroup,
   PopoverPanel,
 } from "@headlessui/react";
@@ -28,8 +26,8 @@ import {
   PlayCircleIcon,
   RectangleGroupIcon,
 } from "@heroicons/react/20/solid";
-
 import { useGetMainCategories } from "@/hooks/categories/useGetMainCategories";
+import { signIn, signOut, useSession } from "next-auth/react"; // Import pour l'authentification
 
 const products = [
   {
@@ -65,8 +63,17 @@ const callsToAction = [
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  let session;
+
+  try {
+    const { data } = useSession(); // Essayez d'obtenir la session
+    session = data;
+  } catch {
+    session = null; // Gestion d'erreur : `useSession()` utilisé hors contexte de `<SessionProvider />`
+  }
+
   const { categories, loading, error } = useGetMainCategories();
-  const [open, setOpen] = useState(false); 
+  const [open, setOpen] = useState(false);
 
   const mesCoursesCategories = [
     "Produits régionaux et locaux",
@@ -93,7 +100,47 @@ export default function Navbar() {
         <div className="flex lg:flex-1">
           <a href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
-            <Image alt="" src={logoWhite} className="h-8 w-auto" />
+            <div className="h-8 w-auto">
+              {/* SVG intégré directement */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
+                version="1.1"
+                x="0px"
+                y="0px"
+                viewBox="0 0 64 80"
+                enableBackground="new 0 0 64 64"
+                xmlSpace="preserve"
+                className="h-8"
+              >
+                {/* Collez le contenu complet de votre SVG ici */}
+                <g>
+                  <g>
+                    <path d="M48.3515625,26.4202862c1.8193359,0,3.5742188-0.9208984,5.1132813-1.7285156..."></path>
+                  </g>
+                </g>
+                <text
+                  x="0"
+                  y="79"
+                  fill="#000000"
+                  fontSize="5px"
+                  fontWeight="bold"
+                  fontFamily="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif"
+                >
+                  Created by Asheeqa
+                </text>
+                <text
+                  x="0"
+                  y="84"
+                  fill="#000000"
+                  fontSize="5px"
+                  fontWeight="bold"
+                  fontFamily="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif"
+                >
+                  from the Noun Project
+                </text>
+              </svg>
+            </div>
           </a>
         </div>
         <div className="flex lg:hidden">
@@ -107,13 +154,13 @@ export default function Navbar() {
           </button>
         </div>
         <PopoverGroup className="hidden lg:flex lg:gap-x-12 items-center">
+          {/* Menu Rayons et autres éléments */}
           <Popover>
             <Popover.Button
               type="button"
               className={`inline-flex items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold shadow-sm 
               ${
                 open
-
                   ? "bg-indigo-500 text-dark"
                   : "bg-orange-300 text-dark hover:bg-orange-500"
               } 
@@ -127,63 +174,64 @@ export default function Navbar() {
                 }`}
               />
             </Popover.Button>
-
             <PopoverPanel
               transition
-              className="absolute inset-x-0 top-0 -z-10 bg-white pt-14 shadow-lg ring-1 ring-gray-900/5 transition data-[closed]:-translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in rounded-lg	mt-20 w-11/12	mx-auto"
+              className="absolute inset-x-0 top-0 -z-10 bg-white pt-14 shadow-lg ring-1 ring-gray-900/5 transition data-[closed]:-translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in rounded-lg mt-20 w-11/12 mx-auto"
             >
-              <div className="flex flex-rpw">
-  {/* Première grid avec le titre "Mes courses" */}
-  <div className="px-6 py-10 lg:px-8 pt-8">
-    <h2 className="text-2xl font-bold text-gray-900 mb-6">Mes courses</h2>
-    <div className="mx-auto grid max-w-7xl grid-cols-2 gap-x-4  xl:gap-x-8">
-    {mesCourses.map((category) => (
-                        <div
-                          key={category.slug}
-                          className="group relative rounded-lg p-6 pl-0 text-sm leading-6 hover:bg-gray-50 flex items-center gap-5 pl-0 "
+              <div className="flex">
+                {/* Première grid avec le titre "Mes courses" */}
+                <div className="px-6 py-10 lg:px-8 pt-8">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                    Mes courses
+                  </h2>
+                  <div className="mx-auto grid max-w-7xl grid-cols-2 gap-x-4 xl:gap-x-8">
+                    {mesCourses.map((category) => (
+                      <div
+                        key={category.slug}
+                        className="group relative rounded-lg p-6 pl-0 text-sm leading-6 hover:bg-gray-50 flex items-center gap-5 pl-0"
+                      >
+                        <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-gray-100 group-hover:bg-white"></div>
+                        <a
+                          href={`/category/${category.slug}`}
+                          className="block font-semibold text-gray-900"
                         >
-                           <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-gray-100 group-hover:bg-white ">
-           
-           </div>
-                          <a
-                            href={`/category/${category.slug}`}
-                            className=" block font-semibold text-gray-900"
-                          >
-                            {category.name}
-                            <span className="absolute inset-0" />
-                          </a>
-                          <p className="mt-1 text-gray-600">{category.description}</p>
-                        </div>
-                      ))}
-    </div>
-  </div>
-
-  {/* Deuxième grid avec le titre "Maison & loisirs" */}
-  <div className="px-6 py-10 lg:px-8 pt-8">
-    <h2 className="text-2xl font-bold text-gray-900 mb-6">Maison & loisirs</h2>
-    <div className="mx-auto grid max-w-7xl grid-cols-1 gap-x-4  xl:gap-x-8">
-      {maisonLoisirs.map((category) => (
-        <div
-          key={category.name}
-          className="group relative rounded-lg p-6 text-sm leading-6 hover:bg-gray-50 flex items-center gap-5 pl-0"
-        >
-          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-gray-100 group-hover:bg-white">
-           
-          </div>
-          <a
-                            href={`/category/${category.slug}`}
-                            className="block font-semibold text-gray-900"
-          >
-            {category.name}
-            <span className="absolute inset-0" />
-          </a>
-          <p className="mt-1 text-gray-600">{category.description}</p>
-        </div>
-      ))}
-    </div>
-  </div>
-</div>
-
+                          {category.name}
+                          <span className="absolute inset-0" />
+                        </a>
+                        <p className="mt-1 text-gray-600">
+                          {category.description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                {/* Deuxième grid avec le titre "Maison & loisirs" */}
+                <div className="px-6 py-10 lg:px-8 pt-8">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                    Maison & loisirs
+                  </h2>
+                  <div className="mx-auto grid max-w-7xl grid-cols-1 gap-x-4 xl:gap-x-8">
+                    {maisonLoisirs.map((category) => (
+                      <div
+                        key={category.name}
+                        className="group relative rounded-lg p-6 text-sm leading-6 hover:bg-gray-50 flex items-center gap-5 pl-0"
+                      >
+                        <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-gray-100 group-hover:bg-white"></div>
+                        <a
+                          href={`/category/${category.slug}`}
+                          className="block font-semibold text-gray-900"
+                        >
+                          {category.name}
+                          <span className="absolute inset-0" />
+                        </a>
+                        <p className="mt-1 text-gray-600">
+                          {category.description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
               <div className="bg-gray-50">
                 <div className="mx-auto max-w-7xl px-6 lg:px-8">
                   <div className="grid grid-cols-3 divide-x divide-gray-900/5 border-x border-gray-900/5">
@@ -205,7 +253,6 @@ export default function Navbar() {
               </div>
             </PopoverPanel>
           </Popover>
-
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
             Features
           </a>
@@ -217,9 +264,21 @@ export default function Navbar() {
           </a>
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            Log in <span aria-hidden="true">&rarr;</span>
-          </a>
+          {session ? (
+            <button
+              onClick={() => signOut()}
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              Sign out <span aria-hidden="true">&rarr;</span>
+            </button>
+          ) : (
+            <button
+              onClick={() => signIn()}
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              Log in <span aria-hidden="true">&rarr;</span>
+            </button>
+          )}
         </div>
       </nav>
       <Dialog
@@ -232,7 +291,27 @@ export default function Navbar() {
           <div className="flex items-center justify-between">
             <a href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
-              <Image alt="" src={logoWhite} className="h-10 w-auto" />
+              <div className="h-10 w-auto">
+                {/* SVG du logo */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlnsXlink="http://www.w3.org/1999/xlink"
+                  version="1.1"
+                  x="0px"
+                  y="0px"
+                  viewBox="0 0 64 80"
+                  enableBackground="new 0 0 64 64"
+                  xmlSpace="preserve"
+                  className="h-10"
+                >
+                  {/* Contenu du SVG */}
+                  <g>
+                    <g>
+                      <path d="M48.3515625,26.4202862c1.8193359,0,3.5742188-0.9208984,5.1132813-1.7285156..."></path>
+                    </g>
+                  </g>
+                </svg>
+              </div>
             </a>
             <button
               type="button"
@@ -287,12 +366,12 @@ export default function Navbar() {
                 </a>
               </div>
               <div className="py-6">
-                <a
-                  href="#"
+                <button
+                  onClick={() => (session ? signOut() : signIn())}
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
-                  Log in
-                </a>
+                  {session ? "Sign out" : "Log in"}
+                </button>
               </div>
             </div>
           </div>

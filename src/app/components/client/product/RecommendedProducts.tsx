@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import React from 'react';
 
-import { Produit } from "../../../app/types";
+import { Produit } from "../../../types";
 
 const RecommendedProducts = ({ allProducts }: { allProducts: Produit[] }) => {
   const [recommendedProducts, setRecommendedProducts] = useState<Produit[]>([]);

@@ -9,7 +9,7 @@ import groceryDrive from "../../public/img/grocery_drive.webp";
 import scanFood from "../../public/img/scan_food.webp";
 import whatIWant from "../../public/img/what_i_want.webp";
 import epiDrive from "../../public/img/Epidrive.webp";
-import RecommendedProducts from '@/components/client/product/RecommendedProducts';
+import RecommendedProducts from '@/app/components/client/product/RecommendedProducts';
 import { useGetAllProducts } from '@/hooks/products/useGetAllProducts';
 
 const navigation = [
