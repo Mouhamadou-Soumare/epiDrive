@@ -33,6 +33,7 @@ export default function AllCategoriesPage() {
 
     fetchCategories();
   }, []);
+  console.log(categories);
 
   if (loading) return <div>Chargement...</div>;
   if (!categories) return <div>Aucune catégorie trouvée</div>;
