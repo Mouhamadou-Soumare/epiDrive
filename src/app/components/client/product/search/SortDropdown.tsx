@@ -9,7 +9,12 @@ const sortOptions = [
   { id: 'price-desc', name: 'Prix décroissant' },
 ];
 
-export default function SortDropdown({ sortOption, setSortOption }) {
+interface SortDropdownProps {
+  sortOption: string;
+  setSortOption: (option: string) => void;
+}
+
+export default function SortDropdown({ sortOption, setSortOption }: SortDropdownProps) {
   const selectedOption = sortOptions.find((option) => option.id === sortOption);
 
   return (
