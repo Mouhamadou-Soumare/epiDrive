@@ -1,30 +1,55 @@
 import NextAuth from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import GitHubProvider from "next-auth/providers/github";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { getUserByEmail } from "@/services/userService";
+import bcrypt from "bcrypt";
 
 export default NextAuth({
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
-    GitHubProvider({
-      clientId: process.env.GITHUB_CLIENT_ID!,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      authorize: async (credentials: Record<string, string> | undefined, req) => {
+        if (!credentials) {
+          return null;
+        }
+
+        const user = await getUserByEmail(credentials.email);
+
+        if (user && await bcrypt.compare(credentials.password, user.passwordHash)) {
+          return {
+            id: String(user.id),
+            name: user.username,
+            email: user.email,
+          };
+        }
+
+        // Retourne `null` si l'authentification échoue
+        return null;
+      },
     }),
   ],
-  session: {
-    strategy: "jwt",
+  pages: {
+    signIn: "/auth/signin",
   },
-  secret: process.env.NEXTAUTH_SECRET,
-
   callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
     async session({ session, token }) {
-      // Ajoutez `id` à `session.user` sans modifier directement `session.user.id` si déprécié
-      if (session.user) {
-        session.user.id = token.sub || ""; // Assurez-vous que `sub` est bien défini
+      if (token) {
+        session.user.id = String(token.id); 
       }
       return session;
     },
   },
+  session: {
+    strategy: "jwt",
+  },
+  secret: process.env.NEXTAUTH_SECRET,
 });

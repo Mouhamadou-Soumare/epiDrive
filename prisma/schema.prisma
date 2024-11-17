@@ -18,23 +18,26 @@ model User {
   id          Int       @id @default(autoincrement())
   username    String
   email       String     @unique
-  password    String
+  passwordHash String    // Indique que le mot de passe est stocké sous forme hachée
   role        Role       @default(USER)
   recettes    Recette[]
   commandes   Commande[]
   image       Image?     @relation(fields: [imageId], references: [id], map: "User_Image_fkey")
   imageId     Int?
-  panier       Panier?    // Relation one-to-one with Panier
-
+  panier      Panier?    // Relation one-to-one with Panier
+  createdAt   DateTime   @default(now()) // Date de création de l'utilisateur
+  updatedAt   DateTime   @updatedAt      // Dernière mise à jour de l'utilisateur
 }
+
 
 model Panier {
   id          Int             @id @default(autoincrement())
   userId      Int?            @unique
-  sessionId   String?         @unique // Utilisé pour les utilisateurs non authentifiés
+  sessionId   String?         @unique
   user        User?           @relation(fields: [userId], references: [id], map: "Panier_User_fkey")
-  produits    QuantitePanier[] // Liste de produits avec quantités
+  produits    QuantitePanier[]
 }
+
 
 model Recette {
   id          Int       @id @default(autoincrement())
