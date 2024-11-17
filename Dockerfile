@@ -1,5 +1,5 @@
 # Étape de développement utilisant une version légère de Node.js
-FROM node:18-alpine AS dev
+FROM node:18-bullseye
 
 # Installer des outils de build essentiels pour des dépendances natives (comme bcrypt)
 RUN apk add --no-cache python3 make g++
@@ -12,6 +12,9 @@ COPY package*.json ./
 
 # Installer les dépendances
 RUN npm install --force
+
+# Recompiler bcrypt pour la compatibilité avec l'environnement Alpine
+RUN npm rebuild bcrypt --build-from-source
 
 # Copier le reste des fichiers de l'application
 COPY . .

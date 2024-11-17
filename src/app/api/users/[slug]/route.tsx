@@ -1,20 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {prisma} from '../../../../../lib/prisma';
+import { prisma } from '../../../../lib/prisma';
 
 export async function GET(req: NextRequest, { params }: { params: { slug: string } }) {
   const { slug } = params;
 
-  console.log("Received slug:", slug);   
+  console.log("Received slug:", slug);
 
   if (!slug) {
     return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
   }
 
+  const userId = parseInt(slug);
+  if (isNaN(userId)) {
+    return NextResponse.json({ error: 'Invalid slug format' }, { status: 400 });
+  }
+
   try {
-    console.log("Searching for user with slug:", slug);
+    console.log("Searching for user with ID:", userId);
 
     const user = await prisma.user.findUnique({
-      where: { id: parseInt(slug) },
+      where: { id: userId },
       include: {
         image: true,
         commandes: {
@@ -34,7 +39,7 @@ export async function GET(req: NextRequest, { params }: { params: { slug: string
     }
 
     return NextResponse.json(user);
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error fetching user:", error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
@@ -48,12 +53,17 @@ export async function PATCH(req: NextRequest, { params }: { params: { slug: stri
     return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
   }
 
+  const userId = parseInt(slug);
+  if (isNaN(userId)) {
+    return NextResponse.json({ error: 'Invalid slug format' }, { status: 400 });
+  }
+
   const { username, email, role, imageId } = data;
 
   try {
-    console.log("Updating user with slug:", slug);
+    console.log("Updating user with ID:", userId);
     const existingUser = await prisma.user.findUnique({
-      where: { id: parseInt(slug) },
+      where: { id: userId },
     });
 
     if (!existingUser) {
@@ -61,7 +71,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { slug: stri
     }
 
     const updatedUser = await prisma.user.update({
-      where: { id: parseInt(slug) },
+      where: { id: userId },
       data: {
         username,
         email,
@@ -71,12 +81,11 @@ export async function PATCH(req: NextRequest, { params }: { params: { slug: stri
     });
 
     return NextResponse.json(updatedUser);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error updating user:", error);
-    return NextResponse.json({ error: 'Internal Server Error', details: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal Server Error', details: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
   }
 }
-
 
 export async function DELETE(req: NextRequest, { params }: { params: { slug: string } }) {
   const { slug } = params;
@@ -85,9 +94,14 @@ export async function DELETE(req: NextRequest, { params }: { params: { slug: str
     return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
   }
 
+  const userId = parseInt(slug);
+  if (isNaN(userId)) {
+    return NextResponse.json({ error: 'Invalid slug format' }, { status: 400 });
+  }
+
   try {
     const user = await prisma.user.findUnique({
-      where: { id: parseInt(slug) },
+      where: { id: userId },
     });
 
     if (!user) {
@@ -95,14 +109,12 @@ export async function DELETE(req: NextRequest, { params }: { params: { slug: str
     }
 
     await prisma.user.delete({
-      where: { id: parseInt(slug) },
+      where: { id: userId },
     });
 
     return NextResponse.json({ message: 'User deleted successfully' });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error deleting user:", error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
-
-

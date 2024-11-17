@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {prisma} from '../../../../../lib/prisma';
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
 
 export async function GET(req: NextRequest, { params }: { params: { slug: string } }) {
   const { slug } = params;
@@ -50,13 +51,13 @@ export async function GET(req: NextRequest, { params }: { params: { slug: string
     // Formatage de la réponse avec les sous-catégories et les produits
     const formattedCategory = {
       ...category,
-      subcategories: category.subcategories.map(subcategory => ({
+      subcategories: category.subcategories.map((subcategory: { name: string; slug: string; image: { path: string } | null }) => ({
         name: subcategory.name,
         slug: subcategory.slug,
         imageSrc: subcategory.image?.path ? `/img/category/${subcategory.slug}.webp` : 'https://via.placeholder.com/300',
         imageAlt: `Image de la sous-catégorie ${subcategory.name}`,
       })),
-      produits: category.produits.map(product => ({
+      produits: category.produits.map((product: { id: number; name: string; slug: string; description: string; prix: number; image: { path: string } | null }) => ({
         id: product.id,
         name: product.name,
         slug: product.slug,

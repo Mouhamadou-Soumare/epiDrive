@@ -1,5 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server';
-import {prisma} from '../../../../lib/prisma';
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
 import { Produit } from '../../types';
 
 export async function GET() {
@@ -11,12 +12,11 @@ export async function GET() {
         image: true,
       },
     });
-
     const transformedProducts = products.map((product: Produit) => ({
       id: product.id,
       name: product.name,
       prix: product.prix,
-      imageSrc: product.imageId ? `/path/to/images/${product.imageId}` : '',
+      imageSrc: product.imageId ? `/images/${product.imageId}` : '',
       imageAlt: product.name,
       slug: product.slug,
       description: product.description,

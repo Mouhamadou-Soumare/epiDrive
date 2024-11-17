@@ -1,6 +1,8 @@
 // src/services/userService.ts
-import { prisma } from "../../lib/prisma";
+import { PrismaClient } from '@prisma/client';
 import bcrypt from "bcrypt";
+
+const prisma = new PrismaClient();
 
 // Fonction pour créer un utilisateur avec un mot de passe haché
 export async function createUser(email: string, password: string, username: string) {
