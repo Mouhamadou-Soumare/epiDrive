@@ -74,7 +74,16 @@ $ npx prisma generate
 # Exécutez le script de seed pour insérer des données de base (depuis le container web)
 $ npx prisma db seed
 ```
+## Installer toutes les dépendances nécessaire au lancement du projet
+```bash
+npm install next react react-dom
+npm install @prisma/client prisma
+npm install bcrypt
+npm install next-auth
+npm install @headlessui/react @heroicons/react
+npm install tailwindcss postcss autoprefixer
 
+```
 
 ## Fonctionnalités et pages
 
