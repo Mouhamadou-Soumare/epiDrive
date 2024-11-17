@@ -29,16 +29,26 @@ export function useGetCart() {
 
     try {
       const res = await fetch(`/api/cart?sessionId=${sessionId}`);
-      const data = await res.json();
+      let data;
+      try {
+        data = await res.json();
+      } catch (jsonError) {
+        throw new Error('Failed to parse JSON response');
+      }
+
       if (res.ok) {
         setCartItems(data);
       } else {
-        console.error('Erreur de récupération du panier:', data.error);
+        console.error('Erreur de récupération du panier:', data.error || 'Erreur de réponse non spécifiée');
       }
     } catch (error: unknown) {
       let errorMessage = 'Erreur inconnue lors de la récupération du panier';
       if (error instanceof Error) {
-        errorMessage = error.message;
+        errorMessage = `${error.name}: ${error.message}`;
+      } else if (typeof error === 'string') {
+        errorMessage = error;
+      } else if (error && typeof error === 'object') {
+        errorMessage = JSON.stringify(error);
       }
       console.error('Erreur lors de la récupération du panier:', errorMessage);
     } finally {
