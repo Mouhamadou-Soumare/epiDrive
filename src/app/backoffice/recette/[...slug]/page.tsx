@@ -8,7 +8,7 @@ import ProduitCard from "../components/ProduitCard";
 import { Recette, Image } from "../../../types";
 
 export default function RecetteDetails() {
-  const { slug } = useParams(); 
+  const { slug } = useParams() as { slug: string | string[] }; 
   const [image, setImage] = useState<Image | null>(null);
   const [recette, setRecette] = useState<Recette | null>(null);
   const [loading, setLoading] = useState(true);  

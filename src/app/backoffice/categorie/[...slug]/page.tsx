@@ -10,7 +10,8 @@ import { Categorie } from "../../../types";
 import CategorieRow from "../components/CategorieRow";
 
 export default function CategoryDetails() {
-  const { slug } = useParams(); 
+  const params = useParams();
+  const slug = params?.slug as string;
   const [category, setCategory] = useState<Categorie | null>(null);
   const [loading, setLoading] = useState(true);  
   const [error, setError] = useState<string | null>(null);
@@ -85,7 +86,7 @@ export default function CategoryDetails() {
             <h1 className="text-base font-semibold text-gray-900">Liste des Sous-categorie</h1>
         </div>
 
-        {category.subcategories.length > 0 ? (
+        {category.subcategories && category.subcategories.length > 0 ? (
         <div className="mt-4 flow-root">
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">

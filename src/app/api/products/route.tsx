@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
-import prisma from '../../../../lib/prisma';
+import {prisma} from '../../../../lib/prisma';
 import { Produit } from '../../types';
 
 export async function GET() {
@@ -12,12 +12,12 @@ export async function GET() {
       },
     });
 
-    const transformedProducts = products.map(product => ({
+    const transformedProducts = products.map((product: Produit) => ({
       id: product.id,
       name: product.name,
       prix: product.prix,
-      imageSrc: product.image?.path || '',
-      imageAlt: product.imageAlt || product.name,
+      imageSrc: product.imageId ? `/path/to/images/${product.imageId}` : '',
+      imageAlt: product.name,
       slug: product.slug,
       description: product.description,
     }));
@@ -54,11 +54,11 @@ export async function POST(request: NextRequest) {
         },
       });
 
-      const transformedProducts = products.map(product => ({
+      const transformedProducts = products.map((product: Produit) => ({
         id: product.id,
         name: product.name,
         prix: product.prix,
-        imageSrc: product.image?.path || '',
+        imageSrc: product.imageId ? `/path/to/images/${product.imageId}` : '',
         slug: product.slug,
       }));
 

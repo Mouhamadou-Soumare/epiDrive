@@ -8,7 +8,7 @@ import SelectInput from "../../components/SelectInput";
 import { Produit, Categorie } from "../../../../types";
 
 export default function UpdateProductPage() {
-    const { slug } = useParams();
+    const { slug } = useParams() as { slug: string | string[] };
     const [product, setProduct] = useState<Produit | null>(null);
     const [categories, setCategories] = useState<Categorie[]>([]);
     const [loading, setLoading] = useState(true);

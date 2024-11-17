@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
-import prisma from '../../../../lib/prisma';
-import { User, Role } from '../../types';
+import {prisma} from '../../../../lib/prisma';
+import { User } from '../../types';
+import { Role } from '@prisma/client';
 
 export async function GET() {
   try {
@@ -35,18 +36,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    if ('id' in body) {
-      delete body.id;
-    }
-
     console.log('Creating user with body:', body);
     const newUser = await prisma.user.create({
       data: {
-        username: username,
-        email: email,
-        password: password,
-        role: role as Role,
-        imageId: imageId || null,
+      username: username,
+      email: email,
+      role: role ? (role as unknown as Role) : undefined,
+      imageId: imageId || null,
       },
     });
 

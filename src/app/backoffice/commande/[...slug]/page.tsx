@@ -9,7 +9,7 @@ import { UpdateCommandeAlert } from '../components/UpdateCommandeAlert';
 import { Commande, User, Produit } from "../../../types";
 
 const CommandeDetail = () => {
-  const { slug } = useParams(); 
+  const { slug } = useParams() as { slug: string | string[] }; 
   const [user, setUser] = useState<User | null>(null);
   const [commandePrice, setCommandePrice] = useState<number>(0);
   const [produits, setProduits] = useState<Produit[]>([]);

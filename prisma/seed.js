@@ -1,4 +1,4 @@
-import prisma from "../lib/prisma.js";
+import prisma from '../../lib/prisma';
 import { generateSlug } from './seed/generateSlug.js';
 import { categories } from './seed/categories.js';
 import { createSubcategories } from './seed/subcategories.js';

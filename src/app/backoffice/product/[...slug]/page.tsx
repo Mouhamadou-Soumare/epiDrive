@@ -9,7 +9,8 @@ import ProductActions from "../components/ProductActions";
 import { Produit, Image } from "../../../types";
 
 export default function ProductDetails() {
-  const { slug } = useParams(); 
+  const params = useParams();
+  const slug = params ? (Array.isArray(params.slug) ? params.slug[params.slug.length - 1] : params.slug) : null;
   const [product, setProduct] = useState<Produit | null>(null);
   const [image, setImage] = useState<Image | null>(null);
   const [loading, setLoading] = useState(true);  

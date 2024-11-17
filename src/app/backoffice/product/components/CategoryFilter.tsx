@@ -16,7 +16,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ categories, selectedCat
       <option value="">Toutes les catégories</option>
       {categories.map(category => (
         <optgroup key={category.id} label={category.name}>
-          {category.subcategories.map( (subcategory : Categorie) => (
+          {category.subcategories?.map( (subcategory : Categorie) => (
             <option key={subcategory.id} value={String(subcategory.id)}>
               {subcategory.name}
             </option>

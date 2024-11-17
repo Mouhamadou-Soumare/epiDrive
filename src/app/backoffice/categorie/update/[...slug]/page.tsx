@@ -7,7 +7,7 @@ import FormInputField from "../../components/FormInputField";
 import Alert from "../../components/Alert";
 
 export default function UpdateCategoryPage() {
-  const { slug } = useParams(); 
+  const { slug } = useParams() as { slug: string }; 
   const [category, setCategory] = useState<Categorie | null>(null);
   const [categories, setCategories] = useState<Categorie[]>([]);
   const [loading, setLoading] = useState(true);

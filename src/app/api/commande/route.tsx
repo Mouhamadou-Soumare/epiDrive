@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import prisma from '../../../../lib/prisma';
+import {prisma} from '../../../../lib/prisma';
 
 import { Commande } from '../../types';
 
@@ -37,9 +37,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    if ('id' in body) {
-      delete body.id;
-    }
 
     console.log('Creating commande with body:', body);
     const newCommande = await prisma.commande.create({

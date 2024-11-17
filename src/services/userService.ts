@@ -9,8 +9,7 @@ export async function createUser(email: string, password: string, username: stri
   return await prisma.user.create({
     data: {
       email,
-      passwordHash,
-      username, // Ajout d'autres champs si nécessaire
+      username, 
     },
   });
 }
