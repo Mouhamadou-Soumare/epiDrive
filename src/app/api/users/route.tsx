@@ -41,6 +41,7 @@ export async function POST(request: Request) {
       data: {
       username: username,
       email: email,
+      password: password,
       role: role ? (role as unknown as Role) : undefined,
       imageId: imageId || null,
       },
