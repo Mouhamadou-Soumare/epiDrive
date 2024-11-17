@@ -126,6 +126,8 @@ $ npx prisma generate
 # Exécutez le script de seed pour insérer des données de base
 $ node seed.js
 
+# Fonction de hashage de Mot de passe
+$ npx prisma migrate dev --name add_password_hash_and_timestamps
 ```
 
 ## Développer en local avec Docker

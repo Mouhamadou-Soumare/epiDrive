@@ -1,4 +1,5 @@
-import prisma from "../../lib/prisma";
+import { prisma } from "../../lib/prisma"; // Vérifiez que le chemin est correct
+import { QuantitePanier } from "@prisma/client"; // Importation des types nécessaires
 
 export class CartService {
   static async addToCart(userId: number, produitId: number, quantite: number) {
@@ -6,7 +7,7 @@ export class CartService {
       let panier = await prisma.panier.findUnique({
         where: { userId },
         include: {
-          produits: { where: { produitId } }, 
+          produits: true, // Inclure les produits pour la vérification
         },
       });
 
@@ -16,12 +17,12 @@ export class CartService {
             user: { connect: { id: userId } },
           },
           include: {
-            produits: { where: { produitId } },
+            produits: true,
           },
         });
       }
 
-      const existingProduct = panier.produits.find((item) => item.produitId === produitId);
+      const existingProduct = panier.produits.find((item: QuantitePanier) => item.produitId === produitId);
 
       if (existingProduct) {
         await prisma.quantitePanier.update({
@@ -37,7 +38,7 @@ export class CartService {
         await prisma.quantitePanier.create({
           data: {
             quantite,
-            prix: produit.prix,  
+            prix: produit.prix,
             produit: { connect: { id: produitId } },
             panier: { connect: { id: panier.id } },
           },
