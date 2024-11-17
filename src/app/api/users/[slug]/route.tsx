@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import prisma from '../../../../../lib/prisma';
+import {prisma} from '../../../../../lib/prisma';
 
 export async function GET(req: NextRequest, { params }: { params: { slug: string } }) {
   const { slug } = params;
@@ -48,7 +48,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { slug: stri
     return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
   }
 
-  const { username, email, password, role, imageId } = data;
+  const { username, email, role, imageId } = data;
 
   try {
     console.log("Updating user with slug:", slug);
@@ -65,7 +65,6 @@ export async function PATCH(req: NextRequest, { params }: { params: { slug: stri
       data: {
         username,
         email,
-        password,
         role,
         imageId,
       },

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import prisma from '../../../../../lib/prisma';
+import {prisma} from '../../../../../lib/prisma';
 
-export async function PUT(req: NextRequest, { params }) {
+export async function PUT(req: NextRequest, { params }: { params: { productId: string } }) {
     const { productId } = params;
     const { quantity, sessionId, userId } = await req.json();
   
@@ -11,7 +11,7 @@ export async function PUT(req: NextRequest, { params }) {
   
     const panier = await prisma.panier.findFirst({
       where: {
-        userId: userId ?? undefined,
+        userId: userId ? parseInt(userId) : undefined,
         sessionId: sessionId ?? undefined,
       },
     });
@@ -32,7 +32,7 @@ export async function PUT(req: NextRequest, { params }) {
     return NextResponse.json(item, { status: 200 });
   }
   
-  export async function DELETE(req: NextRequest, { params }) {
+  export async function DELETE(req: NextRequest, { params }: { params: { productId: string } }) {
     const { productId } = params;
     const { sessionId, userId } = Object.fromEntries(new URL(req.url).searchParams);
   
@@ -42,7 +42,7 @@ export async function PUT(req: NextRequest, { params }) {
   
     const panier = await prisma.panier.findFirst({
       where: {
-        userId: userId ?? undefined,
+        userId: userId ? parseInt(userId) : undefined,
         sessionId: sessionId ?? undefined,
       },
     });

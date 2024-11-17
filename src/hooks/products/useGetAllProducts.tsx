@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 type Product = {
+  categorieId: any;
   id: number;
   name: string;
   slug: string;

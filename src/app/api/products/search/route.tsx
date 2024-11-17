@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import prisma from '../../../../../lib/prisma';
+import {prisma} from '../../../../../lib/prisma';
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -31,18 +31,18 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    const formattedProducts = products.map(product => ({
+    const formattedProducts = products.map((product: { id: number; name: string; slug: string; description: string; prix: number; image: { path: string } | null; categorie: { id: number; name: string; slug: string } | null }) => ({
       ...product,
       imageSrc: product.image?.path ? `/img/product/${product.slug}.webp` : 'https://via.placeholder.com/300',
       imageAlt: `Image de ${product.name}`,
     }));
 
     const uniqueCategories = Array.from(
-      new Set(products.map(product => product.categorie))
-    ).map(category => ({
-      id: category?.id,
-      name: category?.name,
-      slug: category?.slug,
+      new Set(products.map((product: { categorie: { id: number; name: string; slug: string } | null }) => product.categorie))
+    ).map((category) => ({
+      id: (category as { id: number; name: string; slug: string } | null)?.id,
+      name: (category as { id: number; name: string; slug: string } | null)?.name,
+      slug: (category as { id: number; name: string; slug: string } | null)?.slug,
     })).filter(Boolean);
 
     return NextResponse.json({ products: formattedProducts, categories: uniqueCategories });

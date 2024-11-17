@@ -207,7 +207,11 @@ export default function HomePage() {
           </div>
         </div>
         
-        <RecommendedProducts allProducts={products} />
+        <RecommendedProducts allProducts={products.map(product => ({
+          ...product,
+          prix: product.price, // assuming 'price' is the equivalent of 'prix'
+          categorieId: product.categorieId // assuming 'categoryId' is the correct property name
+        }))} />
 
        
             {/* Featured Products Section */}

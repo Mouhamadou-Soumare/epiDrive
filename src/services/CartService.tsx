@@ -1,5 +1,10 @@
-import { prisma } from "../../lib/prisma"; // Vérifiez que le chemin est correct
-import { QuantitePanier } from "@prisma/client"; // Importation des types nécessaires
+import { prisma } from "../../lib/prisma"; 
+
+interface QuantitePanier {
+  id: number;
+  produitId: number;
+  quantite: number;
+}
 
 export class CartService {
   static async addToCart(userId: number, produitId: number, quantite: number) {
@@ -7,7 +12,7 @@ export class CartService {
       let panier = await prisma.panier.findUnique({
         where: { userId },
         include: {
-          produits: true, // Inclure les produits pour la vérification
+          produits: true, 
         },
       });
 

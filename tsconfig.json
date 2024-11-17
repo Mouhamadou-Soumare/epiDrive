@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -18,10 +22,25 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "target": "ES2017"
   },
-
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/prisma.js", "prisma/seed.js", "prisma/seed/generateSlug.js", "prisma/seed/categories.js", "prisma/seed/product.js", "prisma/seed/subcategories.js"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "lib/prisma.js",
+    "prisma/seed.js",
+    "prisma/seed/generateSlug.js",
+    "prisma/seed/categories.js",
+    "prisma/seed/product.js",
+    "prisma/seed/subcategories.js"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

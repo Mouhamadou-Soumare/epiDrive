@@ -8,7 +8,7 @@ import ProduitList from "../../components/ProduitList";
 import Alert from "../../components/Alert";
 
 export default function UpdateRecettePage() {
-  const { slug } = useParams();
+  const { slug } = useParams() as { slug: string | string[] };
   const [recette, setRecette] = useState<Recette | null>(null);
   const [produits, setProduits] = useState<Produit[]>([]);
   const [loading, setLoading] = useState(true);

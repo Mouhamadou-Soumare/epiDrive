@@ -18,13 +18,7 @@ export default NextAuth({
 
         const user = await getUserByEmail(credentials.email);
 
-        if (user && await bcrypt.compare(credentials.password, user.passwordHash)) {
-          return {
-            id: String(user.id),
-            name: user.username,
-            email: user.email,
-          };
-        }
+        
 
         // Retourne `null` si l'authentification échoue
         return null;
@@ -43,7 +37,7 @@ export default NextAuth({
     },
     async session({ session, token }) {
       if (token) {
-        session.user.id = String(token.id); 
+        session.user.id = String(token.id);
       }
       return session;
     },

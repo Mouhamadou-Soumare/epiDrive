@@ -24,7 +24,7 @@ type SubCategory = {
 };
 
 export default function CategoryPage() {
-  const { slug } = useParams();
+  const { slug } = useParams() as { slug: string | string[] };
   const [currentCategory, setCurrentCategory] = useState<SubCategory | null>(null);
   const [loading, setLoading] = useState(true);
 

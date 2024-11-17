@@ -1,6 +1,6 @@
 export enum Role {
     USER,
-    ADMIN
+    ADMIN,
 }
 
 export interface User {
@@ -9,7 +9,7 @@ export interface User {
     email: string;
     password: string;
     role: Role;
-    imageId: number;
+    imageId?: number;
     commandes: Commande[];
 }
 
@@ -24,21 +24,20 @@ export interface Recette {
 }
 
 export interface Commande {
-    forEach(arg0: (commande: any) => void): unknown;
-    quantites: QuantiteCommande;
     id: number;
     status: string;
     paymentId?: string;
     createdAt: Date;
     userId: number;
+    quantites: QuantiteCommande[];
 }
 
 export interface Produit {
-    id: number; 
-    name: string; 
-    prix: number;     
-    slug: string;  
-    description: string; 
+    id: number;
+    name: string;
+    prix: number;
+    slug: string;
+    description: string;
     imageId?: number;
     categorieId: number;
 }
@@ -48,11 +47,10 @@ export interface QuantitePanier {
     quantite: number;
     prix: number;
     produitId: number;
+    panierId: number; 
 }
 
 export interface QuantiteCommande {
-    reduce(arg0: (total: any, quantite: any) => any, arg1: number): number;
-    map(arg0: (quantite: any) => any): Produit[];
     id: number;
     quantite: number;
     prix: number;
@@ -66,11 +64,11 @@ export interface Image {
 }
 
 export interface Categorie {
-    subcategories: any;
     id: number;
-    name: string; 
-    slug: string; 
-    description: string; 
-    imageId: number; 
-    parentId?: number; 
+    name: string;
+    slug: string;
+    description: string;
+    imageId?: number;
+    parentId?: number;
+    subcategories?: Categorie[]; 
 }

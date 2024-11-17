@@ -1,5 +1,8 @@
 # Étape de développement utilisant une version légère de Node.js
-FROM node:alpine AS dev
+FROM node:18-alpine AS dev
+
+# Installer des outils de build essentiels pour des dépendances natives (comme bcrypt)
+RUN apk add --no-cache python3 make g++
 
 # Définir le répertoire de travail
 WORKDIR /app
@@ -8,12 +11,12 @@ WORKDIR /app
 COPY package*.json ./
 
 # Installer les dépendances
-RUN npm install
+RUN npm install --force
 
 # Copier le reste des fichiers de l'application
 COPY . .
 
-# Exposer le port 3000 utilisé par l'application Next.js
+# Exposer le port utilisé par l'application Next.js
 EXPOSE 3000
 
 # Définir les variables d'environnement pour le hot reload

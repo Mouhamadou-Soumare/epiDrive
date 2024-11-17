@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import prisma from '../../../../lib/prisma';
+import {prisma} from '../../../../lib/prisma';
 import { Categorie } from '../../types';
 
 export async function GET() {
@@ -29,7 +29,7 @@ export async function GET() {
       },
     });
 
-    const formattedCategories = categories.map(category => ({
+    const formattedCategories = categories.map((category: { id: number, name: string, slug: string, image: { path: string } | null, subcategories: { id: number, name: string, slug: string, image: { path: string } | null }[] }) => ({
       name: category.name,
       slug: category.slug,
       imageSrc: category.image?.path || 'https://via.placeholder.com/300',
@@ -64,7 +64,7 @@ export async function POST(request: Request) {
     const slug = name.toLowerCase().replace(/ /g, '-');
 
     if ('id' in body) {
-      delete body.id;
+      delete (body as Partial<Categorie>).id;
     }
     console.log('Creating category with body:', body);
     const newCategory = await prisma.categorie.create({

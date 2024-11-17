@@ -7,7 +7,7 @@ import CommandeCard from "../components/CommandeCard";
 import { Commande, User } from "../../../types";
 
 const UserDetail = () => {
-  const { slug } = useParams(); 
+  const { slug } = useParams() as { slug: string | string[] }; 
   const [user, setUser] = useState<User | null>(null);
   const [commandePrice, setCommandePrice] = useState<number>(0);
   const [commandes, setCommandes] = useState<Commande[]>([]);

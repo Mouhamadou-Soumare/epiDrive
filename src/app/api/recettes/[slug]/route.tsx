@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import prisma from '../../../../../lib/prisma';
+import {prisma} from '../../../../../lib/prisma';
 import { Recette } from '../../../types';
 
 export async function GET(req: NextRequest, { params }: { params: { slug: string } }) {
