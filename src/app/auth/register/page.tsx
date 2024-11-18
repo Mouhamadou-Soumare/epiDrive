@@ -5,7 +5,6 @@ import { useState } from 'react';
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
@@ -15,7 +14,7 @@ export default function RegisterPage() {
 
     const res = await fetch('/api/auth/register', {
       method: 'POST',
-      body: JSON.stringify({ email, username, password }),
+      body: JSON.stringify({ email, password }),
       headers: { 'Content-Type': 'application/json' },
     });
 
@@ -30,7 +29,7 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800 p-6">
       <form onSubmit={handleSubmit} className="bg-gray-900 rounded-lg shadow-2xl p-8 w-full max-w-md">
         <h1 className="text-3xl font-bold text-center text-indigo-500 mb-6">Inscription</h1>
-
+        
         {error && (
           <p className="text-center text-red-500 bg-red-100 dark:bg-red-200 rounded-lg py-2 mb-4">
             {error}
@@ -46,18 +45,6 @@ export default function RegisterPage() {
             required
             className="mt-2 block w-full px-4 py-3 border border-gray-700 rounded-lg bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
             placeholder="Votre adresse email"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-300 mb-2">Nom d'utilisateur</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            className="mt-2 block w-full px-4 py-3 border border-gray-700 rounded-lg bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
-            placeholder="Votre nom d'utilisateur"
           />
         </div>
 
