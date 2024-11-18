@@ -4,8 +4,8 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Dialog, Disclosure } from '@headlessui/react';
 import { XMarkIcon, ChevronDownIcon, PlusIcon } from '@heroicons/react/24/outline';
-import Pagination from '@/components/Pagination';
-import SortDropdown from '@/components/client/product/search/SortDropdown';
+import Pagination from '../components/Pagination';
+import SortDropdown from '../components/client/product/search/SortDropdown';
 
 type Product = {
   id: number;
@@ -28,7 +28,7 @@ const ITEMS_PER_PAGE = 12;
 
 export default function SearchResultsPage() {
   const searchParams = useSearchParams();
-  const query = searchParams.get('query');
+  const query = searchParams ? searchParams.get('query') : '';
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
