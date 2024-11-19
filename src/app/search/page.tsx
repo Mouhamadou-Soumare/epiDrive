@@ -4,8 +4,8 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Dialog, Disclosure } from '@headlessui/react';
 import { XMarkIcon, ChevronDownIcon, PlusIcon } from '@heroicons/react/24/outline';
-import Pagination from '../components/Pagination';
-import SortDropdown from '../components/client/product/search/SortDropdown';
+import Pagination from '../../components/Pagination';
+import SortDropdown from '../../components/client/product/search/SortDropdown';
 
 type Product = {
   id: number;

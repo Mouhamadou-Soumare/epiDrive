@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import React from 'react';
 
-import { Produit } from "../../../types";
+import { Produit } from "../../../app/types";
 
 const RecommendedProducts = ({ allProducts }: { allProducts: Produit[] }) => {
   const [recommendedProducts, setRecommendedProducts] = useState<Produit[]>([]);
-  console.log(recommendedProducts);
   useEffect(() => {
     if (allProducts.length > 0) {
       const shuffled = [...allProducts].sort(() => 0.5 - Math.random());
