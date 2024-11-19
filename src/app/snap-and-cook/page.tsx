@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, Fragment } from "react";
-import CameraCapture from "@/components/snap-and-cook/CameraCapture";
-import IngredientList from "@/components/snap-and-cook/IngredientList";
+import CameraCapture from "../components/snap-and-cook/CameraCapture";
+import IngredientList from "../components/snap-and-cook/IngredientList";
 import { Dialog, Transition } from "@headlessui/react";
 import useAddCart from "@/hooks/cart/useAddCart";
 
