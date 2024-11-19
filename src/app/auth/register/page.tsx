@@ -1,4 +1,5 @@
 // src/app/auth/register/page.tsx
+
 'use client';
 
 import { useState } from 'react';
@@ -26,36 +27,36 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800 p-6">
-      <form onSubmit={handleSubmit} className="bg-gray-900 rounded-lg shadow-2xl p-8 w-full max-w-md">
-        <h1 className="text-3xl font-bold text-center text-indigo-500 mb-6">Inscription</h1>
+    <div className="min-h-screen flex items-center justify-center bg-white p-6">
+      <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-2xl p-8 w-full max-w-md">
+        <h1 className="text-3xl font-bold text-center text-black mb-6">Inscription</h1>
         
         {error && (
-          <p className="text-center text-red-500 bg-red-100 dark:bg-red-200 rounded-lg py-2 mb-4">
+          <p className="text-center text-red-500 bg-red-100 rounded-lg py-2 mb-4">
             {error}
           </p>
         )}
 
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
+          <label className="block text-sm font-medium text-black mb-2">Email</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="mt-2 block w-full px-4 py-3 border border-gray-700 rounded-lg bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
+            className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-black placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
             placeholder="Votre adresse email"
           />
         </div>
 
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-300 mb-2">Mot de passe</label>
+          <label className="block text-sm font-medium text-black mb-2">Mot de passe</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="mt-2 block w-full px-4 py-3 border border-gray-700 rounded-lg bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
+            className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-black placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
             placeholder="Votre mot de passe"
           />
         </div>

@@ -1,3 +1,5 @@
+// src/app/auth/edit-profile/page.tsx
+
 'use client';
 
 import { useSession, SessionProvider } from 'next-auth/react';
@@ -22,7 +24,7 @@ function EditProfilePageContent() {
     } else if (status === 'authenticated' && session?.user) {
       setName(session.user.name || '');
       setEmail(session.user.email || '');
-      setPreviewImage(session.user.image ? `data:image/png;base64,${session.user.image}` : '/default-avatar.png');
+      setPreviewImage(session.user.image ? session.user.image : '/default-avatar.png');
     }
   }, [status, session, router]);
 
@@ -72,9 +74,9 @@ function EditProfilePageContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">Modifier le profil</h1>
+    <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+        <h1 className="text-2xl font-bold mb-6 text-gray-800">Modifier le profil</h1>
         {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -85,7 +87,7 @@ function EditProfilePageContent() {
                 alt="Avatar Preview"
                 className="w-24 h-24 rounded-full mx-auto object-cover shadow-lg"
               />
-              <span className="text-indigo-600 dark:text-indigo-400 block mt-2">Changer l'image</span>
+              <span className="text-indigo-600 block mt-2">Changer l'image</span>
             </label>
             <input
               type="file"
@@ -97,23 +99,23 @@ function EditProfilePageContent() {
           </div>
 
           <div>
-            <label className="block text-gray-700 dark:text-gray-300">Nom</label>
+            <label className="block text-gray-700">Nom</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border dark:bg-gray-700 dark:text-gray-100 focus:outline-none"
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 focus:outline-none focus:border-indigo-500"
               required
             />
           </div>
 
           <div>
-            <label className="block text-gray-700 dark:text-gray-300">Email</label>
+            <label className="block text-gray-700">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border dark:bg-gray-700 dark:text-gray-100 focus:outline-none"
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 focus:outline-none focus:border-indigo-500"
               required
             />
           </div>
