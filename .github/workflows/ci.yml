@@ -100,4 +100,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Deploy Application
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          FOODVISOR_API_KEY: ${{ secrets.FOODVISOR_API_KEY }}
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
         run: echo "Deploying application Epidrive ..."
