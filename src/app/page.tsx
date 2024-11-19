@@ -3,13 +3,13 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { Dialog, DialogPanel } from '@headlessui/react';
 import { ArrowPathIcon, Bars3Icon, CloudArrowUpIcon, CogIcon, LockClosedIcon, ServerIcon, ShieldCheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import LoadingSpinner from './components/LoadingSpinner';
+import LoadingSpinner from '../components/LoadingSpinner';
 import foodPresentation from "../../public/img/food_presentation.webp";
 import groceryDrive from "../../public/img/grocery_drive.webp";
 import scanFood from "../../public/img/scan_food.webp";
 import whatIWant from "../../public/img/what_i_want.webp";
 import epiDrive from "../../public/img/Epidrive.webp";
-import RecommendedProducts from '@/app/components/client/product/RecommendedProducts';
+import RecommendedProducts from '@/components/client/product/RecommendedProducts';
 import { useGetAllProducts } from '@/hooks/products/useGetAllProducts';
 
 const navigation = [
