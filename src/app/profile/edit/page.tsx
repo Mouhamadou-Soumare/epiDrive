@@ -5,7 +5,7 @@
 import { useSession, SessionProvider } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 
 function EditProfilePageContent() {
   const { data: session, status } = useSession();

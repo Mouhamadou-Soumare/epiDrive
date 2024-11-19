@@ -22,26 +22,32 @@ export default function SearchBar() {
   const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchQuery = e.target.value;
     setQuery(searchQuery);
-
+  
     if (searchQuery.length < 2) {
       setResults([]);
       return;
     }
-
+  
     try {
       const res = await fetch(`/api/products/search?query=${encodeURIComponent(searchQuery)}`);
       const data = await res.json();
-
+  
       if (res.ok) {
-        setResults(data);
+        if (Array.isArray(data.products)) {
+          setResults(data.products); // Utilise uniquement les produits
+        } else {
+          console.error('Structure de données inattendue:', data);
+          setResults([]); // Réinitialise les résultats en cas de structure inattendue
+        }
       } else {
-        console.error("Erreur de recherche:", data.error);
+        console.error('Erreur de recherche:', data.error);
       }
     } catch (error) {
-      console.error("Erreur lors de la recherche:", error);
+      console.error('Erreur lors de la recherche:', error);
+      setResults([]);
     }
   };
-
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim()) {
@@ -60,6 +66,13 @@ export default function SearchBar() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    console.log('Résultats mis à jour:', results);
+    console.log('Nombre de résultats:', Array.isArray(results) ? results.length : 'Non défini ou non tableau');
+  }, [results]);
+  
+
 
   return (
     <form className="max-w min-w-96 relative" onSubmit={handleSubmit}>
@@ -102,6 +115,8 @@ export default function SearchBar() {
       </div>
 
       {results.length > 0 && (
+        <div>
+
         <div ref={dropdownRef} className="absolute top-full mt-2 w-full bg-white border rounded-lg shadow-lg z-10">
           {results.map((product) => (
             <a
@@ -124,6 +139,8 @@ export default function SearchBar() {
             </a>
           ))}
         </div>
+        </div>
+
       )}
     </form>
   );
