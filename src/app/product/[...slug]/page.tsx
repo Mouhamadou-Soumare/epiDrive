@@ -19,10 +19,11 @@ type Product = {
 };
 
 export default function ProductDetailPage() {
-  const { slug } = useParams();
+  const { slug } = useParams() as { slug: string | string[] };
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedSize, setSelectedSize] = useState(product?.sizes?.[0]);
+  const [image, setImage] = useState<{ path: string } | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [sessionId, setSessionId] = useState<string | null>(null);
 
@@ -61,7 +62,7 @@ export default function ProductDetailPage() {
 
       if (product) {
         try {
-          const res = await fetch(`/api/images/${product.imageId}`);
+          const res = await fetch(`/api/images/${product.image.path}`);
           const data = await res.json();
           if (res.ok) {
             setImage(data);
