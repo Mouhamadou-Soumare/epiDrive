@@ -24,24 +24,24 @@ export default function SignInPage() {
     if (result?.error) {
       setError(result.error);
     } else {
-      router.push('/profile'); 
+      router.push('/profile');
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800 p-6">
-      <div className="w-full max-w-md bg-gray-900 rounded-lg shadow-2xl p-8">
-        <h1 className="text-3xl font-bold text-center text-indigo-500 mb-6">Se connecter</h1>
+    <div className="min-h-screen flex items-center justify-center bg-white p-6">
+      <div className="w-full max-w-md bg-white rounded-lg shadow-2xl p-8">
+        <h1 className="text-3xl font-bold text-center text-black mb-6">Se connecter</h1>
 
         {error && (
-          <p className="text-center text-red-500 bg-red-100 dark:bg-red-200 rounded-lg py-2 mb-4">
+          <p className="text-center text-red-500 bg-red-100 rounded-lg py-2 mb-4">
             {error}
           </p>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2" htmlFor="email">
+            <label className="block text-sm font-medium text-black mb-2" htmlFor="email">
               Email
             </label>
             <input
@@ -50,13 +50,13 @@ export default function SignInPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="mt-2 block w-full px-4 py-3 border border-gray-700 rounded-lg bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
+              className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-black placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
               placeholder="Votre adresse email"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2" htmlFor="password">
+            <label className="block text-sm font-medium text-black mb-2" htmlFor="password">
               Mot de passe
             </label>
             <input
@@ -65,7 +65,7 @@ export default function SignInPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="mt-2 block w-full px-4 py-3 border border-gray-700 rounded-lg bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
+              className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-black placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
               placeholder="Votre mot de passe"
             />
           </div>
@@ -73,9 +73,9 @@ export default function SignInPage() {
           <button
             type="submit"
             className="w-full py-3 text-lg font-semibold text-white bg-gradient-to-r from-purple-500 to-indigo-600 rounded-lg shadow-lg hover:from-purple-600 hover:to-indigo-700 transform transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-          Se connecter
-        </button>
+          >
+            Se connecter
+          </button>
         </form>
       </div>
     </div>

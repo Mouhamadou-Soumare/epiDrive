@@ -32,7 +32,7 @@ import SearchBar from "./SearchBar";
 import { useGetMainCategories } from "@/hooks/categories/useGetMainCategories";
 import CartSlideOver from "./client/product/cart/CartSlideOver";
 import { useGetCart } from "@/hooks/cart/useGetCart";
-import { signIn, signOut, useSession } from "next-auth/react"; // Importer les fonctions de next-auth
+import { signIn, signOut, useSession } from "next-auth/react";
 
 const products = [
   {
@@ -73,10 +73,10 @@ export default function Navbar() {
   let session;
 
   try {
-    const { data } = useSession(); // Essayez d'obtenir la session
+    const { data } = useSession();
     session = data;
   } catch {
-    session = null; // Gestion d'erreur si useSession() est utilisé hors du contexte de <SessionProvider />
+    session = null; 
   }
 
   const { categories, loading: categoriesLoading, error } = useGetMainCategories();
@@ -108,7 +108,6 @@ export default function Navbar() {
           <a href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
             <div className="h-8 w-auto">
-              {/* SVG intégré */}
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 80" className="h-8">
                 <g>
                   <g>
@@ -164,7 +163,6 @@ export default function Navbar() {
               className="absolute inset-x-0 top-0 -z-10 bg-white pt-14 shadow-lg ring-1 ring-gray-900/5 transition-transform rounded-lg mt-20 w-11/12 mx-auto"
             >
               <div className="flex">
-                {/* Première grid */}
                 <div className="px-6 py-10 lg:px-8 pt-8">
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Mes courses</h2>
                   <div className="grid grid-cols-2 gap-x-4">
@@ -185,7 +183,6 @@ export default function Navbar() {
                     ))}
                   </div>
                 </div>
-                {/* Deuxième grid */}
                 <div className="px-6 py-10 lg:px-8 pt-8">
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Maison & loisirs</h2>
                   <div className="grid grid-cols-1 gap-x-4">
@@ -225,7 +222,7 @@ export default function Navbar() {
               Sign out &rarr;
             </button>
           ) : (
-            <button onClick={() => signIn()} className="text-sm font-semibold">
+            <button onClick={() => signIn(undefined, { callbackUrl: '/auth/signin' })} className="text-sm font-semibold">
               Log in &rarr;
             </button>
           )}
@@ -238,7 +235,6 @@ export default function Navbar() {
             <a href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
               <div className="h-10 w-auto">
-                {/* SVG du logo */}
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 80" className="h-10">
                   <g>
                     <g>
@@ -279,7 +275,7 @@ export default function Navbar() {
                 </a>
               </div>
               <div className="py-6">
-                <button onClick={() => (session ? signOut() : signIn())} className="block rounded-lg px-3 py-2.5 text-base font-semibold hover:bg-gray-50">
+                <button onClick={() => (session ? signOut() : signIn(undefined, { callbackUrl: '/auth/signin' }))} className="block rounded-lg px-3 py-2.5 text-base font-semibold hover:bg-gray-50">
                   {session ? "Sign out" : "Log in"}
                 </button>
               </div>
