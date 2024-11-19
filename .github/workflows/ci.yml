@@ -32,10 +32,21 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      # Étape de débogage pour vérifier que la variable DATABASE_URL est bien passée
+      - name: Debug Environment Variables
+        run: echo "DATABASE_URL is set"
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
       - name: Apply Prisma Migrations
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: npx prisma migrate deploy
+        run: |
+          if [ -z "${DATABASE_URL}" ]; then
+            echo "Error: DATABASE_URL is not set"
+            exit 1
+          fi
+          npx prisma migrate deploy
 
       - name: Run Prisma Seed
         env:
