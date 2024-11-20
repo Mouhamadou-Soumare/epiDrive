@@ -32,15 +32,9 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      # Étape de débogage pour vérifier la variable DATABASE_URL
-      - name: Debug Environment Variables
-        run: echo "DATABASE_URL=${DATABASE_URL}"
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-
       - name: Apply Prisma Migrations
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: "mysql://user:password@db:3306/epidrive"
         run: |
           if [ -z "${DATABASE_URL}" ]; then
             echo "Error: DATABASE_URL is not set"
@@ -50,7 +44,7 @@ jobs:
 
       - name: Run Prisma Seed
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: "mysql://user:password@db:3306/epidrive"
         run: npx prisma db seed
 
       - name: Build Application
@@ -101,9 +95,5 @@ jobs:
 
       - name: Deploy Application
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
-          FOODVISOR_API_KEY: ${{ secrets.FOODVISOR_API_KEY }}
-          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
-          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
+          DATABASE_URL: "mysql://user:password@db:3306/epidrive"
         run: echo "Deploying application Epidrive ..."
