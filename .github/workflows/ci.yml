@@ -34,13 +34,8 @@ jobs:
 
       - name: Apply Prisma Migrations
         env:
-          DATABASE_URL: "mysql://user:password@db:3306/epidrive"
-        run: |
-          if [ -z "${DATABASE_URL}" ]; then
-            echo "Error: DATABASE_URL is not set"
-            exit 1
-          fi
-          npx prisma migrate deploy
+          SHADOW_DATABASE_URL: "mysql://root:rootpassword@db:3306/shadow_epidrive"
+        run: npx prisma migrate deploy
 
       - name: Run Prisma Seed
         env:
