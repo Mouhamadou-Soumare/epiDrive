@@ -10,24 +10,43 @@ export async function GET() {
     const products = await prisma.produit.findMany({
       include: {
         image: true,
+        categorie: true
       },
     });
+    
+    // Check si il y a des produits en BDD
+    if (products.length === 0) {
+      console.log("No products found")
+      return NextResponse.json({ message: 'No products found' }, { status: 404 });
+    }
+
+    // Récuperer les catégories 
+    const categories = await prisma.categorie.findMany();
+    if (categories.length === 0) {
+      console.log("No categories found")
+      return NextResponse.json({ message: 'No categories found' }, { status: 404 });
+    }
+
+    // Récuperer les catégories 
+    const images = await prisma.image.findMany();
+    if (images.length === 0) {
+      console.log("No images found")
+      return NextResponse.json({ message: 'No images found' }, { status: 404 });
+    }
+
+    //Récupeter les infos principal du produit
     const transformedProducts = products.map((product: Produit) => ({
       id: product.id,
       name: product.name,
       prix: product.prix,
-      imageSrc: product.imageId ? `/images/${product.imageId}` : '',
-      imageAlt: product.name,
+      imageId: images.find((image: { id: number }) => image.id === product.imageId) || '',
       slug: product.slug,
       description: product.description,
+      categorie: categories.find((categorie: { id: number }) => categorie.id === product.categorieId)?.name || '',
     }));
 
-    console.log("Products found:", transformedProducts);
 
-    if (transformedProducts.length === 0) {
-      return NextResponse.json({ message: 'No products found' }, { status: 404 });
-    }
-
+    console.log("GET API/products: products found:", transformedProducts);
     return NextResponse.json(transformedProducts, { status: 200 });
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -66,7 +85,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Vérifier si l'appel concerne la création d'un nouveau produit
-    const { name, description, prix, categorieId } = body as Produit;
+    const { name, description, prix, categorieId } = body;
 
     if (!name || !prix || !description || !categorieId) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -89,6 +108,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    console.log("POST API/product/ : ", newProduct);
     return NextResponse.json(newProduct, { status: 201 });
   } catch (error) {
     console.error('Error handling POST request:', error);

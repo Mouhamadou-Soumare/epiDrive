@@ -85,7 +85,7 @@ export async function POST(req: Request) {
       console.log('Image created:', newImage);
     }
 
-    console.log('categorie created:', newcategorie);
+    console.log("POST API/categorie/ : ", newcategorie);
     return NextResponse.json(newcategorie, { status: 201 });
   } catch (error) {
       console.error("Error in POST API/categorie:", error);
