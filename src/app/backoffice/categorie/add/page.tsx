@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Alert from '../components/Alert';
 import FormInputField from '../components/FormInputField';
-import { Categorie } from "../../../types";
+import { Categorie } from "../../../../../types";
 
 export default function AddCategoryPage() {
   const [categories, setCategories] = useState<Categorie[]>([]);

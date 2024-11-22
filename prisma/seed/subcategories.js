@@ -3,44 +3,52 @@ import { generateSlug } from './generateSlug.js';
 import { createProducts } from './product.js'; // Importez la fonction createProducts
 
 export async function createSubcategories(category, existingCategory) {
-    for (const subCategory of category.subcategories || []) {
-        // Recherche de la sous-catégorie dans `Categorie`
-        const existingSubCategory = await prisma.categorie.findFirst({
-            where: {
-                slug: subCategory.slug,
-                parentId: existingCategory.id, // Référence au parent
-            },
-        });
+    if (!category || !category.subcategories) {
+        console.log("Aucune sous-catégorie à traiter pour cette catégorie.");
+        return;
+    }
 
-        if (!existingSubCategory) {
-            try {
+    for (const subCategory of category.subcategories) {
+        try {
+            // Recherche de la sous-catégorie existante dans `Categorie`
+            const existingSubCategory = await prisma.categorie.findFirst({
+                where: {
+                    slug: generateSlug(subCategory.name),
+                    parentId: existingCategory.id, // Référence à la catégorie parent
+                },
+            });
+
+            if (!existingSubCategory) {
+                // Création de la sous-catégorie si elle n'existe pas
                 const createdSubCategory = await prisma.categorie.create({
                     data: {
                         name: subCategory.name,
                         slug: generateSlug(subCategory.name),
-                        description: subCategory.description,
+                        description: subCategory.description || null,
                         parent: {
                             connect: { id: existingCategory.id }, // Connexion à la catégorie parent
                         },
                         image: {
                             create: {
-                                path: `/img/category/${generateSlug(subCategory.name)}.webp`, // Chemin d'image dynamique pour la sous-catégorie
+                                path: `/img/category/${generateSlug(subCategory.name)}.webp`, // Chemin d'image dynamique
                             },
                         },
                     },
                 });
-                console.log(`Sous-catégorie ${createdSubCategory.name} ajoutée sous ${category.title}`);
+                console.log(`Sous-catégorie "${createdSubCategory.name}" ajoutée sous "${existingCategory.name}"`);
 
-                // Utilisez createProducts pour ajouter les produits à la sous-catégorie créée
+                // Ajout des produits à la sous-catégorie nouvellement créée
                 await createProducts(subCategory, createdSubCategory);
-
-            } catch (error) {
-                console.error(`Erreur lors de la création de la sous-catégorie ${subCategory.name}:`, error.message);
+            } else {
+                console.log(`Sous-catégorie "${subCategory.name}" existe déjà sous "${existingCategory.name}".`);
+                // Ajout des produits à la sous-catégorie existante
+                await createProducts(subCategory, existingSubCategory);
             }
-        } else {
-            console.log(`La sous-catégorie ${subCategory.name} existe déjà.`);
-            // Utilisez createProducts pour ajouter les produits à la sous-catégorie existante
-            await createProducts(subCategory, existingSubCategory);
+        } catch (error) {
+            console.error(
+                `Erreur lors du traitement de la sous-catégorie "${subCategory.name}" sous "${existingCategory.name}":`,
+                error.message
+            );
         }
     }
 }

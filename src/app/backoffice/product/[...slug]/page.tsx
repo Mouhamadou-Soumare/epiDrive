@@ -6,7 +6,7 @@ import { CheckIcon } from '@heroicons/react/20/solid';
 
 import ProductImage from "../components/ProductImage";
 import ProductActions from "../components/ProductActions";
-import { Produit, Image } from "../../../types";
+import { Produit, Image } from "../../../../../types";
 
 export default function ProductDetails() {
   const params = useParams();

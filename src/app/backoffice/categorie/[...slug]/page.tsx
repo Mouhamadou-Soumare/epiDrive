@@ -6,7 +6,7 @@ import Link from "next/link";
 import Alert from "../components/Alert";
 import DeleteButton from "../components/DeleteButton";
 import { CheckIcon } from '@heroicons/react/20/solid';
-import { Categorie } from "../../../types";
+import { Categorie } from "../../../../../types";
 import CategorieRow from "../components/CategorieRow";
 
 export default function CategoryDetails() {

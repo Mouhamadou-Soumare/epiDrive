@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Produit } from "../../types";
+import { Produit } from "../../../../types";
 
 import SearchInput from "../components/SearchInput";
 import ProductRow from "./components/ProductRow";

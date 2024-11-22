@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Categorie } from "../../types";
+import { Categorie } from "../../../../types";
 import SearchInput from "../components/SearchInput";
 import CategorieRow from "./components/CategorieRow";
 

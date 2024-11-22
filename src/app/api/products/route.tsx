@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
-import { Produit } from '../../types';
+import { Produit } from '../../../../types';
 
 export async function GET() {
   try {

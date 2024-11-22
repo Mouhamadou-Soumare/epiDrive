@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import TextInput from "../components/TextInput";
 import TextareaInput from "../components/TextareaInput";
 import SelectInput from "../components/SelectInput";
-import { Produit, Categorie } from "../../../types";
+import { Produit, Categorie } from "../../../../../types";
 
 export default function AddProductPage() {
     const router = useRouter();

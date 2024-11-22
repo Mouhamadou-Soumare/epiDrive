@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from "next/link";
 import ImageDisplay from "../components/ImageDisplay";
 import ProduitCard from "../components/ProduitCard";
-import { Recette, Image } from "../../../types";
+import { Recette, Image } from "../../../../../types";
 
 export default function RecetteDetails() {
   const { slug } = useParams() as { slug: string | string[] }; 

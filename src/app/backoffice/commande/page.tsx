@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import CommandeRow from "./components/CommandeRow";
-import { Commande } from "../../types";
+import { Commande } from "../../../../types";
 import SearchInput from "../components/SearchInput";
 
 const CommandeList = () => {

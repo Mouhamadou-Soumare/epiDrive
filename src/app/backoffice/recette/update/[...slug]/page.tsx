@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { Produit, Recette } from "../../../../types";
+import { Produit, Recette } from "../../../../../../types";
 import FormInputField from "../../components/FormInputField";
 import ProduitList from "../../components/ProduitList";
 import Alert from "../../components/Alert";

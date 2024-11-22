@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 import SearchInput from "../components/SearchInput";
-import { User } from "../../types";
+import { User } from "../../../../types";
 import UtilisateurRow from "./components/UtilisateurRow";
 
 const UtilisateurList = () => {
