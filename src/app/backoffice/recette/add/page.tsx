@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Produit, Recette } from "../../../types";
+import { Produit, Recette } from "../../../../../types";
 import FormInputField from "../components/FormInputField";
 import ProduitList from "../components/ProduitList";
 import Alert from "../components/Alert";

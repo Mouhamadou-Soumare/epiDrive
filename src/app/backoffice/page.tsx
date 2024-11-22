@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from 'next/link';
 
-import { User, Commande, Produit } from "../types";
+import { User, Commande, Produit } from "../../../types";
 
 /**
  * Page principale du backoffice.

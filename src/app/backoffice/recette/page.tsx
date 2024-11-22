@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 import SearchInput from "../components/SearchInput";
-import { Recette } from "../../types";
+import { Recette } from "../../../../types";
 import RecetteRow from "./components/RecetteRow";
 
 const RecetteList = () => {

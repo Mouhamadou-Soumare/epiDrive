@@ -7,6 +7,7 @@ import { createSubcategories } from './seed/subcategories.js';
 import { createUsers } from './seed/users.js';
 import { createRecettes } from './seed/recette.js';
 import { createCommandes } from './seed/commande.js';
+import { createPanier } from './seed/panier.js';
 
 async function main() {
     try {
@@ -44,8 +45,15 @@ async function main() {
             }
         }
 
-        await createRecettes();
-        await createCommandes();
+        for (let i = 0; i < 22; i++) {
+            await createRecettes();
+            await createPanier();
+        }
+        
+        for (let i = 0; i < 12; i++) {
+            await createCommandes();
+        }
+
     } catch (e) {
         console.error('Erreur lors de la création des données :', e);
         process.exit(1);

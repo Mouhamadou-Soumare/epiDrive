@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation';
 import Link from "next/link";
 import ProduitRow from "../components/ProduitRow";
 import { UpdateCommandeAlert } from '../components/UpdateCommandeAlert';
-import { Commande, User, Produit } from "../../../types";
+import { Commande, User, Produit } from "../../../../../types";
 
 const CommandeDetail = () => {
   const { slug } = useParams() as { slug: string | string[] }; 

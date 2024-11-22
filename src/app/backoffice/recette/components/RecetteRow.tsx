@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Recette } from "../../../types";
+import { Recette } from "../../../../../types";
 
 interface RecetteRowProps {
   recette: Recette;

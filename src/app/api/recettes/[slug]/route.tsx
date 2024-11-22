@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
-import { Recette } from '../../../types';
+import { Recette } from '../../../../../types';
 
 export async function GET(req: NextRequest, { params }: { params: { slug: string } }) {
   const { slug } = params;

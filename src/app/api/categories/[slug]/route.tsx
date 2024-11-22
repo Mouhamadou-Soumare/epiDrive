@@ -1,13 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import { NextResponse } from 'next/server';
+import prisma from '@/lib/prisma';
 
-export async function GET(req: NextRequest, { params }: { params: { slug: string } }) {
+export async function GET(req: Request, { params }: { params: { slug: string } }) {
   const { slug } = params;
 
-  if (!slug) {
-    return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
-  }
+  if (!slug) return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
 
   try {
     const category = await prisma.categorie.findFirst({
@@ -15,26 +12,19 @@ export async function GET(req: NextRequest, { params }: { params: { slug: string
         OR: [
           { slug },
           { id: parseInt(slug, 10) || -1 } 
-        ],
+        ]
       },
       include: {
         subcategories: {
           select: {
-            id: true,
-            name: true,
-            slug: true,
+            id: true, name: true, slug: true,
             image: {
               select: { path: true },
             },
           },
         },
         produits: {
-          select: {
-            id: true,
-            name: true,
-            slug: true,
-            description: true,
-            prix: true,
+          select: { id: true, name: true, slug: true, description: true, prix: true,
             image: {
               select: { path: true },
             },
@@ -51,7 +41,8 @@ export async function GET(req: NextRequest, { params }: { params: { slug: string
     // Formatage de la réponse avec les sous-catégories et les produits
     const formattedCategory = {
       ...category,
-      subcategories: category.subcategories.map((subcategory: { name: string; slug: string; image: { path: string } | null }) => ({
+      subcategories: category.subcategories.map((subcategory: { id: number, name: string; slug: string; image: { path: string } | null }) => ({
+        id: subcategory.id,
         name: subcategory.name,
         slug: subcategory.slug,
         imageSrc: subcategory.image?.path ? `/img/category/${subcategory.slug}.webp` : 'https://via.placeholder.com/300',
@@ -68,6 +59,7 @@ export async function GET(req: NextRequest, { params }: { params: { slug: string
       })),
     };
 
+    console.log("GET API/categorie/"+slug+": categories found:", formattedCategory);
     return NextResponse.json(formattedCategory);
   } catch (error) {
     console.error("Erreur lors de la récupération de la catégorie:", error);
@@ -75,7 +67,7 @@ export async function GET(req: NextRequest, { params }: { params: { slug: string
   }
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: { slug: string } }) {
+export async function PATCH(req: Request, { params }: { params: { slug: string } }) {
   const { slug } = params;
   const data = await req.json();
 
@@ -84,16 +76,13 @@ export async function PATCH(req: NextRequest, { params }: { params: { slug: stri
   }
 
   const { name, description, imageId, parentId } = data;
-
   try {
     console.log("Updating category with slug:", slug);
     const existingCategory = await prisma.categorie.findUnique({
-      where: { slug },
+      where: { slug }
     });
 
-    if (!existingCategory) {
-      return NextResponse.json({ error: 'Category not found' }, { status: 404 });
-    }
+    if (!existingCategory) return NextResponse.json({ error: 'Category not found' }, { status: 404 });
 
     const updatedCategory = await prisma.categorie.update({
       where: { slug },
@@ -105,6 +94,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { slug: stri
       },
     });
 
+    console.log("PATCH API/categorie/"+slug+": categories found:", updatedCategory);
     return NextResponse.json(updatedCategory);
   } catch (error: any) {
     console.error("Error updating category:", error);
@@ -112,7 +102,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { slug: stri
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { slug: string } }) {
+export async function DELETE(req: Request, { params }: { params: { slug: string } }) {
   const { slug } = params;
 
   if (!slug) {
@@ -123,7 +113,8 @@ export async function DELETE(req: NextRequest, { params }: { params: { slug: str
     await prisma.categorie.delete({
       where: { slug },
     });
-
+    
+    console.log("DELETE API/categorie/"+slug+": categories found:");
     return NextResponse.json({ message: 'Category deleted successfully' });
   } catch (error) {
     console.error("Error deleting category:", error);

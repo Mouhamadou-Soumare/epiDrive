@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import TextInput from "../../components/TextInput";
 import TextareaInput from "../../components/TextareaInput";
 import SelectInput from "../../components/SelectInput";
-import { Produit, Categorie } from "../../../../types";
+import { Produit, Categorie } from "../../../../../../types";
 
 export default function UpdateProductPage() {
     const { slug } = useParams() as { slug: string | string[] };

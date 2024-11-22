@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { Categorie } from "../../../../types";
+import { Categorie } from "../../../../../../types";
 import FormInputField from "../../components/FormInputField";
 import Alert from "../../components/Alert";
 

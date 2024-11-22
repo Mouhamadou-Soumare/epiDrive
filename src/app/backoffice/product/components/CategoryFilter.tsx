@@ -1,4 +1,4 @@
-import { Categorie } from "../../../types";
+import { Categorie } from "../../../../../types";
 
 interface CategoryFilterProps {
   categories: Categorie[];

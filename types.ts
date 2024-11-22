@@ -1,6 +1,15 @@
 export enum Role {
     USER,
     ADMIN,
+    MAGASINIER, // Nouveau rôle ajouté
+}
+
+export enum CommandeStatus {
+    EN_ATTENTE,
+    EN_PREPARATION,
+    EXPEDIEE,
+    LIVREE,
+    ANNULEE, // Enum pour les statuts de commande
 }
 
 export interface User {
@@ -11,6 +20,9 @@ export interface User {
     role: Role;
     imageId?: number;
     commandes: Commande[];
+    recettes: Recette[];
+    livraisons: Livraison[]; // Relation avec les adresses de livraison
+    logs: Log[]; // Relation avec les logs
 }
 
 export interface Recette {
@@ -25,11 +37,12 @@ export interface Recette {
 
 export interface Commande {
     id: number;
-    status: string;
+    status: CommandeStatus; // Utilisation de l'enum pour le statut
     paymentId?: string;
     createdAt: Date;
     userId: number;
     quantites: QuantiteCommande[];
+    livraison?: Livraison; // Relation avec une adresse de livraison
 }
 
 export interface Produit {
@@ -40,6 +53,8 @@ export interface Produit {
     description: string;
     imageId?: number;
     categorieId: number;
+    quantitePaniers?: QuantitePanier[]; // Produits dans des paniers
+    quantiteCommandes?: QuantiteCommande[]; // Produits dans des commandes
 }
 
 export interface QuantitePanier {
@@ -47,7 +62,7 @@ export interface QuantitePanier {
     quantite: number;
     prix: number;
     produitId: number;
-    panierId: number; 
+    panierId: number;
 }
 
 export interface QuantiteCommande {
@@ -70,5 +85,24 @@ export interface Categorie {
     description: string;
     imageId?: number;
     parentId?: number;
-    subcategories?: Categorie[]; 
+    subcategories?: Categorie[];
+    produits?: Produit[]; // Produits associés à la catégorie
+}
+
+export interface Livraison {
+    id: number;
+    adresse: string;
+    ville: string;
+    codePostal: string;
+    pays: string;
+    userId?: number; // Relation avec un utilisateur
+    commandeId?: number; // Relation avec une commande
+}
+
+export interface Log {
+    id: number;
+    action: string;
+    metadata?: Record<string, any>; // Métadonnées pour des informations contextuelles
+    createdAt: Date;
+    userId: number; // Relation avec un utilisateur
 }

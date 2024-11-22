@@ -9,22 +9,37 @@ async function hashPassword(password) {
   return await bcrypt.hash(password, saltRounds);
 }
 
+
 export async function createUsers() {
+  // Création de 10 utilisateurs de type client
   const clientPassword = "test";
   const hashedClientPassword = await hashPassword(clientPassword);
   
-  const clientUser = await prisma.user.create({
-    data: {
-      username: faker.internet.userName(),
-      email: faker.internet.email(),
-      password: hashedClientPassword,
-      role: 'USER',
-    },
-  });
+  for (let i = 0; i < 10; i++) {
+    const clientUser = await prisma.user.create({
+      data: {
+        username: faker.internet.userName(),
+        email: faker.internet.email(),
+        password: hashedClientPassword,
+        role: 'USER',
+        livraisons: {
+          create: [
+            {
+              adresse: faker.address.streetAddress(),
+              ville: faker.address.city(),
+              codePostal: faker.address.zipCode(),
+              pays: faker.address.country(),
+            },
+          ],
+        },
+      },
+    });
 
-  console.log('Client User created:', clientUser);
-  console.log('Client User plain password (for reference):', clientPassword); // Affiche le mot de passe en clair
+    console.log('Client User created:', clientUser);
+    console.log('Client User plain password (for reference):', clientPassword);
+  }
 
+  // Création d'un utilisateur de type admin
   const adminPassword = "admin";
   const hashedAdminPassword = await hashPassword(adminPassword);
 
@@ -34,9 +49,43 @@ export async function createUsers() {
       email: faker.internet.email(),
       password: hashedAdminPassword,
       role: 'ADMIN',
+      logs: {
+        create: [
+          {
+            action: 'Admin account created',
+            metadata: { reason: 'Seed script initialization' },
+          },
+        ],
+      },
     },
   });
 
   console.log('Admin User created:', adminUser);
-  console.log('Admin User plain password (for reference):', adminPassword); // Affiche le mot de passe en clair
+  console.log('Admin User plain password (for reference):', adminPassword);
+
+  // Création de 3 utilisateurs de type magasinier
+  for (let i = 0; i < 3; i++) {
+    const magasinierPassword = "magasinier";
+    const hashedMagasinierPassword = await hashPassword(magasinierPassword);
+
+    const magasinierUser = await prisma.user.create({
+      data: {
+        username: faker.internet.userName(),
+        email: faker.internet.email(),
+        password: hashedMagasinierPassword,
+        role: 'MAGASINIER',
+        logs: {
+          create: [
+            {
+              action: 'Magasinier account created',
+              metadata: { reason: 'Seed script initialization' },
+            },
+          ],
+        },
+      },
+    });
+
+    console.log('Magasinier User created:', magasinierUser);
+    console.log('Magasinier User plain password (for reference):', magasinierPassword);
+  }
 }

@@ -4,7 +4,7 @@ import { CursorArrowRaysIcon, UsersIcon } from '@heroicons/react/24/outline';
 import { useState, useEffect } from "react";
 import { useParams } from 'next/navigation';
 import CommandeCard from "../components/CommandeCard";
-import { Commande, User } from "../../../types";
+import { Commande, User } from "../../../../../types";
 
 const UserDetail = () => {
   const { slug } = useParams() as { slug: string | string[] }; 
