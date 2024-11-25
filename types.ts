@@ -17,10 +17,14 @@ export interface User {
     username: string;
     email: string;
     password: string;
+    createdAt: Date;
+    updatedAt: Date;
     role: Role;
     imageId?: number;
+    image?: Image; // Relation avec une image
     commandes: Commande[];
     recettes: Recette[];
+    panier?: Panier; // Un utilisateur peut avoir un panier
     livraisons: Livraison[]; // Relation avec les adresses de livraison
     logs: Log[]; // Relation avec les logs
 }
@@ -30,7 +34,7 @@ export interface Recette {
     title: string;
     description: string;
     instructions: string;
-    image: string;
+    image?: string; // Image optionnelle
     user: User;
     produits: Produit[];
 }
@@ -41,6 +45,7 @@ export interface Commande {
     paymentId?: string;
     createdAt: Date;
     userId: number;
+    user: User; // Relation avec l'utilisateur
     quantites: QuantiteCommande[];
     livraison?: Livraison; // Relation avec une adresse de livraison
 }
@@ -48,13 +53,16 @@ export interface Commande {
 export interface Produit {
     id: number;
     name: string;
-    prix: number;
     slug: string;
     description: string;
+    prix: number;
     imageId?: number;
+    image?: Image; // Relation avec une image
     categorieId: number;
+    categorie?: Categorie; // Relation avec la catégorie
     quantitePaniers?: QuantitePanier[]; // Produits dans des paniers
     quantiteCommandes?: QuantiteCommande[]; // Produits dans des commandes
+    recettes?: Recette[]; // Relation avec des recettes
 }
 
 export interface QuantitePanier {
@@ -62,7 +70,9 @@ export interface QuantitePanier {
     quantite: number;
     prix: number;
     produitId: number;
+    produit: Produit; // Relation avec le produit
     panierId: number;
+    panier: Panier; // Relation avec le panier
 }
 
 export interface QuantiteCommande {
@@ -70,23 +80,39 @@ export interface QuantiteCommande {
     quantite: number;
     prix: number;
     produitId: number;
+    produit: Produit; // Relation avec le produit
     commandeId: number;
+    commande: Commande; // Relation avec la commande
 }
 
 export interface Image {
     id: number;
     path: string;
+    produits?: Produit[]; // Produits associés à l'image
+    categories?: Categorie[]; // Catégories associées à l'image
+    users?: User[]; // Utilisateurs associés à l'image
 }
 
 export interface Categorie {
     id: number;
     name: string;
     slug: string;
-    description: string;
+    description?: string; // Description optionnelle
     imageId?: number;
+    image?: Image; // Relation avec une image
     parentId?: number;
-    subcategories?: Categorie[];
+    parent?: Categorie; // Relation avec une catégorie parent
+    subcategories?: Categorie[]; // Sous-catégories
     produits?: Produit[]; // Produits associés à la catégorie
+}
+
+export interface Panier {
+    id: number;
+    fk_userId?: number; // Relation avec un utilisateur
+    sessionId?: string; // Identifiant de session optionnel
+    user?: User; // Relation avec l'utilisateur
+    produits: QuantitePanier[]; // Produits dans le panier
+    livraison?: Livraison; // Relation avec une livraison
 }
 
 export interface Livraison {
@@ -95,8 +121,12 @@ export interface Livraison {
     ville: string;
     codePostal: string;
     pays: string;
-    userId?: number; // Relation avec un utilisateur
-    commandeId?: number; // Relation avec une commande
+    fk_userId?: number; // Relation avec un utilisateur
+    user?: User; // Relation avec l'utilisateur
+    fk_commande?: number; // Relation avec une commande
+    commande?: Commande; // Relation avec une commande
+    fk_panier?: number; // Relation avec un panier
+    panier?: Panier; // Relation avec un panier
 }
 
 export interface Log {
@@ -104,5 +134,6 @@ export interface Log {
     action: string;
     metadata?: Record<string, any>; // Métadonnées pour des informations contextuelles
     createdAt: Date;
-    userId: number; // Relation avec un utilisateur
+    fk_userId: number; // Relation avec un utilisateur
+    user: User; // Relation avec l'utilisateur
 }
