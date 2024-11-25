@@ -53,7 +53,7 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
     return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
   }
 
-  const { title, description, instructions, userId, produits } = body;
+  const { title, description, instructions, userId, produits, path } = body;
 
   if (!title || !description || !instructions || !userId) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -71,18 +71,19 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
     const updatedRecette = await prisma.recette.update({
       where: { id: parseInt(slug) },
       data: {
-      title,
-      description,
-      instructions,
-      user: { connect: { id: userId } },
-      produits: {
-        set: [],
-        connect: produits.map((produit: Produit) => ({ id: produit.id })),
-      },
+        title,
+        description,
+        instructions,
+        user: { connect: { id: userId } },
+        produits: {
+          set: [],
+          connect: produits.map((produit: Produit) => ({ id: produit.id })),
+        },
+        image: path,
       },
       include: {
-      user: true,
-      produits: true,
+        user: true,
+        produits: true,
       },
     });
 

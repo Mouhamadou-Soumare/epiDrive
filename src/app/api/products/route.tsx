@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { Produit } from '../../../../types';
+import { Produit } from 'types';
 
 export async function GET() {
   try {
@@ -9,41 +9,24 @@ export async function GET() {
     const products = await prisma.produit.findMany({
       include: {
         image: true,
-        categorie: true
+        categorie: true,
       },
     });
-    
-    // Check si il y a des produits en BDD
+
     if (products.length === 0) {
-      console.log("No products found")
+      console.log("No products found");
       return NextResponse.json({ message: 'No products found' }, { status: 404 });
     }
 
-    // Récuperer les catégories 
-    const categories = await prisma.categorie.findMany();
-    if (categories.length === 0) {
-      console.log("No categories found")
-      return NextResponse.json({ message: 'No categories found' }, { status: 404 });
-    }
-
-    // Récuperer les catégories 
-    const images = await prisma.image.findMany();
-    if (images.length === 0) {
-      console.log("No images found")
-      return NextResponse.json({ message: 'No images found' }, { status: 404 });
-    }
-
-    //Récupeter les infos principal du produit
     const transformedProducts = products.map((product: Produit) => ({
       id: product.id,
       name: product.name,
       prix: product.prix,
-      imageId: images.find((image: { id: number }) => image.id === product.imageId) || '',
+      image: product.image?.path || '',
       slug: product.slug,
       description: product.description,
-      categorie: categories.find((categorie: { id: number }) => categorie.id === product.categorieId)?.name || '',
+      categorie: product.categorie?.name || 'Uncategorized',
     }));
-
 
     console.log("GET API/products: products found:", transformedProducts);
     return NextResponse.json(transformedProducts, { status: 200 });
@@ -53,37 +36,9 @@ export async function GET() {
   }
 }
 
-export async function POST(request: NextResponse) {
+export async function POST(req: Request) {
   try {
-    const body = await request.json();
-
-    // Vérifier si l'appel concerne la recherche de produits par ingrédients
-    if (body.ingredients && Array.isArray(body.ingredients) && body.ingredients.length > 0) {
-      const { ingredients } = body;
-
-      const products = await prisma.produit.findMany({
-        where: {
-          name: {
-            in: ingredients,
-          },
-        },
-        include: {
-          image: true,
-        },
-      });
-
-      const transformedProducts = products.map((product: Produit) => ({
-        id: product.id,
-        name: product.name,
-        prix: product.prix,
-        imageSrc: product.imageId ? `/path/to/images/${product.imageId}` : '',
-        slug: product.slug,
-      }));
-
-      return NextResponse.json(transformedProducts, { status: 200 });
-    }
-
-    // Vérifier si l'appel concerne la création d'un nouveau produit
+    const body = await req.json();
     const { name, description, prix, categorieId, path } = body;
 
     if (!name || !prix || !description || !categorieId) {
@@ -99,33 +54,25 @@ export async function POST(request: NextResponse) {
         description,
         prix: parseFloat(prix.toString()),
         slug,
-        categorieId: parseInt(categorieId.toString())
-      },
-      include: {
-        image: true,
+        categorieId: parseInt(categorieId),
       },
     });
 
-    if(path) {
+    if (path) {
       const newImage = await prisma.image.create({
-        data: {
-          path: path
-        },
+        data: { path },
       });
       await prisma.produit.update({
-        where: { slug },
-        data: {
-          imageid: newImage.id
-        }
+        where: { id: newProduct.id },
+        data: { imageid: newImage.id },
       });
-
-      console.log("Image created", newImage);     
+      console.log("Image created for product:", newImage);
     }
 
-    console.log("POST API/product/ : ", newProduct);
+    console.log("POST API/products: Product created:", newProduct);
     return NextResponse.json(newProduct, { status: 201 });
   } catch (error) {
-    console.error('Error handling POST request:', error);
+    console.error('Error creating product:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
