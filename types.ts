@@ -30,8 +30,8 @@ export interface Recette {
     title: string;
     description: string;
     instructions: string;
-    imageId?: number;
-    userId: number;
+    image: string;
+    user: User;
     produits: Produit[];
 }
 
