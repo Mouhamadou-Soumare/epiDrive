@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/bcryptjs": "^2.4.6",
     "@types/chart.js": "^2.9.41",
     "@types/form-data": "^2.2.1",
     "@types/node": "^22.9.0",

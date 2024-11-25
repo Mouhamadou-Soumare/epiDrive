@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
-import { User } from '../../../../types';
-import { Role } from '@prisma/client';
+import prisma from '@/lib/prisma';
+import bcrypt from 'bcryptjs';
 
 export async function GET() {
   try {
@@ -11,46 +9,73 @@ export async function GET() {
     const users = await prisma.user.findMany({
       include: {
         image: true,
+        livraisons: true,
       },
     });
-
-    console.log("Users found:", users);
 
     if (users.length === 0) {
       return NextResponse.json({ message: 'No users found' }, { status: 404 });
     }
 
-    return NextResponse.json(users, { status: 200 });
+    // Exclude passwords from the response
+    const usersWithoutPassword = users.map((user: { password: string; [key: string]: any }) => {
+      const { password, ...userWithoutPassword } = user;
+      return userWithoutPassword;
+    });
+
+    console.log("GET API/users: users found:", usersWithoutPassword);
+    return NextResponse.json(usersWithoutPassword, { status: 200 });
   } catch (error) {
     console.error('Error fetching users:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   try {
-    const body: User = await request.json();
-    const { username, email, password, role, imageId } = body;
+    const body = await req.json();
+    const { username, email, password, role, imagePath } = body;
 
-    console.log('Received body:', body);
     if (!username || !email || !password || !role) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
     console.log('Creating user with body:', body);
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create the new user
     const newUser = await prisma.user.create({
       data: {
-      username: username,
-      email: email,
-      password: password,
-      role: role ? (role as unknown as Role) : undefined,
-      imageId: imageId || null,
+        username,
+        email,
+        password: hashedPassword,
+        role,
       },
     });
 
-    console.log('User created:', newUser);
+    // Create the image if imagePath is provided
+    if (imagePath) {
+      const newImage = await prisma.image.create({
+        data: {
+          path: imagePath,
+          users: {
+            connect: {
+              id: newUser.id,
+            },
+          },
+        },
+      });
 
-    return NextResponse.json(newUser, { status: 201 });
+      console.log('Image created:', newImage);
+    }
+
+    // Remove the password from the response
+    const { password: _, ...userWithoutPassword } = newUser;
+
+    console.log('POST API/users: user created:', userWithoutPassword);
+    return NextResponse.json(userWithoutPassword, { status: 201 });
   } catch (error) {
     console.error('Error creating user:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
