@@ -1,6 +1,5 @@
-import { NextResponse, NextRequest } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import { NextResponse } from 'next/server';
+import prisma from '@/lib/prisma';
 import { Produit } from '../../../../types';
 
 export async function GET() {
@@ -54,7 +53,7 @@ export async function GET() {
   }
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextResponse) {
   try {
     const body = await request.json();
 
@@ -85,7 +84,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Vérifier si l'appel concerne la création d'un nouveau produit
-    const { name, description, prix, categorieId } = body;
+    const { name, description, prix, categorieId, path } = body;
 
     if (!name || !prix || !description || !categorieId) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -100,13 +99,28 @@ export async function POST(request: NextRequest) {
         description,
         prix: parseFloat(prix.toString()),
         slug,
-        categorieId: parseInt(categorieId.toString()),
-        imageid: null,
+        categorieId: parseInt(categorieId.toString())
       },
       include: {
         image: true,
       },
     });
+
+    if(path) {
+      const newImage = await prisma.image.create({
+        data: {
+          path: path
+        },
+      });
+      await prisma.produit.update({
+        where: { slug },
+        data: {
+          imageid: newImage.id
+        }
+      });
+
+      console.log("Image created", newImage);     
+    }
 
     console.log("POST API/product/ : ", newProduct);
     return NextResponse.json(newProduct, { status: 201 });
