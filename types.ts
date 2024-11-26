@@ -35,7 +35,7 @@ export interface Recette {
     description: string;
     instructions: string;
     image?: string; // Image optionnelle
-    user: User;
+    user?: User;
     produits: Produit[];
 }
 

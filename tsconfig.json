@@ -37,6 +37,6 @@
     "prisma/seed/categories.js",
     "prisma/seed/product.js",
     "prisma/seed/subcategories.js"
-  ],
+, "src/hooks/recettes/useRecettes.js"  ],
   "exclude": ["node_modules"]
 }

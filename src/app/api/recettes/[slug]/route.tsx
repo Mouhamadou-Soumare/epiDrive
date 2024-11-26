@@ -53,9 +53,9 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
     return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
   }
 
-  const { title, description, instructions, userId, produits, path } = body;
+  const { title, description, instructions, user, produits, image } = body;
 
-  if (!title || !description || !instructions || !userId) {
+  if (!title || !description || !instructions || !user) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
   }
 
@@ -74,12 +74,12 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
         title,
         description,
         instructions,
-        user: { connect: { id: userId } },
+        user: { connect: { id: user.id } },
         produits: {
           set: [],
           connect: produits.map((produit: Produit) => ({ id: produit.id })),
         },
-        image: path,
+        image: image || existingRecette.image,
       },
       include: {
         user: true,

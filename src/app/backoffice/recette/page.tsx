@@ -4,39 +4,39 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 import SearchInput from "../components/SearchInput";
-import { Recette } from "../../../../types";
+import { Recette } from "types";
 import RecetteRow from "./components/RecetteRow";
 
+import { useGetRecettes } from "@/hooks/recettes/useRecettes";
+
 const RecetteList = () => {
-  const [recettes, setRecettes] = useState<Recette[]>([]);
+  const { recettes, loading, error } = useGetRecettes();
   const [filteredRecettes, setFilteredRecettes] = useState<Recette[]>([]);
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState<string>(""); // Recherche
 
   useEffect(() => {
-    const fetchRecettes = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/api/recettes");
-        const data = await response.json();
-        setRecettes(data);
-        setFilteredRecettes(data);
-      } catch (error) {
-        console.error('Erreur lors du chargement des produits :', error);
+      // Filtrer les recettes en fonction de la recherche
+      if (recettes) {
+          const filtered = recettes.filter(
+              (recette: Recette) =>
+                recette.title.toLowerCase().includes(searchQuery.toLowerCase())
+          );
+          setFilteredRecettes(filtered);
       }
-    };
-
-    fetchRecettes();
-  }, []);
-
-  useEffect(() => {
-    const filtered = recettes.filter(recette =>
-      recette.title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredRecettes(filtered);
   }, [searchQuery, recettes]);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
+
+  if (loading) {
+    return <div className="pt-8 pb-16 px-4 bg-white antialiased">Chargement...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="pt-8 pb-16 px-4 bg-white antialiased text-red-600">
+      {error}
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-2xl py-4 sm:py-4 lg:max-w-7xl">
@@ -60,7 +60,7 @@ const RecetteList = () => {
       <div className="flex flex-col mt-4 sm:flex-row gap-4 w-full">
         <SearchInput 
           searchQuery={searchQuery} 
-          onSearchChange={handleSearchChange} 
+          onSearchChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Rechercher un recette"
         />
       </div>

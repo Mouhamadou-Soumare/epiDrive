@@ -32,10 +32,22 @@ export async function GET(req: NextRequest) {
       },
     });
 
+    /*
     const formattedProducts = products.map((product: { id: number; name: string; slug: string; description: string; prix: number; image: { path: string } | null; categorie: { id: number; name: string; slug: string } | null }) => ({
       ...product,
       imageSrc: product.image?.path ? `/img/product/${product.slug}.webp` : 'https://via.placeholder.com/300',
       imageAlt: `Image de ${product.name}`,
+    }));
+    */
+   
+    const formattedProducts = products.map((product: { id: number; name: string; slug: string; description: string; prix: number; image: { path: string } | null; categorie: { id: number; name: string; slug: string } | null }) => ({
+      id: product.id,
+      name: product.name,
+      prix: product.prix,
+      image: product.image?.path || '',
+      slug: product.slug,
+      description: product.description,
+      categorie: product.categorie?.name || 'Uncategorized',
     }));
 
     const uniqueCategories = Array.from(
