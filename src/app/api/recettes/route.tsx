@@ -25,7 +25,9 @@ export async function GET() {
       description: recette.description,
       instructions: recette.instructions,
       image: recette.image || '/img/placeholder.webp',
-      user: { id: recette.user.id, username: recette.user.username },
+      user: recette.user ?
+        { id: recette.user.id, username: recette.user.username } :
+        { id: 0, username: 'Utilisateur inconnu' },
       produits: recette.produits.map((produit) => ({
         id: produit.id,
         name: produit.name,
@@ -48,9 +50,9 @@ export async function POST(request: Request) {
 
     console.log('Creating new recette with body:', body);
 
-    const { title, description, instructions, userId, produits } = body;
+    const { title, description, instructions, user, produits } = body;
 
-    if (!title || !description || !instructions || !userId) {
+    if (!title || !description || !instructions || !user) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
@@ -62,7 +64,7 @@ export async function POST(request: Request) {
         description,
         instructions,
         image,
-        user: { connect: { id: userId } },
+        user: { connect: { id: user.id } },
         produits: produits
           ? { connect: produits.map((produit: Produit) => ({ id: produit.id })) }
           : undefined,
