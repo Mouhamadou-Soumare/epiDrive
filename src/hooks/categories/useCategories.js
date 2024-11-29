@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const API_BASE_URL = '/api/categorie';
+const API_BASE_URL = '/api/categories';
 
 // Hook pour récupérer toutes les catégories
 export function useGetCategories() {
@@ -61,13 +61,13 @@ export function useAddCategory() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const addCategory = async (newCategory) => {
+  const addCategory = async (newCategory, path) => {
     try {
       setLoading(true);
       const response = await fetch(API_BASE_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newCategory),
+        body: JSON.stringify({ ...newCategory, path }),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Failed to add category');
