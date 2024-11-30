@@ -61,13 +61,13 @@ export function useAddProduit() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const addProduit = async ({ name, description, prix, categorieId, path }) => {
+  const addProduit = async ( newProduct, path ) => {
     try {
       setLoading(true);
       const response = await fetch(API_BASE_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, description, prix, categorieId, path }),
+        body: JSON.stringify({ ...newProduct, path }),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Failed to create product');
@@ -88,13 +88,13 @@ export function useUpdateProduit() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const updateProduit = async (id, { name, description, prix, categorieId, path }) => {
+  const updateProduit = async (slug, product, path) => {
     try {
       setLoading(true);
-      const response = await fetch(`${API_BASE_URL}/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/${slug}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, description, prix, categorieId, path }),
+        body: JSON.stringify({...product, path}),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Failed to update product');

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import Alert from '../components/Alert';
+import Alert from '../../components/Alert';
 import FormInputField from '../components/FormInputField';
 import { Categorie } from "../../../../../types";
 import { useGetCategories, useAddCategory } from "@/hooks/categories/useCategories";
@@ -27,7 +27,7 @@ export default function AddCategoryPage() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    if (name === "path") {
+    if (name === "imagePath") {
       setImagePath(value); // Mise à jour de l'imagePath séparément
     } else {
       setCategory({ ...category, [name]: name === "imageId" || name === "parentId" ? parseInt(value) : value });
@@ -43,7 +43,7 @@ export default function AddCategoryPage() {
     }
 
     // Appel au hook personnalisé `addCategory`
-    const success = await addCategory({ ...category, path: imagePath });
+    const success = await addCategory(category, imagePath);
     if (success) {
       setSubmitResult('201');
       setTimeout(() => {
@@ -84,7 +84,7 @@ export default function AddCategoryPage() {
         />
         <FormInputField
           id="imagePath"
-          name="path"
+          name="imagePath"
           value={imagePath}
           label="Image Path"
           type="text"

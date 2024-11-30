@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import Alert from "../components/Alert";
+import Alert from "../../components/Alert";
 import DeleteButton from "../components/DeleteButton";
 import { CheckIcon } from "@heroicons/react/20/solid";
 import CategorieRow from "../components/CategorieRow";
