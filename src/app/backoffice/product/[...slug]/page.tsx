@@ -1,95 +1,61 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useParams } from 'next/navigation';
-import { CheckIcon } from '@heroicons/react/20/solid';
+import { useEffect, useCallback } from "react";
+import { useParams } from "next/navigation";
+import { CheckIcon } from "@heroicons/react/20/solid";
 
 import ProductImage from "../components/ProductImage";
 import ProductActions from "../components/ProductActions";
-import { Produit, Image } from "../../../../../types";
+import Alert from "../../components/Alert";
+
+import { useGetProduit, useDeleteProduit } from "@/hooks/products/useProduits";
+import { Produit } from "types";
 
 export default function ProductDetails() {
   const params = useParams();
   const slug = params ? (Array.isArray(params.slug) ? params.slug[params.slug.length - 1] : params.slug) : null;
-  const [product, setProduct] = useState<Produit | null>(null);
-  const [image, setImage] = useState<Image | null>(null);
-  const [loading, setLoading] = useState(true);  
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      const productSlug = Array.isArray(slug) ? slug[slug.length - 1] : slug;
-      try {
-        const res = await fetch(`/api/products/${productSlug}`);
-        const data = await res.json();
-        if (res.ok) {
-          setProduct(data);
-          if (data.imageId) {
-            await fetchImage(data.imageId);
-          }
-        } else {
-          console.error("Erreur lors de la récupération du produit :", data.error);
-        }
-      } catch (error) {
-        console.error("Erreur lors de la récupération du produit :", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const { produit, loading: productLoading, error: productError } = useGetProduit(slug) as { produit: Produit | null, loading: boolean, error: any };
+  const { deleteProduit, loading: deletingProduct, error: deleteError } = useDeleteProduit();
 
-    const fetchImage = async (imageId: number) => {
-      try {
-        const res = await fetch(`/api/images/${imageId}`);
-        const data = await res.json();
-        if (res.ok) {
-          setImage(data);
-        } else {
-          console.error("Erreur lors de la récupération de l'image :", data.error);
-        }
-      } catch (error) {
-        console.error("Erreur lors de la récupération de l'image :", error);
-      }
-    };
+  const handleDelete = useCallback(async () => {
+    if (!produit) return;
 
-    fetchProduct();
-  }, [slug]);
-
-  const handleDelete = async () => {
-    if (!product) return;
-    try {
-      const res = await fetch(`/api/products/${product.slug}`, {
-        method: 'DELETE',
-      });
-      if (res.ok) {
-        console.log("Produit supprimé avec succès");
-        window.location.assign('/backoffice/product');
-      } else {
-        const data = await res.json();
-        console.error("Erreur lors de la suppression du produit :", data.error);
-      }
-    } catch (error) {
-      console.error("Erreur lors de la suppression du produit :", error);
+    const success = await deleteProduit(produit.slug);
+    if (success) {
+      window.location.assign("/backoffice/product");
     }
-  };
+  }, [produit, deleteProduit]);
 
-  if (loading) return <div className="lg:pl-72">Chargement...</div>;
-  if (!product) return <div className="lg:pl-72">Produit non trouvé</div>;
+  if (productLoading || deletingProduct) {
+    return <div className="lg:pl-72">Chargement...</div>;
+  }
+
+  if (productError) {
+    return <Alert message="Erreur lors de la récupération du produit." type="error" />;
+  }
+
+  if (!produit) {
+    return <div className="lg:pl-72">Produit non trouvé</div>;
+  }
 
   return (
     <div className="bg-white">
+      {deleteError && <Alert message="Erreur lors de la suppression du produit." type="error" />}
+
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
-        
         {/* Product details */}
         <div className="lg:max-w-lg">
           <div className="mt-4">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{product.name}</h1>
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{produit.name}</h1>
           </div>
 
           <section aria-labelledby="information-heading" className="mt-4">
             <div className="flex items-center">
-              <p className="text-lg text-gray-900 sm:text-xl">{product.prix}€</p>
+              <p className="text-lg text-gray-900 sm:text-xl">{produit.prix}€</p>
             </div>
             <div className="mt-4 space-y-6">
-              <p className="text-base text-gray-500">{product.description}</p>
+              <p className="text-base text-gray-500">{produit.description}</p>
             </div>
             <div className="mt-6 flex items-center">
               <CheckIcon aria-hidden="true" className="h-5 w-5 text-green-500" />
@@ -98,11 +64,11 @@ export default function ProductDetails() {
           </section>
         </div>
 
-        {/* Product image */}
-        <ProductImage image={image} altText={product.name} />
+        {/* Produit image */}
+        <ProductImage image={produit.image ?? null} altText={produit.name} />
 
         {/* Product actions */}
-        <ProductActions productSlug={product.slug} onDelete={handleDelete} />
+        <ProductActions productSlug={produit.slug} onDelete={handleDelete} />
       </div>
     </div>
   );

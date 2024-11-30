@@ -28,10 +28,10 @@ export async function GET(req: Request, { params }: { params: { slug: string } }
       id: product.id,
       name: product.name,
       prix: product.prix,
-      image: product.image?.path || '',
+      image: product.image || '',
       slug: product.slug,
       description: product.description,
-      categorie: product.categorie?.name || 'Uncategorized',
+      categorie: product.categorie || 'Uncategorized',
     };
 
     console.log("GET API/products/" + slug + ": Product found:", transformedProduct);
@@ -50,9 +50,9 @@ export async function PATCH(req: Request, { params }: { params: { slug: string }
     return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
   }
 
-  const { name, prix, description, categorieId, path } = data;
+  const { name, prix, description, categorie, path } = data;
 
-  if (!name || !prix || !description || !categorieId) {
+  if (!name || !prix || !description || !categorie) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
   }
 
@@ -88,7 +88,7 @@ export async function PATCH(req: Request, { params }: { params: { slug: string }
         name,
         prix: parseFloat(prix),
         description,
-        categorieId,
+        categorieId: parseInt(categorie.id),
       },
     });
 

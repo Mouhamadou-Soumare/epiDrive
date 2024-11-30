@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import path from 'path';
 
 export async function GET(req: Request, { params }: { params: { slug: string } }) {
   const { slug } = params;
@@ -30,7 +31,9 @@ export async function GET(req: Request, { params }: { params: { slug: string } }
             },
           },
         },
-
+        image: {
+          select: { path: true },
+        },
       },
     });
 
@@ -75,7 +78,7 @@ export async function PATCH(req: Request, { params }: { params: { slug: string }
     return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
   }
 
-  const { name, description, imageId, parentId } = data;
+  const { name, description, image, parentId } = data;
   try {
     console.log("Updating category with slug:", slug);
     const existingCategory = await prisma.categorie.findUnique({
@@ -89,8 +92,14 @@ export async function PATCH(req: Request, { params }: { params: { slug: string }
       data: {
         name,
         description,
-        imageId,
-        parentId,
+        image: image ? {
+          update: {
+            path: image.path,
+          },
+        } : undefined,
+        parent: {
+          connect: { id: parentId },
+        }
       },
     });
 
