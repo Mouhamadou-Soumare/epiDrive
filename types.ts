@@ -45,6 +45,7 @@ export interface Commande {
     paymentId?: string;
     createdAt: Date;
     userId: number;
+    fk_userId: number; // Relation avec un utilisateur
     user: User; // Relation avec l'utilisateur
     quantites: QuantiteCommande[];
     livraison?: Livraison; // Relation avec une adresse de livraison

@@ -40,7 +40,7 @@ export async function PATCH(req: Request, context: { params: { slug: string } })
 
     if (!slug) return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
 
-    const { status, paymentId, infosAdresse, produits } = data;
+    const { status, livraison } = data;
 
     console.log("Updating commande with slug:", slug);
 
@@ -58,51 +58,21 @@ export async function PATCH(req: Request, context: { params: { slug: string } })
     const updatedCommande = await prisma.commande.update({
       where: { id: parseInt(slug) },
       data: {
-        status,
-        paymentId: paymentId || existingCommande.paymentId,
-        quantites: {
-          deleteMany: {},
-        }
+        status
       },
     });
 
     // Mise à jour des informations de livraison
-    if (infosAdresse && existingCommande.livraison) {
+    if (livraison && existingCommande.livraison) {
       await prisma.livraison.update({
         where: { id: existingCommande.livraison.id }, // Utilise l'ID de la livraison existante
         data: {
-          adresse: infosAdresse.adresse,
-          ville: infosAdresse.ville,
-          codePostal: infosAdresse.codePostal,
-          pays: infosAdresse.pays,
+          adresse: livraison.adresse,
+          ville: livraison.ville,
+          codePostal: livraison.codePostal,
+          pays: livraison.pays,
         },
       });
-    }
-
-    // Mise à jour des produits associés
-    if (produits && produits.length > 0) {
-      for (const produit of produits) {
-        const { produitId, quantite, prix } = produit;
-
-        await prisma.quantiteCommande.upsert({
-          where: {
-            fk_commande_fk_produit: {
-              fk_commande: parseInt(slug),
-              fk_produit: produitId,
-            },
-          },
-          update: {
-            quantite,
-            prix,
-          },
-          create: {
-            quantite,
-            prix,
-            produit: { connect: { id: produitId } },
-            commande: { connect: { id: parseInt(slug) } },
-          },
-        });
-      }
     }
 
     console.log("PATCH API/commande/" + slug + ": commande updated:", updatedCommande);

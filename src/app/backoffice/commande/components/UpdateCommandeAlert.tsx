@@ -30,6 +30,7 @@ export const UpdateCommandeAlert = ({ message, open, setOpen }: UpdateCommandeAl
         throw new Error('Erreur lors de l\'envoi de l\'email');
       }
 
+      window.location.href = '/backoffice/commande';
       console.log('Email envoyé avec succès');
       setOpen(false);
     } catch (error) {
