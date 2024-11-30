@@ -67,13 +67,6 @@ export default function SearchBar() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  useEffect(() => {
-    console.log('Résultats mis à jour:', results);
-    console.log('Nombre de résultats:', Array.isArray(results) ? results.length : 'Non défini ou non tableau');
-  }, [results]);
-  
-
-
   return (
     <form className="max-w min-w-96 relative" onSubmit={handleSubmit}>
       <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
