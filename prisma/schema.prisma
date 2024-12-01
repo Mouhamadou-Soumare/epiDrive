@@ -1,123 +1,162 @@
 generator client {
   provider      = "prisma-client-js"
-  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+  binaryTargets = ["native", "linux-arm64-openssl-1.1.x"]
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 enum Role {
   USER
   ADMIN
+  MAGASINIER
+}
+
+enum CommandeStatus {
+  EN_ATTENTE
+  EN_PREPARATION
+  EXPEDIEE
+  LIVREE
+  ANNULEE
 }
 
 model User {
-  id           Int       @id @default(autoincrement())
-  username     String
-  email        String    @unique
-  password     String
-  role         Role      @default(USER)
-  recettes     Recette[]
-  commandes    Commande[]
-  image        Image?    @relation(fields: [imageId], references: [id], map: "User_Image_fkey")
-  imageId      Int?
-  panier       Panier?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  id        Int      @id @default(autoincrement())
+  username  String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  role      Role     @default(USER)
+
+  image   Image? @relation(fields: [imageId], references: [id], map: "User_Image_fkey")
+  imageId Int?
+
+  recettes   Recette[]
+  commandes  Commande[]
+  panier     Panier?
+  livraisons Livraison[]
+  logs       Log[]
 }
-
-
 
 model Panier {
-  id          Int             @id @default(autoincrement())
-  userId      Int?            @unique
-  sessionId   String?         @unique
-  user        User?           @relation(fields: [userId], references: [id], map: "Panier_User_fkey")
-  produits    QuantitePanier[]
+  id        Int              @id @default(autoincrement())
+  fk_userId Int?             @unique
+  sessionId String?          @unique
+  user      User?            @relation(fields: [fk_userId], references: [id], map: "Panier_User_fkey")
+  produits  QuantitePanier[]
+  livraison Livraison?       @relation("PanierLivraison")
 }
 
-
 model Recette {
-  id          Int       @id @default(autoincrement())
-  title       String
-  description String
+  id           Int       @id @default(autoincrement())
+  title        String
+  description  String
   instructions String
-  image       String?
-  produits    Produit[] @relation("RecetteProduit")
-  user        User      @relation(fields: [userId], references: [id], map: "Recette_User_fkey")
-  userId      Int
+  image        String?
+  produits     Produit[] @relation("RecetteProduit")
+  fk_userId    Int
+  user         User      @relation(fields: [fk_userId], references: [id], map: "Recette_User_fkey")
 }
 
 model Commande {
-  id          Int       @id @default(autoincrement())
-  status      String
-  paymentId   String?
-  createdAt   DateTime  @default(now())
-  user        User      @relation(fields: [userId], references: [id], map: "Commande_User_fkey")
-  userId      Int
-  quantites   QuantiteCommande[]
+  id        Int                @id @default(autoincrement())
+  status    CommandeStatus     @default(EN_ATTENTE)
+  paymentId String?
+  createdAt DateTime           @default(now())
+  fk_userId Int
+  user      User               @relation(fields: [fk_userId], references: [id], map: "Commande_User_fkey")
+  quantites QuantiteCommande[]
+  livraison Livraison?         @relation("CommandeLivraison")
 }
 
 model Produit {
-  id              Int             @id @default(autoincrement())
-  name            String
-  slug            String           @unique
-  description     String
-  prix            Float
-  image           Image?           @relation(fields: [imageid], references: [id], map: "Produit_Image_fkey")
-  imageid         Int?
-  categorie       Categorie        @relation(fields: [categorieId], references: [id], map: "Produit_Categorie_fkey")
-  categorieId     Int             
-  quantitePaniers QuantitePanier[]  
-  quantiteCommandes QuantiteCommande[] 
-  recettes        Recette[]        @relation("RecetteProduit")
+  id                Int                @id @default(autoincrement())
+  name              String
+  slug              String             @unique
+  description       String
+  prix              Float
+  image             Image?             @relation(fields: [imageid], references: [id], map: "Produit_Image_fkey")
+  imageid           Int?
+  categorie         Categorie          @relation(fields: [categorieId], references: [id], map: "Produit_Categorie_fkey")
+  categorieId       Int
+  quantitePaniers   QuantitePanier[]
+  quantiteCommandes QuantiteCommande[]
+  recettes          Recette[]          @relation("RecetteProduit")
 }
 
 model QuantitePanier {
-  id          Int      @id @default(autoincrement())
-  quantite    Int
-  prix        Float
-  produit     Produit  @relation(fields: [produitId], references: [id], map: "QuantitePanier_Produit_fkey")
-  produitId   Int
-  panier      Panier    @relation(fields: [panierId], references: [id], map: "QuantitePanier_Panier_fkey")
-  panierId    Int
-  @@unique([panierId, produitId], map: "PanierProduit_unique")
+  id         Int     @id @default(autoincrement())
+  quantite   Int
+  prix       Float
+  fk_produit Int
+  produit    Produit @relation(fields: [fk_produit], references: [id], map: "QuantitePanier_Produit_fkey")
+  fk_panier  Int
+  panier     Panier  @relation(fields: [fk_panier], references: [id], map: "QuantitePanier_Panier_fkey")
 
+  @@unique([fk_panier, fk_produit], map: "PanierProduit_unique")
 }
 
 model QuantiteCommande {
   id          Int      @id @default(autoincrement())
   quantite    Int
   prix        Float
-  produit     Produit  @relation(fields: [produitId], references: [id], map: "QuantiteCommande_Produit_fkey")
-  produitId   Int
-  commande    Commande @relation(fields: [commandeId], references: [id], map: "QuantiteCommande_Commande_fkey")
-  commandeId  Int
+  fk_produit  Int
+  produit     Produit  @relation(fields: [fk_produit], references: [id], map: "QuantiteCommande_Produit_fkey")
+  fk_commande Int
+  commande    Commande @relation(fields: [fk_commande], references: [id], map: "QuantiteCommande_Commande_fkey")
+
+  @@unique([fk_commande, fk_produit], map: "CommandeProduit_unique")
 }
 
 model Image {
-  id          Int          @id @default(autoincrement())
-  path        String
-
-  produits    Produit[]
-  categories  Categorie[]
-  users       User[]
+  id         Int         @id @default(autoincrement())
+  path       String
+  produits   Produit[]
+  categories Categorie[]
+  users      User[]
 }
 
 model Categorie {
-  id              Int              @id @default(autoincrement())
-  name            String
-  slug            String           @unique
-  description     String?          @db.Text
-  image           Image?           @relation(fields: [imageId], references: [id], map: "Categorie_Image_fkey")
-  imageId         Int?
+  id            Int         @id @default(autoincrement())
+  name          String
+  slug          String      @unique
+  description   String?     @db.Text
+  image         Image?      @relation(fields: [imageId], references: [id], map: "Categorie_Image_fkey")
+  imageId       Int?
+  parentId      Int?
+  parent        Categorie?  @relation("CategorieParent", fields: [parentId], references: [id])
+  subcategories Categorie[] @relation("CategorieParent")
+  produits      Produit[]
+}
 
-  parentId        Int?            
-  parent          Categorie?       @relation("CategorieParent", fields: [parentId], references: [id])
-  subcategories   Categorie[]      @relation("CategorieParent") 
+model Livraison {
+  id         Int    @id @default(autoincrement())
+  adresse    String
+  ville      String
+  codePostal String
+  pays       String
 
-  produits        Produit[]       
+  fk_userId Int?
+  user      User? @relation(fields: [fk_userId], references: [id], map: "Livraison_User_fkey")
+
+  fk_commande Int?      @unique
+  commande    Commande? @relation("CommandeLivraison", fields: [fk_commande], references: [id])
+
+  fk_panier Int?    @unique
+  panier    Panier? @relation("PanierLivraison", fields: [fk_panier], references: [id])
+
+  @@index([fk_userId, fk_commande, fk_panier], map: "Livraison_Index")
+}
+
+model Log {
+  id        Int      @id @default(autoincrement())
+  action    String
+  metadata  Json?
+  createdAt DateTime @default(now())
+  fk_userId Int
+  user      User     @relation(fields: [fk_userId], references: [id], onDelete: Cascade)
 }

@@ -1,73 +1,80 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
-import { Recette } from '../../types';
+import { NextResponse } from 'next/server';
+import prisma from '@/lib/prisma';
+import { Produit, Recette } from 'types';
 
 export async function GET() {
   try {
-    console.log("Fetching all recipes...");
+    console.log("Fetching all recettes...");
 
-    const recipes = await prisma.recette.findMany({
+    const recettes = await prisma.recette.findMany({
       include: {
         user: true,
+        produits: true,
       },
     });
 
-    console.log("Recipes found:", recipes);
-
-    if (recipes.length === 0) {
-      return NextResponse.json({ message: 'No recipes found' }, { status: 404 });
+    if (recettes.length === 0) {
+      console.log("No recettes found");
+      return NextResponse.json({ message: 'No recettes found' }, { status: 404 });
     }
 
-    return NextResponse.json(recipes, { status: 200 });
+    // Transformation des données pour un format adapté
+    const transformedRecettes = recettes.map((recette: Recette) => ({
+      id: recette.id,
+      title: recette.title,
+      description: recette.description,
+      instructions: recette.instructions,
+      image: recette.image || '/img/placeholder.webp',
+      user: recette.user ?
+        { id: recette.user.id, username: recette.user.username } :
+        { id: 0, username: 'Utilisateur inconnu' },
+      produits: recette.produits.map((produit) => ({
+        id: produit.id,
+        name: produit.name,
+        slug: produit.slug,
+        prix: produit.prix,
+      })),
+    }));
+
+    console.log("GET API/recettes: recettes found:", transformedRecettes);
+    return NextResponse.json(transformedRecettes, { status: 200 });
   } catch (error) {
-    console.error('Error fetching recipes:', error);
+    console.error('Error fetching recettes:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
-export async function POST(req: NextRequest) {
-  let data: Omit<Recette, 'id'>; 
-
+export async function POST(request: Request) {
   try {
-    data = await req.json();
-  } catch (error) {
-    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
-  }
+    const body = await request.json();
 
-  const { title, description, instructions, produits } = data;
+    console.log('Creating new recette with body:', body);
 
-  // Vérification des champs requis
-  if (!title || !description || !instructions) {
-    return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-  }
+    const { title, description, instructions, user, produits } = body;
 
-  try {
-    // Transformation des produits si nécessaire
-    let transformedProduits;
-    if (produits) {
-      transformedProduits = produits.map((produit) => ({
-        id: produit.id,
-      }));
+    if (!title || !description || !instructions || !user) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    console.log('Creating new recette with products:', produits);
+    const image = `/img/recette/${title.toLowerCase().replace(/ /g, '-')}.webp`;
 
-    // Création de la nouvelle recette
     const newRecette = await prisma.recette.create({
       data: {
         title,
         description,
         instructions,
-        user: { connect: { id: 1 } }, // Connexion à l'utilisateur existant
-        produits: produits ? { connect: produits.map((produit) => ({ id: produit.id })) } : undefined,
-        image: null, // Ajustez cette partie si l'image est gérée différemment
+        image,
+        user: { connect: { id: user.id } },
+        produits: produits
+          ? { connect: produits.map((produit: Produit) => ({ id: produit.id })) }
+          : undefined,
       },
     });
 
+    console.log("POST API/recettes/ : ", newRecette);
     return NextResponse.json(newRecette, { status: 201 });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error creating recette:", error);
-    return NextResponse.json({ error: 'Internal Server Error', details: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

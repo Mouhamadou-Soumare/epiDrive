@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { User } from "../../../types";
+import { User } from "../../../../../types";
 
 interface UtilisateurRowProps {
   utilisateur: User;

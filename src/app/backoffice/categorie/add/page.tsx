@@ -1,12 +1,15 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import Alert from '../components/Alert';
+import { useState } from 'react';
+import Alert from '../../components/Alert';
 import FormInputField from '../components/FormInputField';
-import { Categorie } from "../../../types";
+import { Categorie } from "../../../../../types";
+import { useGetCategories, useAddCategory } from "@/hooks/categories/useCategories";
 
 export default function AddCategoryPage() {
-  const [categories, setCategories] = useState<Categorie[]>([]);
+  const { categories, loading: loadingCategories, error: errorCategories } = useGetCategories();
+  const { addCategory, loading: addingCategory, error: addError } = useAddCategory();
+
   const [category, setCategory] = useState<Categorie>({
     id: 0,
     name: '',
@@ -16,58 +19,77 @@ export default function AddCategoryPage() {
     parentId: undefined,
     subcategories: []
   });
-  const [submitResult, setSubmitResult] = useState<string>('');
 
-  useEffect(() => {
-    fetch("/api/categories")
-      .then((response) => response.json())
-      .then((data) => setCategories(data))
-      .catch((error) => console.error('Error fetching categories:', error));
-  }, []);
+  const [imagePath, setImagePath] = useState<string>('');
+  const [submitResult, setSubmitResult] = useState<string | null>(null);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    setCategory({ ...category, [name]: value });
+    if (name === "imagePath") {
+      setImagePath(value); // Mise à jour de l'imagePath séparément
+    } else {
+      setCategory({ ...category, [name]: name === "imageId" || name === "parentId" ? parseInt(value) : value });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!category.name || !category.description || !category.imageId) {
-      setSubmitResult('400');
+
+    if (!category.name || !category.description || !imagePath) {
+      setSubmitResult('400'); // Message d'erreur si des champs requis sont vides
       return;
     }
-    try {
-      const res = await fetch(`/api/categories`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(category),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setSubmitResult('201');
-        setTimeout(() => {
-          const slug = category.name.toLowerCase().replace(/ /g, '-');
-          window.location.assign(`/backoffice/categorie/${slug}`);
-        }, 2000);
-      } else {
-        setSubmitResult(res.status.toString());
-      }
-    } catch (error) {
-      console.error('Error adding category:', error);
+
+    // Appel au hook personnalisé `addCategory`
+    const success = await addCategory(category, imagePath);
+    if (success) {
+      setSubmitResult('201');
+      setTimeout(() => {
+        const slug = category.name.toLowerCase().replace(/ /g, '-');
+        window.location.assign(`/backoffice/categorie/${slug}`);
+      }, 2000);
+    } else {
       setSubmitResult('500');
     }
   };
+
+  if (loadingCategories) return <div>Chargement des catégories...</div>;
 
   return (
     <>
       {submitResult === '201' && <Alert message="Category added successfully" type="success" />}
       {submitResult === '500' && <Alert message="Error during adding category" type="error" />}
       {submitResult === '400' && <Alert message="Please fill in all required fields" type="warning" />}
-      <h1 className='text-3xl font-extrabold leading-tight text-gray-900'>Add Category</h1>
+      {addError && <Alert message="Failed to add category" type="error" />}
+      {errorCategories && <Alert message="Failed to load categories" type="error" />}
+      
+      <h1 className="text-3xl font-extrabold leading-tight text-gray-900">Add Category</h1>
       <form onSubmit={handleSubmit} className="my-6">
-        <FormInputField id="name" name="name" value={category.name} label="Name" onChange={handleInputChange} />
-        <FormInputField id="description" name="description" value={category.description} label="Description" type="textarea" onChange={handleInputChange} />
-        <FormInputField id="imageId" name="imageId" value={category.imageId} label="Image ID" type="number" onChange={handleInputChange} />
+        <FormInputField
+          id="name"
+          name="name"
+          value={category.name}
+          label="Name"
+          onChange={handleInputChange}
+        />
+        <FormInputField
+          id="description"
+          name="description"
+          value={category.description}
+          label="Description"
+          type="textarea"
+          onChange={handleInputChange}
+        />
+        <FormInputField
+          id="imagePath"
+          name="imagePath"
+          value={imagePath}
+          label="Image Path"
+          type="text"
+          onChange={handleInputChange}
+        />
 
         <div className="mb-5">
           <label htmlFor="parentId" className="block mb-2 text-sm font-medium text-gray-900">Parent Category</label>
@@ -79,13 +101,20 @@ export default function AddCategoryPage() {
             onChange={handleInputChange}
           >
             <option value="">Select a parent category</option>
-            {categories.map((cat) => (
+            {categories.map((cat: Categorie) => (
               <option key={cat.id} value={cat.id}>{cat.name}</option>
             ))}
           </select>
         </div>
-        <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Add Category</button>
+
+        <button
+          type="submit"
+          disabled={addingCategory}
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+        >
+          {addingCategory ? 'Adding...' : 'Add Category'}
+        </button>
       </form>
     </>
   );
-};
+}

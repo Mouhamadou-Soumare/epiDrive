@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Commande, QuantiteCommande } from "../../../types";
+import { Commande, QuantiteCommande } from "../../../../../types";
 
 interface CommandeRowProps {
   commande: Commande;

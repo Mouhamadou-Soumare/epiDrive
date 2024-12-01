@@ -1,24 +1,22 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import { NextResponse } from 'next/server';
+import prisma from '@/lib/prisma';
+import { Produit } from 'types';
 
-export async function GET(req: NextRequest, { params }: { params: { slug: string } }) {
+export async function GET(req: Request, { params }: { params: { slug: string } }) {
   const { slug } = params;
-
-  console.log("Received slug:", slug);   
 
   if (!slug) {
     return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
   }
 
   try {
-    console.log("Searching for product with slug:", slug);
+    console.log("Fetching product with slug:", slug);
 
     const product = await prisma.produit.findUnique({
       where: { slug },
       include: {
-      image: true,
-      categorie: true,
+        image: true,
+        categorie: true,
       },
     });
 
@@ -26,16 +24,25 @@ export async function GET(req: NextRequest, { params }: { params: { slug: string
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
 
-    return NextResponse.json(product);
+    const transformedProduct = {
+      id: product.id,
+      name: product.name,
+      prix: product.prix,
+      image: product.image || '',
+      slug: product.slug,
+      description: product.description,
+      categorie: product.categorie || 'Uncategorized',
+    };
+
+    console.log("GET API/products/" + slug + ": Product found:", transformedProduct);
+    return NextResponse.json(transformedProduct, { status: 200 });
   } catch (error) {
-    console.error("Error fetching product:", error);
+    console.error('Error fetching product:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
-
-
-export async function PATCH(req: NextRequest, { params }: { params: { slug: string } }) {
+export async function PATCH(req: Request, { params }: { params: { slug: string } }) {
   const { slug } = params;
   const data = await req.json();
 
@@ -43,46 +50,57 @@ export async function PATCH(req: NextRequest, { params }: { params: { slug: stri
     return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
   }
 
-  const { name, prix, description, categorieId } = data;
+  const { name, prix, description, categorie, path } = data;
+
+  if (!name || !prix || !description || !categorie) {
+    return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+  }
 
   try {
     console.log("Updating product with slug:", slug);
-    const existingProduct = await prisma.produit.findUnique({
-      where: { slug },
-      /*include: { image: true },*/
-    });
+
+    const existingProduct = await prisma.produit.findUnique({ where: { slug } });
 
     if (!existingProduct) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
 
-    /*const imageData = imageSrc
-      ? existingProduct.image
-        ? { update: { path: imageSrc } } 
-        : { create: { path: imageSrc } } 
-      : undefined;
-    */
+    if (path) {
+      if (!existingProduct.imageid) {
+        const newImage = await prisma.image.create({ data: { path } });
+        await prisma.produit.update({
+          where: { slug },
+          data: { imageid: newImage.id },
+        });
+        console.log("New image created for product:", newImage);
+      } else {
+        await prisma.image.update({
+          where: { id: existingProduct.imageid },
+          data: { path },
+        });
+        console.log("Image updated for product");
+      }
+    }
+
     const updatedProduct = await prisma.produit.update({
       where: { slug },
       data: {
-        name: name, 
-        prix: prix ? parseFloat(prix.toString()) : undefined,
-        slug: slug,  
-        description: description, 
-        categorieId: categorieId,
-        //image: imageData,
+        name,
+        prix: parseFloat(prix),
+        description,
+        categorieId: parseInt(categorie.id),
       },
     });
 
-    return NextResponse.json(updatedProduct);
-  } catch (error: any) {
-    console.error("Error updating product:", error);
-    return NextResponse.json({ error: 'Internal Server Error', details: error.message }, { status: 500 });
+    console.log('PATCH API/products/' + slug + ': Product updated:', updatedProduct);
+    return NextResponse.json(updatedProduct, { status: 200 });
+  } catch (error) {
+    console.error('Error updating product:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
-
-export async function DELETE(req: NextRequest, { params }: { params: { slug: string } }) {
+export async function DELETE(req: Request, { params }: { params: { slug: string } }) {
   const { slug } = params;
 
   if (!slug) {
@@ -90,13 +108,19 @@ export async function DELETE(req: NextRequest, { params }: { params: { slug: str
   }
 
   try {
-    await prisma.produit.delete({
-      where: { slug },
-    });
+    console.log("Deleting product with slug:", slug);
 
-    return NextResponse.json({ message: 'Product deleted successfully' });
+    const product = await prisma.produit.findUnique({ where: { slug } });
+
+    if (!product) {
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+    }
+
+    await prisma.produit.delete({ where: { slug } });
+    console.log('DELETE API/products/' + slug + ': Product deleted');
+    return NextResponse.json({ message: 'Product deleted successfully' }, { status: 200 });
   } catch (error) {
-    console.error("Error deleting product:", error);
+    console.error('Error deleting product:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

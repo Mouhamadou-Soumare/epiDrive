@@ -16,11 +16,11 @@ services:
       - db
     volumes:
       - .:/app:delegated
-    command: npm run dev
+    command: sh -c "sleep 10 && npm run dev"
     restart: always
 
   db:
-    image: mysql:latest
+    image: mysql:9.1
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}

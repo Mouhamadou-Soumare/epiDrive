@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from "next/link";
-import { Produit, Categorie } from "../../types";
+import { Produit, Categorie } from "../../../../types";
 
 export const ProductCard = ({ product }: { product: Produit }) => {
   const [categorie, setCategorie] = useState<Categorie | null>(null);

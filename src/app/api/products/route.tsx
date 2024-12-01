@@ -1,7 +1,6 @@
-import { NextResponse, NextRequest } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
-import { Produit } from '../../types';
+import { NextResponse } from 'next/server';
+import prisma from '@/lib/prisma';
+import { Produit } from 'types';
 
 export async function GET() {
   try {
@@ -10,24 +9,26 @@ export async function GET() {
     const products = await prisma.produit.findMany({
       include: {
         image: true,
+        categorie: true,
       },
     });
+
+    if (products.length === 0) {
+      console.log("No products found");
+      return NextResponse.json({ message: 'No products found' }, { status: 404 });
+    }
+
     const transformedProducts = products.map((product: Produit) => ({
       id: product.id,
       name: product.name,
       prix: product.prix,
-      imageSrc: product.imageId ? `/images/${product.imageId}` : '',
-      imageAlt: product.name,
+      image: product.image?.path || '',
       slug: product.slug,
       description: product.description,
+      categorie: product.categorie?.name || 'Uncategorized',
     }));
 
-    console.log("Products found:", transformedProducts);
-
-    if (transformedProducts.length === 0) {
-      return NextResponse.json({ message: 'No products found' }, { status: 404 });
-    }
-
+    console.log("GET API/products: products found:", transformedProducts);
     return NextResponse.json(transformedProducts, { status: 200 });
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -35,38 +36,10 @@ export async function GET() {
   }
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(req: Request) {
   try {
-    const body = await request.json();
-
-    // Vérifier si l'appel concerne la recherche de produits par ingrédients
-    if (body.ingredients && Array.isArray(body.ingredients) && body.ingredients.length > 0) {
-      const { ingredients } = body;
-
-      const products = await prisma.produit.findMany({
-        where: {
-          name: {
-            in: ingredients,
-          },
-        },
-        include: {
-          image: true,
-        },
-      });
-
-      const transformedProducts = products.map((product: Produit) => ({
-        id: product.id,
-        name: product.name,
-        prix: product.prix,
-        imageSrc: product.imageId ? `/path/to/images/${product.imageId}` : '',
-        slug: product.slug,
-      }));
-
-      return NextResponse.json(transformedProducts, { status: 200 });
-    }
-
-    // Vérifier si l'appel concerne la création d'un nouveau produit
-    const { name, description, prix, categorieId } = body as Produit;
+    const body = await req.json();
+    const { name, description, prix, categorieId, path } = body;
 
     if (!name || !prix || !description || !categorieId) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -81,17 +54,25 @@ export async function POST(request: NextRequest) {
         description,
         prix: parseFloat(prix.toString()),
         slug,
-        categorieId: parseInt(categorieId.toString()),
-        imageid: null,
-      },
-      include: {
-        image: true,
+        categorieId: parseInt(categorieId),
       },
     });
 
+    if (path) {
+      const newImage = await prisma.image.create({
+        data: { path },
+      });
+      await prisma.produit.update({
+        where: { id: newProduct.id },
+        data: { imageid: newImage.id },
+      });
+      console.log("Image created for product:", newImage);
+    }
+
+    console.log("POST API/products: Product created:", newProduct);
     return NextResponse.json(newProduct, { status: 201 });
   } catch (error) {
-    console.error('Error handling POST request:', error);
+    console.error('Error creating product:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
