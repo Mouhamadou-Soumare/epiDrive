@@ -1,79 +1,65 @@
 'use client';
 
-import { useState, useEffect } from "react";
 import Link from 'next/link';
-
-import { User, Commande, Produit } from "../types";
+import { useGetUsers } from '@/hooks/users/useUsers';
+import { useGetCommandes } from '@/hooks/commandes/useCommandes';
+import { useGetProduits } from '@/hooks/products/useProduits';
 
 /**
  * Page principale du backoffice.
  * Fournit des liens vers les différentes sections du backoffice.
  */
 export default function Backoffice() {
+  const { users, loading: loadingUsers, error: errorUsers } = useGetUsers();
+  const { commandes, loading: loadingCommandes, error: errorCommandes } = useGetCommandes();
+  const { produits, loading: loadingProducts, error: errorProducts } = useGetProduits();
 
-  const [utilisateurs, setUtilisateurs] = useState<User[]>([]);
-  const [commandes, setCommandes] = useState<Commande[]>([]);
-  const [products, setProducts] = useState<Produit[]>([]);
+  if (loadingUsers || loadingCommandes || loadingProducts) {
+    return <div>Chargement...</div>;
+  }
 
-  useEffect(() => {
-    const fetchUtilisateurs = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/api/users");
-        if (!response.ok) throw new Error('Erreur lors du chargement des utilisateurs');
-        const data = await response.json();
-        setUtilisateurs(data);
-      } catch (error) {
-        console.error('Erreur lors du chargement des utilisateurs :', error);
-      }
-    };
-    
-    const fetchCommandes = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/api/commande");
-        const data = await response.json();
-        setCommandes(data);
-      } catch (error) {
-        console.error('Erreur lors du chargement des commandes :', error);
-      }
-    };
+  if (errorUsers || errorCommandes || errorProducts) {
+    return (
+      <div className="text-red-500">
+        Une erreur est survenue lors du chargement des données.
+      </div>
+    );
+  }
 
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/api/products");
-        const data = await response.json();
-        setProducts(data);
-      } catch (error) {
-        console.error('Erreur lors du chargement des produits :', error);
-      }
-    };
-    
-    fetchProducts();
-    fetchUtilisateurs();
-    fetchCommandes();
-  }, []);
   return (
     <div>
       <main className="py-10">
-
         <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
-          {utilisateurs ? (
+          {users && (
             <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
-              <Link href={"/backoffice/utilisateur"} className="truncate text-sm font-medium text-gray-500">Total d'utilisateurs</Link>
-              <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">{utilisateurs.length}</dd>
+              <Link href={"/backoffice/utilisateur"} className="truncate text-sm font-medium text-gray-500">
+                Total d'utilisateurs
+              </Link>
+              <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
+                {users.length}
+              </dd>
             </div>
-          ) : null}
-          {commandes ? (
+          )}
+          {commandes && (
             <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
-              <Link href={"/backoffice/commande"} className="truncate text-sm font-medium text-gray-500">Total des commandes</Link>
-              <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">{commandes.length}</dd>
+              <Link href={"/backoffice/commande"} className="truncate text-sm font-medium text-gray-500">
+                Total des commandes
+              </Link>
+              <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
+                {commandes.length}
+              </dd>
             </div>
-          ) : null}
-          {products ? (
+          )}
+          {produits && (
             <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
-              <Link href={"/backoffice/product"} className="truncate text-sm font-medium text-gray-500">Total des products</Link>
-              <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">{products.length}</dd>
+              <Link href={"/backoffice/product"} className="truncate text-sm font-medium text-gray-500">
+                Total des produits
+              </Link>
+              <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
+                {produits.length}
+              </dd>
             </div>
-          ) : null}
+          )}
         </div>
       </main>
     </div>

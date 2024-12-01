@@ -1,5 +1,5 @@
 // components/ProductImage.tsx
-import { Image } from "../../../types";
+import { Image } from "../../../../../types";
 
 interface ProductImageProps {
   image: Image | null;

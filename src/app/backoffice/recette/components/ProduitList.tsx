@@ -1,4 +1,4 @@
-import { Produit } from "../../../types";
+import { Produit } from "../../../../../types";
 
 interface ProduitListProps {
   produits: Produit[];
