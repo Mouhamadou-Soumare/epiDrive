@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import * as tf from "@tensorflow/tfjs-node"; // Utilisation de tfjs-node pour le backend
+import * as tf from "@tensorflow/tfjs-node";
 import sharp from "sharp";
 
 const MODEL_URL =
@@ -10,9 +10,9 @@ let model: tf.GraphModel | null = null;
 // Charger le modèle YOLOv5
 const loadModel = async (): Promise<tf.GraphModel> => {
   if (!model) {
-    console.log("Chargement du modèle YOLO...");
+    console.log("Chargement du modèle YOLOv5...");
     model = await tf.loadGraphModel(MODEL_URL);
-    console.log("Modèle YOLO chargé.");
+    console.log("Modèle YOLOv5 chargé.");
   }
   return model;
 };
@@ -20,14 +20,14 @@ const loadModel = async (): Promise<tf.GraphModel> => {
 // Prétraiter l'image
 const processImage = async (imageBuffer: Buffer): Promise<tf.Tensor> => {
   try {
-    // Redimensionner l'image à 640x640 et obtenir un tableau de pixels
+    // Redimensionner l'image à 640x640 et obtenir un tableau de bytes
     const resizedImageBuffer = await sharp(imageBuffer)
-      .resize(640, 640, { fit: "contain" })
-      .raw() // Données brutes au format RGB
+      .resize(640, 640, { fit: "contain" }) // Garde les proportions tout en remplissant les dimensions
+      .raw() // Obtenir les données brutes
       .toBuffer();
 
-    // Convertir les données brutes en tenseur avec la forme attendue (1, 640, 640, 3)
-    const imageTensor = tf.tensor(
+    // Convertir en tenseur avec la forme attendue par le modèle (1, 640, 640, 3)
+    const imageTensor = tf.tensor3d(
       new Uint8Array(resizedImageBuffer),
       [640, 640, 3]
     )

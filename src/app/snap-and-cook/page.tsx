@@ -1,10 +1,9 @@
 "use client";
 
 import { useState, Fragment } from "react";
-import CameraCapture from "../../components/snap-and-cook/CameraCapture";
-import IngredientList from "../../components/snap-and-cook/IngredientList";
+import CameraCapture from "@/components/snap-and-cook/CameraCapture";
+import IngredientList from "@/components/snap-and-cook/IngredientList";
 import { Dialog, Transition } from "@headlessui/react";
-import useAddCart from "@/hooks/cart/useAddCart";
 
 type Ingredient = { name: string; quantity: number };
 type Product = { id: number; name: string; prix: number; imageSrc: string; slug: string };
@@ -17,7 +16,23 @@ export default function SnapAndCook() {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { addToCart } = useAddCart(); 
+  const addToCart = (productId: number, quantity: number) => {
+    setCart((prevCart) => ({
+      ...prevCart,
+      [productId]: (prevCart[productId] || 0) + quantity,
+    }));
+  };
+
+  const removeFromCart = (productId: number) => {
+    setCart((prevCart) => {
+      const updatedCart = { ...prevCart };
+      if (updatedCart[productId]) {
+        updatedCart[productId] -= 1;
+        if (updatedCart[productId] === 0) delete updatedCart[productId];
+      }
+      return updatedCart;
+    });
+  };
 
   const handleImageCaptured = async (imageData: string) => {
     setLoading(true);
@@ -61,66 +76,46 @@ export default function SnapAndCook() {
     }
   };
 
-
-  const handleBatchAddToCart = (productId: number, quantity: number) => {
-    const product = products.find((p) => p.id === productId);
-    if (product) {
-      addToCart({ productId: product.id, quantity, price: product.prix });
-    }
-  };
-
-  const handleRemoveFromCart = (productId: number) => {
-    setCart((prevCart) => {
-      const updatedCart = { ...prevCart };
-      
-      if (updatedCart[productId] > 1) {
-        updatedCart[productId] -= 1;
-      } else {
-        delete updatedCart[productId];
-      }
-      
-      return updatedCart;
-    });
-  };
-  
-
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-4xl font-extrabold text-gray-800 mb-8 text-center">Snap & Cook</h1>
-      
-      <div className="max-w-xl mx-auto bg-white rounded-lg shadow-lg p-6 mb-6">
+    <div className="p-8 bg-gray-50 min-h-screen">
+      <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">Snap & Cook</h1>
+
+      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6">
         <CameraCapture onImageCaptured={handleImageCaptured} />
       </div>
 
       {loading ? (
-        <p className="text-center text-blue-600 font-semibold">Analyse en cours...</p>
+        <p className="text-center text-indigo-600 font-medium mt-8">Analyse en cours...</p>
       ) : (
-        <div className="mt-8 max-w-xl mx-auto">
-          <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-            <h2 className="text-2xl font-semibold text-gray-700">Plat détecté :</h2>
-            <p className="text-lg text-gray-600 mt-2">{dish || "Aucun plat détecté"}</p>
+        <div className="mt-8 max-w-2xl mx-auto">
+          <div className="bg-white p-6 rounded-lg shadow mb-6">
+            <h2 className="text-xl font-semibold text-gray-700">Plat détecté :</h2>
+            <p className="text-lg text-gray-500 mt-2">{dish || "Aucun plat détecté"}</p>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-            <h2 className="text-2xl font-semibold text-gray-700">Ingrédients détectés :</h2>
+          <div className="bg-white p-6 rounded-lg shadow mb-6">
+            <h2 className="text-xl font-semibold text-gray-700">Ingrédients détectés :</h2>
             {ingredients.length > 0 ? (
-              <ul className="mt-4 space-y-2">
+              <ul className="mt-4 space-y-3">
                 {ingredients.map((ing, index) => (
-                  <li key={index} className="flex justify-between items-center text-lg text-gray-600">
+                  <li
+                    key={index}
+                    className="flex justify-between items-center text-lg text-gray-600"
+                  >
                     <span>{ing.name}</span>
                     <span className="font-medium text-gray-800">{ing.quantity}g</span>
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="text-gray-500">Aucun ingrédient détecté pour le moment.</p>
+              <p className="text-gray-400">Aucun ingrédient détecté pour le moment.</p>
             )}
           </div>
-          
+
           {products.length > 0 && (
             <button
               onClick={() => setIsModalOpen(true)}
-              className="w-full mt-6 px-4 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors duration-200"
+              className="w-full mt-6 px-4 py-3 bg-indigo-500 text-white rounded-lg shadow hover:bg-indigo-600 transition"
             >
               Voir les produits correspondants
             </button>
@@ -128,7 +123,6 @@ export default function SnapAndCook() {
         </div>
       )}
 
-      {/* Modal pour afficher les produits */}
       <Transition appear show={isModalOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={() => setIsModalOpen(false)}>
           <Transition.Child
@@ -154,8 +148,11 @@ export default function SnapAndCook() {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-2xl bg-white p-8 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title as="h3" className="text-2xl font-semibold leading-6 text-gray-800 mb-4">
+                <Dialog.Panel className="w-full max-w-lg bg-white rounded-2xl p-8 shadow-lg">
+                  <Dialog.Title
+                    as="h3"
+                    className="text-lg font-semibold text-gray-800 mb-4"
+                  >
                     Produits correspondants
                   </Dialog.Title>
 
@@ -163,13 +160,13 @@ export default function SnapAndCook() {
                     ingredients={ingredients}
                     products={products}
                     cart={cart}
-                    addToCart={handleBatchAddToCart}
-                    removeFromCart={handleRemoveFromCart}
+                    addToCart={addToCart}
+                    removeFromCart={removeFromCart}
                   />
 
                   <button
                     onClick={() => setIsModalOpen(false)}
-                    className="mt-6 w-full py-3 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 transition-colors duration-200"
+                    className="mt-6 w-full py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
                   >
                     Fermer
                   </button>

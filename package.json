@@ -18,6 +18,8 @@
     "@next/env": "^15.0.3",
     "@prisma/client": "^5.22.0",
     "@svgr/webpack": "^8.1.0",
+    "@tensorflow/tfjs": "^4.22.0",
+    "@tensorflow/tfjs-node": "^4.22.0",
     "autoprefixer": "^10.4.20",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
