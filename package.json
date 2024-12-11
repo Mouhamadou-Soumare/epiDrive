@@ -18,6 +18,7 @@
     "@next/env": "^15.0.3",
     "@prisma/client": "^5.22.0",
     "@svgr/webpack": "^8.1.0",
+    "@tensorflow-models/coco-ssd": "^2.2.3",
     "@tensorflow/tfjs": "^4.22.0",
     "@tensorflow/tfjs-node": "^4.22.0",
     "autoprefixer": "^10.4.20",
