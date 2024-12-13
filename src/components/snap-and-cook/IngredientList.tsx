@@ -2,8 +2,14 @@
 
 import { useState } from "react";
 
-type Ingredient = { name: string; quantity: number };
-type Product = { id: number; name: string; prix: number; imageSrc: string; slug: string };
+type Ingredient = {
+  name: string;
+  description: string;
+  prix: number;
+  categorie: string;
+};
+
+type Product = { id: number; name: string; prix: number; };
 
 interface IngredientListProps {
   ingredients: Ingredient[];

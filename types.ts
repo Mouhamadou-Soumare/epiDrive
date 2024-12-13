@@ -66,6 +66,14 @@ export interface Produit {
     recettes?: Recette[]; // Relation avec des recettes
 }
 
+export interface Ingredient {
+    id: number;
+    name: string;
+    description: string;
+    prix: number;
+    categorie: String;
+}
+
 export interface QuantitePanier {
     id: number;
     quantite: number;
