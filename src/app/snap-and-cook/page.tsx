@@ -5,95 +5,134 @@ import CameraCapture from "../../components/snap-and-cook/CameraCapture";
 import IngredientList from "../../components/snap-and-cook/IngredientList";
 import { Dialog, Transition } from "@headlessui/react";
 import useAddCart from "@/hooks/cart/useAddCart";
+import { useAddIngredient } from "@/hooks/ingredients/useIngredients";
 
-type Ingredient = { name: string; quantity: number };
-type Product = { id: number; name: string; prix: number; imageSrc: string; slug: string };
+type Ingredient = {
+  name: string;
+  description: string;
+  prix: number;
+  categorie: string;
+};
+
+type Product = { id: number; name: string; prix: number; };
 
 export default function SnapAndCook() {
   const [dish, setDish] = useState<string | null>(null);
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [cart, setCart] = useState<{ [productId: number]: number }>({});
-  const [loading, setLoading] = useState(false);
+  const [loadingImage, setLoadingImage] = useState(false);
+  const [loadingProducts, setLoadingProducts] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { addToCart } = useAddCart(); 
+  const { addToCart } = useAddCart();
 
   const handleImageCaptured = async (imageData: string) => {
-    setLoading(true);
+    setLoadingImage(true);
+    setError(null);
+
     try {
-      const response = await fetch("/api/snap-and-cook", {
+      const response = await fetch("/api/jimmy", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: imageData }),
       });
+
       const result = await response.json();
-      if (response.ok) {
-        setDish(result.dish);
-        setIngredients(result.ingredients);
-        fetchMatchingProducts(result.ingredients);
-      } else {
-        console.error("Erreur lors de l'analyse de l'image:", result.error);
+      if (!response.ok) {
+        setError(result.error || "Erreur lors de l'analyse de l'image.");
       }
-    } catch (error) {
-      console.error("Erreur lors de l'analyse de l'image:", error);
+
+      setDish(result.dish.title);
+      setIngredients(result.ingredients);
+      fetchMatchingProducts(result.ingredients);
+    } catch (err: any) {
+      setError(err.message || "Une erreur s'est produite.");
     } finally {
-      setLoading(false);
+      setLoadingImage(false);
     }
   };
 
   const fetchMatchingProducts = async (ingredients: Ingredient[]) => {
-    try {
-      const ingredientNames = ingredients.map((ing) => ing.name);
-      const response = await fetch("/api/products", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ingredients: ingredientNames }),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setProducts(data);
-      } else {
-        console.error("Erreur lors de la récupération des produits :", data.error);
+    const productList = [];
+    console.log("***********************************************");
+    console.log("Ingrédients détectés :", ingredients);
+  
+    for (const ingredient of ingredients) {
+      try {
+        // Vérifier si le produit existe
+        const response = await fetch(`/api/products/${ingredient.name.toLowerCase().replace(/ /g, '-')}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+  
+        if (response.ok) {
+          const existingProduct = await response.json();
+          if (existingProduct) {
+            console.log(`Produit trouvé : ${existingProduct.name}`);
+            productList.push(existingProduct); // Ajouter le produit existant à la liste
+            continue;
+          }
+        }
+  
+        // Si le produit n'existe pas, créer un ingrédient
+        console.log(`Création de l'ingrédient : ${ingredient.name}`);
+        const newIngredient = {
+          name: ingredient.name,
+          description: ingredient.description,
+          prix: ingredient.prix,
+          categorie: ingredient.categorie,
+        };
+  
+        const createdIngredient = await useAddIngredient(newIngredient); // API externe pour ajouter l'ingrédient
+        productList.push(createdIngredient);
+      } catch (error) {
+        console.error(`Erreur avec l'ingrédient ${ingredient.name} :`, error);
       }
-    } catch (error) {
-      console.error("Erreur lors de la récupération des produits :", error);
     }
+  
+    setProducts(productList);
+    setIngredients(ingredients);
+    console.log("***********************************************");
+    return productList;
   };
-
-
+  
   const handleBatchAddToCart = (productId: number, quantity: number) => {
     const product = products.find((p) => p.id === productId);
     if (product) {
       addToCart({ productId: product.id, quantity, price: product.prix });
+      setCart((prevCart) => ({
+        ...prevCart,
+        [productId]: (prevCart[productId] || 0) + quantity,
+      }));
     }
   };
 
   const handleRemoveFromCart = (productId: number) => {
     setCart((prevCart) => {
       const updatedCart = { ...prevCart };
-      
       if (updatedCart[productId] > 1) {
         updatedCart[productId] -= 1;
       } else {
         delete updatedCart[productId];
       }
-      
       return updatedCart;
     });
   };
-  
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <h1 className="text-4xl font-extrabold text-gray-800 mb-8 text-center">Snap & Cook</h1>
-      
+
       <div className="max-w-xl mx-auto bg-white rounded-lg shadow-lg p-6 mb-6">
         <CameraCapture onImageCaptured={handleImageCaptured} />
       </div>
 
-      {loading ? (
+      {loadingImage ? (
         <p className="text-center text-blue-600 font-semibold">Analyse en cours...</p>
+      ) : error ? (
+        <p className="text-center text-red-600 font-semibold">{error}</p>
       ) : (
         <div className="mt-8 max-w-xl mx-auto">
           <div className="bg-white p-6 rounded-lg shadow-md mb-6">
@@ -108,7 +147,6 @@ export default function SnapAndCook() {
                 {ingredients.map((ing, index) => (
                   <li key={index} className="flex justify-between items-center text-lg text-gray-600">
                     <span>{ing.name}</span>
-                    <span className="font-medium text-gray-800">{ing.quantity}g</span>
                   </li>
                 ))}
               </ul>
@@ -116,7 +154,7 @@ export default function SnapAndCook() {
               <p className="text-gray-500">Aucun ingrédient détecté pour le moment.</p>
             )}
           </div>
-          
+
           {products.length > 0 && (
             <button
               onClick={() => setIsModalOpen(true)}
