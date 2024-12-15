@@ -14,8 +14,6 @@ env:
   MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
   MYSQL_USER: ${{ secrets.MYSQL_USER }}
   MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-  JWT_SECRET: ${{ secrets.JWT_SECRET }}
-  TON_WALLET_MNEMONIC: ${{ secrets.TON_WALLET_MNEMONIC }}
 
 jobs:
   build:
@@ -25,7 +23,7 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: root_password
+          MYSQL_ROOT_PASSWORD: rootpassword
           MYSQL_DATABASE: epidrive
           MYSQL_USER: user
           MYSQL_PASSWORD: password
@@ -61,11 +59,3 @@ jobs:
       - name: Lint and Fix
         run: npm run lint --fix || true
         working-directory: ./src
-
-      - name: Docker Scan
-        run: docker scan --accept-license epidrive-web || true
-
-      - name: Stop Docker Compose
-        if: always()
-        run: docker-compose down || true
-        working-directory: ./src "
