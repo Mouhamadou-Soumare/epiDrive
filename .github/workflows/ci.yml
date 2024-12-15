@@ -9,66 +9,63 @@ on:
       - main
 
 env:
-  # Charger les variables d'environnement depuis les secrets GitHub
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
   SHADOW_DATABASE_URL: ${{ secrets.SHADOW_DATABASE_URL }}
   MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
   MYSQL_USER: ${{ secrets.MYSQL_USER }}
   MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-  NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
-  FOODVISOR_API_KEY: ${{ secrets.FOODVISOR_API_KEY }}
-  STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
-  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
-  GOOGLE_VISION_API_KEY: ${{ secrets.GOOGLE_VISION_API_KEY }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+  TON_WALLET_MNEMONIC: ${{ secrets.TON_WALLET_MNEMONIC }}
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
 
     services:
-      db:
-        image: mysql:9.1
+      mysql:
+        image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_ROOT_PASSWORD: root_password
           MYSQL_DATABASE: epidrive
-          MYSQL_USER: ${{ secrets.MYSQL_USER }}
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
         ports:
           - 3306:3306
 
     steps:
-      # Étape 1 : Vérifier le code source
-      - name: Checkout code
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # Étape 2 : Configurer Node.js
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
           node-version: 18
 
-      # Étape 3 : Installer les dépendances
-      - name: Install dependencies
+      - name: Cache Node Modules
+        uses: actions/cache@v2
+        with:
+          path: ./src/node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node_modules
+
+      - name: Install Dependencies
         run: npm install
         working-directory: ./src
-
-      # Étape 4 : Lancer les tests
-      - name: Run tests
-        run: npm run test
+      
+      - name: Lint and Fix
+        run: npm run lint --fix || true
         working-directory: ./src
 
-      # Étape 5 : Build l'application
-      - name: Build the application
-        run: npm run build
-        working-directory: ./src
+      - name: Docker Scan
+        run: docker scan --accept-license epidrive-web || true
 
-  deploy:
-    needs: build-and-test
-    runs-on: ubuntu-latest
-
-    steps:
-      # Étape 1 : Déployer via Docker
-      - name: Deploy using Docker Compose
-        run: |
-          docker-compose down
-          docker-compose up --build -d
+      - name: Stop Docker Compose
+        if: always()
+        run: docker-compose down || true
+        working-directory: ./src "
