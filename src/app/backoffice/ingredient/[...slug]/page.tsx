@@ -61,7 +61,7 @@ export default function AddProductFromIngredientPage() {
       categorieId: selectedCategoryId,
     };
 
-    const success = await addProduit(newProduct, "");
+    const success = await addProduit(newProduct, "/path/to/"+updatedIngredient.name+".jpg");
     setSubmitResult(success ? "success" : "error");
     if (success) {
       await deleteIngredient(updatedIngredient.id);
