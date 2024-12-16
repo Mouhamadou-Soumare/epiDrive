@@ -4,6 +4,8 @@ import prisma from '@/lib/prisma';
 export async function GET(req: Request) {
   try {
     console.log("Fetching all categories...");
+
+    // Récupération des catégories avec sous-catégories et images
     const categories = await prisma.categorie.findMany({
       include: {
         image: true,
@@ -16,34 +18,48 @@ export async function GET(req: Request) {
     });
 
     if (categories.length === 0) {
-        console.error("No categories found");
-        return NextResponse.json({ message: 'No categories found' }, { status: 404 });
+      console.error("No categories found");
+      return NextResponse.json({ message: 'No categories found' }, { status: 404 });
     }
 
+    // Formattage des catégories
     const formattedCategories = categories.map((
-      categorie: { 
-        id: number, name: string, slug: string, image: { path: string } | null, 
-        subcategories: { id: number, name: string, slug: string, image: { path: string } | null }[] 
+      categorie: {
+        id: number,
+        name: string,
+        slug: string,
+        parentId: number | null,
+        image: { path: string } | null,
+        subcategories: {
+          id: number,
+          name: string,
+          slug: string,
+          parentId: number | null,
+          image: { path: string } | null
+        }[]
       }
     ) => ({
       id: categorie.id,
       name: categorie.name,
       slug: categorie.slug,
+      parentId: categorie.parentId || null, // Ajout du parentId pour la catégorie principale
       imageSrc: categorie.image?.path || 'https://via.placeholder.com/300',
       imageAlt: `Image de la catégorie ${categorie.name}`,
       subcategories: categorie.subcategories.map(subcategorie => ({
+        id: subcategorie.id,
         name: subcategorie.name,
         slug: subcategorie.slug,
+        parentId: subcategorie.parentId || null, // Ajout du parentId pour chaque sous-catégorie
         imageSrc: subcategorie.image?.path || 'https://via.placeholder.com/300',
         imageAlt: `Image de la sous-catégorie ${subcategorie.name}`,
       })),
     }));
 
-    console.log("GET API/categorie: categories found:", formattedCategories);
+    console.log("GET API/categories: categories found:", formattedCategories);
     return NextResponse.json(formattedCategories, { status: 200 });
   } catch (error) {
-      console.error("Error in GET API/categorie:", error);
-      return new Response(JSON.stringify({ error: 'Failed to fetch categories' }), { status: 500 });
+    console.error("Error in GET API/categories:", error);
+    return new Response(JSON.stringify({ error: 'Failed to fetch categories' }), { status: 500 });
   }
 }
 
