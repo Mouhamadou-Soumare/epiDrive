@@ -24,7 +24,7 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: rootpassword
-          MYSQL_DATABASE: epidrive
+          MYSQL_DATABASE: test_db
           MYSQL_USER: user
           MYSQL_PASSWORD: password
         ports:
@@ -36,54 +36,30 @@ jobs:
           --health-retries=3
 
     steps:
-      # 1. Mettre à jour le système
-      - name: Update System
-        run: sudo apt-get update
-
-      # 2. Installer Docker Compose
-      - name: Install Docker Compose
-        run: sudo apt-get install -y docker-compose
-
-      # 3. Récupérer le dépôt
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # 4. Configurer Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: 18
 
-      # 5. Mettre en cache les modules Node.js
-      - name: Cache Node Modules
-        uses: actions/cache@v2
-        with:
-          path: ./src/node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node_modules
-
-      # 6. Installer les dépendances
       - name: Install Dependencies
         run: npm install
         working-directory: ./src
-      
-      # 7. Vérifier la qualité du code
-      - name: Lint and Fix
-        run: npm run lint --fix || true
-        working-directory: ./src
 
-      # 8. Générer le client Prisma (si applicable)
       - name: Generate Prisma Client
-        run: npx prisma generate
+        run: npx prisma generate --schema=prisma/schema.prisma
         working-directory: ./src
 
-      # 9. Vérifier les migrations Prisma
-      - name: Check Prisma Migrations
-        run: npx prisma migrate dev --name init
+      - name: Apply Migrations
+        run: npx prisma migrate dev --schema=prisma/schema.prisma
         working-directory: ./src
 
-      # 10. Build du projet
+      - name: Run Tests
+        run: npm test
+        working-directory: ./src
+
       - name: Build Project
         run: npm run build
         working-directory: ./src
