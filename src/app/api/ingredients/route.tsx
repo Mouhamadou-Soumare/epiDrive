@@ -33,6 +33,12 @@ export async function POST(req: Request) {
 
     console.log('Creating ingredient with body:', body);    
 
+    const matchIngredient = await prisma.ingredient.findFirst({ where: { name } });
+    if (matchIngredient) {
+      console.error('Ingredient already exists:', matchIngredient);
+      return NextResponse.json(matchIngredient, { status: 201 }); 
+    }
+    
     const newIngredient = await prisma.ingredient.create({
       data: {
         name,
