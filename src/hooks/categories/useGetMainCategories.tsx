@@ -1,29 +1,26 @@
 import { useEffect, useState } from 'react';
-
-type Category = {
-  id: number;
-  name: string;
-  slug: string;
-  description?: string;
-};
+import { Categorie } from "../../../types";
 
 export const useGetMainCategories = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Categorie[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch('/api/categories'); 
-        const data = await res.json();
+        const res = await fetch('/api/categories');
+        const data: Categorie[] = await res.json(); // Utilisation de l'interface Categorie pour le typage
+
         if (res.ok) {
-          setCategories(data);
+          // Filtrer uniquement les catégories principales (parentId === null)
+          const mainCategories = data.filter((category) => category.parentId === null);
+          setCategories(mainCategories);
         } else {
-          setError(data.error || 'Error fetching categories');
+          setError('Erreur lors de la récupération des catégories');
         }
-      } catch (error) {
-        setError('Error fetching categories');
+      } catch (err) {
+        setError('Erreur lors de la récupération des catégories');
       } finally {
         setLoading(false);
       }

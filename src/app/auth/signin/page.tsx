@@ -2,10 +2,25 @@
 
 'use client';
 
+import Image from 'next/image';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import foodPresentation from "../../../../public/img/food_presentation.webp";
+import groceryDrive from "../../../../public/img/grocery_drive.webp";
+import scanFood from "../../../../public/img/scan_food.webp";
+import foodBak from "../../../../public/img/food-bak.webp";
+import epiDrive from "../../../../public/img/Epidrive.webp"
 
+import viennoiseries from "../../../../public/img/category/pains-et-patisseries.webp"
+import produitsRegionaux from "../../../../public/img/category/produits-regionaux-et-locaux-nav.webp"
+import logo from "../../../../public/img/logo.png"
+import epicerieFineRegionale from "../../../../public/img/category/epicerie-fine-regionale.webp"
+import charcuterieTraiteur from "../../../../public/img/category/charcuterie-et-traiteur.webp"
+
+
+import { ArrowLeftIcon, ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/outline';
+import AuthenticatorCards from '@/components/AuthenticatorCards';
 export default function SignInPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,55 +44,76 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white p-6">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-2xl p-8">
-        <h1 className="text-3xl font-bold text-center text-black mb-6">Se connecter</h1>
-
-        {error && (
-          <p className="text-center text-red-500 bg-red-100 rounded-lg py-2 mb-4">
-            {error}
-          </p>
-        )}
-
+    <>
+    <div className="bg-auth flex flex-column h-screen pb-0	">
+      <div className="mx-auto max-w-7xl px-24  items-center	content-center	flex-auth-form">
+        
+      <div className='text-left pb-8'> 
+         <div className='flex flex-row align-baseline items-stretch	 gap-4 a-primary'><ArrowLeftIcon className='max-w-6 font-black'/> <a className='' href="/">Retour à la page d'accueil </a></div>   
+          </div>
+          <div className='flex flex-row align-baseline items-baseline	 gap-4
+        '><h2 className="text-6xl pb-12">Se connecter </h2><ArrowRightEndOnRectangleIcon className='max-w-10'/> </div>
+        {error && <div style={{ color: "red" }}>{error}</div>}
+        <div></div>
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-black mb-2" htmlFor="email">
-              Email
+          <div className='pb-4'>
+            <label
+              htmlFor="email"
+              className="block text-md font-medium leading-6 text-gray-900 pb-2"
+            >
+              Identifiant
             </label>
             <input
-              type="email"
               id="email"
+              name="email"
+              type="text"
+              autoComplete="username"
+              required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
-              className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-black placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
-              placeholder="Votre adresse email"
+              className="block w-full bg-slate-200	pt-4 pb-4 px-3 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-black mb-2" htmlFor="password">
+          <div className='pb-8'>
+            <label
+              htmlFor="password"
+              className="block text-md font-medium leading-6 text-gray-900 pb-2"
+            >
               Mot de passe
             </label>
             <input
-              type="password"
               id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
-              className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-black placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
-              placeholder="Votre mot de passe"
+              className="block bg-slate-200	pt-4 pb-4 px-3 mb-3 w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
+            <a className='pt-3 a-primary'> Mot de passe oublié ? </a>
           </div>
 
-          <button
-            type="submit"
-            className="w-full py-3 text-lg font-semibold text-white bg-gradient-to-r from-purple-500 to-indigo-600 rounded-lg shadow-lg hover:from-purple-600 hover:to-indigo-700 transform transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Se connecter
-          </button>
+          <div>
+            <button
+              type="submit"
+              className="w-full flex justify-center py-3 px-4 mb-4 border border-transparent rounded-md shadow-sm text-2xl font-medium text-white button-primary hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+             Connexion
+            </button>
+
+          </div>
+          <div className='text-center a-primary'> 
+            <a href='/auth/register'>Pas de compte ? Créez-en un. </a>
+          </div>
         </form>
       </div>
+
+      <AuthenticatorCards />
+
+
     </div>
+  </>
   );
 }

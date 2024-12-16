@@ -35,7 +35,7 @@ export default function AllCategoriesPage() {
   }, []);
   console.log(categories);
 
-  if (loading) return <div>Chargement...</div>;
+  if (loading) return <div className='min-h-screen min-w-screen mx-auto flex justify-center items-center'><span className="loader-cate-prod"></span></div>;
   if (!categories) return <div>Aucune catégorie trouvée</div>;
 
   return (

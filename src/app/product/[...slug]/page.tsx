@@ -90,9 +90,10 @@ export default function ProductDetailPage() {
     });
   };
 
-  if (loading) return <div>Chargement...</div>;
+  if (loading) return <div className='min-h-screen min-w-screen mx-auto flex justify-center items-center'><span className="loader-cate-prod"></span></div>;;
   if (!product) return <div>Produit non trouvé</div>;
 
+  console.log(product);
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
