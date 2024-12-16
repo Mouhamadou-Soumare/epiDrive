@@ -50,7 +50,7 @@ export default function CategoryPage() {
     fetchCategory();
   }, [slug]);
 
-  if (loading) return <div>Chargement...</div>;
+  if (loading) return <div className='min-h-screen min-w-screen mx-auto flex justify-center items-center'><span className="loader-cate-prod"></span></div>;
   if (!currentCategory) return <div>Catégorie non trouvée</div>;
   return (
     <div className="bg-white">
