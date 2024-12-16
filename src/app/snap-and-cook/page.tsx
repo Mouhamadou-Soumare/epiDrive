@@ -56,7 +56,6 @@ export default function SnapAndCook() {
 
   const fetchMatchingProducts = async (ingredients: Ingredient[]) => {
     const productList = [];
-    console.log("***********************************************");
     console.log("Ingrédients détectés :", ingredients);
   
     for (const ingredient of ingredients) {
@@ -86,7 +85,7 @@ export default function SnapAndCook() {
         };
   
         const createdIngredient = await useAddIngredient(newIngredient); // API externe pour ajouter l'ingrédient
-        productList.push(createdIngredient);
+        //productList.push(createdIngredient);
       } catch (error) {
         console.error(`Erreur avec l'ingrédient ${ingredient.name} :`, error);
       }
@@ -94,7 +93,6 @@ export default function SnapAndCook() {
   
     setProducts(productList);
     setIngredients(ingredients);
-    console.log("***********************************************");
     return productList;
   };
   
