@@ -1,4 +1,4 @@
-name: CI/CD Workflow
+name: CI Workflow
 
 on:
   push:
@@ -16,7 +16,7 @@ env:
   MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     services:
@@ -29,21 +29,32 @@ jobs:
           MYSQL_PASSWORD: password
         ports:
           - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
 
     steps:
-      - name: Install Docker Compose
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
+      # 1. Mettre à jour le système
+      - name: Update System
+        run: sudo apt-get update
 
+      # 2. Installer Docker Compose
+      - name: Install Docker Compose
+        run: sudo apt-get install -y docker-compose
+
+      # 3. Récupérer le dépôt
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      # 4. Configurer Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: 18
 
+      # 5. Mettre en cache les modules Node.js
       - name: Cache Node Modules
         uses: actions/cache@v2
         with:
@@ -52,10 +63,27 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node_modules
 
+      # 6. Installer les dépendances
       - name: Install Dependencies
         run: npm install
         working-directory: ./src
       
+      # 7. Vérifier la qualité du code
       - name: Lint and Fix
         run: npm run lint --fix || true
+        working-directory: ./src
+
+      # 8. Générer le client Prisma (si applicable)
+      - name: Generate Prisma Client
+        run: npx prisma generate
+        working-directory: ./src
+
+      # 9. Vérifier les migrations Prisma
+      - name: Check Prisma Migrations
+        run: npx prisma migrate dev --name init
+        working-directory: ./src
+
+      # 10. Build du projet
+      - name: Build Project
+        run: npm run build
         working-directory: ./src
