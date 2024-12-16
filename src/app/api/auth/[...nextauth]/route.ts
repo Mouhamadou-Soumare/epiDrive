@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { prisma } from '@/lib/prisma';
+import prisma from '@/lib/prisma';
 import bcrypt from 'bcrypt';
 
 export const authOptions = {
@@ -23,7 +23,7 @@ export const authOptions = {
         if (user) {
           const isValidPassword = credentials.password && user.password ? await bcrypt.compare(credentials.password, user.password) : false;
           if (isValidPassword) {
-            // Retourne l'utilisateur avec un `id` de type `string`
+            
             return {
               id: user.id.toString(),
               name: user.username,

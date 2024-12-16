@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Dialog, DialogBackdrop, DialogPanel, TransitionChild } from '@headlessui/react'
 import { Bars3Icon, BellIcon, ChartPieIcon, Cog6ToothIcon, FolderIcon, HomeIcon, Squares2X2Icon, UsersIcon, XMarkIcon, CakeIcon } from '@heroicons/react/24/outline'
 import logo from "../../../../public/img/logo_white_bg.png"
+
 import Link from 'next/link';
 
 const navigation = [
@@ -14,6 +15,7 @@ const navigation = [
   { name: 'Recettes', href: '/backoffice/recette', icon: CakeIcon, current: false },
   { name: 'Commandes', href: '/backoffice/commande', icon: ChartPieIcon, current: false },
   { name: 'Catégories', href: '/backoffice/categorie', icon: FolderIcon, current: false },
+  { name: 'Ingredients', href: '/backoffice/ingredient', icon: BellAlertIcon, current: false },
 ]
 
 function classNames(...classes: string[]) {
