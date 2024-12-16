@@ -19,6 +19,8 @@ type CartItem = {
 export default function CartPage() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+
   const router = useRouter();
 
   function getOrCreateSessionId() {
@@ -27,12 +29,13 @@ export default function CartPage() {
       sessionId = `session_${Math.random().toString(36).substring(2, 15)}`;
       localStorage.setItem('sessionId', sessionId);
     }
+
+    setSessionId(sessionId);
     return sessionId;
   }
   useEffect(() => {
     async function fetchCart() {
       const sessionId = getOrCreateSessionId();
-  
       try {
         const res = await fetch(`/api/cart?sessionId=${sessionId}`);
         const data = await res.json();
@@ -50,14 +53,22 @@ export default function CartPage() {
   
     fetchCart();
   }, []);
+
+  useEffect(() => {
+    console.log("CartItems updated:", cartItems);
+  }, [cartItems]);
   
   const handleRemove = async (itemId: number) => {
     try {
-      const res = await fetch(`/api/cart/${itemId}`, {
+      const res = await fetch(`/api/cart/${itemId}?sessionId=${sessionId}`, {
         method: 'DELETE',
       });
+  
       if (res.ok) {
-        setCartItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
+        setCartItems((prevItems) =>
+          prevItems.filter((item) => item.produit.id !== itemId)
+        );
+        console.log("Article supprimé et panier mis à jour localement.");
       } else {
         console.error("Erreur lors de la suppression de l'article:", res.statusText);
       }
@@ -65,21 +76,27 @@ export default function CartPage() {
       console.error("Erreur lors de la suppression de l'article:", error);
     }
   };
-
+  
   const handleUpdateQuantity = async (itemId: number, quantity: number) => {
     try {
       const res = await fetch(`/api/cart/${itemId}`, {
-        method: 'PATCH',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ quantity }),
+        body: JSON.stringify({ quantity, sessionId }),
       });
       if (res.ok) {
         const updatedItem = await res.json();
+      
         setCartItems((prevItems) =>
-          prevItems.map((item) => (item.id === itemId ? { ...item, quantite: updatedItem.quantite } : item))
+          prevItems.map((item) =>
+            item.produit.id === updatedItem.fk_produit
+              ? { ...item, quantite: updatedItem.quantite, prix: updatedItem.prix }
+              : item
+          )
         );
+      
       } else {
         console.error("Erreur lors de la mise à jour de la quantité:", res.statusText);
       }
@@ -109,7 +126,7 @@ export default function CartPage() {
               </div>
               <div className="flex items-center space-x-2">
                 <button
-                  onClick={() => handleUpdateQuantity(item.id, item.quantite - 1)}
+                  onClick={() => handleUpdateQuantity(item.produit.id, item.quantite - 1)}
                   disabled={item.quantite <= 1}
                   className="px-2 py-1 bg-gray-200 rounded"
                 >
@@ -117,13 +134,13 @@ export default function CartPage() {
                 </button>
                 <span>{item.quantite}</span>
                 <button
-                  onClick={() => handleUpdateQuantity(item.id, item.quantite + 1)}
+                  onClick={() => handleUpdateQuantity(item.produit.id, item.quantite + 1)}
                   className="px-2 py-1 bg-gray-200 rounded"
                 >
                   +
                 </button>
                 <button
-                  onClick={() => handleRemove(item.id)}
+                  onClick={() => handleRemove(item.produit.id)}
                   className="text-red-500 hover:text-red-700 ml-4"
                 >
                   Supprimer
