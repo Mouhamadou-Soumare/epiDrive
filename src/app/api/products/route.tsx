@@ -19,6 +19,7 @@ export async function GET() {
     }
 
     const transformedProducts = products.map(product => ({
+
       id: product.id,
       name: product.name,
       prix: product.prix,
