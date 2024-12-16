@@ -9,11 +9,14 @@ on:
       - main
 
 env:
+  MYSQL_USER: user
+  MYSQL_PASSWORD: password
+  MYSQL_ROOT_PASSWORD: rootpassword
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
   SHADOW_DATABASE_URL: ${{ secrets.SHADOW_DATABASE_URL }}
-  MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-  MYSQL_USER: ${{ secrets.MYSQL_USER }}
-  MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+  NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+  STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
 
 jobs:
   build-and-test:
