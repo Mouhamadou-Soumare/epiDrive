@@ -56,7 +56,6 @@ export default function SnapAndCook() {
 
   const fetchMatchingProducts = async (ingredients: Ingredient[]) => {
     const productList = [];
-    console.log("Ingrédients détectés :", ingredients);
   
     for (const ingredient of ingredients) {
       try {
@@ -69,14 +68,12 @@ export default function SnapAndCook() {
         if (response.ok) {
           const existingProduct = await response.json();
           if (existingProduct) {
-            console.log(`Produit trouvé : ${existingProduct.name}`);
             productList.push(existingProduct); // Ajouter le produit existant à la liste
             continue;
           }
         }
   
         // Si le produit n'existe pas, créer un ingrédient
-        console.log(`Création de l'ingrédient : ${ingredient.name}`);
         const newIngredient = {
           name: ingredient.name,
           description: ingredient.description,

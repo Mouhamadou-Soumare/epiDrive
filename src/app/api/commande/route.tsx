@@ -31,8 +31,14 @@ export async function POST(req: Request) {
     const { status, paymentId, userId, infosAdresse, produits } = body;
 
     console.log('Creating commande with body:', body);
-    if (!status || !userId || !infosAdresse || !produits) {
+
+    // Vérification des champs requis
+    if (!status || !userId || !infosAdresse || !produits || produits.length === 0) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    if (!infosAdresse.adresse || !infosAdresse.ville || !infosAdresse.codePostal || !infosAdresse.pays) {
+      return NextResponse.json({ error: 'Invalid adresse fields' }, { status: 400 });
     }
 
     const livraisonData = {
@@ -40,38 +46,39 @@ export async function POST(req: Request) {
       ville: infosAdresse.ville,
       codePostal: infosAdresse.codePostal,
       pays: infosAdresse.pays,
-      user: {
-        connect: { id: userId },
-      },
     };
 
+    // Création de la commande avec l'adresse de livraison
     const newCommande = await prisma.commande.create({
       data: {
-        status: status,
+        status,
         paymentId: paymentId || null,
         user: { connect: { id: userId } },
-        livraison: {
-          create: livraisonData
-        }
-      }
+        livraison: { create: livraisonData },
+      },
     });
 
+    // Ajout des produits à la commande
     for (const produit of produits) {
+      if (!produit.id || !produit.quantite) {
+        return NextResponse.json({ error: 'Invalid produit data' }, { status: 400 });
+      }
+
       await prisma.quantiteCommande.create({
         data: {
-          commande : { connect: { id: newCommande.id } },
-          produit: { connect: { id: produit.produit.id } },
+          commande: { connect: { id: newCommande.id } },
+          produit: { connect: { id: produit.id } },
           quantite: produit.quantite,
-          prix: produit.produit.prix
-        }
+          prix: produit.prix, // Assuming 'prix' is a property of 'produit'
+        },
       });
     }
 
     console.log('Commande created:', newCommande);
     return NextResponse.json(newCommande, { status: 201 });
-
   } catch (error) {
     console.error('Error creating commande:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal Server Error', details: (error as any).message }, { status: 500 });
   }
 }
+

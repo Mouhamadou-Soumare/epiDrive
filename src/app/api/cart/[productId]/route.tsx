@@ -1,39 +1,61 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-export async function PUT(req: NextRequest, { params }: { params: { productId: string } }) {
-  const { productId } = params;
-  const { quantity, sessionId, userId } = await req.json();
+export async function PUT(req: NextRequest, context: { params: { productId: string } }) {
+  try {
+    const { productId } = context.params;
+    const { quantity, sessionId, userId } = await req.json();
 
-  console.log('PUT API/cart/[productId]:', { productId, quantity, sessionId, userId });
-  if (!productId || (!sessionId && !userId)) {
-    return NextResponse.json({ error: 'Paramètres requis manquants' }, { status: 400 });
-  }
+    console.log('PATCH API/cart/[productId]:', { productId, quantity, sessionId, userId });
 
-  const panier = await prisma.panier.findFirst({
-    where: {
-      fk_userId: userId ? parseInt(userId) : undefined,
-      sessionId: sessionId ?? undefined,
-    },
-  });
+    if (!productId || (!sessionId && !userId)) {
+      return NextResponse.json({ error: 'Paramètres requis manquants' }, { status: 400 });
+    }
 
-  if (!panier) {
-    return NextResponse.json({ error: 'Panier non trouvé' }, { status: 404 });
-  }
-
-  const item = await prisma.quantitePanier.update({
-    where: {
-      fk_panier_fk_produit: {
-        fk_panier: panier.id,
-        fk_produit: parseInt(productId),
+    // Trouver le panier correspondant
+    const panier = await prisma.panier.findFirst({
+      where: {
+        fk_userId: userId ? parseInt(userId, 10) : undefined,
+        sessionId: sessionId ?? undefined,
       },
-    },
-    data: {
-      quantite: quantity,
-    },
-  });
+    });
 
-  return NextResponse.json(item, { status: 200 });
+    if (!panier) {
+      return NextResponse.json({ error: 'Panier non trouvé' }, { status: 404 });
+    }
+
+    // Vérifier si l'enregistrement existe avant de le mettre à jour
+    const existingItem = await prisma.quantitePanier.findUnique({
+      where: {
+        fk_panier_fk_produit: {
+          fk_panier: panier.id,
+          fk_produit: parseInt(productId, 10),
+        },
+      },
+    });
+
+    if (!existingItem) {
+      return NextResponse.json({ error: 'Produit non trouvé dans le panier' }, { status: 404 });
+    }
+
+    // Mettre à jour la quantité
+    const updatedItem = await prisma.quantitePanier.update({
+      where: {
+        fk_panier_fk_produit: {
+          fk_panier: panier.id,
+          fk_produit: parseInt(productId, 10),
+        },
+      },
+      data: {
+        quantite: quantity,
+      },
+    });
+
+    return NextResponse.json(updatedItem, { status: 200 });
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour du produit dans le panier :', error);
+    return NextResponse.json({ error: 'Erreur interne' }, { status: 500 });
+  }
 }
   
 export async function DELETE(req: NextRequest, { params }: { params: { productId: string } }) {
