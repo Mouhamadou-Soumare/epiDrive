@@ -3,7 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import prisma from '@/lib/prisma';
 import bcrypt from 'bcrypt';
 
-export const authOptions = {
+const handler = NextAuth({
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -21,19 +21,20 @@ export const authOptions = {
         });
 
         if (user) {
-          const isValidPassword = credentials.password && user.password ? await bcrypt.compare(credentials.password, user.password) : false;
+          const isValidPassword =
+            credentials.password && user.password
+              ? await bcrypt.compare(credentials.password, user.password)
+              : false;
+
           if (isValidPassword) {
-            
             return {
               id: user.id.toString(),
               name: user.username,
               email: user.email,
-              password: user.password,
               createdAt: user.createdAt,
             };
           }
         }
-
         return null;
       },
     }),
@@ -43,12 +44,11 @@ export const authOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async session({ session, token }: { session: any; token: any }) {
+    async session({ session, token }) {
       session.user.id = token.sub; // Assure que l'ID est bien une chaîne de caractères
       return session;
     },
   },
-};
+});
 
-const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
