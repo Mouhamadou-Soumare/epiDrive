@@ -16,9 +16,6 @@
 <br/>
 <br/>
 
-
-
-
 <br/>
 <br/>
 
@@ -58,7 +55,6 @@ RESEND_API_KEY=""
 ```
 
 ```bash
-
 # Configurez Docker pour démarrer les services
 $ docker-compose up -d
 
@@ -74,7 +70,9 @@ $ npx prisma generate
 # Exécutez le script de seed pour insérer des données de base (depuis le container web)
 $ npx prisma db seed
 ```
+
 ## Installer toutes les dépendances nécessaire au lancement du projet
+
 ```bash
 npm install next react react-dom
 npm install @prisma/client prisma
@@ -82,7 +80,6 @@ npm install bcrypt
 npm install next-auth
 npm install @headlessui/react @heroicons/react
 npm install tailwindcss postcss autoprefixer
-
 ```
 
 ## Fonctionnalités et pages
@@ -97,17 +94,11 @@ L'application comprend les différentes pages suivantes :
 /contact: Page de contact pour les utilisateurs.
 404: Page d'erreur pour les routes non trouvées.
 
-
-
-
-
 ## Configuration des variables d'environnement (.env)
 
 Pour configurer correctement l'application, vous devez créer un fichier .env à la racine du projet. Ce fichier contiendra les variables d'environnement nécessaires pour l'exécution de l'application.
 
 Assurez-vous de ne jamais partager ce fichier .env publiquement, car il contient des informations sensibles telles que les identifiants de la base de données.
-
-
 
 ## Migrations et initialisation de la base de données
 
@@ -143,10 +134,10 @@ $ npx prisma migrate dev --name add_password_hash_and_timestamps
 
 L'application utilise Docker pour la base de données et phpMyAdmin. Vous pouvez démarrer l'ensemble du projet avec la commande suivante :
 
+```bash
+  docker-compose up -d
 ```
-docker-compose up -d
 
-```
 Cela lancera les services suivants :
 
 Base de données MySQL (port 3306)
@@ -156,8 +147,9 @@ Next.js (port 3000)
 ## Contact
 
 Pour toute question ou suggestion, veuillez nous contacter via :
+
 - mouhamadou.etu@gmail.com
+
 - choeurtis.tchounga@gmail.com
+
 - ibrahimabarry1503@gmail.com
-
-
