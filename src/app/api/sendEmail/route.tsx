@@ -3,8 +3,6 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-console.log('process.env.RESEND_API_KEY', process.env.RESEND_API_KEY);
-console.log("testttttt");
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
@@ -14,7 +12,7 @@ export async function POST(req: Request) {
 
     const { data, error } = await resend.emails.send({
       from: "onboarding@resend.dev",
-      to: ["mouhamadou.soumare@eemi.com"],
+      to: ["choeurtis.tchounga@gmail.com"],
       subject,
       html: `<div><h1>${message}!</h1></div>`,
     });
