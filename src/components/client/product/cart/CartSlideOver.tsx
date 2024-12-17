@@ -72,7 +72,9 @@ export default function CartSlideOver({ open, setOpen }: CartSlideOverProps) {
                     <p>Sous-total</p>
                     <p>{subtotal.toFixed(2)} €</p>
                   </div>
-                  <button className="mt-6 flex w-full items-center justify-center rounded-md bg-indigo-600 px-6 py-3 text-base font-medium text-white hover:bg-indigo-700">
+                  <button
+                  onClick={() => {window.location.href = '/cart'}}
+                  className="mt-6 flex w-full items-center justify-center rounded-md bg-indigo-600 px-6 py-3 text-base font-medium text-white hover:bg-indigo-700">
                     Passer à la caisse
                   </button>
                 </div>

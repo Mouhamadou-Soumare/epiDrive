@@ -11,6 +11,10 @@ import whatIWant from "../../public/img/what_i_want.webp";
 import epiDrive from "../../public/img/Epidrive.webp";
 import RecommendedProducts from '@/components/client/product/RecommendedProducts';
 import { useGetAllProducts } from '@/hooks/products/useGetAllProducts';
+import HeroSectionHomepage from '@/components/HeroSectionHomepage';
+import adventCalendar from "../../public/img/adventcalendar.png";
+import donation from "../../public/img/donation_png.png";
+
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -58,7 +62,7 @@ export default function HomePage() {
 
   const features = [
     {
-      name: 'Scan & Shop',
+      name: 'Snap & Cook',
       description: "Scannez vos plats, l'IA identifie les ingrédients et les ajoute automatiquement à votre liste de courses.",
       icon: CloudArrowUpIcon,
     },
@@ -90,122 +94,13 @@ export default function HomePage() {
     },
   ]
   return (
-    <div className="bg-white min-h-screen">
+    <div className="min-h-screen">
      
 
       {/* Hero Section */}
       <main>
-      <div className="relative isolate">
-          <svg
-            aria-hidden="true"
-            className="absolute inset-x-0 top-0 -z-10 h-[64rem] w-full stroke-gray-200 [mask-image:radial-gradient(32rem_32rem_at_center,white,transparent)]"
-          >
-            <defs>
-              <pattern
-                x="50%"
-                y={-1}
-                id="1f932ae7-37de-4c0a-a8b0-a6e3b4d44b84"
-                width={200}
-                height={200}
-                patternUnits="userSpaceOnUse"
-              >
-                <path d="M.5 200V.5H200" fill="none" />
-              </pattern>
-            </defs>
-            <svg x="50%" y={-1} className="overflow-visible fill-gray-50">
-              <path
-                d="M-200 0h201v201h-201Z M600 0h201v201h-201Z M-400 600h201v201h-201Z M200 800h201v201h-201Z"
-                strokeWidth={0}
-              />
-            </svg>
-            <rect fill="url(#1f932ae7-37de-4c0a-a8b0-a6e3b4d44b84)" width="100%" height="100%" strokeWidth={0} />
-          </svg>
-          <div
-            aria-hidden="true"
-            className="absolute left-1/2 right-0 top-0 -z-10 -ml-24 transform-gpu overflow-hidden blur-3xl lg:ml-24 xl:ml-48"
-          >
-            <div
-              style={{
-                clipPath:
-                  'polygon(63.1% 29.5%, 100% 17.1%, 76.6% 3%, 48.4% 0%, 44.6% 4.7%, 54.5% 25.3%, 59.8% 49%, 55.2% 57.8%, 44.4% 57.2%, 27.8% 47.9%, 35.1% 81.5%, 0% 97.7%, 39.2% 100%, 35.2% 81.4%, 97.2% 52.8%, 63.1% 29.5%)',
-              }}
-              className="aspect-[801/1036] w-[50.0625rem] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30"
-            />
-          </div>
-          <div className="overflow-hidden">
-            <div className="mx-auto max-w-7xl px-6 pb-32 pt-36 sm:pt-60 lg:px-8 lg:pt-32">
-              <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
-                <div className="relative w-full max-w-xl lg:shrink-0 xl:max-w-2xl">
-                  <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                  Simplifiez vos courses avec EpiDrive.
-                  </h1>
-                  <p className="mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
-                  Découvrez une nouvelle façon de faire vos courses en ligne. Scannez vos plats, reconnaissez instantanément les ingrédients, et faites vos achats en un clic. EpiDrive, c'est la rapidité, la simplicité et la fraîcheur, livrés directement chez vous.
-                  </p>
-                  <div className="mt-10 flex items-center gap-x-6">
-                    <a
-                      href="#"
-                      className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                      Catalogues
-                    </a>
-                    <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-                      Démo <span aria-hidden="true">→</span>
-                    </a>
-                  </div>
-                </div>
-                <div className="mt-14 flex justify-end gap-8 sm:-mt-44 sm:justify-start sm:pl-20 lg:mt-0 lg:pl-0">
-                  <div className="ml-auto w-44 flex-none space-y-8 pt-32 sm:ml-0 sm:pt-80 lg:order-last lg:pt-36 xl:order-none xl:pt-80">
-                    <div className="relative">
-                      <Image
-                        alt=""
-                        src={foodPresentation}
-                        className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
-                      />
-                      <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
-                    </div>
-                  </div>
-                  <div className="mr-auto w-44 flex-none space-y-8 sm:mr-0 sm:pt-52 lg:pt-36">
-                    <div className="relative">
-                      <Image
-                        alt=""
-                        src={groceryDrive}
-                        className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
-                      />
-                      <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
-                    </div>
-                    <div className="relative">
-                      <Image
-                        alt=""
-                        src={scanFood}
-                        className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
-                      />
-                      <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
-                    </div>
-                  </div>
-                  <div className="w-44 flex-none space-y-8 pt-32 sm:pt-0">
-                    <div className="relative">
-                      <Image
-                        alt=""
-                        src={whatIWant}
-                        className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
-                      />
-                      <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
-                    </div>
-                    <div className="relative">
-                      <Image
-                        alt=""
-                        src={epiDrive}
-                        className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
-                      />
-                      <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      
+        <HeroSectionHomepage />
         
         <RecommendedProducts allProducts={products.map(product => ({
           ...product,
@@ -213,11 +108,72 @@ export default function HomePage() {
           categorieId: product.categorieId // assuming 'categoryId' is the correct property name
         }))} />
 
+
+
+<div className='flex flex-row'>
+ 
+    <section aria-labelledby="comfort-heading" className="mx-auto max-w-full px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
+          <div className="relative overflow-hidden rounded-lg">
+            <div className="absolute inset-0">
+              <Image
+                alt=""
+                src={adventCalendar}
+                className="size-full object-cover"
+              />
+            </div>
+            <div className="relative bg-gray-900/75 px-6 py-32 sm:px-12 sm:py-40 lg:px-16">
+              <div className="relative mx-auto flex max-w-3xl flex-col items-center text-center">
+                <h2 id="comfort-heading" className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+              Calendrier de l'Avent
+                </h2>
+                <p className="mt-3 text-xl text-white">
+                Découvrez une surprise chaque jour jusqu'à Noël ! Des offres exclusives, des produits locaux à prix réduits et bien plus encore.
+                </p>
+                <a
+                  href="#"
+                  className="mt-8 block w-full rounded-md border border-transparent bg-white px-8 py-3 text-base font-medium text-gray-900 hover:bg-gray-100 sm:w-auto"
+                >
+                  Découvrir les surprises du jour
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="comfort-heading" className="mx-auto max-w-full px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
+          <div className="relative overflow-hidden rounded-lg">
+            <div className="absolute inset-0">
+              <Image
+                alt=""
+                src={donation}
+                className="size-full object-cover"
+              />
+            </div>
+            <div className="relative bg-gray-900/75 px-6 py-32 sm:px-12 sm:py-40 lg:px-16">
+              <div className="relative mx-auto flex max-w-3xl flex-col items-center text-center">
+                <h2 id="comfort-heading" className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                Soutenons ensemble le Téléthon
+                </h2>
+                <p className="mt-3 text-xl text-white">
+                Participez à une action solidaire en faisant vos courses chez Epidrive. Une partie de vos achats sera reversée pour soutenir la recherche et l’innovation médicale.
+                </p>
+                <a
+                  href="#"
+                  className="mt-8 block w-full rounded-md border border-transparent bg-white px-8 py-3 text-base font-medium text-gray-900 hover:bg-gray-100 sm:w-auto"
+                >
+                  En savoir plus et participer
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        </div>
        
             {/* Featured Products Section */}
         <div className="relative bg-white py-16 sm:py-24 lg:py-32">
             <div className="mx-auto max-w-md px-6 text-center sm:max-w-3xl lg:max-w-7xl lg:px-8">
-              <h2 className="text-lg font-semibold text-cyan-600">Plaisir & Praticité</h2>
+              <h2 className="text-lg font-semibold text-black-600">Plaisir & Praticité</h2>
               <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               Les avantages EpiDrive : Des courses innovantes à portée de clic
               </p>
@@ -231,7 +187,7 @@ export default function HomePage() {
                       <div className="flow-root rounded-lg bg-gray-50 px-6 pb-8">
                         <div className="-mt-6">
                           <div>
-                            <span className="inline-flex items-center justify-center rounded-md bg-gradient-to-r from-teal-500 to-cyan-600 p-3 shadow-lg">
+                            <span className="inline-flex items-center justify-center rounded-md bg-gradient-to-r from-orange-500 to-yellow-400 p-3 shadow-lg">
                               <feature.icon aria-hidden="true" className="h-6 w-6 text-white" />
                             </span>
                           </div>
@@ -249,7 +205,7 @@ export default function HomePage() {
 
 
         <div className="mx-auto max-w-2xl divide-y divide-gray-900/10 px-6 pb-8 sm:pb-24 sm:pt-12 lg:max-w-7xl lg:px-8 lg:pb-32">
-          <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">Frequently asked questions</h2>
+          <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">FAQ</h2>
           <dl className="mt-10 space-y-8 divide-y divide-gray-900/10">
             {faqs.map((faq) => (
               <div key={faq.id} className="pt-8 lg:grid lg:grid-cols-12 lg:gap-8">
@@ -264,58 +220,22 @@ export default function HomePage() {
 
       
 
-          <div className="bg-gradient-to-r from-teal-500 to-cyan-600 pb-16 lg:relative lg:z-10 lg:pb-0">
-            <div className="lg:mx-auto lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-8 lg:px-8">
-              <div className="relative lg:-my-8">
-                <div aria-hidden="true" className="absolute inset-x-0 top-0 h-1/2 bg-white lg:hidden" />
-                <div className="mx-auto max-w-md px-6 sm:max-w-3xl lg:h-full lg:p-0">
-                  <div className="aspect-h-6 aspect-w-10 overflow-hidden rounded-xl shadow-xl sm:aspect-h-7 sm:aspect-w-16 lg:aspect-none lg:h-full">
-                    <img
-                      alt=""
-                      src="https://images.unsplash.com/photo-1520333789090-1afc82db536a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2102&q=80"
-                      className="object-cover lg:h-full lg:w-full"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="mt-12 lg:col-span-2 lg:m-0 lg:pl-8">
-                <div className="mx-auto max-w-md px-6 sm:max-w-2xl lg:max-w-none lg:px-0 lg:py-20">
-                  <blockquote>
-                    <div>
-                      <svg
-                        fill="currentColor"
-                        viewBox="0 0 32 32"
-                        aria-hidden="true"
-                        className="h-12 w-12 text-white opacity-25"
-                      >
-                        <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z" />
-                      </svg>
-                      <p className="mt-6 text-2xl font-medium text-white">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed urna nulla vitae laoreet augue.
-                        Amet feugiat est integer dolor auctor adipiscing nunc urna, sit.
-                      </p>
-                    </div>
-                    <footer className="mt-6">
-                      <p className="text-base font-medium text-white">Judith Black</p>
-                      <p className="text-base font-medium text-cyan-100">CEO at PureInsights</p>
-                    </footer>
-                  </blockquote>
-                </div>
-              </div>
-            </div>
-          </div>
+         
 
         {/* CTA Section */}
-        <section className="bg-indigo-600 py-16 text-white text-center">
-          <h2 className="text-4xl font-bold mb-4">Get Started with EpiDrive Today!</h2>
-          <p className="mb-8">Fast delivery, fresh products, and the best online shopping experience.</p>
-          <a
-            href="/shop"
-            className="bg-white text-indigo-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100"
-          >
-            Start Shopping
-          </a>
-        </section>
+        <section className="button-secondary py-16 text-white text-center">
+  <h2 className="text-4xl font-bold mb-4">Commencez avec EpiDrive dès aujourd'hui !</h2>
+  <p className="mb-8">
+    Livraison rapide, produits frais et une expérience d'achat en ligne exceptionnelle.
+  </p>
+  <a
+    href="/shop"
+    className="bg-white a-primary px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors duration-300"
+  >
+    Découvrez nos produits
+  </a>
+</section>
+
       </main>
     </div>
   );

@@ -3,71 +3,116 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { ArrowLeftIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
+import AuthenticatorCards from '@/components/AuthenticatorCards';
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
-    const res = await fetch('/api/auth/register', {
-      method: 'POST',
-      body: JSON.stringify({ email, password }),
-      headers: { 'Content-Type': 'application/json' },
-    });
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+        headers: { 'Content-Type': 'application/json' },
+      });
 
-    if (res.ok) {
-      window.location.href = '/auth/signin';
-    } else {
-      setError("Erreur lors de l'inscription. Veuillez réessayer.");
+      if (res.ok) {
+        router.push('/auth/signin');
+      } else {
+        setError("Erreur lors de l'inscription. Veuillez réessayer.");
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'inscription :', error);
+      setError("Erreur interne. Veuillez réessayer plus tard.");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white p-6">
-      <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-2xl p-8 w-full max-w-md">
-        <h1 className="text-3xl font-bold text-center text-black mb-6">Inscription</h1>
-        
-        {error && (
-          <p className="text-center text-red-500 bg-red-100 rounded-lg py-2 mb-4">
-            {error}
-          </p>
-        )}
+    <>
+      <div className="bg-auth flex flex-column h-screen pb-0">
+        <div className="mx-auto max-w-7xl px-24 items-center content-center flex-auth-form">
+          <div className="text-left pb-8">
+            <div className="flex flex-row align-baseline items-stretch gap-4 a-primary">
+              <ArrowLeftIcon className="max-w-6" />
+              <a className='' href="/">Retour à la page d'accueil</a>
+            </div>
+          </div>
 
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-black mb-2">Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-black placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
-            placeholder="Votre adresse email"
-          />
+          <div className="flex flex-row align-baseline items-baseline gap-4">
+            <h2 className="text-6xl pb-12">S'inscrire</h2>
+            <ArrowRightOnRectangleIcon className="max-w-10" />
+          </div>
+
+          {error && (
+            <div className="text-red-500 bg-red-100 rounded-lg py-2 px-4 mb-4">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="pb-4">
+              <label
+                htmlFor="email"
+                className="block text-md font-medium leading-6 text-gray-900 pb-2"
+              >
+                Adresse email
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="block w-full bg-slate-200 pt-4 pb-4 px-3 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+
+            <div className="pb-8">
+              <label
+                htmlFor="password"
+                className="block text-md font-medium leading-6 text-gray-900 pb-2"
+              >
+                Mot de passe
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="new-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="block bg-slate-200 pt-4 pb-4 px-3 w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                className="w-full flex justify-center py-3 px-4 mb-4 border border-transparent rounded-md shadow-sm text-2xl font-medium text-white button-primary hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                S'inscrire
+              </button>
+            </div>
+
+            <div className="text-center a-primary">
+              <a href="/auth/signin">Déjà un compte ? Connectez-vous.</a>
+            </div>
+          </form>
         </div>
 
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-black mb-2">Mot de passe</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-black placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
-            placeholder="Votre mot de passe"
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="w-full py-3 text-lg font-semibold text-white bg-gradient-to-r from-purple-500 to-indigo-600 rounded-lg shadow-lg hover:from-purple-600 hover:to-indigo-700 transform transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-          S'inscrire
-        </button>
-      </form>
-    </div>
+        <AuthenticatorCards />
+      </div>
+    </>
   );
 }
