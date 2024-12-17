@@ -15,7 +15,7 @@ const navigation = [
   { name: 'Recettes', href: '/backoffice/recette', icon: CakeIcon, current: false },
   { name: 'Commandes', href: '/backoffice/commande', icon: ChartPieIcon, current: false },
   { name: 'Catégories', href: '/backoffice/categorie', icon: FolderIcon, current: false },
-  { name: 'Ingredients', href: '/backoffice/ingredient', icon: BellAlertIcon, current: false },
+  { name: 'Ingredients', href: '/backoffice/ingredient', icon: BellIcon, current: false },
 ]
 
 function classNames(...classes: string[]) {
