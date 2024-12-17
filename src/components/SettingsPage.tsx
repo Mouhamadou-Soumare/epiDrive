@@ -1,5 +1,3 @@
-// src/app/profile/settings/page.tsx
-
 'use client';
 
 import { useState } from 'react';
@@ -15,6 +13,7 @@ export default function SettingsPage() {
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); // État pour gérer les erreurs
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -27,6 +26,7 @@ export default function SettingsPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErrorMessage(null); // Réinitialise les erreurs précédentes
 
     const formData = new FormData();
     formData.append('name', name);
@@ -44,10 +44,12 @@ export default function SettingsPage() {
       if (response.ok) {
         router.push('/profile');
       } else {
-        console.error('Erreur lors de la mise à jour du profil');
+        const data = await response.json();
+        setErrorMessage(data.message || 'Une erreur est survenue.');
       }
     } catch (error) {
       console.error('Erreur de requête:', error);
+      setErrorMessage('Erreur de connexion au serveur.');
     } finally {
       setIsSubmitting(false);
     }
@@ -65,7 +67,13 @@ export default function SettingsPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white p-4">
       <div className="max-w-lg w-full bg-gray-800 rounded-lg shadow-lg p-8">
         <h1 className="text-3xl font-bold mb-6 text-center">Paramètres du Profil</h1>
-        
+
+        {errorMessage && (
+          <div className="mb-4 text-red-500 text-center">
+            {errorMessage}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex flex-col items-center">
             <div className="mb-4">
@@ -77,9 +85,8 @@ export default function SettingsPage() {
                 className="rounded-full border border-gray-700"
               />
             </div>
-            
-            {/* Bouton stylisé pour choisir un fichier */}
-            <label className="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-semibold py-2 px-4 rounded-full shadow-lg transform transition-transform duration-300 hover:scale-105 cursor-pointer">
+
+            <label className="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-semibold py-2 px-4 rounded-full cursor-pointer">
               <span>Choisir un fichier</span>
               <input
                 type="file"
@@ -96,7 +103,7 @@ export default function SettingsPage() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full p-3 bg-gray-700 rounded-md border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full p-3 bg-gray-700 rounded-md border border-gray-600 text-white"
               required
             />
           </div>
@@ -107,7 +114,7 @@ export default function SettingsPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-3 bg-gray-700 rounded-md border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full p-3 bg-gray-700 rounded-md border border-gray-600 text-white"
               required
             />
           </div>
@@ -115,7 +122,7 @@ export default function SettingsPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-bold py-3 px-4 rounded-full shadow-lg transform transition-transform duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="w-full bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold py-3 px-4 rounded-full"
           >
             {isSubmitting ? 'Enregistrement...' : 'Sauvegarder les modifications'}
           </button>

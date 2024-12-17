@@ -1,9 +1,13 @@
-import NextAuth from 'next-auth';
+import NextAuth, { User as NextAuthUser } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import prisma from '@/lib/prisma';
 import bcrypt from 'bcrypt';
 
-const handler = NextAuth({
+interface ExtendedUser extends NextAuthUser {
+  createdAt?: Date;
+}
+
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -20,12 +24,8 @@ const handler = NextAuth({
           where: { email: credentials.email },
         });
 
-        if (user) {
-          const isValidPassword =
-            credentials.password && user.password
-              ? await bcrypt.compare(credentials.password, user.password)
-              : false;
-
+        if (user && user.password) {
+          const isValidPassword = await bcrypt.compare(credentials.password, user.password);
           if (isValidPassword) {
             return {
               id: user.id.toString(),
@@ -35,6 +35,7 @@ const handler = NextAuth({
             };
           }
         }
+
         return null;
       },
     }),
@@ -44,11 +45,24 @@ const handler = NextAuth({
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async session({ session, token }) {
-      session.user.id = token.sub; // Assure que l'ID est bien une chaîne de caractères
+    async jwt({ token, user }: { token: any, user?: ExtendedUser }) {
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
+        token.name = user.name;
+        token.createdAt = (user as any).createdAt;
+      }
+      return token;
+    },
+    async session({ session, token }: { session: any, token: any }) {
+      session.user.id = token.id as string;
+      session.user.email = token.email;
+      session.user.name = token.name;
+      session.user.createdAt = token.createdAt;
       return session;
     },
   },
-});
+};
 
+const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };

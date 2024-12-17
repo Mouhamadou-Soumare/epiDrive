@@ -1,17 +1,11 @@
-// src/app/profile/page.tsx
-
 'use client';
 
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import LoadingSpinner from '../../components/LoadingSpinner';
-import { Chart, LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend } from 'chart.js';
+import LoadingSpinner from '@components/LoadingSpinner';
 import { Line } from 'react-chartjs-2';
 import Link from 'next/link';
-
-// Enregistrer les composants Chart.js
-Chart.register(LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend);
 
 export default function ProfilePage() {
   return <ProfileContent />;
@@ -21,7 +15,7 @@ function ProfileContent() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  const [stats, setStats] = useState<any>(null);
+  const [stats, setStats] = useState<any>(null); // État pour les données dynamiques
   const [loading, setLoading] = useState(true);
 
   // Redirection si non authentifié
@@ -31,7 +25,7 @@ function ProfileContent() {
     }
   }, [status, router]);
 
-  // Récupération des statistiques depuis l'API
+  // Récupération dynamique des données via l'API
   useEffect(() => {
     async function fetchStats() {
       try {
@@ -39,12 +33,11 @@ function ProfileContent() {
         const data = await res.json();
         setStats(data);
       } catch (error) {
-        console.error('Erreur lors de la récupération des statistiques:', error);
+        console.error('Erreur lors du chargement des statistiques:', error);
       } finally {
         setLoading(false);
       }
     }
-
     fetchStats();
   }, []);
 
@@ -54,11 +47,11 @@ function ProfileContent() {
 
   // Données pour le graphique
   const chartData = {
-    labels: stats?.purchaseHistory.map((item: any) => item.date) || [],
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
     datasets: [
       {
-        label: 'Achats journaliers',
-        data: stats?.purchaseHistory.map((item: any) => item.total) || [],
+        label: 'Achats mensuels',
+        data: stats?.purchaseHistory || [],
         backgroundColor: 'rgba(54, 162, 235, 0.2)',
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 1,
@@ -76,7 +69,7 @@ function ProfileContent() {
       },
       title: {
         display: true,
-        text: 'Nombre d\'achats par jour',
+        text: 'Nombre d\'achats par mois',
       },
     },
   };
@@ -116,7 +109,7 @@ function ProfileContent() {
             </ul>
           </div>
 
-          {/* Carte de profil */}
+          {/* Profil */}
           <div className="md:col-span-2 bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-bold mb-6 text-black">
               Bienvenue sur Epidrive, {session?.user?.name}
@@ -143,15 +136,15 @@ function ProfileContent() {
             <h3 className="text-xl font-bold mb-4 text-black">Statistiques de vos achats</h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               <div className="bg-gray-200 p-4 rounded-lg text-center">
-                <h4 className="text-2xl font-bold text-blue-600">{stats?.ordersThisMonth || 0}</h4>
+                <h4 className="text-2xl font-bold text-blue-600">{stats?.ordersThisMonth}</h4>
                 <p className="text-black">Commandes ce mois-ci</p>
               </div>
               <div className="bg-gray-200 p-4 rounded-lg text-center">
-                <h4 className="text-2xl font-bold text-blue-600">{stats?.totalSpent || 0}€</h4>
+                <h4 className="text-2xl font-bold text-blue-600">{stats?.totalSpent}€</h4>
                 <p className="text-black">Total dépensé</p>
               </div>
               <div className="bg-gray-200 p-4 rounded-lg text-center">
-                <h4 className="text-2xl font-bold text-blue-600">{stats?.favoriteItems || 0}</h4>
+                <h4 className="text-2xl font-bold text-blue-600">{stats?.favoriteItems}</h4>
                 <p className="text-black">Articles favoris</p>
               </div>
             </div>
