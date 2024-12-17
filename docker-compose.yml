@@ -17,7 +17,7 @@ services:
         condition: service_healthy
     volumes:
       - .:/app:cached
-    command: sh -c "npx wait-on tcp:db:3306 && npm run dev"
+    command: sh -c "npx wait-on tcp:db:3306 && npx prisma migrate dev --name init && npm run dev"
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
       interval: 10s
@@ -51,6 +51,8 @@ services:
     environment:
       PMA_HOST: db
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      PMA_USER: ${MYSQL_USER}
+      PMA_PASSWORD: ${MYSQL_PASSWORD}
     depends_on:
       db:
         condition: service_healthy
