@@ -1,44 +1,33 @@
-# === Étape 1 : Builder les dépendances avec une version légère de Node.js ===
 FROM node:18-bullseye AS builder
 
-# Installer des outils de build essentiels pour des dépendances natives (comme bcrypt)
-RUN apt-get update && apt-get install -y --no-install-recommends python3 make g++ \
+# Installer les outils nécessaires, y compris OpenSSL et libssl-dev
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 make g++ openssl libssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Définir le répertoire de travail
 WORKDIR /app
 
-# Copier uniquement les fichiers package.json et package-lock.json pour le cache des dépendances
+# Copier uniquement les fichiers nécessaires pour l'installation des dépendances
 COPY package*.json ./
 
-# Installer les dépendances en production pour éviter les fichiers inutiles
-RUN npm install --force --legacy-peer-deps
+# Installer les dépendances Node.js
+RUN npm install --legacy-peer-deps --force
 
-# Recompiler bcrypt pour la compatibilité avec l'environnement Debian
+# Recompiler bcrypt et autres dépendances natives
 RUN npm rebuild bcrypt --build-from-source
 
-# === Étape 2 : Copier le code source et préparer l'image finale ===
-FROM node:18-alpine AS development
-
-# Définir le répertoire de travail
-WORKDIR /app
-
-# Copier les dépendances déjà installées depuis l'étape "builder"
-COPY --from=builder /app/node_modules ./node_modules
-
-# Copier le reste des fichiers de l'application
+# Copier les fichiers de l'application
 COPY . .
 
-# Installer nodemon globalement pour le hot reload
-RUN npm install -g nodemon
+# Générer Prisma Client (Prisma nécessite OpenSSL à ce stade)
+RUN npx prisma generate
+
+# Définir les variables d'environnement par défaut
+ENV NODE_ENV=development
 
 # Exposer le port utilisé par l'application
 EXPOSE 3000
 
-# Définir les variables d'environnement pour le hot reload
-ENV NODE_ENV=development \
-    CHOKIDAR_USEPOLLING=true \
-    WATCHPACK_POLLING=true
-
-# Lancer l'application en mode développement avec nodemon
-CMD ["nodemon", "-L", "npm", "run", "dev"]
+# Lancer l'application en mode développement
+CMD ["npm", "run", "dev"]
