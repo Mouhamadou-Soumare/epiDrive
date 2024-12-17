@@ -8,7 +8,7 @@ import logo from "../../../../public/img/logo_white_bg.png"
 
 import Link from 'next/link';
 
-const navigation = [
+const initialNavigation = [
   { name: 'Dashboard', href: '/backoffice', icon: HomeIcon, current: true },
   { name: 'Utilisateurs', href: '/backoffice/utilisateur', icon: UsersIcon, current: false },
   { name: 'Produits', href: '/backoffice/product', icon: Squares2X2Icon, current: false },
@@ -24,13 +24,16 @@ function classNames(...classes: string[]) {
 
 export default function Navbar() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [navigation, setNavigation] = useState(initialNavigation);
 
   // Mise à jour dynamique de la propriété `current`
   useEffect(() => {
-    navigation.forEach(item => {
-      if(window.location.pathname === item.href) item.current = true;
-      else item.current = false;
-    });
+    const updatedNavigation = initialNavigation.map((item) => ({
+      ...item,
+      current: window.location.pathname === item.href,
+    }));
+    setNavigation(updatedNavigation);
+    
   }, []);
 
   return (
