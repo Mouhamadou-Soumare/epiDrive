@@ -18,14 +18,26 @@ export async function GET() {
       return NextResponse.json({ message: 'No products found' }, { status: 404 });
     }
 
-    const transformedProducts = products.map((product) => ({
+    const transformedProducts = products.map(product => ({
+
       id: product.id,
       name: product.name,
       prix: product.prix,
-      image: product.image?.path || '',
+      image: product.image
+        ? { id: product.image.id, path: product.image.path }
+        : null,
       slug: product.slug,
       description: product.description,
-      categorie: product.categorie?.name || 'Uncategorized',
+      categorie: product.categorie
+        ? {
+            id: product.categorie.id,
+            name: product.categorie.name,
+            slug: product.categorie.slug,
+            description: product.categorie.description,
+            imageId: product.categorie.imageId,
+            parentId: product.categorie.parentId,
+          }
+        : null,
     }));
 
     console.log("GET API/products: products found:", transformedProducts);
@@ -35,6 +47,7 @@ export async function GET() {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
+
 
 export async function POST(req: Request) {
   try {

@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-
+import Image from 'next/image';
 import { Dialog, DialogBackdrop, DialogPanel, TransitionChild } from '@headlessui/react'
-import { Bars3Icon, BellIcon, ChartPieIcon, Cog6ToothIcon, FolderIcon, BellAlertIcon, HomeIcon, Squares2X2Icon, UsersIcon, XMarkIcon, CakeIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, BellIcon, ChartPieIcon, Cog6ToothIcon, FolderIcon, HomeIcon, Squares2X2Icon, UsersIcon, XMarkIcon, CakeIcon } from '@heroicons/react/24/outline'
+import logo from "../../../../public/img/logo_white_bg.png"
 
 import Link from 'next/link';
 
@@ -14,7 +15,7 @@ const navigation = [
   { name: 'Recettes', href: '/backoffice/recette', icon: CakeIcon, current: false },
   { name: 'Commandes', href: '/backoffice/commande', icon: ChartPieIcon, current: false },
   { name: 'Catégories', href: '/backoffice/categorie', icon: FolderIcon, current: false },
-  { name: 'Ingredients', href: '/backoffice/ingredient', icon: BellAlertIcon, current: false },
+  { name: 'Ingredients', href: '/backoffice/ingredient', icon: BellIcon, current: false },
 ]
 
 function classNames(...classes: string[]) {
@@ -57,9 +58,9 @@ export default function Navbar() {
             {/* Sidebar component, swap this element with another sidebar if you like */}
             <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
               <Link href={"/"} className="flex h-16 shrink-0 items-center">
-                <img
+                <Image
                   alt="Your Company"
-                  src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
+                  src={logo}
                   className="h-8 w-auto"
                 />
               </Link>
@@ -133,9 +134,9 @@ export default function Navbar() {
 
         <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
           <Link href={"/"} className="flex h-16 shrink-0 items-center">
-            <img
+            <Image
               alt="Your Company"
-              src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
+              src={logo}
               className="h-8 w-auto"
             />
           </Link>
@@ -147,9 +148,9 @@ export default function Navbar() {
         {/* Sidebar component, swap this element with another sidebar if you like */} 
         <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
           <Link href={"/"} className="flex h-16 shrink-0 items-center">
-            <img
+            <Image
               alt="Your Company"
-              src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
+              src={logo}
               className="h-8 w-auto"
             />
           </Link>
