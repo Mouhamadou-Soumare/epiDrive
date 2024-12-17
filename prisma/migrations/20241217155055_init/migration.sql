@@ -10,6 +10,7 @@
   - You are about to drop the column `produitId` on the `QuantitePanier` table. All the data in the column will be lost.
   - You are about to drop the column `userId` on the `Recette` table. All the data in the column will be lost.
   - A unique constraint covering the columns `[fk_userId]` on the table `Panier` will be added. If there are existing duplicate values, this will fail.
+  - A unique constraint covering the columns `[fk_commande,fk_produit]` on the table `QuantiteCommande` will be added. If there are existing duplicate values, this will fail.
   - A unique constraint covering the columns `[fk_panier,fk_produit]` on the table `QuantitePanier` will be added. If there are existing duplicate values, this will fail.
   - Added the required column `fk_userId` to the `Commande` table without a default value. This is not possible if the table is not empty.
   - Added the required column `fk_commande` to the `QuantiteCommande` table without a default value. This is not possible if the table is not empty.
@@ -75,6 +76,19 @@ ALTER TABLE `Recette` DROP COLUMN `userId`,
 ALTER TABLE `User` MODIFY `role` ENUM('USER', 'ADMIN', 'MAGASINIER') NOT NULL DEFAULT 'USER';
 
 -- CreateTable
+CREATE TABLE `Ingredient` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `description` VARCHAR(191) NOT NULL,
+    `prix` DOUBLE NOT NULL,
+    `categorie` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Livraison` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `adresse` VARCHAR(191) NOT NULL,
@@ -104,6 +118,9 @@ CREATE TABLE `Log` (
 
 -- CreateIndex
 CREATE UNIQUE INDEX `Panier_fk_userId_key` ON `Panier`(`fk_userId`);
+
+-- CreateIndex
+CREATE UNIQUE INDEX `CommandeProduit_unique` ON `QuantiteCommande`(`fk_commande`, `fk_produit`);
 
 -- CreateIndex
 CREATE UNIQUE INDEX `PanierProduit_unique` ON `QuantitePanier`(`fk_panier`, `fk_produit`);
