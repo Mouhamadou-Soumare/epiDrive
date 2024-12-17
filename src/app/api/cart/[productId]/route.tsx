@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-export async function PUT(req: NextRequest, context: { params: { productId: string } }) {
-  const { params } = context; // Correction ici
+// Handler pour PUT
+export async function PUT(req: NextRequest, { params }: { params: { productId: string } }) {
   const { productId } = params;
 
   try {
@@ -60,10 +60,9 @@ export async function PUT(req: NextRequest, context: { params: { productId: stri
   }
 }
 
-export async function DELETE(req: NextRequest, context: { params: { productId: string } }) {
-  const { params } = context;
+// Handler pour DELETE
+export async function DELETE(req: NextRequest, { params }: { params: { productId: string } }) {
   const { productId } = params;
-
   const { sessionId, userId } = Object.fromEntries(new URL(req.url).searchParams);
 
   if (!productId || (!sessionId && !userId)) {
