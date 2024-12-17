@@ -1,99 +1,54 @@
-import { NextRequest, NextResponse } from 'next/server';
+import NextAuth from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
 import prisma from '@/lib/prisma';
+import bcrypt from 'bcrypt';
 
-export async function PUT(req: NextRequest, { params }: { params: Record<string, string> }) {
-  const { productId } = params;
-
-  try {
-    const { quantity, sessionId, userId } = await req.json();
-
-    console.log('PUT API/cart/[productId]:', { productId, quantity, sessionId, userId });
-
-    if (!productId || (!sessionId && !userId)) {
-      return NextResponse.json({ error: 'Paramètres requis manquants' }, { status: 400 });
-    }
-
-    // Trouver le panier correspondant
-    const panier = await prisma.panier.findFirst({
-      where: {
-        fk_userId: userId ? parseInt(userId, 10) : undefined,
-        sessionId: sessionId ?? undefined,
+const handler = NextAuth({
+  providers: [
+    CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        email: { label: 'Email', type: 'email', placeholder: 'you@example.com' },
+        password: { label: 'Mot de passe', type: 'password' },
       },
-    });
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          return null;
+        }
 
-    if (!panier) {
-      return NextResponse.json({ error: 'Panier non trouvé' }, { status: 404 });
-    }
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email },
+        });
 
-    // Vérifier si l'enregistrement existe
-    const existingItem = await prisma.quantitePanier.findUnique({
-      where: {
-        fk_panier_fk_produit: {
-          fk_panier: panier.id,
-          fk_produit: parseInt(productId, 10),
-        },
+        if (user) {
+          const isValidPassword =
+            credentials.password && user.password
+              ? await bcrypt.compare(credentials.password, user.password)
+              : false;
+
+          if (isValidPassword) {
+            return {
+              id: user.id.toString(),
+              name: user.username,
+              email: user.email,
+              createdAt: user.createdAt,
+            };
+          }
+        }
+        return null;
       },
-    });
+    }),
+  ],
+  pages: {
+    signIn: '/auth/signin',
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+  callbacks: {
+    async session({ session, token }) {
+      session.user.id = token.sub; // Assure que l'ID est bien une chaîne de caractères
+      return session;
+    },
+  },
+});
 
-    if (!existingItem) {
-      return NextResponse.json({ error: 'Produit non trouvé dans le panier' }, { status: 404 });
-    }
-
-    // Mettre à jour la quantité
-    const updatedItem = await prisma.quantitePanier.update({
-      where: {
-        fk_panier_fk_produit: {
-          fk_panier: panier.id,
-          fk_produit: parseInt(productId, 10),
-        },
-      },
-      data: {
-        quantite: quantity,
-      },
-    });
-
-    return NextResponse.json(updatedItem, { status: 200 });
-  } catch (error) {
-    console.error('Erreur lors de la mise à jour du produit dans le panier :', error);
-    return NextResponse.json({ error: 'Erreur interne' }, { status: 500 });
-  }
-}
-
-export async function DELETE(req: NextRequest, { params }: { params: Record<string, string> }) {
-  const { productId } = params;
-
-  const { sessionId, userId } = Object.fromEntries(new URL(req.url).searchParams);
-
-  if (!productId || (!sessionId && !userId)) {
-    return NextResponse.json({ error: 'Paramètres requis manquants' }, { status: 400 });
-  }
-
-  console.log('DELETE API/cart/[productId]:', { productId, sessionId, userId });
-
-  try {
-    const paniers = await prisma.panier.findMany({
-      where: {
-        fk_userId: userId ? parseInt(userId) : undefined,
-        sessionId: sessionId ?? undefined,
-      },
-    });
-
-    if (!paniers || paniers.length === 0) {
-      return NextResponse.json({ error: 'Panier non trouvé' }, { status: 404 });
-    }
-
-    for (const panier of paniers) {
-      await prisma.quantitePanier.deleteMany({
-        where: {
-          fk_panier: panier.id,
-          fk_produit: parseInt(productId),
-        },
-      });
-    }
-
-    return NextResponse.json({ message: 'Produit supprimé du panier' }, { status: 200 });
-  } catch (error) {
-    console.error('Erreur lors de la suppression du produit:', error);
-    return NextResponse.json({ error: 'Erreur interne lors de la suppression du produit' }, { status: 500 });
-  }
-}
+export { handler as GET, handler as POST };
