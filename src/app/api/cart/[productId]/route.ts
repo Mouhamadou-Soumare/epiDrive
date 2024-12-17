@@ -8,7 +8,7 @@ export async function PUT(req: NextRequest, { params }: { params: { productId: s
   try {
     const { quantity, sessionId, userId } = await req.json();
 
-    console.log('PUT API/cart/[productId]:', { productId, quantity, sessionId, userId });
+    console.log('PUT api/cart/[productId]:', { productId, quantity, sessionId, userId });
 
     if (!productId || (!sessionId && !userId)) {
       return NextResponse.json({ error: 'Paramètres requis manquants' }, { status: 400 });
