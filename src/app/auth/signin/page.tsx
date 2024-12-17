@@ -2,21 +2,9 @@
 
 'use client';
 
-import Image from 'next/image';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import foodPresentation from "../../../../public/img/food_presentation.webp";
-import groceryDrive from "../../../../public/img/grocery_drive.webp";
-import scanFood from "../../../../public/img/scan_food.webp";
-import foodBak from "../../../../public/img/food-bak.webp";
-import epiDrive from "../../../../public/img/Epidrive.webp"
-
-import viennoiseries from "../../../../public/img/category/pains-et-patisseries.webp"
-import produitsRegionaux from "../../../../public/img/category/produits-regionaux-et-locaux-nav.webp"
-import logo from "../../../../public/img/logo.png"
-import epicerieFineRegionale from "../../../../public/img/category/epicerie-fine-regionale.webp"
-import charcuterieTraiteur from "../../../../public/img/category/charcuterie-et-traiteur.webp"
 
 
 import { ArrowLeftIcon, ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/outline';
