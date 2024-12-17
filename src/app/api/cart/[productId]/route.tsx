@@ -2,11 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
 export async function PUT(req: NextRequest, context: { params: { productId: string } }) {
+  const { params } = context; // Correction ici
+  const { productId } = params;
+
   try {
-    const { productId } = context.params;
     const { quantity, sessionId, userId } = await req.json();
 
-    console.log('PATCH API/cart/[productId]:', { productId, quantity, sessionId, userId });
+    console.log('PUT API/cart/[productId]:', { productId, quantity, sessionId, userId });
 
     if (!productId || (!sessionId && !userId)) {
       return NextResponse.json({ error: 'Paramètres requis manquants' }, { status: 400 });
@@ -24,7 +26,7 @@ export async function PUT(req: NextRequest, context: { params: { productId: stri
       return NextResponse.json({ error: 'Panier non trouvé' }, { status: 404 });
     }
 
-    // Vérifier si l'enregistrement existe avant de le mettre à jour
+    // Vérifier si l'enregistrement existe
     const existingItem = await prisma.quantitePanier.findUnique({
       where: {
         fk_panier_fk_produit: {
@@ -57,10 +59,11 @@ export async function PUT(req: NextRequest, context: { params: { productId: stri
     return NextResponse.json({ error: 'Erreur interne' }, { status: 500 });
   }
 }
-  
-export async function DELETE(req: NextRequest, { params }: { params: { productId: string } }) {
-  // Vérification des paramètres
+
+export async function DELETE(req: NextRequest, context: { params: { productId: string } }) {
+  const { params } = context;
   const { productId } = params;
+
   const { sessionId, userId } = Object.fromEntries(new URL(req.url).searchParams);
 
   if (!productId || (!sessionId && !userId)) {
@@ -70,7 +73,6 @@ export async function DELETE(req: NextRequest, { params }: { params: { productId
   console.log('DELETE API/cart/[productId]:', { productId, sessionId, userId });
 
   try {
-    // Récupérer tous les paniers correspondants
     const paniers = await prisma.panier.findMany({
       where: {
         fk_userId: userId ? parseInt(userId) : undefined,
@@ -82,7 +84,6 @@ export async function DELETE(req: NextRequest, { params }: { params: { productId
       return NextResponse.json({ error: 'Panier non trouvé' }, { status: 404 });
     }
 
-    // Supprimer les produits du panier pour chaque panier trouvé
     for (const panier of paniers) {
       await prisma.quantitePanier.deleteMany({
         where: {
