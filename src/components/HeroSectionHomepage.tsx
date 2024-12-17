@@ -41,7 +41,7 @@ export default function HeroSectionHomepage() {
               Découvrez des produits locaux, simplifiez vos achats, gagnez du temps.</p>
               <div className="mt-10 flex items-center justify-center gap-x-6">
                 <a
-                  href="#services"
+                  href="/"
                   className="rounded-md button-primary px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                   Commencez dès maintenant
