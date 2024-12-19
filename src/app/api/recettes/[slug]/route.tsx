@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { Produit } from 'types';
+import { Produit, Ingredient } from 'types';
 
 export async function GET(request: Request, { params }: { params: { slug: string } }) {
   const { slug } = params;
@@ -15,6 +15,7 @@ export async function GET(request: Request, { params }: { params: { slug: string
       include: {
         user: true,
         produits: true,
+        ingredients: true,
       },
     });
 
@@ -34,6 +35,10 @@ export async function GET(request: Request, { params }: { params: { slug: string
         name: produit.name,
         slug: produit.slug,
         prix: produit.prix,
+      })),
+      ingredients: recette.ingredients.map((ingredient: Ingredient) => ({
+        id: ingredient.id,
+        name: ingredient.name,
       })),
     };
 

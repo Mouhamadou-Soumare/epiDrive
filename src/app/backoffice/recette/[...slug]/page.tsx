@@ -4,8 +4,9 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import ImageDisplay from "../components/ImageDisplay";
 import ProduitCard from "../components/ProduitCard";
+import IngredientCard from "../components/IngredientCard";
 import Alert from "../components/Alert";
-import { Produit, Recette } from "types";
+import { Produit, Recette, Ingredient } from "types";
 import { useGetRecette, useDeleteRecette } from "@/hooks/recettes/useRecettes";
 
 export default function RecetteDetails() {
@@ -43,12 +44,24 @@ export default function RecetteDetails() {
             <h3 className="mt-4 text-lg font-bold text-gray-900">Instructions</h3>
             <p className="text-base text-gray-500">{recette.instructions}</p>
 
-            <h3 className="mt-6 text-lg font-bold text-gray-900">Ingrédients</h3>
+            <h3 className="mt-6 text-lg font-bold text-gray-900">Produits</h3>
             <ul role="list" className="divide-y divide-gray-200">
-              {recette.produits.map((produit: Produit) => (
+              {recette.produits.length > 0 ? (recette.produits.map((produit: Produit) => (
                 <ProduitCard key={produit.id} produit={produit} />
-              ))}
+              ))) : (<p>pas de produits en bdd pour cette recette</p>)}
             </ul>
+
+            { recette.ingredients ? (
+              <>
+              <h3 className="mt-6 text-lg font-bold text-gray-900">Ingredients</h3>
+              <ul role="list" className="divide-y divide-gray-200">
+                {recette.ingredients.map((ingredient: Ingredient) => (
+                  <IngredientCard key={ingredient.id} ingredient={ingredient} />
+                ))}
+              </ul>
+              </> ) : null
+            }
+
           </section>
         </div>
 
