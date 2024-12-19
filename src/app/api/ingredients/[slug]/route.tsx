@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { Ingredient } from 'types';
+import { connect } from 'http2';
 
 export async function GET(req: Request, { params }: { params: { slug: string } }) {
   const { slug } = params;
@@ -43,6 +44,25 @@ export async function DELETE(req: Request, { params }: { params: { slug: string 
     });
     if (!ingredient) {
       return NextResponse.json({ error: 'Ingredient not found' }, { status: 404 });
+    }
+
+    const product = await prisma.produit.findFirst({
+      where: { name: ingredient.name },
+    });
+
+    if (product) {
+      const recettes = await prisma.recette.findMany({
+        where: { ingredients: { some: { id: ingredient.id } } },
+      });
+    
+      recettes.forEach(async (recette) => {
+        await prisma.recette.update({
+          where: { id: recette.id },
+          data: {
+            produits: { connect: { id: product.id } },
+          },
+        });
+      })
     }
 
     await prisma.ingredient.delete({ where: { id: parseInt(slug) } });
