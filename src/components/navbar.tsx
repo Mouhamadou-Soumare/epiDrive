@@ -127,8 +127,6 @@ export default function Navbar() {
   const [cartOpen, setCartOpen] = useState(false);
   const { cartItems, loading: cartLoading  } = useGetCart(); 
 
-  console.log(categories);
-
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantite, 0);
 
   const mesCoursesCategories = [

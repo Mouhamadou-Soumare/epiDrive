@@ -54,10 +54,11 @@ model Panier {
 model Recette {
   id           Int       @id @default(autoincrement())
   title        String
-  description  String
-  instructions String
+  description  String    @db.Text
+  instructions String    @db.Text
   image        String?
   produits     Produit[] @relation("RecetteProduit")
+  ingredients  Ingredient[] @relation("RecetteIngredient")
   fk_userId    Int
   user         User      @relation(fields: [fk_userId], references: [id], map: "Recette_User_fkey")
 }
@@ -77,7 +78,7 @@ model Produit {
   id                Int                @id @default(autoincrement())
   name              String
   slug              String             @unique
-  description       String
+  description       String             @db.Text
   prix              Float
   image             Image?             @relation(fields: [imageid], references: [id], map: "Produit_Image_fkey")
   imageid           Int?
@@ -91,11 +92,12 @@ model Produit {
 model Ingredient {
   id          Int      @id @default(autoincrement())
   name        String
-  description String
+  description String   @db.Text
   prix        Float
   categorie   String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  recettes    Recette[]          @relation("RecetteIngredient")
 }
 
 model QuantitePanier {

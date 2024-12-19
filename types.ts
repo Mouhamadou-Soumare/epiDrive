@@ -37,6 +37,7 @@ export interface Recette {
     image?: string; // Image optionnelle
     user?: User;
     produits: Produit[];
+    ingredients: Ingredient[];
 }
 
 export interface Commande {
