@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
         messages: [
           {
             role: "system",
-            content: "You are a helpful assistant for analyzing recipes."
+            content: "Vous êtes un assistant utile pour l'analyse des recettes."
           },
           {
             role: 'user',
@@ -84,8 +84,6 @@ export async function POST(req: NextRequest) {
       console.error('Erreur API OpenAI:', data);
       return NextResponse.json({ error: data.error || 'Erreur lors de la requête à OpenAI' }, { status: response.status });
     }
-
-    console.log('Réponse de l\'API OpenAI:', data);
 
     const content = data.choices[0]?.message?.content;
     console.log('Content de l\'API OpenAI:', content);

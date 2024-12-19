@@ -6,6 +6,7 @@ import IngredientList from "../../components/snap-and-cook/IngredientList";
 import { Dialog, Transition } from "@headlessui/react";
 import useAddCart from "@/hooks/cart/useAddCart";
 import { useAddIngredient } from "@/hooks/ingredients/useIngredients";
+import { useAddRecette } from "@/hooks/recettes/useRecettes";
 
 type Ingredient = {
   name: string;
@@ -15,9 +16,10 @@ type Ingredient = {
 };
 
 type Product = { id: number; name: string; prix: number; };
+type Recette = { id: number; title: string; description: string; instructions: string; image: string};
 
 export default function SnapAndCook() {
-  const [dish, setDish] = useState<string | null>(null);
+  const [dish, setDish] = useState<Recette | null>(null);
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [cart, setCart] = useState<{ [productId: number]: number }>({});
@@ -25,41 +27,52 @@ export default function SnapAndCook() {
   const [loadingProducts, setLoadingProducts] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { addRecette, loading: loadingRecette, error: errorRecette } = useAddRecette();
 
   const { addToCart } = useAddCart();
 
   const handleImageCaptured = async (imageData: string) => {
     setLoadingImage(true);
     setError(null);
-
+  
     try {
       const response = await fetch("/api/jimmy", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: imageData }),
       });
-
+  
       const result = await response.json();
+  
       if (!response.ok) {
         setError(result.error || "Erreur lors de l'analyse de l'image.");
+        return;
       }
-
-      setDish(result.dish.title);
-      setIngredients(result.ingredients);
-      fetchMatchingProducts(result.ingredients);
+  
+      // Met à jour dish en premier
+      setDish(result.dish);
+  
+      // Attendez que dish soit mis à jour avant de continuer
+      if (result.dish) {
+        console.log("Dish détecté :", result.dish);
+        await fetchMatchingProducts(result.ingredients, result.dish);
+      } else {
+        console.error("Dish non détecté.");
+      }
     } catch (err: any) {
       setError(err.message || "Une erreur s'est produite.");
     } finally {
       setLoadingImage(false);
     }
   };
+  
 
-  const fetchMatchingProducts = async (ingredients: Ingredient[]) => {
-    const productList = [];
+  const fetchMatchingProducts = async (ingredients: Ingredient[], dish: Recette) => {
+    const productList: Product[] = [];
+    const ingredientsList: Ingredient[] = [];
   
     for (const ingredient of ingredients) {
       try {
-        // Vérifier si le produit existe
         const response = await fetch(`/api/products/${ingredient.name.toLowerCase().replace(/ /g, '-')}`, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -68,12 +81,11 @@ export default function SnapAndCook() {
         if (response.ok) {
           const existingProduct = await response.json();
           if (existingProduct) {
-            productList.push(existingProduct); // Ajouter le produit existant à la liste
+            productList.push(existingProduct);
             continue;
           }
         }
   
-        // Si le produit n'existe pas, créer un ingrédient
         const newIngredient = {
           name: ingredient.name,
           description: ingredient.description,
@@ -81,17 +93,33 @@ export default function SnapAndCook() {
           categorie: ingredient.categorie,
         };
   
-        const createdIngredient = await useAddIngredient(newIngredient); // API externe pour ajouter l'ingrédient
-        //productList.push(createdIngredient);
+        const createdIngredient = await useAddIngredient(newIngredient);
+        ingredientsList.push(createdIngredient);
       } catch (error) {
         console.error(`Erreur avec l'ingrédient ${ingredient.name} :`, error);
       }
     }
   
+    // Créez la recette avec les données locales, et non avec l'état React
+    try {
+      const newRecette = await addRecette({
+        title: dish.title,
+        description: dish.description,
+        instructions: dish.instructions,
+        image: dish.image,
+        produits: productList,
+        ingredients: ingredientsList,
+        user: { id: 1 },
+      });
+
+    } catch (error) {
+      console.error("Erreur lors de l'ajout de la recette :", error);
+    }
+  
     setProducts(productList);
-    setIngredients(ingredients);
-    return productList;
+    setIngredients(ingredientsList);
   };
+    
   
   const handleBatchAddToCart = (productId: number, quantity: number) => {
     const product = products.find((p) => p.id === productId);
@@ -116,6 +144,12 @@ export default function SnapAndCook() {
     });
   };
 
+  if (loadingRecette) {
+    return <p className="text-center text-blue-600 font-semibold">Enregistrement de la recette...</p>;
+  }
+  if (errorRecette) {
+    return <p className="text-center text-red-600 font-semibold">{errorRecette}</p>;
+  }
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <h1 className="text-4xl font-extrabold text-gray-800 mb-8 text-center">Snap & Cook</h1>
@@ -132,7 +166,7 @@ export default function SnapAndCook() {
         <div className="mt-8 max-w-xl mx-auto">
           <div className="bg-white p-6 rounded-lg shadow-md mb-6">
             <h2 className="text-2xl font-semibold text-gray-700">Plat détecté :</h2>
-            <p className="text-lg text-gray-600 mt-2">{dish || "Aucun plat détecté"}</p>
+            <p className="text-lg text-gray-600 mt-2">{dish ? dish.title : "Aucun plat détecté"}</p>
           </div>
 
           <div className="bg-white p-6 rounded-lg shadow-md mb-6">
@@ -193,7 +227,6 @@ export default function SnapAndCook() {
                   </Dialog.Title>
 
                   <IngredientList
-                    ingredients={ingredients}
                     products={products}
                     cart={cart}
                     addToCart={handleBatchAddToCart}

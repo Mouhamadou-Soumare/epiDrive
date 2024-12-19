@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { Produit, Recette } from 'types';
+import { Produit, Recette, Ingredient } from 'types';
 
 export async function GET() {
   try {
@@ -10,6 +10,7 @@ export async function GET() {
       include: {
         user: true,
         produits: true,
+        ingredients: true,
       },
     });
 
@@ -19,7 +20,7 @@ export async function GET() {
     }
 
     // Transformation des données pour un format adapté
-    const transformedRecettes = recettes.map((recette: Recette) => ({
+    const transformedRecettes = recettes.map((recette: any) => ({
       id: recette.id,
       title: recette.title,
       description: recette.description,
@@ -28,11 +29,15 @@ export async function GET() {
       user: recette.user ?
         { id: recette.user.id, username: recette.user.username } :
         { id: 0, username: 'Utilisateur inconnu' },
-      produits: recette.produits.map((produit) => ({
+      produits: recette.produits.map((produit: Produit) => ({
         id: produit.id,
         name: produit.name,
         slug: produit.slug,
         prix: produit.prix,
+      })),
+      ingredients: recette.ingredients.map((ingredient: Ingredient) => ({
+        id: ingredient.id,
+        name: ingredient.name,
       })),
     }));
 
@@ -50,7 +55,7 @@ export async function POST(request: Request) {
 
     console.log('Creating new recette with body:', body);
 
-    const { title, description, instructions, user, produits } = body;
+    const { title, description, instructions, user, produits, ingredients } = body;
 
     if (!title || !description || !instructions || !user) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -58,6 +63,14 @@ export async function POST(request: Request) {
 
     const image = `/img/recette/${title.toLowerCase().replace(/ /g, '-')}.webp`;
 
+    const checkExistingRecette = await prisma.recette.findFirst({
+      where: { title },
+    });
+
+    if (checkExistingRecette) {
+      console.log("Recette already exists");
+      return NextResponse.json(checkExistingRecette, { status: 201 });
+    }
     const newRecette = await prisma.recette.create({
       data: {
         title,
@@ -68,6 +81,9 @@ export async function POST(request: Request) {
         produits: produits
           ? { connect: produits.map((produit: Produit) => ({ id: produit.id })) }
           : undefined,
+        ingredients: ingredients 
+        ? { connect: ingredients.map((ingredient: Ingredient) => ({ id: ingredient.id })) }
+        : undefined,
       },
     });
 
