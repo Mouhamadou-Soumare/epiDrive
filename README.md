@@ -1,30 +1,19 @@
-<h1 align="center">
-  <br>
+EpiDrive
+<p align="center">
   <a href="#"><img src="https://github.com/Mouhamadou-Soumare/epiDrive/blob/main/public/img/logo.png" alt="EpiDrive" width="100"></a>
-  <br>
-  EpiDrive
-  <br>
-</h1>
-
-<h4 align="center">Epidrive -  Faites de vos courses un plaisir, alliant saveurs et praticité en un clic.</h4>
-
-<br/>
-<br/>
-
-
-![screenshot](https://github.com/Mouhamadou-Soumare/epiDrive/blob/main/public/img/demo-epidrive.png)
-<br/>
-<br/>
-
-<br/>
-<br/>
-
-<br/>
-<br/>
+</p>
+<p align="center">Epidrive - Faites de vos courses un plaisir, alliant saveurs et praticité en un clic.</p>
 
 ## Comment utiliser ce projet
 
-Pour cloner et exécuter cette application, vous aurez besoin de [Git](https://git-scm.com) et de [Node.js](https://nodejs.org/fr/download/) (qui inclut [npm](http://npmjs.com)) installés sur votre ordinateur. À partir de votre ligne de commande :
+### Prérequis
+
+Pour cloner et exécuter cette application, vous aurez besoin de :
+
+- **Git** : pour cloner le dépôt.
+- **Node.js (inclut npm)** : pour installer les dépendances et exécuter le projet.
+
+### Étapes d'installation
 
 ```bash
 # Clonez ce dépôt.
@@ -35,17 +24,13 @@ $ cd epidrive
 
 # Installez les dépendances
 $ npm install
-
 ```
 
-### Configurer le fichier `.env`
+### Configuration du fichier .env
 
-Avant de lancer l'application, vous devez configurer le fichier `.env` qui contient les variables d'environnement nécessaires pour le bon fonctionnement du projet. Ces variables gèrent l'accès à la base de données, la configuration de Prisma, et d'autres paramètres sensibles.
-
-Créez un fichier `.env` à la racine du projet et configurez-le comme suit :
+Avant de lancer l'application, configurez le fichier `.env` avec vos variables d'environnement :
 
 ```env
-# Variables d'environnement pour la base de données MySQL et Prisma
 MYSQL_USER=user
 MYSQL_PASSWORD=password
 MYSQL_ROOT_PASSWORD=rootpassword
@@ -54,102 +39,124 @@ SHADOW_DATABASE_URL="mysql://root:rootpassword@db:3306/shadow_epidrive"
 RESEND_API_KEY=""
 ```
 
+### Initialisation de la Base de Données
+
 ```bash
 # Configurez Docker pour démarrer les services
 $ docker-compose up -d
 
-# Se rendre sur le container mysql et se connecter avec le user root
+# Se rendre sur le container MySQL et créer une base de données shadow
 $ CREATE DATABASE shadow_epidrive;
 
-# Initialisez la base de données MySQL (depuis le container web)
+# Appliquer les migrations Prisma
 $ npx prisma migrate dev --name init
 
-# Générez le client Prisma (depuis le container web)
+# Générer le client Prisma
 $ npx prisma generate
 
-# Exécutez le script de seed pour insérer des données de base (depuis le container web)
+# Insérer des données de base (seed)
 $ npx prisma db seed
 ```
 
-## Installer toutes les dépendances nécessaire au lancement du projet
+## Fonctionnalités
+
+- **Page d'accueil** : Affiche les principales fonctionnalités et recommandations de produits.
+- **Pages produits et catégories** :
+  - `/categories` : Liste les catégories de produits disponibles.
+  - `/category/[slug]` : Affiche les sous-catégories et produits d'une catégorie spécifique.
+  - `/product/[slug]` : Détails d'un produit spécifique.
+- **Boutique** : `/shop` affiche tous les produits disponibles.
+- **Page de contact** : `/contact`.
+- **404** : Gestion des pages non trouvées.
+
+## Tests Unitaires
+
+### Mise en place des tests
+
+Pour garantir la fiabilité des fonctionnalités, des tests unitaires ont été implémentés avec Jest. Voici les commandes pour exécuter les tests :
 
 ```bash
-npm install next react react-dom
-npm install @prisma/client prisma
-npm install bcrypt
-npm install next-auth
-npm install @headlessui/react @heroicons/react
-npm install tailwindcss postcss autoprefixer
+# Lancer tous les tests unitaires
+$ npm run test
+
+# Lancer les tests avec un rapport de couverture
+$ npm run test -- --coverage
 ```
 
-## Fonctionnalités et pages
+Les tests couvrent les fonctionnalités suivantes :
 
-L'application comprend les différentes pages suivantes :
+- **Gestion du panier** :
+  - Ajouter un produit.
+  - Supprimer un produit.
+  - Mettre à jour les quantités.
+  - Calculer le total avec TVA.
+- **Authentification** :
+  - Inscription et connexion utilisateur.
+  - Validation des identifiants.
 
-/: Page d'accueil affichant les fonctionnalités principales et recommandations de produits.
-/categories: Page listant les catégories de produits disponibles.
-/category/[slug]: Page détaillée d'une catégorie, avec ses sous-catégories et produits.
-/product/[slug]: Page affichant les détails d'un produit spécifique.
-/shop: Page listant tous les produits disponibles.
-/contact: Page de contact pour les utilisateurs.
-404: Page d'erreur pour les routes non trouvées.
+### Rapport de couverture
 
-## Configuration des variables d'environnement (.env)
+Après exécution des tests avec couverture, un rapport est généré dans le dossier `coverage/lcov-report`. Ouvrez `index.html` pour une vue détaillée.
 
-Pour configurer correctement l'application, vous devez créer un fichier .env à la racine du projet. Ce fichier contiendra les variables d'environnement nécessaires pour l'exécution de l'application.
+## Workflow CI/CD
 
-Assurez-vous de ne jamais partager ce fichier .env publiquement, car il contient des informations sensibles telles que les identifiants de la base de données.
+Un pipeline GitHub Actions est configuré pour :
 
-## Migrations et initialisation de la base de données
+- Installer les dépendances.
+- Exécuter les tests unitaires.
+- Générer des rapports de couverture.
 
-Pour initialiser et gérer la base de données MySQL avec Prisma, suivez les étapes ci-dessous :
+### Workflow de base
+
+```yaml
+name: CI Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Unit Tests
+        run: npm run test -- --coverage
+```
+
+## Développement en local
+
+L'application utilise Docker pour exécuter les services backend :
 
 ```bash
-# Créer la base de données shadow (dans le conteneur de la base de données avec l'user root) :
-$ CREATE DATABASE shadow_epidrive;
-
-# Appliquer les migrations Prisma (dans le conteneur web) :
-$ npx prisma migrate dev --name init
-
-# Générer le client Prisma (dans le conteneur web):
-$ npx prisma generate
-
-# Insérer des données de base dans la base de données (dans le conteneur web):
-$ node seed.js
-
-# Initialisez la base de données MySQL (dans le conteneur web)
-$ npx prisma migrate dev --name init
-
-# Générez le client Prisma
-$ npx prisma generate
-
-# Exécutez le script de seed pour insérer des données de base
-$ node seed.js
-
-# Fonction de hashage de Mot de passe
-$ npx prisma migrate dev --name add_password_hash_and_timestamps
+docker-compose up -d
 ```
 
-## Développer en local avec Docker
+Cela démarre :
 
-L'application utilise Docker pour la base de données et phpMyAdmin. Vous pouvez démarrer l'ensemble du projet avec la commande suivante :
-
-```bash
-  docker-compose up -d
-```
-
-Cela lancera les services suivants :
-
-Base de données MySQL (port 3306)
-phpMyAdmin pour la gestion visuelle de la base de données (port 8080)
-Next.js (port 3000)
+- Base de données MySQL (port 3306).
+- phpMyAdmin pour la gestion visuelle (port 8080).
+- Next.js (port 3000).
 
 ## Contact
 
-Pour toute question ou suggestion, veuillez nous contacter via :
+Pour toute question ou suggestion, contactez-nous via :
 
 - mouhamadou.etu@gmail.com
-
 - choeurtis.tchounga@gmail.com
-
 - ibrahimabarry1503@gmail.com
