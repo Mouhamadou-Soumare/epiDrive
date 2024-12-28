@@ -4,15 +4,17 @@ const prisma = new PrismaClient();
 
 interface QuantitePanier {
   id: number;
-  produitId: number;
   quantite: number;
+  prix: number;
+  fk_produit: number;
+  fk_panier: number;
 }
 
 export class CartService {
   static async addToCart(userId: number, produitId: number, quantite: number) {
     try {
       let panier = await prisma.panier.findUnique({
-        where: { userId },
+        where: { fk_userId: userId },
         include: {
           produits: true, 
         },
@@ -29,7 +31,7 @@ export class CartService {
         });
       }
 
-      const existingProduct = panier.produits.find((item: QuantitePanier) => item.produitId === produitId);
+      const existingProduct = panier.produits?.find((item: QuantitePanier) => item.fk_produit === produitId);
 
       if (existingProduct) {
         await prisma.quantitePanier.update({
