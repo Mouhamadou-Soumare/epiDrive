@@ -172,3 +172,15 @@ model Log {
   fk_userId Int
   user      User     @relation(fields: [fk_userId], references: [id], onDelete: Cascade)
 }
+
+model Panier {
+
+  id        Int      @id @default(autoincrement())
+
+  fk_userId Int?
+
+  sessionId String?
+
+  produits  QuantitePanier[]
+
+}
