@@ -134,6 +134,9 @@ jobs:
 
       - name: Install Dependencies
         run: npm install
+      
+      - name: Install Jest Environment
+        run: npm install jest-environment-jsdom --save-dev
 
       - name: Run Unit Tests
         run: npm run test -- --coverage
