@@ -67,7 +67,7 @@ model Recette {
 
 model Commande {
   id          Int                @id @default(autoincrement())
-  status      CommandeStatus     @id @default(autoincrement())
+  status      CommandeStatus     @default(EN_ATTENTE)
   paymentId   String?
   createdAt   DateTime           @default(now())
   updatedAt   DateTime           @updatedAt
