@@ -33,7 +33,7 @@ jobs:
       - name: Test Application
         run: |
           sleep 10 # Attendre que l'application démarre
-          curl -f http://localhost:3000/health || exit 1
+          curl -f http://localhost:3000/ || exit 1
           echo "Health check passed for simulated deployment"
 
       # 6. Nettoyer les ressources
