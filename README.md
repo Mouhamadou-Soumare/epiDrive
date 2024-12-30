@@ -72,16 +72,7 @@ $ npx prisma db seed
 - **Page de contact** : `/contact`.
 - **404** : Gestion des pages non trouvées.
 
-## Tests Unitaires automatisé
-
-Les tests unitaires sont générés automatiquement pour les scripts situés dans src/app/api grâce à un script personnalisé. Voici comment les générer :
-
-```bash
-# Générer les fichiers de test pour les routes API
-$ npm run generate-tests
-```
-
-Les fichiers de test incluent une couverture initiale des cas standards et edge cases.
+## Tests Unitaires
 
 ### Mise en place des tests
 
@@ -109,6 +100,18 @@ Les tests couvrent les fonctionnalités suivantes :
 ### Rapport de couverture
 
 Après exécution des tests avec couverture, un rapport est généré dans le dossier `coverage/lcov-report`. Ouvrez `index.html` pour une vue détaillée.
+
+---
+
+Des tests unitaires peuvent être générés automatiquement pour les scripts situés dans src/app/api grâce à un script personnalisé. Voici comment les générer :
+
+```bash
+# Générer les fichiers de test pour les routes API
+$ npm run generate-tests
+```
+
+Les fichiers de test incluent une couverture initiale des cas standards et edge cases.
+
 
 ## Workflow CI/CD
 
