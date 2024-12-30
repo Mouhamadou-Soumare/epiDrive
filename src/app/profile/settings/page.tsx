@@ -26,23 +26,33 @@ export default function SettingsPage() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('email', email);
-    if (profileImage) {
-      formData.append('file', profileImage);
-    }
-
     try {
+      // Préparer les données JSON
+      const payload = {
+        action: 'updateProfile',
+        userId: session?.user?.id, // Assurez-vous que l'ID utilisateur est accessible via la session
+        username: name,
+        email: email,
+        imagePath: profileImage?.name || null, // Exemple : nom du fichier image
+      };
+
+      console.log('Payload envoyé:', payload); // Ajouter un log du payload
+
       const response = await fetch('/api/profile/update', {
-        method: 'POST',
-        body: formData,
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json', // Indique que le payload est au format JSON
+        },
+        body: JSON.stringify(payload), // Envoyer les données JSON
       });
 
       if (response.ok) {
+        const data = await response.json();
+        console.log('Réponse API:', data); // Ajouter un log de la réponse
         router.push('/profile');
       } else {
-        console.error('Erreur lors de la mise à jour du profil');
+        const errorData = await response.json();
+        console.error('Erreur lors de la mise à jour du profil:', errorData.message || 'Erreur inconnue');
       }
     } catch (error) {
       console.error('Erreur de requête:', error);
@@ -76,7 +86,6 @@ export default function SettingsPage() {
               />
             </div>
 
-            {/* Bouton stylisé pour choisir un fichier */}
             <label className="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-semibold py-2 px-4 rounded-full shadow-lg transform transition-transform duration-300 hover:scale-105 cursor-pointer">
               <span>Choisir un fichier</span>
               <input

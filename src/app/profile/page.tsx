@@ -15,7 +15,7 @@ Chart.register(LineElement, CategoryScale, LinearScale, PointElement, Title, Too
 // Fonction pour formater une date en dd/MM/yyyy
 const formatDate = (date: Date) => {
   const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Les mois commencent à 0
+  const month = String(date.getMonth() + 1).padStart(2, '0');
   const year = date.getFullYear();
   return `${day}/${month}/${year}`;
 };
@@ -30,13 +30,19 @@ function ProfileContent() {
 
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [currentDate, setCurrentDate] = useState('');
 
   // Redirection si non authentifié
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.push('/auth/signin');
+      router.replace('/auth/signin');
     }
-  }, [status, router]);
+  }, [status]);
+
+  // Initialiser la date
+  useEffect(() => {
+    setCurrentDate(formatDate(new Date()));
+  }, []);
 
   // Récupération des statistiques depuis l'API
   useEffect(() => {
@@ -61,11 +67,11 @@ function ProfileContent() {
 
   // Données pour le graphique
   const chartData = {
-    labels: stats?.purchaseHistory.map((item: any) => item.date) || [],
+    labels: stats?.purchaseHistory?.map((item: any) => item.date) || [],
     datasets: [
       {
         label: 'Achats journaliers',
-        data: stats?.purchaseHistory.map((item: any) => item.total) || [],
+        data: stats?.purchaseHistory?.map((item: any) => item.total) || [],
         backgroundColor: 'rgba(54, 162, 235, 0.2)',
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 1,
@@ -87,9 +93,6 @@ function ProfileContent() {
       },
     },
   };
-
-  // Obtenir la date actuelle au format dd/MM/yyyy
-  const currentDate = formatDate(new Date());
 
   return (
     <div className="min-h-screen bg-white py-8">
