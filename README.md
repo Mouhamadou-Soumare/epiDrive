@@ -51,11 +51,11 @@ $ mysql -h db -u root -p
 
 $ CREATE DATABASE shadow_epidrive;
 
-# Générer le client Prisma
-$ npx prisma generate
-
 # Appliquer les migrations Prisma
 $ npx prisma migrate dev --name init
+
+# Générer le client Prisma
+$ npx prisma generate
 
 # Insérer des données de base (seed)
 $ npx prisma db seed
@@ -72,7 +72,16 @@ $ npx prisma db seed
 - **Page de contact** : `/contact`.
 - **404** : Gestion des pages non trouvées.
 
-## Tests Unitaires
+## Tests Unitaires automatisé
+
+Les tests unitaires sont générés automatiquement pour les scripts situés dans src/app/api grâce à un script personnalisé. Voici comment les générer :
+
+```bash
+# Générer les fichiers de test pour les routes API
+$ npm run generate-tests
+```
+
+Les fichiers de test incluent une couverture initiale des cas standards et edge cases.
 
 ### Mise en place des tests
 
