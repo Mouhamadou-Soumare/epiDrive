@@ -1,0 +1,44 @@
+name: Simulated CD Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  simulate-deployment:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Récupérer le code source
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # 2. Configurer Docker
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # 3. Construire l'image Docker
+      - name: Build Docker Image
+        run: |
+          docker build -t simulated-deployment:latest .
+
+      # 4. Lancer le conteneur Docker
+      - name: Run Docker Container
+        run: |
+          docker run -d -p 3000:3000 --name simulated-app simulated-deployment:latest
+          echo "Application running in simulated deployment at http://localhost:3000"
+
+      # 5. Valider le déploiement
+      - name: Test Application
+        run: |
+          sleep 10 # Attendre que l'application démarre
+          curl -f http://localhost:3000/health || exit 1
+          echo "Health check passed for simulated deployment"
+
+      # 6. Nettoyer les ressources
+      - name: Clean Up
+        run: |
+          docker stop simulated-app
+          docker rm simulated-app
+          docker rmi simulated-deployment:latest
