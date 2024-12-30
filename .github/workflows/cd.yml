@@ -20,13 +20,19 @@ jobs:
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Build Docker Image
-        run: docker build -t simulated-deployment:latest -t your-dockerhub-username/simulated-deployment:latest .
+        run: |
+          IMAGE_TAG="your-dockerhub-username/simulated-deployment:${{ github.run_id }}"
+          docker build -t $IMAGE_TAG .
 
       - name: Push Docker Image
-        run: docker push your-dockerhub-username/simulated-deployment:latest
+        run: |
+          IMAGE_TAG="your-dockerhub-username/simulated-deployment:${{ github.run_id }}"
+          docker push $IMAGE_TAG
 
       - name: Run Docker Container
-        run: docker run -d -p 3000:3000 --name simulated-app your-dockerhub-username/simulated-deployment:latest
+        run: |
+          IMAGE_TAG="your-dockerhub-username/simulated-deployment:${{ github.run_id }}"
+          docker run -d -p 3000:3000 --name simulated-app-$GITHUB_RUN_ID $IMAGE_TAG
 
       - name: Wait for Application to Start
         run: sleep 20
@@ -38,10 +44,11 @@ jobs:
 
       - name: Check Docker Logs
         if: failure()
-        run: docker logs simulated-app
+        run: docker logs simulated-app-${{ github.run_id }}
 
       - name: Clean Up
         run: |
-          docker stop simulated-app
-          docker rm simulated-app
-          docker rmi your-dockerhub-username/simulated-deployment:latest
+          docker stop simulated-app-${{ github.run_id }}
+          docker rm simulated-app-${{ github.run_id }}
+          IMAGE_TAG="your-dockerhub-username/simulated-deployment:${{ github.run_id }}"
+          docker rmi $IMAGE_TAG
