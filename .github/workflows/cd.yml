@@ -16,23 +16,15 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Log in to Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
       - name: Build Docker Image
         run: |
-          IMAGE_TAG="your-dockerhub-username/simulated-deployment:${{ github.run_id }}"
+          IMAGE_TAG="simulated-deployment:${{ github.run_id }}"
           docker build -t $IMAGE_TAG .
-
-      - name: Push Docker Image
-        run: |
-          IMAGE_TAG="your-dockerhub-username/simulated-deployment:${{ github.run_id }}"
-          docker push $IMAGE_TAG
 
       - name: Run Docker Container
         run: |
-          IMAGE_TAG="your-dockerhub-username/simulated-deployment:${{ github.run_id }}"
-          docker run -d -p 3000:3000 --name simulated-app-$GITHUB_RUN_ID $IMAGE_TAG
+          IMAGE_TAG="simulated-deployment:${{ github.run_id }}"
+          docker run -d -p 3000:3000 --name simulated-app-${{ github.run_id }} $IMAGE_TAG
 
       - name: Wait for Application to Start
         run: sleep 20
@@ -50,5 +42,5 @@ jobs:
         run: |
           docker stop simulated-app-${{ github.run_id }}
           docker rm simulated-app-${{ github.run_id }}
-          IMAGE_TAG="your-dockerhub-username/simulated-deployment:${{ github.run_id }}"
+          IMAGE_TAG="simulated-deployment:${{ github.run_id }}"
           docker rmi $IMAGE_TAG
