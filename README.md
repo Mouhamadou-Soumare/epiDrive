@@ -46,13 +46,15 @@ RESEND_API_KEY=""
 $ docker-compose up -d
 
 # Se rendre sur le container MySQL et créer une base de données shadow
-$ CREATE DATABASE shadow_epidrive;
+$ mysql -h db -u root -p
 
-# Appliquer les migrations Prisma
-$ npx prisma migrate dev --name init
+$ CREATE DATABASE shadow_epidrive;
 
 # Générer le client Prisma
 $ npx prisma generate
+
+# Appliquer les migrations Prisma
+$ npx prisma migrate dev --name init
 
 # Insérer des données de base (seed)
 $ npx prisma db seed
