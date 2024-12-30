@@ -24,54 +24,58 @@ enum CommandeStatus {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  username  String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  role      Role     @default(USER)
+  id          Int      @id @default(autoincrement())
+  username    String
+  email       String   @unique
+  password    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  role        Role     @default(USER)
 
-  image   Image? @relation(fields: [imageId], references: [id], map: "User_Image_fkey")
-  imageId Int?
+  image       Image?   @relation(fields: [imageId], references: [id], map: "User_Image_fkey")
+  imageId     Int?
 
-  recettes   Recette[]
-  commandes  Commande[]
-  panier     Panier?
-  livraisons Livraison[]
-  logs       Log[]
+  preferences Json?    // Champ pour stocker les préférences utilisateur
+
+  recettes    Recette[]
+  commandes   Commande[]
+  panier      Panier?
+  livraisons  Livraison[]
+  logs        Log[]
 }
 
 model Panier {
-  id        Int              @id @default(autoincrement())
-  fk_userId Int?             @unique
-  sessionId String?          @unique
-  user      User?            @relation(fields: [fk_userId], references: [id], map: "Panier_User_fkey")
-  produits  QuantitePanier[]
-  livraison Livraison?       @relation("PanierLivraison")
+  id          Int              @id @default(autoincrement())
+  fk_userId   Int?             @unique
+  sessionId   String?          @unique
+  user        User?            @relation(fields: [fk_userId], references: [id], map: "Panier_User_fkey")
+  produits    QuantitePanier[]
+  livraison   Livraison?       @relation("PanierLivraison")
 }
 
 model Recette {
-  id           Int       @id @default(autoincrement())
+  id           Int           @id @default(autoincrement())
   title        String
-  description  String    @db.Text
-  instructions String    @db.Text
+  description  String         @db.Text
+  instructions String         @db.Text
   image        String?
-  produits     Produit[] @relation("RecetteProduit")
-  ingredients  Ingredient[] @relation("RecetteIngredient")
+  produits     Produit[]      @relation("RecetteProduit")
+  ingredients  Ingredient[]   @relation("RecetteIngredient")
   fk_userId    Int
-  user         User      @relation(fields: [fk_userId], references: [id], map: "Recette_User_fkey")
+  user         User           @relation(fields: [fk_userId], references: [id], map: "Recette_User_fkey")
 }
 
 model Commande {
-  id        Int                @id @default(autoincrement())
-  status    CommandeStatus     @default(EN_ATTENTE)
-  paymentId String?
-  createdAt DateTime           @default(now())
-  fk_userId Int
-  user      User               @relation(fields: [fk_userId], references: [id], map: "Commande_User_fkey")
-  quantites QuantiteCommande[]
-  livraison Livraison?         @relation("CommandeLivraison")
+  id          Int                @id @default(autoincrement())
+  status      CommandeStatus     @default(EN_ATTENTE)
+  paymentId   String?
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  fk_userId   Int
+  user        User               @relation(fields: [fk_userId], references: [id], map: "Commande_User_fkey")
+  quantites   QuantiteCommande[]
+  livraison   Livraison?         @relation("CommandeLivraison")
+  notes       String?            @db.Text // Champ pour des commentaires sur la commande
 }
 
 model Produit {
@@ -80,6 +84,7 @@ model Produit {
   slug              String             @unique
   description       String             @db.Text
   prix              Float
+  stock             Int                @default(0) // Nouveau champ pour gérer les stocks
   image             Image?             @relation(fields: [imageid], references: [id], map: "Produit_Image_fkey")
   imageid           Int?
   categorie         Categorie          @relation(fields: [categorieId], references: [id], map: "Produit_Categorie_fkey")
@@ -152,14 +157,14 @@ model Livraison {
   codePostal String
   pays       String
 
-  fk_userId Int?
-  user      User? @relation(fields: [fk_userId], references: [id], map: "Livraison_User_fkey")
+  fk_userId  Int?
+  user       User? @relation(fields: [fk_userId], references: [id], map: "Livraison_User_fkey")
 
   fk_commande Int?      @unique
   commande    Commande? @relation("CommandeLivraison", fields: [fk_commande], references: [id])
 
-  fk_panier Int?    @unique
-  panier    Panier? @relation("PanierLivraison", fields: [fk_panier], references: [id])
+  fk_panier   Int?      @unique
+  panier      Panier?   @relation("PanierLivraison", fields: [fk_panier], references: [id])
 
   @@index([fk_userId, fk_commande, fk_panier], map: "Livraison_Index")
 }
