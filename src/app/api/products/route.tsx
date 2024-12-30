@@ -18,8 +18,24 @@ export async function GET() {
       return NextResponse.json({ message: 'No products found' }, { status: 404 });
     }
 
-    const transformedProducts = products.map(product => ({
+    interface TransformedProduct {
+      id: number;
+      name: string;
+      prix: number;
+      image: { id: number; path: string } | null;
+      slug: string;
+      description: string;
+      categorie: {
+        id: number;
+        name: string;
+        slug: string;
+        description: string;
+        imageId: number | null;
+        parentId: number | null;
+      } | null;
+    }
 
+    const transformedProducts: TransformedProduct[] = products.map((product: Produit) => ({
       id: product.id,
       name: product.name,
       prix: product.prix,
