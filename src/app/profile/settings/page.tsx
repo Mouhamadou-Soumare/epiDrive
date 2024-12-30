@@ -1,5 +1,3 @@
-// src/app/profile/settings/page.tsx
-
 'use client';
 
 import { useState } from 'react';
@@ -62,10 +60,10 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white p-4">
-      <div className="max-w-lg w-full bg-gray-800 rounded-lg shadow-lg p-8">
+    <div className="min-h-screen flex items-center justify-center bg-white text-black p-4">
+      <div className="max-w-lg w-full bg-gray-200 rounded-lg shadow-lg p-8">
         <h1 className="text-3xl font-bold mb-6 text-center">Paramètres du Profil</h1>
-        
+
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex flex-col items-center">
             <div className="mb-4">
@@ -74,10 +72,10 @@ export default function SettingsPage() {
                 alt="Image de profil"
                 width={120}
                 height={120}
-                className="rounded-full border border-gray-700"
+                className="rounded-full border border-gray-300"
               />
             </div>
-            
+
             {/* Bouton stylisé pour choisir un fichier */}
             <label className="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-semibold py-2 px-4 rounded-full shadow-lg transform transition-transform duration-300 hover:scale-105 cursor-pointer">
               <span>Choisir un fichier</span>
@@ -91,23 +89,23 @@ export default function SettingsPage() {
           </div>
 
           <div>
-            <label className="block text-gray-400 mb-1">Nom</label>
+            <label className="block text-gray-600 mb-1">Nom</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full p-3 bg-gray-700 rounded-md border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full p-3 bg-white rounded-md border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-indigo-500"
               required
             />
           </div>
 
           <div>
-            <label className="block text-gray-400 mb-1">Email</label>
+            <label className="block text-gray-600 mb-1">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-3 bg-gray-700 rounded-md border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full p-3 bg-white rounded-md border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-indigo-500"
               required
             />
           </div>

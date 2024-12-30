@@ -1,5 +1,4 @@
 // src/app/profile/page.tsx
-
 'use client';
 
 import { useSession, signOut } from 'next-auth/react';
@@ -12,6 +11,14 @@ import Link from 'next/link';
 
 // Enregistrer les composants Chart.js
 Chart.register(LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend);
+
+// Fonction pour formater une date en dd/MM/yyyy
+const formatDate = (date: Date) => {
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Les mois commencent à 0
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+};
 
 export default function ProfilePage() {
   return <ProfileContent />;
@@ -76,10 +83,13 @@ function ProfileContent() {
       },
       title: {
         display: true,
-        text: 'Nombre d\'achats par jour',
+        text: "Nombre d'achats par jour",
       },
     },
   };
+
+  // Obtenir la date actuelle au format dd/MM/yyyy
+  const currentDate = formatDate(new Date());
 
   return (
     <div className="min-h-screen bg-white py-8">
@@ -132,7 +142,7 @@ function ProfileContent() {
                   <strong>Email :</strong> {session?.user?.email}
                 </p>
                 <p className="text-black">
-                  <strong>Client depuis :</strong> {'Date inconnue'}
+                  <strong>Client depuis :</strong> {currentDate}
                 </p>
               </div>
             </div>

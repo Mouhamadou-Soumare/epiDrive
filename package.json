@@ -24,6 +24,7 @@
     "bcryptjs": "^2.4.3",
     "chart.js": "^4.4.6",
     "clarifai-nodejs-grpc": "^10.9.8",
+    "mongoose": "^8.9.2",
     "next": "^15.0.3",
     "next-auth": "^4.24.10",
     "openai": "^4.76.1",
