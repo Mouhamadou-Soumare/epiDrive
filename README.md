@@ -1,4 +1,5 @@
-EpiDrive
+# EpiDrive
+
 <p align="center">
   <a href="#"><img src="https://github.com/Mouhamadou-Soumare/epiDrive/blob/main/public/img/logo.png" alt="EpiDrive" width="100"></a>
 </p>
