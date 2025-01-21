@@ -4,6 +4,7 @@ import Image from "next/image";
 import logoWhite from "../../public/img/logo_white_bg.png";
 import logoSnapAndCook from "../../public/img/scan.png";
 import { useState } from "react";
+import { useSession, signOut } from "next-auth/react";
 import {
   Dialog,
   DialogPanel,
@@ -16,6 +17,8 @@ import {
   PopoverPanel,
 } from "@headlessui/react";
 import {
+  ArrowRightIcon,
+  ArrowRightOnRectangleIcon,
   Bars3Icon,
   CameraIcon,
   ChartPieIcon,
@@ -25,6 +28,7 @@ import {
   ShoppingCartIcon,
   SquaresPlusIcon,
   TicketIcon,
+  UserCircleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import {
@@ -126,7 +130,10 @@ export default function Navbar() {
   const [open, setOpen] = useState(false); 
   const [cartOpen, setCartOpen] = useState(false);
   const { cartItems, loading: cartLoading  } = useGetCart(); 
-
+  const { data: session, status } = useSession({
+    required: false,
+    triggerEvent: true, // Récupère la session en navigation client
+  });
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantite, 0);
 
   const mesCoursesCategories = [
@@ -146,7 +153,13 @@ export default function Navbar() {
     (category) => !mesCoursesCategories.includes(category.name)
   );
 
+  if (status === "loading") {
+    return <div>Chargement...</div>; // Évitez de montrer la barre non connectée
+  }
+  
+
   return (
+    
     <header className="relative isolate z-10 ">
        <div aria-label="Top">
           {/* Top navigation */}
@@ -331,10 +344,27 @@ export default function Navbar() {
           
 
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-        <a href="/auth/signin" className="flex items-center gap-2  px-4 py-2.5  text-dark rounded-lg transition-colors duration-200 min-w-48 text-nav-hover">
-        <svg className="max-w-6" fill="none" height="24" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> 
-        <p>Se connecter</p>
-          </a>
+          {session ? (
+            <div className="flex items-center gap-2">
+              <UserCircleIcon className="h-8 w-8 text-indigo-500" />
+              <span className="font-medium text-gray-800">{session.user?.name}</span>
+              <button
+                onClick={() => signOut()}
+                className="flex items-center gap-2 px-4 py-2.5 text-dark rounded-lg hover:bg-red-50"
+              >
+                <ArrowRightIcon className="h-6 w-6 text-red-500" />
+                <span>Déconnexion</span>
+              </button>
+            </div>
+          ) : (
+            <a
+              href="/auth/signin"
+              className="flex items-center gap-2 px-4 py-2.5 text-dark rounded-lg hover:text-indigo-700"
+            >
+              <ArrowRightIcon className="h-6 w-6" />
+              <span>Se connecter</span>
+            </a>
+          )}
         </div>
 
         </PopoverGroup>
