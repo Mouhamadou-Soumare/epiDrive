@@ -1,7 +1,7 @@
 import NextAuth, { User as NextAuthUser } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import prisma from '@/lib/prisma';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 interface ExtendedUser extends NextAuthUser {
   createdAt?: Date;
@@ -44,13 +44,24 @@ export const authOptions = {
     signIn: '/auth/signin',
   },
   secret: process.env.NEXTAUTH_SECRET,
+  cookies: {
+    sessionToken: {
+      name: 'next-auth.session-token',
+      options: {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production', // Utilisez HTTPS en production
+        path: '/', // Disponible dans toute l'application
+        sameSite: 'lax', // Empêche certaines attaques CSRF
+      },
+    },
+  },
   callbacks: {
     async jwt({ token, user }: { token: any, user?: ExtendedUser }) {
       if (user) {
         token.id = user.id;
         token.email = user.email;
         token.name = user.name;
-        token.createdAt = (user as any).createdAt;
+        token.createdAt = user.createdAt;
       }
       return token;
     },
@@ -63,6 +74,7 @@ export const authOptions = {
     },
   },
 };
+
 
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };

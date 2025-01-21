@@ -2,18 +2,19 @@
 
 'use client';
 
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
 import { ArrowLeftIcon, ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/outline';
 import AuthenticatorCards from '@/components/AuthenticatorCards';
 export default function SignInPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,10 +28,21 @@ export default function SignInPage() {
     if (result?.error) {
       setError(result.error);
     } else {
-      router.push('/profile');
+      router.push('/');
     }
   };
 
+  useEffect(() => {
+    console.log("Session status:", status);
+    console.log("Session data:", session);
+
+    if (status === 'authenticated') {
+      router.push('/'); // Redirige vers la page d'accueil si l'utilisateur est connecté
+    }
+  }, [status, router]);
+
+
+  
   return (
     <>
     <div className="bg-auth flex flex-column h-screen pb-0	">

@@ -99,42 +99,78 @@ export default function SearchResultsPage() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+  
     if (validateForm()) {
-      console.log('Données soumises :', formData);
-
-      var produits = cartItems.map((item) => ({
-        id: item.produit.id,
-        quantite: item.quantite,
-        prix: item.prix,
+      console.log("Données soumises :", formData);
+  
+      const produits = cartItems.map((item) => ({
+        name: item.produit.name,
+        quantity: item.quantite,
+        price: item.produit.prix,
+        total: item.produit.prix * item.quantite,
       }));
-
-      addCommande({
-        status: 'EN_ATTENTE',
-        paymentId: randomBytes(16).toString('hex'),
-        userId: 1,
-        infosAdresse: {
+  
+      // Préparer les données de la commande pour le résumé
+      const orderSummary = {
+        items: produits,
+        totalAmount: produits.reduce(
+          (total, item) => total + item.total,
+          0
+        ),
+        shippingAddress: {
           adresse: formData.adresse,
           ville: formData.ville,
           codePostal: formData.codePostal,
           pays: formData.pays,
         },
-        produits : produits
-      });
-
-      alert('Formulaire soumis avec succès !');
-      localStorage.removeItem('sessionId');
-      router.push('/');
+      };
+  
+      try {
+        // Appeler l'API Stripe pour créer une session de paiement
+        const response = await fetch("/api/checkout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            produits,
+            adresse: formData.adresse,
+            ville: formData.ville,
+            codePostal: formData.codePostal,
+            pays: formData.pays,
+          }),
+        });
+  
+        const data = await response.json();
+  
+        if (data.url) {
+          // Enregistrer le résumé de commande dans localStorage
+          localStorage.setItem("orderSummary", JSON.stringify(orderSummary));
+  
+          // Rediriger vers la page de paiement Stripe
+          window.location.href = data.url;
+        } else {
+          console.error(
+            "Erreur lors de la création de la session Stripe:",
+            data.error
+          );
+          alert("Une erreur est survenue. Veuillez réessayer.");
+        }
+      } catch (error) {
+        console.error("Erreur lors de la validation du formulaire:", error);
+        alert("Une erreur inattendue est survenue. Veuillez réessayer.");
+      }
     } else {
-      alert('Veuillez corriger les erreurs du formulaire.');
+      alert("Veuillez corriger les erreurs du formulaire.");
     }
   };
+  
+  
 
   if (loading || addingCommande) return <div>Chargement ...</div>;
   if (addError) return <div>Erreur lors de la soumission de la commande</div>;
   if (cartItems.length === 0) return <div>Votre panier est vide</div>;
 
   return (
-    <div className="bg-white p-8">
+    <div className="bg-white p-8 mx-10">
       <h2 className="text-2xl font-bold mb-4">Informations de Livraison</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
