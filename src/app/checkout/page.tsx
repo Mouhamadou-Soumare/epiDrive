@@ -103,20 +103,20 @@ export default function SearchResultsPage() {
     if (validateForm()) {
       console.log("Données soumises :", formData);
   
+      // Formater les données des produits avec les clés attendues
       const produits = cartItems.map((item) => ({
+        id: item.produit.id,
         name: item.produit.name,
-        quantity: item.quantite,
-        price: item.produit.prix,
+        quantity: item.quantite, // Utilisation de `quantity`
+        price: item.produit.prix, // Utilisation de `price`
+        image: item.produit.image.path,
         total: item.produit.prix * item.quantite,
       }));
+      console.log("Produits envoyés à l'API Checkout :", produits);
   
-      // Préparer les données de la commande pour le résumé
       const orderSummary = {
         items: produits,
-        totalAmount: produits.reduce(
-          (total, item) => total + item.total,
-          0
-        ),
+        totalAmount: produits.reduce((total, item) => total + item.total, 0),
         shippingAddress: {
           adresse: formData.adresse,
           ville: formData.ville,
@@ -148,10 +148,7 @@ export default function SearchResultsPage() {
           // Rediriger vers la page de paiement Stripe
           window.location.href = data.url;
         } else {
-          console.error(
-            "Erreur lors de la création de la session Stripe:",
-            data.error
-          );
+          console.error("Erreur lors de la création de la session Stripe:", data.error);
           alert("Une erreur est survenue. Veuillez réessayer.");
         }
       } catch (error) {
@@ -162,6 +159,7 @@ export default function SearchResultsPage() {
       alert("Veuillez corriger les erreurs du formulaire.");
     }
   };
+  
   
   
 
@@ -229,12 +227,13 @@ export default function SearchResultsPage() {
           {errors.pays && <p className="text-red-500 text-sm mt-1">{errors.pays}</p>}
         </div>
 
+<div className='text-right'>
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200"
+          className="w-auto text-white bg-orange-300 hover:bg-orange-500 text-black focus:ring-2 focus:ring-indigo-500  py-2 px-4 rounded-md  transition duration-200"
         >
           Soumettre
-        </button>
+        </button></div>
       </form>
     </div>
   );

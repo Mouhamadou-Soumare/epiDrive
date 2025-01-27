@@ -26,7 +26,7 @@ export default function SettingsPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setErrorMessage(null); // Réinitialise les erreurs précédentes
+    setErrorMessage(null); 
 
     const formData = new FormData();
     formData.append('name', name);

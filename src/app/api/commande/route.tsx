@@ -60,18 +60,24 @@ export async function POST(req: Request) {
 
     // Ajout des produits à la commande
     for (const produit of produits) {
-      if (!produit.id || !produit.quantite) {
-        return NextResponse.json({ error: 'Invalid produit data' }, { status: 400 });
+      if (!produit.id || !produit.quantite || produit.quantite <= 0) {
+        return NextResponse.json({ error: 'Invalid produit data', produit }, { status: 400 });
       }
+
+      // Définit une image par défaut si elle n'est pas fournie
+      const imagePath = produit.image || '/img/default-placeholder.webp';
 
       await prisma.quantiteCommande.create({
         data: {
           commande: { connect: { id: newCommande.id } },
           produit: { connect: { id: produit.id } },
           quantite: produit.quantite,
-          prix: produit.prix, // Assuming 'prix' is a property of 'produit'
+          prix: produit.prix,
         },
       });
+
+      // Ajout d'un log pour vérifier l'image utilisée
+      console.log("Produit ajouté avec image :", imagePath);
     }
 
     console.log('Commande created:', newCommande);
