@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useGetUsers } from '@/hooks/users/useUsers';
 import { useGetCommandes } from '@/hooks/commandes/useCommandes';
 import { useGetProduits } from '@/hooks/products/useProduits';
+import CommandHistoryChart from '@/components/backoffice/CommandHistoryChart';
 
 /**
  * Page principale du backoffice.
@@ -60,6 +61,16 @@ export default function Backoffice() {
               </dd>
             </div>
           )}
+        </div>
+
+        {/* Section des statistiques historiques des commandes */}
+        <div className="mt-10 bg-white rounded-lg px-4 py-5 shadow sm:p-6">
+          <h2 className="text-lg font-medium leading-6 text-gray-900">
+            Historique des commandes en temps réel
+          </h2>
+          <div className="mt-6">
+            <CommandHistoryChart />
+          </div>
         </div>
       </main>
     </div>

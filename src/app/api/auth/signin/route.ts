@@ -1,22 +1,35 @@
 import { NextResponse } from 'next/server';
-import { signIn } from 'next-auth/react';
+import prisma from '@/lib/prisma';
+import bcrypt from 'bcryptjs';
 
-// Cette route est une route POST qui peut être appelée pour gérer l'authentification.
 export async function POST(req: Request) {
   try {
-    // Récupérer les données de la requête
     const body = await req.json();
-    const { email } = body;
+    const { email, password } = body;
 
-    // Appeler la fonction signIn de next-auth
-    const result = await signIn('email', { redirect: false, email });
-
-    if (result?.ok) {
-      return NextResponse.json({ message: 'Connexion réussie', status: 'success' });
-    } else {
-      return NextResponse.json({ message: 'Échec de la connexion', status: 'error' }, { status: 401 });
+    if (!email || !password) {
+      return NextResponse.json({ message: 'Email et mot de passe requis' }, { status: 400 });
     }
+
+    // Vérifiez si l'utilisateur existe
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!user) {
+      return NextResponse.json({ message: 'Utilisateur non trouvé' }, { status: 404 });
+    }
+
+    // Vérifiez le mot de passe
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return NextResponse.json({ message: 'Mot de passe incorrect' }, { status: 401 });
+    }
+
+    // Authentification réussie
+    return NextResponse.json({ message: 'Connexion réussie' }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ message: 'Erreur interne du serveur', error: (error as any).message }, { status: 500 });
+    console.error('Erreur lors de la connexion :', error);
+    return NextResponse.json({ message: 'Erreur interne du serveur' }, { status: 500 });
   }
 }

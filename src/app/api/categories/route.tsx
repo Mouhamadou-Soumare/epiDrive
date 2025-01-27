@@ -3,7 +3,6 @@ import prisma from '@/lib/prisma';
 
 export async function GET(req: Request) {
   try {
-    console.log("Fetching all categories...");
 
     // Récupération des catégories avec sous-catégories et images
     const categories = await prisma.categorie.findMany({
@@ -55,7 +54,6 @@ export async function GET(req: Request) {
       })),
     }));
 
-    console.log("GET API/categories: categories found:", formattedCategories);
     return NextResponse.json(formattedCategories, { status: 200 });
   } catch (error) {
     console.error("Error in GET API/categories:", error);
@@ -98,10 +96,8 @@ export async function POST(req: Request) {
         },
       });
 
-      console.log('Image created:', newImage);
     }
 
-    console.log("POST API/categorie/ : ", newcategorie);
     return NextResponse.json(newcategorie, { status: 201 });
   } catch (error) {
       console.error("Error in POST API/categorie:", error);

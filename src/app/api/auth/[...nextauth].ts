@@ -17,7 +17,7 @@ export const authOptions: AuthOptions = {
     signIn: '/auth/signin',
   },
   session: {
-    strategy: 'database',
+    strategy: 'jwt',
   },
   callbacks: {
     async session({ session, user }) {

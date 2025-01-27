@@ -33,6 +33,7 @@ function ProfileContent() {
   const [currentDate, setCurrentDate] = useState('');
 
   // Redirection si non authentifié
+  console.log(status);
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.replace('/auth/signin');
