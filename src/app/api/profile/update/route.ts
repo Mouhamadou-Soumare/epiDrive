@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { CommandeStatus } from '@prisma/client';
+// import { CommandeStatus } from '@prisma/client';
 
-const statusMap: Record<string, CommandeStatus> = {
-  pending: CommandeStatus.EN_ATTENTE,
-  shipped: CommandeStatus.EXPEDIEE,
-  delivered: CommandeStatus.LIVREE,
-  cancelled: CommandeStatus.ANNULEE,
-};
+// const statusMap: Record<string, CommandeStatus> = {
+//   pending: CommandeStatus.EN_ATTENTE,
+//   shipped: CommandeStatus.EXPEDIEE,
+//   delivered: CommandeStatus.LIVREE,
+//   cancelled: CommandeStatus.ANNULEE,
+// };
 
 async function updateUserProfile(data: any) {
   const { userId, username, email, password, imagePath } = data;

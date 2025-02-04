@@ -82,30 +82,37 @@ export default function UpdateProductPage() {
   }
 
   return (
-    <>
-      {submitResult === "success" && (
-        <Alert message="Le produit a été mis à jour avec succès." type="success" />
-      )}
-      {updateError && (
-        <Alert message="Une erreur s'est produite lors de la mise à jour du produit." type="error" />
-      )}
-      {productError && (
-        <Alert message="Erreur lors de la récupération du produit." type="error" />
-      )}
-      {categoriesError && (
-        <Alert message="Erreur lors de la récupération des catégories." type="error" />
-      )}
+    <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6">
+      {/* Alertes */}
+      <div className="mb-4">
+        {submitResult === "success" && (
+          <Alert message="Le produit a été mis à jour avec succès." type="success" />
+        )}
+        {updateError && (
+          <Alert message="Une erreur s'est produite lors de la mise à jour du produit." type="error" />
+        )}
+        {productError && (
+          <Alert message="Erreur lors de la récupération du produit." type="error" />
+        )}
+        {categoriesError && (
+          <Alert message="Erreur lors de la récupération des catégories." type="error" />
+        )}
+      </div>
 
-      <h1 className="text-3xl font-extrabold leading-tight text-gray-900">Mettre à jour le produit</h1>
-      <form onSubmit={handleSubmit} className="my-6">
+      {/* Titre */}
+      <h1 className="text-2xl font-semibold text-gray-900 mb-6">Modifier le produit</h1>
+
+      {/* Formulaire */}
+      <form onSubmit={handleSubmit} className="space-y-5">
         <TextInput
-          label="Nom"
+          label="Nom du produit"
           id="name"
           name="name"
           value={updatedProduit.name}
           onChange={handleInputChange}
           required
         />
+
         <TextareaInput
           label="Description"
           id="description"
@@ -114,8 +121,9 @@ export default function UpdateProductPage() {
           onChange={handleInputChange}
           required
         />
+
         <TextInput
-          label="Prix"
+          label="Prix (€)"
           id="prix"
           name="prix"
           type="number"
@@ -126,40 +134,50 @@ export default function UpdateProductPage() {
           step={0.01}
           required
         />
+
+        {/* Affichage du chemin de l'image si disponible */}
         {updatedProduit.image && (
           <TextInput
-            label="Image Path"
+            label="Chemin de l'image"
             id="imagePath"
             name="imagePath"
             value={updatedProduit.image.path}
             onChange={handleInputChange}
           />
         )}
-        <div className="mb-5">
-          <label htmlFor="categorieId" className="block mb-2 text-sm font-medium text-gray-900">Catégorie</label>
+
+        {/* Sélecteur de catégorie */}
+        <div>
+          <label htmlFor="categorieId" className="block text-sm font-medium text-gray-700 mb-1">
+            Catégorie
+          </label>
           <select
             id="categorieId"
             name="categorieId"
             value={updatedProduit.categorie?.id || ""}
             onChange={handleInputChange}
             required
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            className="w-full rounded-md border border-gray-300 bg-gray-50 py-2 px-3 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
           >
             <option value="">Sélectionner une catégorie</option>
-            {categories.map((cat: Categorie) => (
+            {categories.map((cat) => (
               <option key={cat.id} value={cat.id}>
                 {cat.name}
               </option>
             ))}
           </select>
         </div>
-        <button
-          type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
-        >
-          {updatingProduct ? "Mise à jour en cours..." : "Mettre à jour le produit"}
-        </button>
+
+        {/* Bouton de soumission */}
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            className="px-5 py-2.5 bg-indigo-600 text-white text-sm font-medium rounded-md shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-300 transition duration-200"
+          >
+            {updatingProduct ? "Mise à jour en cours..." : "Mettre à jour le produit"}
+          </button>
+        </div>
       </form>
-    </>
+    </div>
   );
 }

@@ -35,6 +35,21 @@ body {
   color: #bc6c25;
 }
 
+.a-primary-hover:hover, 
+.a-primary-hover:hover svg{
+  --tw-text-opacity: 1;
+    color: #bc6c25;
+    transition: ease-in-out O.5s;
+}
+
+
+.svg-hover:hover svg{
+  color:  rgba(188,108,37,0.6);
+  transition: 0.5s ease-in-out;
+  transform: scale(1.25);
+}
+
+
 
 .title-primary{
   color: #450d21;
