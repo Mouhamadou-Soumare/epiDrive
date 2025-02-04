@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import fetch from "node-fetch";
 import prisma from '@/lib/prisma';
 
-import { Ingredient, Recette } from "types";
+import { Ingredient } from "types";
 
 export async function POST(req: NextRequest) {
   try {
@@ -99,7 +99,7 @@ FN'hésitez pas à ajouter d'autres ingrédients si nécessaire.`,
     const data = await response.json();
 
     const recipes = data.choices[0]?.message?.content
-    let db_recipes = [];
+    const db_recipes = [];
     
     for (const recipe of JSON.parse(recipes).recipes) {
       const checkExistingRecipe = await prisma.recette.findFirst({
@@ -126,7 +126,7 @@ FN'hésitez pas à ajouter d'autres ingrédients si nécessaire.`,
       });
 
       for (const ingredient of recipe.ingredients) {
-        let produitRecord = await prisma.produit.findFirst({
+        const produitRecord = await prisma.produit.findFirst({
           where: { name: ingredient.name },
         });
 

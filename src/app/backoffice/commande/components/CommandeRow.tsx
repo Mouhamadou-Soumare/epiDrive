@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Commande, QuantiteCommande } from "../../../../../types";
+import { EyeIcon } from "@heroicons/react/24/outline";
 
 interface CommandeRowProps {
   commande: Commande;
@@ -16,8 +17,8 @@ const CommandeRow: React.FC<CommandeRowProps> = ({ commande }) => {
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{getPriceCommande()} €</td>
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{commande.status}</td>
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-        <Link href={`/backoffice/commande/${commande.id}`} className="text-indigo-600">
-          Voir la commande
+        <Link href={`/backoffice/commande/${commande.id}`} className="a-primary svg-hover">
+        <EyeIcon className="h-6 w-6"/>
         </Link>
       </td>
     </tr>

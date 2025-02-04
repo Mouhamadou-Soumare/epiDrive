@@ -24,7 +24,6 @@ export default function SnapAndCook() {
   const [products, setProducts] = useState<Product[]>([]);
   const [cart, setCart] = useState<{ [productId: number]: number }>({});
   const [loadingImage, setLoadingImage] = useState(false);
-  const [loadingProducts, setLoadingProducts] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { addRecette, loading: loadingRecette, error: errorRecette } = useAddRecette();

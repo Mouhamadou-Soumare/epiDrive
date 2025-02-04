@@ -167,15 +167,15 @@ export default function Navbar() {
                         href={item.href}
                         className={classNames(
                           item.current
-                            ? 'bg-gray-50 text-indigo-600'
-                            : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600',
+                            ? 'bg-gray-50 a-primary'
+                            : 'text-gray-700 hover:bg-gray-50 a-primary-hover',
                           'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
                         )}
                       >
                         <item.icon
                           aria-hidden="true"
                           className={classNames(
-                            item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600',
+                            item.current ? 'a-primary' : 'text-gray-400 ',
                             'h-6 w-6 shrink-0',
                           )}
                         />
@@ -188,22 +188,22 @@ export default function Navbar() {
               <li className="mt-auto">
                 <a
                   href="#"
-                  className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                  className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 a-primary-hover"
                 >
                   <Cog6ToothIcon
                     aria-hidden="true"
-                    className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600"
+                    className="h-6 w-6 shrink-0 "
                   />
                   Settings
                 </a>
 
                 <a
                   href="#"
-                  className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                  className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 a-primary-hover"
                 >
                   <BellIcon
                     aria-hidden="true"
-                    className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600"
+                    className="h-6 w-6 shrink-0 text-gray-400 "
                   />
                   Notifications
                 </a>

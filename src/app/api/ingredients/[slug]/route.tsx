@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { Ingredient } from 'types';
-import { connect } from 'http2';
 
-export async function GET(req: Request, { params }: { params: { slug: string } }) {
+
+export async function GET({ params }: { params: { slug: string } }) {
   const { slug } = params;
 
   if (!slug) {

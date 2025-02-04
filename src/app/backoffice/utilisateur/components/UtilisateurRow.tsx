@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { User } from "../../../../../types";
+import { EyeIcon } from "@heroicons/react/24/outline";
 
 interface UtilisateurRowProps {
   utilisateur: User;
@@ -14,8 +15,9 @@ const UtilisateurRow: React.FC<UtilisateurRowProps> = ({ utilisateur }) => {
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{utilisateur.email}</td>
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{utilisateur.role}</td>
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-        <Link href={`/backoffice/utilisateur/${utilisateur.id}`} className="text-indigo-600">
-          Voir l'utilisateur
+        <Link href={`/backoffice/utilisateur/${utilisateur.id}`} className="a-primary svg-hover">
+        <EyeIcon className="h-6 w-6"/>
+
         </Link>
       </td>
     </tr>
