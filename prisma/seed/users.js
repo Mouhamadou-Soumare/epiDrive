@@ -16,10 +16,11 @@ export async function createUsers() {
   const hashedClientPassword = await hashPassword(clientPassword);
   
   for (let i = 0; i < 10; i++) {
+    const username = faker.internet.userName();
     const clientUser = await prisma.user.create({
       data: {
-        username: faker.internet.userName(),
-        email: faker.internet.email(),
+        username: username,
+        email: username + '@yopmail.com',
         password: hashedClientPassword,
         role: 'USER',
         livraisons: {

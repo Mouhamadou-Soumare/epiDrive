@@ -1,38 +1,53 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-type Ingredient = {
-  name: string;
-  description: string;
-  prix: number;
-  categorie: string;
-};
-
-type Product = { id: number; name: string; prix: number; };
+type Product = { id: number; name: string; prix: number };
 
 interface IngredientListProps {
   products: Product[];
   cart: { [productId: number]: number };
-  addToCart: (productId: number, quantity: number) => void; // Accept quantity for batch add
+  addToCart: (productId: number, quantity: number) => void;
   removeFromCart: (productId: number) => void;
 }
 
 export default function IngredientList({ products, cart, addToCart, removeFromCart }: IngredientListProps) {
-  const [localCart, setLocalCart] = useState<{ [productId: number]: number }>(cart); // Local state for quantities
+  const [localCart, setLocalCart] = useState<{ [productId: number]: number }>({});
 
+  /**
+   * 🔹 Synchronise le panier local avec le panier global dès que `cart` change.
+   */
+  useEffect(() => {
+    setLocalCart(cart);
+  }, [cart]);
+
+  /**
+   * 🔹 Met à jour la quantité d'un produit.
+   */
   const handleQuantityChange = (productId: number, change: number) => {
     setLocalCart((prevCart) => {
       const newQuantity = (prevCart[productId] || 0) + change;
+
+      if (newQuantity > 0) {
+        addToCart(productId, change); // Ajoute au panier global
+      } else {
+        removeFromCart(productId); // Supprime du panier global
+      }
+
       return newQuantity >= 0 ? { ...prevCart, [productId]: newQuantity } : prevCart;
     });
   };
 
+  /**
+   * 🔹 Valide l'ajout des produits au panier.
+   */
   const handleConfirmAddToCart = () => {
     Object.entries(localCart).forEach(([productId, quantity]) => {
-      if (quantity > 0) addToCart(Number(productId), quantity);
+      if (quantity > 0) {
+        addToCart(Number(productId), quantity);
+      }
     });
-    alert("Produits ajoutés au panier !");
+    //alert("Produits ajoutés au panier !");
   };
 
   return (
