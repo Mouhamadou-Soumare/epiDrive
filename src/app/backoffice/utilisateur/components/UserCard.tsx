@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { User } from "../../../../../types";
+import { EyeIcon } from "@heroicons/react/24/outline";
 
 interface UserCardProps {
   utilisateur: User;
@@ -18,8 +19,9 @@ const UserCard: React.FC<UserCardProps> = ({ utilisateur }) => (
         <h5>{utilisateur.username}</h5>
       </div>
       <p className="text-gray-500 my-2">{utilisateur.email}</p>
-      <Link href={`/backoffice/utilisateur/${utilisateur.id}`} className="whitespace-nowrap text-indigo-600 hover:text-indigo-500">
-        Voir l'utilisateur
+      <Link href={`/backoffice/utilisateur/${utilisateur.id}`} className="whitespace-nowrap a-primary svg-hover">
+      <EyeIcon className="h-6 w-6"/>
+
       </Link>
     </div>
   </div>

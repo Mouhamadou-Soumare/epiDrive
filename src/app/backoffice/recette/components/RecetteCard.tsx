@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Recette } from "../../../../../types";
+import { EyeIcon } from "@heroicons/react/24/outline";
 
 interface RecetteCardProps {
   recette: Recette;
@@ -18,8 +19,10 @@ const RecetteCard: React.FC<RecetteCardProps> = ({ recette }) => (
         <h5>{recette.title}</h5>
       </div>
       <p className="text-gray-500 my-2">{recette.description}</p>
-      <Link href={`/backoffice/recette/${recette.id}`} className="whitespace-nowrap text-indigo-600 hover:text-indigo-500">
-        Voir la recette
+      <Link href={`/backoffice/recette/${recette.id}`} className="whitespace-nowrap a-primary svg-hover ">
+      <EyeIcon className="h-6 w-6"/>
+
+
       </Link>
     </div>
   </div>

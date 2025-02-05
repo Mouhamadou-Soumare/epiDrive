@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Produit } from "../../../../../types";
+import { EyeIcon } from "@heroicons/react/24/outline";
 
 interface ProductRowProps {
   product: Produit;
@@ -14,8 +15,9 @@ const ProductRow: React.FC<ProductRowProps> = ({ product }) => {
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{product.slug}</td>
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{product.prix} €</td>
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-        <Link href={`/backoffice/product/${product.slug}`} className="text-indigo-600">
-          Voir le produit
+        <Link href={`/backoffice/product/${product.slug}`} className="a-primary svg-hover">
+        <EyeIcon className="h-6 w-6"/>
+
         </Link>
       </td>
     </tr>

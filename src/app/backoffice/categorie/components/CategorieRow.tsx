@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Categorie } from "../../../../../types";
+import { EyeIcon } from "@heroicons/react/24/outline";
 
 interface CategorieRowProps {
   categorie: Categorie;
@@ -13,8 +14,9 @@ const CategorieRow: React.FC<CategorieRowProps> = ({ categorie }) => {
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{categorie.name}</td>
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{categorie.slug}</td>
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-        <Link href={`/backoffice/categorie/${categorie.slug}`} className="text-indigo-600">
-          Voir la catégorie
+        <Link href={`/backoffice/categorie/${categorie.slug}`} className="a-primary svg-hover">
+        <EyeIcon className="h-6 w-6"/>
+
         </Link>
       </td>
     </tr>

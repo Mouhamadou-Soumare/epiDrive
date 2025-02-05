@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import fetch from "node-fetch";
 import prisma from '@/lib/prisma';
-import { Ingredient, Recette } from "types";
+
+import { Ingredient } from "types";
 
 // Fonction de normalisation pour améliorer la détection des recettes existantes
 function normalizeString(str: string): string {

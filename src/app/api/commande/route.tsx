@@ -53,10 +53,11 @@ export async function POST(req: Request) {
       data: {
         status,
         paymentId: paymentId || null,
-        user: { connect: { id: userId } },
+        user: { connect: { id: parseInt(userId, 10) } }, // Conversion de l'id en Int
         livraison: { create: livraisonData },
       },
     });
+    
 
     // Ajout des produits à la commande
     for (const produit of produits) {

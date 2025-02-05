@@ -28,10 +28,10 @@ const UserDetail = () => {
 
   return (
     <div className="mx-auto max-w-2xl py-4 sm:py-4 lg:max-w-7xl">
-      <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-2">
         <div className="relative overflow-hidden rounded-lg bg-white px-4 pb-4 pt-3 shadow sm:px-6 sm:pt-5">
           <dt>
-            <div className="absolute rounded-md bg-indigo-500 p-3">
+            <div className="absolute rounded-md button-primary text-dark p-3">
               <UsersIcon aria-hidden="true" className="h-6 w-6 text-white" />
             </div>
             <p className="ml-16 truncate text-sm font-medium text-gray-500">{user.email}</p>
@@ -43,7 +43,7 @@ const UserDetail = () => {
         {commandePrice > 0 && (
           <div className="relative overflow-hidden rounded-lg bg-white px-4 pb-4 pt-3 shadow sm:px-6 sm:pt-5">
             <dt>
-              <div className="absolute rounded-md bg-indigo-500 p-3">
+              <div className="absolute rounded-md button-primary p-3">
                 <CursorArrowRaysIcon aria-hidden="true" className="h-6 w-6 text-white" />
               </div>
               <p className="ml-16 truncate text-sm font-medium text-gray-500">Total des commandes</p>
