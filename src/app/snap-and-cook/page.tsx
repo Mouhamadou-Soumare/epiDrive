@@ -10,14 +10,15 @@ import { useAddRecette } from "@/hooks/recettes/useRecettes";
 import { Produit } from "types";
 
 type Ingredient = {
+  id: number;
   name: string;
   description: string;
   prix: number;
   categorie: string;
 };
 
-type Product = { id: number; name: string; prix: number; };
-type Recette = { id: number; title: string; description: string; instructions: string; image: string};
+type Product = { id: number; name: string; prix: number };
+type Recette = { id: number; title: string; description: string; instructions: string; image: string };
 
 export default function SnapAndCook() {
   const [dish, setDish] = useState<Recette | null>(null);
@@ -27,10 +28,11 @@ export default function SnapAndCook() {
   const [loadingImage, setLoadingImage] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { addRecette, loading: loadingRecette, error: errorRecette } = useAddRecette();
-
   const { addToCart } = useAddCart();
 
+  /** 
+   * 🔹 Gère la capture d'image et l'analyse de la recette 
+   */
   const handleImageCaptured = async (imageData: string) => {
     setLoadingImage(true);
     setError(null);
@@ -49,16 +51,16 @@ export default function SnapAndCook() {
         return;
       }
   
-      // Met à jour dish en premier
-      setDish(result.dish);
+      console.log("Réponse API :", result); // Debugging
   
-      // Attendez que dish soit mis à jour avant de continuer
-      if (result.dish) {
-        console.log("Dish détecté :", result.dish);
-        await fetchMatchingProducts(result.ingredients, result.dish);
-      } else {
-        console.error("Dish non détecté.");
-      }
+      const ingredientsArray = Array.isArray(result.dish?.ingredients) ? result.dish.ingredients : [];
+      const productArray = Array.isArray(result.dish?.produits) ? result.dish.produits : [];
+  
+      // 🔹 Mise à jour de la recette et des ingrédients
+      setDish(result.dish);
+      setIngredients(ingredientsArray);
+      setProducts(productArray);
+  
     } catch (err: any) {
       setError(err.message || "Une erreur s'est produite.");
     } finally {
@@ -143,6 +145,7 @@ export default function SnapAndCook() {
     }
   };
 
+  /** 🔹 Suppression du panier */
   const handleRemoveFromCart = (productId: number) => {
     setCart((prevCart) => {
       const updatedCart = { ...prevCart };
@@ -155,12 +158,6 @@ export default function SnapAndCook() {
     });
   };
 
-  if (loadingRecette) {
-    return <p className="text-center text-blue-600 font-semibold">Enregistrement de la recette...</p>;
-  }
-  if (errorRecette) {
-    return <p className="text-center text-red-600 font-semibold">{errorRecette}</p>;
-  }
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <h1 className="text-4xl font-extrabold text-gray-800 mb-8 text-center">Snap & Cook</h1>
@@ -184,8 +181,8 @@ export default function SnapAndCook() {
             <h2 className="text-2xl font-semibold text-gray-700">Ingrédients détectés :</h2>
             {ingredients.length > 0 ? (
               <ul className="mt-4 space-y-2">
-                {ingredients.map((ing, index) => (
-                  <li key={index} className="flex justify-between items-center text-lg text-gray-600">
+                {ingredients.map((ing) => (
+                  <li key={ing.id} className="flex justify-between items-center text-lg text-gray-600">
                     <span>{ing.name}</span>
                   </li>
                 ))}
@@ -209,49 +206,27 @@ export default function SnapAndCook() {
       {/* Modal pour afficher les produits */}
       <Transition appear show={isModalOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={() => setIsModalOpen(false)}>
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
-          </Transition.Child>
-
           <div className="fixed inset-0 overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-2xl bg-white p-8 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title as="h3" className="text-2xl font-semibold leading-6 text-gray-800 mb-4">
-                    Produits correspondants
-                  </Dialog.Title>
+              <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-2xl bg-white p-8 text-left align-middle shadow-xl transition-all">
+                <Dialog.Title as="h3" className="text-2xl font-semibold leading-6 text-gray-800 mb-4">
+                  Produits correspondants
+                </Dialog.Title>
 
-                  <IngredientList
-                    products={products}
-                    cart={cart}
-                    addToCart={handleBatchAddToCart}
-                    removeFromCart={handleRemoveFromCart}
-                  />
+                <IngredientList
+                  products={products}
+                  cart={cart}
+                  addToCart={handleAddToCart}
+                  removeFromCart={handleRemoveFromCart}
+                />
 
-                  <button
-                    onClick={() => setIsModalOpen(false)}
-                    className="mt-6 w-full py-3 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 transition-colors duration-200"
-                  >
-                    Fermer
-                  </button>
-                </Dialog.Panel>
-              </Transition.Child>
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className="mt-6 w-full py-3 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 transition-colors duration-200"
+                >
+                  Fermer
+                </button>
+              </Dialog.Panel>
             </div>
           </div>
         </Dialog>

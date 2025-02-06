@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import React from "react";
+import { Dialog, Transition } from "@headlessui/react";
 import useAddCart from "@/hooks/cart/useAddCart";
-
+import IngredientList from "@/components/snap-and-cook/IngredientList";
 import { Produit, Recette } from "../../../../types";
 
 type CartItem = {
@@ -31,6 +32,9 @@ const RecommendedRecettes: React.FC<RecommendedRecettesProps> = ({
   const [recommendedRecettes, setRecommendedRecettes] = useState<Recette[]>([]);
   const [loading, setLoading] = useState(true);
   const { addToCart } = useAddCart();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRecette, setSelectedRecette] = useState<Recette | null>(null);
+  const [cart, setCart] = useState<{ [productId: number]: number }>({});
 
   useEffect(() => {
     if (allRecettes.length > 0) {
@@ -41,46 +45,34 @@ const RecommendedRecettes: React.FC<RecommendedRecettesProps> = ({
     }
   }, [allRecettes]);
 
-  const handleUpdateCart = (recette: Recette) => {
-    return () => {
-      setCartItems((prevItems) => {
-        const updatedCart = [...prevItems];
+  /** 🔹 Ouvre la modal et stocke les produits de la recette */
+  const openModal = (recette: Recette) => {
+    console.log("Recette sélectionnée :", recette);
+    setSelectedRecette(recette);
+    setIsModalOpen(true);
+  };
 
-        
-        recette.produits.forEach((produit: Produit) => {
-          const existingProductIndex = updatedCart.findIndex(
-            (item) => item.produit.id === produit.id
-          );
+  /** 🔹 Ajoute un produit au panier */
+  const handleAddToCart = (productId: number, quantity: number) => {
+    addToCart({ productId, quantity, price: selectedRecette?.produits.find(p => p.id === productId)?.prix || 0 });
 
-          if (existingProductIndex > -1) {
-            return;
-          } else {
-            // Ajouter un nouveau produit au panier
-            updatedCart.push({
-              id: produit.id, // Utilisation de l'ID du produit
-              produit: {
-                id: produit.id,
-                name: produit.name,
-                prix: produit.prix,
-                description: produit.description,
-                image: { path: produit.image?.path || "" },
-              },
-              quantite: 1,
-              prix: produit.prix,
-            });
-          }
+    setCart((prevCart) => ({
+      ...prevCart,
+      [productId]: (prevCart[productId] || 0) + quantity,
+    }));
+  };
 
-          // Appel à l'API pour synchroniser avec le serveur
-          addToCart({
-            productId: produit.id,
-            quantity: 1,
-            price: produit.prix,
-          });
-        });
-
-        return updatedCart;
-      });
-    };
+  /** 🔹 Supprime un produit du panier */
+  const handleRemoveFromCart = (productId: number) => {
+    setCart((prevCart) => {
+      const updatedCart = { ...prevCart };
+      if (updatedCart[productId] > 1) {
+        updatedCart[productId] -= 1;
+      } else {
+        delete updatedCart[productId];
+      }
+      return updatedCart;
+    });
   };
 
   return (
@@ -112,29 +104,9 @@ const RecommendedRecettes: React.FC<RecommendedRecettesProps> = ({
                 </div>
               </div>
               <div className="mt-4">
-                <h3 className="text-sm font-medium text-gray-900">
-                  Produits/ingrédients de la recette
-                </h3>
-                <ul>
-                  {recette?.produits?.map((produit) => (
-                    <li key={produit.id} className="text-sm text-gray-500">
-                      {produit.name}
-                    </li>
-                  ))}
-                  {recette?.ingredients?.map((ingredient, index) => (
-                    <li
-                      key={`ingredient-${index}`}
-                      className="text-sm text-gray-500"
-                    >
-                      {ingredient.name}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="mt-2">
                 <button
                   className="mt-4 w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700"
-                  onClick={handleUpdateCart(recette)}
+                  onClick={() => openModal(recette)}
                 >
                   Ajouter les produits disponibles au panier
                 </button>
@@ -143,6 +115,37 @@ const RecommendedRecettes: React.FC<RecommendedRecettesProps> = ({
           ))}
         </div>
       )}
+
+      {/* Modal pour afficher les produits de la recette */}
+      <Transition appear show={isModalOpen} as={Fragment}>
+        <Dialog as="div" className="relative z-10" onClose={() => setIsModalOpen(false)}>
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-2xl bg-white p-8 text-left align-middle shadow-xl transition-all">
+                <Dialog.Title as="h3" className="text-2xl font-semibold leading-6 text-gray-800 mb-4">
+                  Produits de la recette
+                </Dialog.Title>
+
+                {selectedRecette && (
+                  <IngredientList
+                    products={selectedRecette.produits}
+                    cart={cart}
+                    addToCart={handleAddToCart}
+                    removeFromCart={handleRemoveFromCart}
+                  />
+                )}
+
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className="mt-6 w-full py-3 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 transition-colors duration-200"
+                >
+                  Fermer
+                </button>
+              </Dialog.Panel>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
     </div>
   );
 };

@@ -4,7 +4,7 @@ import { useState } from "react";
 
 
 
-type Product = { id: number; name: string; prix: number; };
+type Product = { id: number; name: string; prix: number };
 
 interface IngredientListProps {
   products: Product[];
@@ -19,15 +19,27 @@ export default function IngredientList({ products, cart, addToCart, removeFromCa
   const handleQuantityChange = (productId: number, change: number) => {
     setLocalCart((prevCart) => {
       const newQuantity = (prevCart[productId] || 0) + change;
+
+      if (newQuantity > 0) {
+        addToCart(productId, change); // Ajoute au panier global
+      } else {
+        removeFromCart(productId); // Supprime du panier global
+      }
+
       return newQuantity >= 0 ? { ...prevCart, [productId]: newQuantity } : prevCart;
     });
   };
 
+  /**
+   * 🔹 Valide l'ajout des produits au panier.
+   */
   const handleConfirmAddToCart = () => {
     Object.entries(localCart).forEach(([productId, quantity]) => {
-      if (quantity > 0) addToCart(Number(productId), quantity);
+      if (quantity > 0) {
+        addToCart(Number(productId), quantity);
+      }
     });
-    alert("Produits ajoutés au panier !");
+    //alert("Produits ajoutés au panier !");
   };
 
   return (
