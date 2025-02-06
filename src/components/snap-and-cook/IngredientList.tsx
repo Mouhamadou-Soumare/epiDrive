@@ -2,24 +2,19 @@
 
 import { useState } from "react";
 
-type Ingredient = {
-  name: string;
-  description: string;
-  prix: number;
-  categorie: string;
-};
+
 
 type Product = { id: number; name: string; prix: number; };
 
 interface IngredientListProps {
   products: Product[];
   cart: { [productId: number]: number };
-  addToCart: (productId: number, quantity: number) => void; // Accept quantity for batch add
+  addToCart: (productId: number, quantity: number) => void; 
   removeFromCart: (productId: number) => void;
 }
 
 export default function IngredientList({ products, cart, addToCart, removeFromCart }: IngredientListProps) {
-  const [localCart, setLocalCart] = useState<{ [productId: number]: number }>(cart); // Local state for quantities
+  const [localCart, setLocalCart] = useState<{ [productId: number]: number }>(cart); 
 
   const handleQuantityChange = (productId: number, change: number) => {
     setLocalCart((prevCart) => {

@@ -14,8 +14,11 @@ export default function UpdateProductPage() {
   const { slug } = useParams() as { slug: string | string[] };
   const productSlug = Array.isArray(slug) ? slug[slug.length - 1] : slug;
 
-  const { produit, loading: productLoading, error: productError } = useGetProduit(productSlug) as { produit: Produit | null, loading: any, error: any };
-  const { categories, loading: categoriesLoading, error: categoriesError } = useGetCategories() as { categories: Categorie[], loading: any, error: any };
+  const productId = parseInt(productSlug, 10);
+  const { produit, loading: productLoading, error: productError } = useGetProduit(
+    isNaN(productId) ? null : productId
+  ) as { produit: Produit | null, loading: any, error: any };
+    const { categories, loading: categoriesLoading, error: categoriesError } = useGetCategories() as { categories: Categorie[], loading: any, error: any };
   const { updateProduit, loading: updatingProduct, error: updateError } = useUpdateProduit();
 
   const [updatedProduit, setUpdatedProduit] = useState<Produit | null>(null);

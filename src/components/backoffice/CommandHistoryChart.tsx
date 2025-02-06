@@ -1,7 +1,15 @@
 import React, { useState } from "react";
-import {useSSE} from "@/hooks/useSSE";
+import { useSSE } from "@/hooks/useSSE";
 import { Bar } from "react-chartjs-2";
-import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from "chart.js";
+import {
+  Chart as ChartJS,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+  ChartOptions,
+} from "chart.js";
 
 // Enregistrer les composants nécessaires de Chart.js
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
@@ -14,7 +22,7 @@ const CommandHistoryRealtimeChart = () => {
   if (error) return <p>Erreur : {error}</p>;
 
   // Transformation des données pour le graphique
-  const groupedData = data.reduce((acc, item) => {
+  const groupedData = data.reduce((acc: Record<string, Record<string, number>>, item: any) => {
     const { dateGroup, status, count } = item;
     if (!acc[dateGroup]) acc[dateGroup] = {};
     acc[dateGroup][status] = parseInt(count, 10); // Convertir les nombres si nécessaire
@@ -34,17 +42,17 @@ const CommandHistoryRealtimeChart = () => {
     backgroundColor: getColorForStatus(status),
   }));
 
-  // Options du graphique
+  // Options du graphique avec typage explicite
   const chartData = {
     labels,
     datasets,
   };
 
-  const options = {
+  const options: ChartOptions<"bar"> = {
     responsive: true,
     plugins: {
       legend: {
-        position: "top",
+        position: "top" as const, // ✅ Correction du type ici
       },
     },
     scales: {
@@ -92,8 +100,8 @@ const CommandHistoryRealtimeChart = () => {
 };
 
 // Fonction pour associer une couleur spécifique à chaque statut
-function getColorForStatus(status) {
-  const colors = {
+function getColorForStatus(status: string) {
+  const colors: Record<string, string> = {
     EN_ATTENTE: "#FF6384", // Rouge
     EN_PREPARATION: "#36A2EB", // Bleu
     EXPEDIEE: "#FFCE56", // Jaune

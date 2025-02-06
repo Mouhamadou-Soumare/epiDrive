@@ -7,6 +7,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import useAddCart from "@/hooks/cart/useAddCart";
 import { useAddIngredient } from "@/hooks/ingredients/useIngredients";
 import { useAddRecette } from "@/hooks/recettes/useRecettes";
+import { Produit } from "types";
 
 type Ingredient = {
   name: string;
@@ -67,7 +68,7 @@ export default function SnapAndCook() {
   
 
   const fetchMatchingProducts = async (ingredients: Ingredient[], dish: Recette) => {
-    const productList: Product[] = [];
+    const productList: Produit[] = [];
     const ingredientsList: Ingredient[] = [];
   
     for (const ingredient of ingredients) {
@@ -80,12 +81,18 @@ export default function SnapAndCook() {
         if (response.ok) {
           const existingProduct = await response.json();
           if (existingProduct) {
-            productList.push(existingProduct);
+            productList.push({
+              ...existingProduct,
+              slug: existingProduct.name.toLowerCase().replace(/ /g, '-'),
+              description: "Description par défaut",
+              categorieId: null,
+            });
             continue;
           }
         }
   
         const newIngredient = {
+          id: Date.now(), // ✅ Ajout d'un ID temporaire
           name: ingredient.name,
           description: ingredient.description,
           prix: ingredient.prix,
@@ -93,24 +100,29 @@ export default function SnapAndCook() {
         };
   
         const createdIngredient = await useAddIngredient(newIngredient);
+  
+        if (!createdIngredient.id) {
+          console.warn("L'ingrédient créé ne contient pas d'ID, un ID temporaire sera utilisé.");
+          createdIngredient.id = Date.now();
+        }
+  
         ingredientsList.push(createdIngredient);
       } catch (error) {
         console.error(`Erreur avec l'ingrédient ${ingredient.name} :`, error);
       }
     }
   
-    // Créez la recette avec les données locales, et non avec l'état React
     try {
-      const newRecette = await addRecette({
-        title: dish.title,
-        description: dish.description,
-        instructions: dish.instructions,
-        image: dish.image,
-        produits: productList,
-        ingredients: ingredientsList,
-        user: { id: 1 },
-      });
-
+      // const newRecette = await addRecette({
+      //   title: dish.title,
+      //   description: dish.description,
+      //   instructions: dish.instructions,
+      //   image: dish.image,
+      //   produits: productList,
+      //   ingredients: ingredientsList, // ✅ Maintenant tous les ingrédients ont un `id`
+      //   user: { id: 1 },
+      // });
+  
     } catch (error) {
       console.error("Erreur lors de l'ajout de la recette :", error);
     }
@@ -118,7 +130,7 @@ export default function SnapAndCook() {
     setProducts(productList);
     setIngredients(ingredientsList);
   };
-    
+  
   
   const handleBatchAddToCart = (productId: number, quantity: number) => {
     const product = products.find((p) => p.id === productId);

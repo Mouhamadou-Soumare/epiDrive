@@ -2,20 +2,20 @@ import { useEffect, useState } from "react";
 
 /**
  * Hook personnalisé pour consommer des événements SSE
- * @param {string} url - URL de la source SSE
- * @returns {{ data: any[], loading: boolean, error: string | null }}
+ * @param url - URL de la source SSE
+ * @returns { data: T[], loading: boolean, error: string | null }
  */
-export const useSSE = (url) => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+export const useSSE = <T>(url: string) => {
+  const [data, setData] = useState<T[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const eventSource = new EventSource(url);
 
-    eventSource.onmessage = (event) => {
+    eventSource.onmessage = (event: MessageEvent) => {
       try {
-        const parsedData = JSON.parse(event.data);
+        const parsedData: T[] = JSON.parse(event.data);
         setData(parsedData);
         setLoading(false);
       } catch (err) {

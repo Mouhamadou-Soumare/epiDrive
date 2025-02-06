@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function GET(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params; // Attendre que params soit résolu
 
   if (!id) {
     console.error("ID is required for GET /api/images/[id]");
@@ -26,8 +29,12 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
   }
 }
 
-export async function PATCH(req: Request, { params }: { params: { id: string } }) {
-  const { id } = params;
+
+export async function PATCH(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params; // Attendre que params soit résolu
 
   if (!id) {
     console.error("ID is required for PATCH /api/images/[id]");
@@ -63,8 +70,12 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   }
 }
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
-  const { id } = params;
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params; // Attendre que params soit résolu
 
   if (!id) {
     console.error("ID is required for DELETE /api/images/[id]");

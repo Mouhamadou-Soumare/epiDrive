@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-export async function GET(req: Request, { params }: { params: { slug: string } }) {
-  const { slug } = await params;
+export async function GET(
+  req: Request,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  const { slug } = await params; // Attendre la résolution de params
 
   console.log("Received slug:", slug);   
 
@@ -27,16 +30,19 @@ export async function GET(req: Request, { params }: { params: { slug: string } }
 
     console.log('GET API/commande/' + slug + ': commande found:', commande);
     return NextResponse.json(commande);
-  } catch (error) {
+  } catch (error : unknown) {
     console.error("Error fetching commande:", error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
-export async function PATCH(req: Request, context: { params: { slug: string } }) {
+export async function PATCH(
+  req: Request,
+  { params }: { params: Promise<{ slug: string }> }
+) {
   try {
     const data = await req.json();
-    const { slug } = context.params;
+    const { slug } = await params; // Attendre la résolution de params
 
     if (!slug) return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
 
@@ -78,14 +84,24 @@ export async function PATCH(req: Request, context: { params: { slug: string } })
     console.log("PATCH API/commande/" + slug + ": commande updated:", updatedCommande);
     return NextResponse.json(updatedCommande);
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error updating commande:", error);
-    return NextResponse.json({ error: 'Internal Server Error', details: error.message }, { status: 500 });
+  
+    if (error instanceof Error) {
+      return NextResponse.json({ error: 'Internal Server Error', details: error.message }, { status: 500 });
+    }
+  
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
+  
 }
 
-export async function DELETE(req: Request, context: { params: { slug: string } }) {
-  const slug = context.params.slug;
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  const { slug } = await params; 
 
   if (!slug) {
     return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
@@ -127,8 +143,14 @@ export async function DELETE(req: Request, context: { params: { slug: string } }
 
     console.log("DELETE API/commande/" + slug + ": commande deleted successfully");
     return NextResponse.json({ message: 'Commande deleted successfully' }, { status: 200 });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error deleting commande:", error);
-    return NextResponse.json({ error: 'Internal Server Error', details: error.message }, { status: 500 });
+  
+    if (error instanceof Error) {
+      return NextResponse.json({ error: 'Internal Server Error', details: error.message }, { status: 500 });
+    }
+  
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
+  
 }

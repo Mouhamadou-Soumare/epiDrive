@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const { id } = params;
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
+  const { id } = resolvedParams;
 
   if (!id) {
     return NextResponse.json({ error: 'ID is required' }, { status: 400 });
@@ -35,7 +36,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    // Exclude password from the response
+    // Exclure le mot de passe de la réponse
     const { password, ...userWithoutPassword } = user;
 
     console.log('GET API/users/' + id + ': user found:', userWithoutPassword);
@@ -46,8 +47,11 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
   }
 }
 
-export async function PATCH(req: Request, { params }: { params: { id: string } }) {
-  const { id } = params;
+
+
+export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
+  const { id } = resolvedParams;
 
   if (!id) {
     return NextResponse.json({ error: 'ID is required' }, { status: 400 });
@@ -79,7 +83,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
       data: { username, email, role, imageId },
     });
 
-    // Exclude password from the response
+    // Exclure le mot de passe de la réponse
     const { password, ...userWithoutPassword } = updatedUser;
 
     console.log('PATCH API/users/' + id + ': user updated:', userWithoutPassword);
@@ -90,8 +94,10 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   }
 }
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
-  const { id } = params;
+
+export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
+  const { id } = resolvedParams;
 
   if (!id) {
     return NextResponse.json({ error: 'ID is required' }, { status: 400 });
