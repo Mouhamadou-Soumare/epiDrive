@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-export async function GET(req: Request, { params }: { params: { slug: string } }) {
-  const { slug } = params;
+export async function GET(
+  req: Request,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  const { slug } = await params; // Attendre la résolution de params
 
   if (!slug) return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
 
@@ -40,17 +43,17 @@ export async function GET(req: Request, { params }: { params: { slug: string } }
       return NextResponse.json({ error: 'Category not found' }, { status: 404 });
     }
 
-    // Formatage de la réponse avec les sous-catégories et les produits
+    // Formatage de la réponse
     const formattedCategory = {
       ...category,
-      subcategories: category.subcategories.map((subcategory: { id: number, name: string; slug: string; image: { path: string } | null }) => ({
+      subcategories: category.subcategories.map((subcategory) => ({
         id: subcategory.id,
         name: subcategory.name,
         slug: subcategory.slug,
         imageSrc: subcategory.image?.path ? `/img/category/${subcategory.slug}.webp` : 'https://via.placeholder.com/300',
         imageAlt: `Image de la sous-catégorie ${subcategory.name}`,
       })),
-      produits: category.produits.map((product: { id: number; name: string; slug: string; description: string; prix: number; image: { path: string } | null }) => ({
+      produits: category.produits.map((product) => ({
         id: product.id,
         name: product.name,
         slug: product.slug,
@@ -61,7 +64,7 @@ export async function GET(req: Request, { params }: { params: { slug: string } }
       })),
     };
 
-    console.log("GET API/categorie/"+slug+": categories found:", formattedCategory);
+    console.log("GET API/categorie/" + slug + ": categories found:", formattedCategory);
     return NextResponse.json(formattedCategory);
   } catch (error) {
     console.error("Erreur lors de la récupération de la catégorie:", error);
@@ -69,8 +72,12 @@ export async function GET(req: Request, { params }: { params: { slug: string } }
   }
 }
 
-export async function PATCH(req: Request, { params }: { params: { slug: string } }) {
-  const { slug } = params;
+
+export async function PATCH(
+  req: Request,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  const { slug } = await params; // Attendre la résolution de params
   const data = await req.json();
 
   if (!slug) {
@@ -84,7 +91,9 @@ export async function PATCH(req: Request, { params }: { params: { slug: string }
       where: { slug }
     });
 
-    if (!existingCategory) return NextResponse.json({ error: 'Category not found' }, { status: 404 });
+    if (!existingCategory) {
+      return NextResponse.json({ error: 'Category not found' }, { status: 404 });
+    }
 
     const updatedCategory = await prisma.categorie.update({
       where: { slug },
@@ -96,22 +105,35 @@ export async function PATCH(req: Request, { params }: { params: { slug: string }
             path: image.path,
           },
         } : undefined,
-        parent: {
+        parent: parentId ? {
           connect: { id: parentId },
-        }
+        } : undefined
       },
     });
 
-    console.log("PATCH API/categorie/"+slug+": categories found:", updatedCategory);
+    console.log("PATCH API/categorie/" + slug + ": category updated:", updatedCategory);
     return NextResponse.json(updatedCategory);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error updating category:", error);
-    return NextResponse.json({ error: 'Internal Server Error', details: error.message }, { status: 500 });
+  
+    let errorMessage = "Internal Server Error";
+  
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+  
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
+  
+  
 }
 
-export async function DELETE(req: Request, { params }: { params: { slug: string } }) {
-  const { slug } = params;
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  const { slug } = await params; // Attendre la résolution de params
 
   if (!slug) {
     return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
@@ -121,8 +143,8 @@ export async function DELETE(req: Request, { params }: { params: { slug: string 
     await prisma.categorie.delete({
       where: { slug },
     });
-    
-    console.log("DELETE API/categorie/"+slug+": categories found:");
+
+    console.log("DELETE API/categorie/" + slug + ": category deleted");
     return NextResponse.json({ message: 'Category deleted successfully' });
   } catch (error) {
     console.error("Error deleting category:", error);

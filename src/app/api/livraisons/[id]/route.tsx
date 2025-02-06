@@ -1,21 +1,17 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-// GET a specific livraison by ID
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const { id } = params;
-
-  if (!id) {
-    return NextResponse.json({ error: 'ID is required' }, { status: 400 });
-  }
-
-  const livraisonId = parseInt(id);
-  if (isNaN(livraisonId)) {
-    return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
-  }
-
+// 🛠 Handler GET : Récupérer une livraison par ID
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    console.log("Fetching livraison with ID:", livraisonId);
+    const { id } = await params; // ✅ Utilisation de `await`
+    const livraisonId = parseInt(id, 10);
+
+    if (isNaN(livraisonId)) {
+      return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
+    }
+
+    console.log("Recherche de la livraison avec l'ID :", livraisonId);
 
     const livraison = await prisma.livraison.findUnique({
       where: { id: livraisonId },
@@ -30,29 +26,25 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
       return NextResponse.json({ error: 'Livraison not found' }, { status: 404 });
     }
 
-    console.log('GET API/livraisons/' + id + ': livraison found:', livraison);
-    return NextResponse.json(livraison, { status: 200 });
+    console.log("Livraison trouvée :", livraison);
+    return NextResponse.json(livraison);
   } catch (error) {
-    console.error('Error fetching livraison:', error);
+    console.error("Erreur lors de la récupération de la livraison:", error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
-// DELETE a specific livraison by ID
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
-  const { id } = params;
-
-  if (!id) {
-    return NextResponse.json({ error: 'ID is required' }, { status: 400 });
-  }
-
-  const livraisonId = parseInt(id);
-  if (isNaN(livraisonId)) {
-    return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
-  }
-
+// 🛠 Handler DELETE : Supprimer une livraison par ID
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    console.log('Deleting livraison with ID:', livraisonId);
+    const { id } = await params; // ✅ Utilisation de `await`
+    const livraisonId = parseInt(id, 10);
+
+    if (isNaN(livraisonId)) {
+      return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
+    }
+
+    console.log("Suppression de la livraison avec l'ID :", livraisonId);
 
     const livraison = await prisma.livraison.findUnique({
       where: { id: livraisonId },
@@ -66,10 +58,10 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
       where: { id: livraisonId },
     });
 
-    console.log('DELETE API/livraisons/' + id + ': livraison deleted');
+    console.log("Livraison supprimée avec succès :", livraisonId);
     return NextResponse.json({ message: 'Livraison deleted successfully' });
   } catch (error) {
-    console.error('Error deleting livraison:', error);
+    console.error("Erreur lors de la suppression de la livraison:", error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

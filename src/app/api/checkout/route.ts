@@ -1,15 +1,30 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
+// Définition des types des produits et du corps de la requête
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
+interface CheckoutBody {
+  produits: Product[];
+  adresse: string;
+  ville: string;
+  codePostal: string;
+  pays: string;
+}
+
 // Initialiser Stripe avec la clé secrète et la version de l'API
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2022-11-15',
 });
 
 // Route POST pour créer une session Stripe Checkout
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
+    const body: CheckoutBody = await req.json();
     const { produits, adresse, ville, codePostal, pays } = body;
 
     if (!produits || produits.length === 0) {
@@ -19,7 +34,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const lineItems = produits.map((product: any) => {
+    const lineItems = produits.map((product) => {
       if (
         typeof product.price !== 'number' ||
         product.price <= 0 ||
@@ -56,12 +71,17 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ url: session.url });
-  } catch (error: any) {
-    console.error('Erreur lors de la création de la session Stripe:', error);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Erreur lors de la création de la session Stripe:', error);
+      return NextResponse.json(
+        { error: 'Erreur interne du serveur', details: error.message },
+        { status: 500 }
+      );
+    }
     return NextResponse.json(
-      { error: 'Erreur interne du serveur', details: error.message },
+      { error: 'Erreur inconnue' },
       { status: 500 }
     );
   }
 }
-

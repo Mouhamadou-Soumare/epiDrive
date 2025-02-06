@@ -12,19 +12,16 @@ import {
   DisclosureButton,
   DisclosurePanel,
   Popover,
-  PopoverButton,
   PopoverGroup,
   PopoverPanel,
 } from "@headlessui/react";
 import {
   ArrowRightIcon,
-  ArrowRightOnRectangleIcon,
+  
   Bars3Icon,
-  CameraIcon,
   ChartPieIcon,
   CursorArrowRaysIcon,
   FingerPrintIcon,
-  ShoppingBagIcon,
   ShoppingCartIcon,
   SquaresPlusIcon,
   TicketIcon,
@@ -36,7 +33,6 @@ import {
   PhoneIcon,
   PlayCircleIcon,
   RectangleGroupIcon,
-  UserIcon
 } from "@heroicons/react/20/solid";
 
 import SearchBar from "./SearchBar";
@@ -82,7 +78,7 @@ const social = [
   {
     name: 'Facebook',
     href: '#',
-    icon: (props: React.SVGProps<SVGSVGElement>) => (
+    icon: (p0: { "aria-hidden": string; className: string; }) => (
       <svg  className="svg-top-nav" viewBox="0 0 36 35" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path  d="M18.2539 34.9971C8.60603 34.9971 0.753906 27.1479 0.753906 17.4971C0.753906 7.8464 8.60603 0 18.2539 0C27.9018 0 35.7539 7.84926 35.7539 17.5C35.7539 27.1507 27.9046 35 18.2539 35V34.9971ZM18.2539 1.3268C9.33806 1.3268 2.08356 8.58129 2.08356 17.5C2.08356 26.4187 9.33806 33.6732 18.2539 33.6732C27.1698 33.6732 34.4271 26.4187 34.4271 17.5C34.4271 8.58129 27.1726 1.3268 18.2539 1.3268Z" fill="#bc6c25"></path>
       <path  d="M23.9299 16.3592L23.6582 18.3237C23.6125 18.6525 23.3036 18.8984 22.9348 18.8984H19.389V27.1108C19.0144 27.1423 18.637 27.1566 18.2538 27.1566C17.3988 27.1566 16.561 27.0794 15.7546 26.9336V18.8984H13.0267C12.775 18.8984 12.572 18.7126 12.572 18.4895V16.0304C12.572 15.8045 12.775 15.6215 13.0267 15.6215H15.7546V11.9356C15.7546 9.67375 17.7906 7.84082 20.3012 7.84082H23.4809C23.7326 7.84082 23.9356 8.02383 23.9356 8.24973V10.706C23.9356 10.9319 23.7326 11.1149 23.4809 11.1149H21.2076C20.204 11.1149 19.389 11.8498 19.389 12.7534V15.6215H23.2064C23.6439 15.6215 23.9842 15.9675 23.9299 16.3592Z" fill="#bc6c25"></path>
@@ -92,7 +88,7 @@ const social = [
   {
     name: 'LinkedIn',
     href: '#',
-    icon: (props: React.SVGProps<SVGSVGElement>) => (
+    icon: () => (
       <svg className="svg-top-nav" viewBox="0 0 35 35" fill="#fffff" stroke="#fffff" xmlns="http://www.w3.org/2000/svg">
       <path  d="M17.5 34.9971C7.84926 34.9971 0 27.1479 0 17.5C0 7.85212 7.84926 0 17.5 0C27.1507 0 35 7.84926 35 17.5C35 27.1507 27.1507 35 17.5 35V34.9971ZM17.5 1.3268C8.58129 1.3268 1.3268 8.58129 1.3268 17.5C1.3268 26.4187 8.58129 33.6732 17.4971 33.6732C26.413 33.6732 33.6703 26.4187 33.6703 17.5C33.6703 8.58129 26.4158 1.3268 17.5 1.3268Z" fill="#bc6c25"></path>
       <path  d="M13.9658 11.5294C13.9658 12.6932 13.0117 13.6369 11.8348 13.6369C10.658 13.6369 9.70386 12.6932 9.70386 11.5294C9.70386 10.3656 10.658 9.422 11.8348 9.422C13.0117 9.422 13.9658 10.3656 13.9658 11.5294Z" fill="#bc6c25"></path>
@@ -104,7 +100,7 @@ const social = [
   {
     name: 'YouTube',
     href: '#',
-    icon: (props: React.SVGProps<SVGSVGElement>) => (
+    icon: () => (
       <svg  className="svg-top-nav" viewBox="0 0 36 35" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path  d="M17.5171 34.9971C7.86922 34.9971 0.0170898 27.1479 0.0170898 17.4971C0.0170898 7.8464 7.86636 0 17.5171 0C27.1678 0 35.0171 7.84926 35.0171 17.5C35.0171 27.1507 27.1678 35 17.5171 35V34.9971ZM17.5171 1.3268C8.60124 1.3268 1.34389 8.58129 1.34389 17.5C1.34389 26.4187 8.59838 33.6732 17.5171 33.6732C26.4358 33.6732 33.6874 26.4187 33.6874 17.5C33.6874 8.58129 26.4329 1.3268 17.5171 1.3268Z" fill="#bc6c25"></path>
                   <path  d="M19.7734 18.1062L15.8645 20.0593C15.4127 20.2852 14.8837 19.9563 14.8837 19.4531V15.5441C14.8837 15.0409 15.4156 14.712 15.8645 14.9379L19.7734 16.8938C20.2738 17.1426 20.2738 17.8575 19.7734 18.1062ZM24.5459 10.5858H10.4858C9.09611 10.5858 7.96948 11.7124 7.96948 13.1022V21.8979C7.96948 23.2876 9.09611 24.4142 10.4858 24.4142H24.5459C25.9356 24.4142 27.0622 23.2876 27.0622 21.8979V13.1022C27.0622 11.7124 25.9356 10.5858 24.5459 10.5858Z" fill="#bc6c25"></path>
@@ -114,7 +110,7 @@ const social = [
   {
     name: 'X',
     href: '#',
-    icon: (props: React.SVGProps<SVGSVGElement>) => (
+    icon: () => (
       <svg  className="svg-top-nav" viewBox="0 0 36 35" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path  d="M17.7315 34.9971C8.08357 34.9971 0.231445 27.1479 0.231445 17.4971C0.231445 7.8464 8.08071 0 17.7315 0C27.3822 0 35.2314 7.84926 35.2314 17.5C35.2314 27.1507 27.3822 35 17.7315 35V34.9971ZM17.7315 1.3268C8.8156 1.3268 1.55825 8.58129 1.55825 17.5C1.55825 26.4187 8.81274 33.6732 17.7315 33.6732C26.6502 33.6732 33.9047 26.4187 33.9047 17.5C33.9047 8.58129 26.6502 1.3268 17.7315 1.3268Z" fill="#bc6c25"></path>
       <path  d="M11.6921 10.7374H14.0883L23.7705 24.2599H21.3743L11.6921 10.7374ZM24.1966 8.91595L19.0009 14.4719L15.0234 8.91595H8.14917L15.1091 18.6353L8.14917 26.0785H10.6627L16.1986 20.1565L20.4363 26.0785H27.3105L20.0903 15.9932L26.7072 8.91309H24.1937L24.1966 8.91595Z" fill="#bc6c25"></path>
@@ -132,7 +128,6 @@ export default function Navbar() {
   const { cartItems, loading: cartLoading  } = useGetCart(); 
   const { data: session, status } = useSession({
     required: false,
-    triggerEvent: true, // Récupère la session en navigation client
   });
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantite, 0);
 
@@ -170,8 +165,8 @@ export default function Navbar() {
             {social.map((item) => (
               <a key={item.name} href={item.href} className="text-gray-600 hover:text-gray-800 min-w-6">
                 <span className="sr-only">{item.name}</span>
-                <item.icon aria-hidden="true" className="size-6" />
-              </a>
+                {item.icon({ "aria-hidden": "true", className: "size-6" })}
+                </a>
             ))}
           </div>
 

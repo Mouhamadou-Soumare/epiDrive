@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-
-export async function GET({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export async function GET(
+  req: Request,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  const { slug } = await params; // Awaiting params before extracting slug
 
   if (!slug) {
     return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
@@ -17,7 +19,7 @@ export async function GET({ params }: { params: { slug: string } }) {
     });
 
     if (!ingredient) {
-      return NextResponse.json({ error: 'ingredient not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Ingredient not found' }, { status: 404 });
     }
 
     console.log("GET API/ingredients/" + slug + ": Ingredient found:", ingredient);
@@ -28,8 +30,11 @@ export async function GET({ params }: { params: { slug: string } }) {
   }
 }
 
-export async function DELETE(req: Request, { params }: { params: { slug: string } }) {
-  const { slug } = params;
+export async function DELETE(
+  req: Request,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  const { slug } = await params;
 
   if (!slug) {
     return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
@@ -41,29 +46,12 @@ export async function DELETE(req: Request, { params }: { params: { slug: string 
     const ingredient = await prisma.ingredient.findUnique({
       where: { id: parseInt(slug) },
     });
+
     if (!ingredient) {
       return NextResponse.json({ error: 'Ingredient not found' }, { status: 404 });
     }
 
-    const product = await prisma.produit.findFirst({
-      where: { name: ingredient.name },
-    });
-
-    if (product) {
-      const recettes = await prisma.recette.findMany({
-        where: { ingredients: { some: { id: ingredient.id } } },
-      });
-    
-      recettes.forEach(async (recette) => {
-        await prisma.recette.update({
-          where: { id: recette.id },
-          data: {
-            produits: { connect: { id: product.id } },
-          },
-        });
-      })
-    }
-
+    // Proceed with deletion logic
     await prisma.ingredient.delete({ where: { id: parseInt(slug) } });
     console.log('DELETE API/ingredients/' + slug + ': Ingredient deleted');
     return NextResponse.json({ message: 'Ingredient deleted successfully' }, { status: 200 });

@@ -1,8 +1,9 @@
 export enum Role {
-    USER,
-    ADMIN,
-    MAGASINIER, // Nouveau rôle ajouté
+    USER = "USER",
+    ADMIN = "ADMIN",
+    MAGASINIER = "MAGASINIER",
 }
+
 
 export enum CommandeStatus {
     EN_ATTENTE,
@@ -41,6 +42,7 @@ export interface Recette {
 }
 
 export interface Commande {
+    error: string;
     id: number;
     status: CommandeStatus; // Utilisation de l'enum pour le statut
     paymentId?: string;
@@ -60,7 +62,7 @@ export interface Produit {
     prix: number;
     imageId?: number;
     image?: Image; // Relation avec une image
-    categorieId: number;
+    categorieId: number | null; // Modification ici
     categorie?: Categorie; // Relation avec la catégorie
     quantitePaniers?: QuantitePanier[]; // Produits dans des paniers
     quantiteCommandes?: QuantiteCommande[]; // Produits dans des commandes
@@ -72,7 +74,7 @@ export interface Ingredient {
     name: string;
     description: string;
     prix: number;
-    categorie: String;
+    categorie: string;
 }
 
 export interface QuantitePanier {

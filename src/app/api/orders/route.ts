@@ -1,16 +1,20 @@
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from "@/lib/authOptions";
 import prisma from '@/lib/prisma';
 
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
 
-    if (!session || !session.user) {
+    if (!session || !session.user || !session.user.id) {
       return new Response(JSON.stringify({ error: 'Non autorisé' }), { status: 401 });
     }
 
-    const userId = parseInt(session.user.id);
+    const userId = parseInt(session.user.id, 10); // ✅ Conversion sécurisée en nombre
+
+    if (isNaN(userId)) {
+      return new Response(JSON.stringify({ error: 'ID utilisateur invalide' }), { status: 400 });
+    }
 
     const orders = await prisma.commande.findMany({
       where: { fk_userId: userId },

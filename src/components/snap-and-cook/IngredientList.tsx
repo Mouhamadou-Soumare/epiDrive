@@ -1,29 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+
+
 
 type Product = { id: number; name: string; prix: number };
 
 interface IngredientListProps {
   products: Product[];
   cart: { [productId: number]: number };
-  addToCart: (productId: number, quantity: number) => void;
+  addToCart: (productId: number, quantity: number) => void; 
   removeFromCart: (productId: number) => void;
 }
 
 export default function IngredientList({ products, cart, addToCart, removeFromCart }: IngredientListProps) {
-  const [localCart, setLocalCart] = useState<{ [productId: number]: number }>({});
+  const [localCart, setLocalCart] = useState<{ [productId: number]: number }>(cart); 
 
-  /**
-   * 🔹 Synchronise le panier local avec le panier global dès que `cart` change.
-   */
-  useEffect(() => {
-    setLocalCart(cart);
-  }, [cart]);
-
-  /**
-   * 🔹 Met à jour la quantité d'un produit.
-   */
   const handleQuantityChange = (productId: number, change: number) => {
     setLocalCart((prevCart) => {
       const newQuantity = (prevCart[productId] || 0) + change;
