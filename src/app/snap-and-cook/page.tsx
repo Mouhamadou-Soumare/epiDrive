@@ -216,7 +216,7 @@ export default function SnapAndCook() {
                 <IngredientList
                   products={products}
                   cart={cart}
-                  addToCart={handleAddToCart}
+                  addToCart={ handleBatchAddToCart}
                   removeFromCart={handleRemoveFromCart}
                 />
 
