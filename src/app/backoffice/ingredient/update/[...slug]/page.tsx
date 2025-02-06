@@ -4,18 +4,21 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import TextInput from "../../components/TextInput";
 import TextareaInput from "../../components/TextareaInput";
-import SelectInput from "../../components/SelectInput";
 import { useGetIngredient } from "@/hooks/ingredients/useIngredients";
 import { useAddProduit } from "@/hooks/products/useProduits";
 import { useGetCategories } from "@/hooks/categories/useCategories";
 import Alert from "../../../components/Alert";
-import { Categorie, Produit, Ingredient } from "types";
+import { Categorie, Ingredient } from "types";
 
 export default function AddProductFromIngredientPage() {
   const { slug } = useParams() as { slug: string | string[] };
   const ingredientSlug = Array.isArray(slug) ? slug[slug.length - 1] : slug;
 
-  const { ingredient, loading: ingredientLoading, error: ingredientError } = useGetIngredient(ingredientSlug) as { ingredient: Ingredient | null, loading: any, error: any };
+  const ingredientId = parseInt(ingredientSlug, 10);
+  const { ingredient, loading: ingredientLoading, error: ingredientError } = useGetIngredient(
+    isNaN(ingredientId) ? null : ingredientId
+  ) as { ingredient: Ingredient | null, loading: any, error: any };
+
   const { categories, loading: categoriesLoading, error: categoriesError } = useGetCategories() as { categories: Categorie[], loading: any, error: any };
   const { addProduit, loading: addingProduit, error: addError } = useAddProduit();
 
@@ -76,6 +79,7 @@ export default function AddProductFromIngredientPage() {
         description: updatedIngredient.description,
         prix: updatedIngredient.prix,
         categorieId: category ? category.id : 0,
+        slug: updatedIngredient.name.toLowerCase().replace(/ /g, '-'), // Génération automatique du slug
       };
 
       const success = await addProduit(newProduct, "");

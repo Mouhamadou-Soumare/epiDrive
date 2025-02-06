@@ -5,6 +5,9 @@ import CameraCapture from "../../components/snap-and-cook/CameraCapture";
 import IngredientList from "../../components/snap-and-cook/IngredientList";
 import { Dialog, Transition } from "@headlessui/react";
 import useAddCart from "@/hooks/cart/useAddCart";
+import { useAddIngredient } from "@/hooks/ingredients/useIngredients";
+import { useAddRecette } from "@/hooks/recettes/useRecettes";
+import { Produit } from "types";
 
 type Ingredient = {
   id: number;
@@ -64,14 +67,82 @@ export default function SnapAndCook() {
       setLoadingImage(false);
     }
   };
+  
 
-  /** 🔹 Ajout au panier */
-  const handleAddToCart = (productId: number, quantity: number) => {
-    addToCart({ productId, quantity, price: products.find(p => p.id === productId)?.prix || 0 });
-    setCart((prevCart) => ({
-      ...prevCart,
-      [productId]: (prevCart[productId] || 0) + quantity,
-    }));
+  const fetchMatchingProducts = async (ingredients: Ingredient[], dish: Recette) => {
+    const productList: Produit[] = [];
+    const ingredientsList: Ingredient[] = [];
+  
+    for (const ingredient of ingredients) {
+      try {
+        const response = await fetch(`/api/products/${ingredient.name.toLowerCase().replace(/ /g, '-')}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+  
+        if (response.ok) {
+          const existingProduct = await response.json();
+          if (existingProduct) {
+            productList.push({
+              ...existingProduct,
+              slug: existingProduct.name.toLowerCase().replace(/ /g, '-'),
+              description: "Description par défaut",
+              categorieId: null,
+            });
+            continue;
+          }
+        }
+  
+        const newIngredient = {
+          id: Date.now(), // ✅ Ajout d'un ID temporaire
+          name: ingredient.name,
+          description: ingredient.description,
+          prix: ingredient.prix,
+          categorie: ingredient.categorie,
+        };
+  
+        const createdIngredient = await useAddIngredient(newIngredient);
+  
+        if (!createdIngredient.id) {
+          console.warn("L'ingrédient créé ne contient pas d'ID, un ID temporaire sera utilisé.");
+          createdIngredient.id = Date.now();
+        }
+  
+        ingredientsList.push(createdIngredient);
+      } catch (error) {
+        console.error(`Erreur avec l'ingrédient ${ingredient.name} :`, error);
+      }
+    }
+  
+    try {
+      // const newRecette = await addRecette({
+      //   title: dish.title,
+      //   description: dish.description,
+      //   instructions: dish.instructions,
+      //   image: dish.image,
+      //   produits: productList,
+      //   ingredients: ingredientsList, // ✅ Maintenant tous les ingrédients ont un `id`
+      //   user: { id: 1 },
+      // });
+  
+    } catch (error) {
+      console.error("Erreur lors de l'ajout de la recette :", error);
+    }
+  
+    setProducts(productList);
+    setIngredients(ingredientsList);
+  };
+  
+  
+  const handleBatchAddToCart = (productId: number, quantity: number) => {
+    const product = products.find((p) => p.id === productId);
+    if (product) {
+      addToCart({ productId: product.id, quantity, price: product.prix });
+      setCart((prevCart) => ({
+        ...prevCart,
+        [productId]: (prevCart[productId] || 0) + quantity,
+      }));
+    }
   };
 
   /** 🔹 Suppression du panier */

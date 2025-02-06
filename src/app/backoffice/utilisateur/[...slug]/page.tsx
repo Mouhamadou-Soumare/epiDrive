@@ -11,8 +11,11 @@ const UserDetail = () => {
   const userId = Array.isArray(slug) ? slug[slug.length - 1] : slug;
 
   // Utilisation du hook pour récupérer les détails de l'utilisateur
-  const { user, loading, error } = useGetUser(userId) as { user: User | null, loading: any, error: any };
-
+  const userIdNumber = parseInt(userId, 10);
+  const { user, loading, error } = useGetUser(
+    isNaN(userIdNumber) ? null : userIdNumber
+  ) as { user: User | null, loading: any, error: any };
+  
   // Calcul des commandes et du prix total
   const commandes = user?.commandes || [];
   const commandePrice = commandes.reduce(

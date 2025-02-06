@@ -17,11 +17,10 @@ export async function GET() {
       return NextResponse.json({ message: 'No users found' }, { status: 404 });
     }
 
-    // Exclude passwords from the response
-    const usersWithoutPassword = users.map((user: { password: string; [key: string]: any }) => {
-      const { password, ...userWithoutPassword } = user;
-      return userWithoutPassword;
-    });
+    // Typage sécurisé sans `any`
+    type UserWithoutPassword = Omit<typeof users[number], "password">;
+
+    const usersWithoutPassword = users.map(({ password: _, ...userWithoutPassword }) => userWithoutPassword);
 
     console.log("GET API/users: users found:", usersWithoutPassword);
     return NextResponse.json(usersWithoutPassword, { status: 200 });
@@ -30,6 +29,7 @@ export async function GET() {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
+
 
 export async function POST(req: Request) {
   try {

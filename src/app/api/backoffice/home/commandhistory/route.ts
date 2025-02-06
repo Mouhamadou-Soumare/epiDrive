@@ -1,11 +1,13 @@
-import prisma from '@/lib/prisma'; // Assurez-vous que votre client Prisma est configuré
+import { NextRequest, NextResponse } from 'next/server';
+import prisma from '@/lib/prisma';
 
-export async function GET(req) {
+// Handler GET avec TypeScript correctement défini
+export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url);
     const groupBy = url.searchParams.get('groupBy') || 'day';
 
-    let dateFormat;
+    let dateFormat: string;
     switch (groupBy) {
       case 'week':
         dateFormat = `%Y-%u`; // Année et numéro de semaine
@@ -24,22 +26,32 @@ export async function GET(req) {
     const encoder = new TextEncoder();
 
     const sendUpdate = async () => {
-      const commandHistory = await prisma.$queryRaw`
-        SELECT 
-          DATE_FORMAT(createdAt, ${dateFormat}) AS dateGroup,
-          status,
-          COUNT(*) AS count
-        FROM Commande
-        GROUP BY dateGroup, status
-        ORDER BY dateGroup ASC;
-      `;
+      try {
+        // Correction du typage de `commandHistory`
+        const commandHistory: Array<{
+          dateGroup: string;
+          status: string;
+          count: bigint | number;
+        }> = await prisma.$queryRaw`
+          SELECT 
+            DATE_FORMAT(createdAt, ${dateFormat}) AS dateGroup,
+            status,
+            COUNT(*) AS count
+          FROM Commande
+          GROUP BY dateGroup, status
+          ORDER BY dateGroup ASC;
+        `;
 
-      const serializedData = commandHistory.map(row => ({
-        ...row,
-        count: typeof row.count === 'bigint' ? row.count.toString() : row.count,
-      }));
+        // Conversion du type bigint en string si nécessaire
+        const serializedData = commandHistory.map((row) => ({
+          ...row,
+          count: typeof row.count === 'bigint' ? row.count.toString() : row.count,
+        }));
 
-      writer.write(encoder.encode(`data: ${JSON.stringify(serializedData)}\n\n`));
+        writer.write(encoder.encode(`data: ${JSON.stringify(serializedData)}\n\n`));
+      } catch (queryError) {
+        console.error("Erreur lors de la récupération des données:", queryError);
+      }
     };
 
     // Envoyer une première mise à jour immédiatement
@@ -63,9 +75,9 @@ export async function GET(req) {
     });
   } catch (error) {
     console.error('Erreur lors de la récupération des données SSE:', error);
-    return new Response(
-      JSON.stringify({ success: false, error: 'Erreur lors de la récupération des données' }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    return NextResponse.json(
+      { success: false, error: 'Erreur lors de la récupération des données' },
+      { status: 500 }
     );
   }
 }

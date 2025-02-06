@@ -49,8 +49,13 @@ export default function AddProductPage() {
             return;
         }
 
-        const success = await addProduit(product, imagePath);
-        if (success) {
+        const productWithSlug = {
+            ...product,
+            slug: product.name.toLowerCase().replace(/ /g, "-"), // Ajout du slug
+          };
+          
+          const success = await addProduit(productWithSlug, imagePath);
+                  if (success) {
             setSubmitResult("200");
             setTimeout(() => {
                 const slug = product.name.toLowerCase().replace(/ /g, "-");

@@ -2,8 +2,12 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { Produit, Ingredient } from 'types';
 
-export async function GET(request: Request, { params }: { params: { slug: string } }) {
-  const { slug } = params;
+// GET a specific recette by ID
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  const { slug } = await params; // Attendre la résolution de params
 
   if (!slug) {
     return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
@@ -30,7 +34,7 @@ export async function GET(request: Request, { params }: { params: { slug: string
       instructions: recette.instructions,
       image: recette.image || '/img/placeholder.webp',
       user: { id: recette.user.id, username: recette.user.username },
-      produits: recette.produits.map((produit : Produit) => ({
+      produits: recette.produits.map((produit: Produit) => ({
         id: produit.id,
         name: produit.name,
         slug: produit.slug,
@@ -50,8 +54,13 @@ export async function GET(request: Request, { params }: { params: { slug: string
   }
 }
 
-export async function PATCH(request: Request, { params }: { params: { slug: string } }) {
-  const { slug } = params;
+
+// PATCH : Mettre à jour une recette
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  const { slug } = await params; // Attendre la résolution de params
   const body = await request.json();
 
   if (!slug) {
@@ -98,7 +107,7 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
       description: updatedRecette.description,
       instructions: updatedRecette.instructions,
       image: updatedRecette.image || '/img/placeholder.webp',
-      user:{ id: updatedRecette.user.id, username: updatedRecette.user.username },
+      user: { id: updatedRecette.user.id, username: updatedRecette.user.username },
       produits: updatedRecette.produits.map((produit: Produit) => ({
         id: produit.id,
         name: produit.name,
@@ -114,8 +123,13 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: { slug: string } }) {
-  const { slug } = params;
+
+// DELETE : Supprimer une recette
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  const { slug } = await params; // Attendre la résolution de params
 
   if (!slug) {
     return NextResponse.json({ error: 'Slug is required' }, { status: 400 });

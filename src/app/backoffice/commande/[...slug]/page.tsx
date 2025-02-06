@@ -50,7 +50,7 @@ const CommandeDetail = () => {
   const handleUpdateStatus = async (newStatus: CommandeStatus) => {
     if (commande) {
       try {
-        await updateCommande(commandeSlug, { ...commande, status: newStatus });
+        await updateCommande(commande.id, { ...commande, status: newStatus });
         setMessageCommandeAlert(`Le statut de la commande ${commande.id} est maintenant "${newStatus}".`);
         setOpenCommandeAlert(true);
       } catch (error) {

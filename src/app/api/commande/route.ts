@@ -1,5 +1,28 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import { CommandeStatus } from '@prisma/client'; // ✅ Importer l'énumération CommandeStatus
+
+// Définition du type pour les produits reçus dans la commande
+interface ProduitCommande {
+  id: number;
+  quantite: number;
+  prix: number;
+  image?: string;
+}
+
+// Définition du type pour le corps de la requête
+interface CommandeBody {
+  status: CommandeStatus; // ✅ Utilisation du type Prisma au lieu de string
+  paymentId?: string;
+  userId: string;
+  infosAdresse: {
+    adresse: string;
+    ville: string;
+    codePostal: string;
+    pays: string;
+  };
+  produits: ProduitCommande[];
+}
 
 export async function GET() {
   try {
@@ -27,7 +50,7 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
+    const body: CommandeBody = await req.json();
     const { status, paymentId, userId, infosAdresse, produits } = body;
 
     console.log('Creating commande with body:', body);
@@ -41,6 +64,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid adresse fields' }, { status: 400 });
     }
 
+    // ✅ Vérifier que `status` est une valeur valide de `CommandeStatus`
+    if (!Object.values(CommandeStatus).includes(status)) {
+      return NextResponse.json({ error: `Invalid status: ${status}` }, { status: 400 });
+    }
+
     const livraisonData = {
       adresse: infosAdresse.adresse,
       ville: infosAdresse.ville,
@@ -51,13 +79,12 @@ export async function POST(req: Request) {
     // Création de la commande avec l'adresse de livraison
     const newCommande = await prisma.commande.create({
       data: {
-        status,
+        status, // ✅ Plus d'erreur, car `status` est du bon type
         paymentId: paymentId || null,
         user: { connect: { id: parseInt(userId, 10) } }, // Conversion de l'id en Int
         livraison: { create: livraisonData },
       },
     });
-    
 
     // Ajout des produits à la commande
     for (const produit of produits) {
@@ -77,7 +104,6 @@ export async function POST(req: Request) {
         },
       });
 
-      // Ajout d'un log pour vérifier l'image utilisée
       console.log("Produit ajouté avec image :", imagePath);
     }
 
@@ -85,7 +111,9 @@ export async function POST(req: Request) {
     return NextResponse.json(newCommande, { status: 201 });
   } catch (error) {
     console.error('Error creating commande:', error);
-    return NextResponse.json({ error: 'Internal Server Error', details: (error as any).message }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Internal Server Error', details: (error as Error).message },
+      { status: 500 }
+    );
   }
 }
-

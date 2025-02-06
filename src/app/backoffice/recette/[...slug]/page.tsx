@@ -13,8 +13,11 @@ export default function RecetteDetails() {
   const { slug } = useParams() as { slug: string | string[] };
   const recetteSlug = Array.isArray(slug) ? slug[slug.length - 1] : slug;
 
-  const { recette, loading: recetteLoading, error: recetteError } = useGetRecette(recetteSlug) as unknown as { recette: Recette, loading: any, error: any };
-  const { deleteRecette, loading: deleteRecetteLoading, error: deleteRecetteError } = useDeleteRecette();
+  const recetteId = parseInt(recetteSlug, 10);
+  const { recette, loading: recetteLoading, error: recetteError } = useGetRecette(
+    isNaN(recetteId) ? null : recetteId
+  ) as { recette: Recette, loading: any, error: any };
+    const { deleteRecette, loading: deleteRecetteLoading, error: deleteRecetteError } = useDeleteRecette();
 
   const handleDelete = async () => {
     if (recette) {

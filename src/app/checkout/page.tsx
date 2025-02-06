@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { useAddCommande } from '@/hooks/commandes/useCommandes';
-import { randomBytes } from 'crypto';
 
 type CartItem = {
   id: number;
@@ -24,7 +23,7 @@ export default function SearchResultsPage() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [sessionId, setSessionId] = useState<string | null>(null);
-  const { addCommande, loading: addingCommande, error: addError } = useAddCommande();
+  const {  loading: addingCommande, error: addError } = useAddCommande();
 
   const [formData, setFormData] = useState({
     adresse: '',
