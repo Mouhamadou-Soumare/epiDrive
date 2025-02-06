@@ -4,7 +4,12 @@ import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
-const AuthModal = ({ onClose }: { onClose: () => void }) => {
+interface AuthModalProps {
+  onClose: () => void;
+  onAuthenticate?: () => Promise<void>; // ✅ Ajout de onAuthenticate comme prop optionnelle
+}
+
+const AuthModal = ({ onClose, onAuthenticate }: AuthModalProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -26,7 +31,7 @@ const AuthModal = ({ onClose }: { onClose: () => void }) => {
   
       if (res.ok) {
         if (!isSigningUp) {
-          // Si l'utilisateur se connecte, utilisez `signIn` pour établir une session
+          // ✅ Connexion avec NextAuth après authentification réussie
           const result = await signIn('credentials', {
             redirect: false,
             email,
@@ -39,8 +44,13 @@ const AuthModal = ({ onClose }: { onClose: () => void }) => {
           }
         }
   
-        // Rediriger vers /checkout après authentification réussie
-        router.push('/checkout');
+        // ✅ Exécuter onAuthenticate s'il est défini
+        if (onAuthenticate) {
+          await onAuthenticate();
+        }
+
+        // ✅ Fermer la modal après l'authentification
+        onClose();
       } else {
         setError(data.message || 'Erreur lors de l\'authentification');
       }

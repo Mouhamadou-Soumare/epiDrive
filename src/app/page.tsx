@@ -1,14 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { useState } from 'react';
-import { Dialog, DialogPanel } from '@headlessui/react';
-import { ArrowPathIcon, Bars3Icon, CloudArrowUpIcon, CogIcon, LockClosedIcon, ServerIcon, ShieldCheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import LoadingSpinner from '../components/LoadingSpinner';
-import foodPresentation from "../../public/img/food_presentation.webp";
-import groceryDrive from "../../public/img/grocery_drive.webp";
-import scanFood from "../../public/img/scan_food.webp";
-import whatIWant from "../../public/img/what_i_want.webp";
-import epiDrive from "../../public/img/Epidrive.webp";
+import { ArrowPathIcon, Bars3Icon, CloudArrowUpIcon, CogIcon, LockClosedIcon, ServerIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
 import RecommendedProducts from '@/components/client/product/RecommendedProducts';
 import { useGetAllProducts } from '@/hooks/products/useGetAllProducts';
 import HeroSectionHomepage from '@/components/HeroSectionHomepage';
@@ -16,15 +8,10 @@ import adventCalendar from "../../public/img/adventcalendar.png";
 import donation from "../../public/img/donation_png.png";
 
 
-const navigation = [
-  { name: 'Home', href: '/' },
-  { name: 'Shop', href: '/shop' },
-  { name: 'Categories', href: '/categories' },
-  { name: 'Contact', href: '/contact' },
-];
+
 
 export default function HomePage() {
-  const { products, loading, error } = useGetAllProducts(); 
+  const { products } = useGetAllProducts(); 
 
   const faqs = [
     {
@@ -104,7 +91,7 @@ export default function HomePage() {
         
         <RecommendedProducts allProducts={products.map(product => ({
           ...product,
-          prix: product.price, // assuming 'price' is the equivalent of 'prix'
+          prix: product.prix, // assuming 'price' is the equivalent of 'prix'
           categorieId: product.categorieId // assuming 'categoryId' is the correct property name
         }))} />
 

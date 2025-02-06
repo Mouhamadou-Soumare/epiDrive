@@ -13,8 +13,11 @@ export default function UpdateRecettePage() {
   const { slug } = useParams() as { slug: string | string[] };
   const recetteSlug = Array.isArray(slug) ? slug[slug.length - 1] : slug;
 
-  const { recette, loading: recetteLoading, error: recetteError } = useGetRecette(recetteSlug);
-  const { produits, loading: produitsLoading, error: produitsError } = useGetProduits();
+  const recetteId = parseInt(recetteSlug, 10);
+  const { recette, loading: recetteLoading, error: recetteError } = useGetRecette(
+    isNaN(recetteId) ? null : recetteId
+  );
+    const { produits, loading: produitsLoading, error: produitsError } = useGetProduits();
   const { updateRecette, loading: updateLoading, error: updateError } = useUpdateRecette();
 
   const [localRecette, setLocalRecette] = useState<Recette | null>(recette);

@@ -1,18 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-// import { CommandeStatus } from '@prisma/client';
 
-// const statusMap: Record<string, CommandeStatus> = {
-//   pending: CommandeStatus.EN_ATTENTE,
-//   shipped: CommandeStatus.EXPEDIEE,
-//   delivered: CommandeStatus.LIVREE,
-//   cancelled: CommandeStatus.ANNULEE,
-// };
+// Définition du type pour les données de mise à jour de l'utilisateur
+interface UpdateUserProfileData {
+  userId: string;
+  username?: string;
+  email?: string;
+  password?: string;
+  imagePath?: string;
+}
 
-async function updateUserProfile(data: any) {
+// Fonction pour mettre à jour le profil utilisateur
+async function updateUserProfile(data: UpdateUserProfileData) {
   const { userId, username, email, password, imagePath } = data;
 
-  console.log('Mise à jour du profil utilisateur avec les données:', data); // Log des données
+  console.log('Mise à jour du profil utilisateur avec les données:', data);
 
   // Convertir userId en entier
   const userIdInt = parseInt(userId, 10);
@@ -24,7 +26,7 @@ async function updateUserProfile(data: any) {
     );
   }
 
-  const updateData: any = {};
+  const updateData: Record<string, unknown> = {};
   if (username) updateData.username = username;
   if (email) updateData.email = email;
   if (password) updateData.password = password;
@@ -35,34 +37,52 @@ async function updateUserProfile(data: any) {
     }
   }
 
-  console.log('Données préparées pour Prisma:', updateData); // Log des données Prisma
+  console.log('Données préparées pour Prisma:', updateData);
 
   try {
     const updatedUser = await prisma.user.update({
-      where: { id: userIdInt }, // Utilisation de userIdInt (entier)
+      where: { id: userIdInt },
       data: updateData,
       include: { image: true },
     });
 
-    console.log('Utilisateur mis à jour:', updatedUser); // Log de la réponse Prisma
+    console.log('Utilisateur mis à jour:', updatedUser);
 
     return NextResponse.json(
       { message: 'Profil mis à jour avec succès.', updatedUser },
       { status: 200 }
     );
-  } catch (error) {
-    console.error('Erreur lors de la mise à jour du profil dans Prisma:', error);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Erreur lors de la mise à jour du profil dans Prisma:', error);
+      return NextResponse.json(
+        { message: 'Erreur lors de la mise à jour du profil.', details: error.message },
+        { status: 500 }
+      );
+    }
     return NextResponse.json(
-      { message: 'Erreur lors de la mise à jour du profil.' },
+      { message: 'Erreur inconnue.' },
       { status: 500 }
     );
   }
 }
 
+// Définition du type des actions reçues
+type ProfileAction = 'updateProfile';
+
+interface ProfileRequestBody {
+  action: ProfileAction;
+  userId: string;
+  username?: string;
+  email?: string;
+  password?: string;
+  imagePath?: string;
+}
+
 export async function PUT(req: NextRequest) {
   try {
-    const body = await req.json();
-    console.log('Données reçues:', body); // Ajouter un log des données reçues
+    const body: ProfileRequestBody = await req.json();
+    console.log('Données reçues:', body);
 
     const { action } = body;
 
@@ -82,10 +102,16 @@ export async function PUT(req: NextRequest) {
           { status: 400 }
         );
     }
-  } catch (error) {
-    console.error('Erreur API:', error);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Erreur API:', error);
+      return NextResponse.json(
+        { message: 'Erreur interne du serveur.', error: error.message },
+        { status: 500 }
+      );
+    }
     return NextResponse.json(
-      { message: 'Erreur interne du serveur.', error: (error as any).message },
+      { message: 'Erreur inconnue.' },
       { status: 500 }
     );
   }

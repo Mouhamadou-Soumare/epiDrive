@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-// Handler pour PUT
-export async function PUT(req: NextRequest, { params }: { params: { productId: string } }) {
-  const { productId } = params;
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: Promise<{ productId: string }> }
+) {
+  const { productId } = await params; // Attendre que params soit résolu
 
   try {
     const { quantity, sessionId, userId } = await req.json();
@@ -61,8 +63,11 @@ export async function PUT(req: NextRequest, { params }: { params: { productId: s
 }
 
 // Handler pour DELETE
-export async function DELETE(req: NextRequest, { params }: { params: { productId: string } }) {
-  const { productId } = params;
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ productId: string }> }
+) {
+  const { productId } = await params; // Attendre que params soit résolu
   const { sessionId, userId } = Object.fromEntries(new URL(req.url).searchParams);
 
   if (!productId || (!sessionId && !userId)) {

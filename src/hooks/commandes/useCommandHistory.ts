@@ -1,9 +1,20 @@
 import { useEffect, useState } from "react";
 
-export const useCommandHistory = (groupBy = "day") => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+interface CommandHistoryItem {
+  date: string;
+  count: number;
+}
+
+interface FetchResponse {
+  success: boolean;
+  data: { date: string; count: string }[];
+  error?: string;
+}
+
+export const useCommandHistory = (groupBy: "day" | "week" | "month" = "day") => {
+  const [data, setData] = useState<CommandHistoryItem[] | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchCommandHistory = async () => {
@@ -16,9 +27,10 @@ export const useCommandHistory = (groupBy = "day") => {
           throw new Error(`Erreur ${response.status}: ${response.statusText}`);
         }
 
-        const result = await response.json();
+        const result = (await response.json()) as FetchResponse;
+
         if (result.success) {
-          const parsedData = result.data.map((item) => ({
+          const parsedData: CommandHistoryItem[] = result.data.map((item) => ({
             ...item,
             count: parseInt(item.count, 10), // Convertit `count` en nombre
           }));
@@ -27,7 +39,7 @@ export const useCommandHistory = (groupBy = "day") => {
           throw new Error(result.error || "Erreur inconnue");
         }
       } catch (err) {
-        setError(err.message || "Erreur de récupération des données");
+        setError((err as Error).message || "Erreur de récupération des données");
       } finally {
         setLoading(false);
       }

@@ -1,18 +1,8 @@
 import { useEffect, useState } from 'react';
-
-type Product = {
-  categorieId: any;
-  id: number;
-  name: string;
-  slug: string;
-  price: number;
-  imageSrc: string;
-  imageAlt: string;
-  description: string;
-};
+import { Produit } from 'types';
 
 export const useGetAllProducts = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Produit[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

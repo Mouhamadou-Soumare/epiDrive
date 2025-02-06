@@ -1,0 +1,1414 @@
+[2025-02-05T16:55:05.608Z] 🚀 Next.js app is being prepared...
+[2025-02-05T16:55:05.617Z] ✅ Server ready at http://localhost:3000
+[2025-02-05T16:55:06.132Z] 📥 Incoming request: GET /
+[2025-02-05T16:55:06.170Z] ✅ Successfully handled request: GET /
+[2025-02-05T16:55:06.278Z] 📥 Incoming request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T16:55:06.286Z] ✅ Successfully handled request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T16:55:06.317Z] 📥 Incoming request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T16:55:06.320Z] ✅ Successfully handled request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T16:55:06.336Z] 📥 Incoming request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T16:55:06.339Z] ✅ Successfully handled request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T16:55:06.355Z] 📥 Incoming request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T16:55:06.358Z] ✅ Successfully handled request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T16:55:06.375Z] 📥 Incoming request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T16:55:06.377Z] ✅ Successfully handled request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T16:55:06.395Z] 📥 Incoming request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T16:55:06.397Z] ✅ Successfully handled request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T16:55:06.415Z] 📥 Incoming request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T16:55:06.417Z] ✅ Successfully handled request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T16:55:06.436Z] 📥 Incoming request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T16:55:06.438Z] ✅ Successfully handled request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T16:55:06.456Z] 📥 Incoming request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T16:55:06.458Z] ✅ Successfully handled request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T16:55:06.475Z] 📥 Incoming request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T16:55:06.477Z] ✅ Successfully handled request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T16:55:06.495Z] 📥 Incoming request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T16:55:06.497Z] ✅ Successfully handled request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T16:55:06.516Z] 📥 Incoming request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T16:55:06.517Z] ✅ Successfully handled request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T16:55:06.536Z] 📥 Incoming request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T16:55:06.537Z] ✅ Successfully handled request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T16:55:06.561Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=1920&q=75
+[2025-02-05T16:55:06.580Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=128&q=75
+[2025-02-05T16:55:06.586Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=1920&q=75
+[2025-02-05T16:55:06.589Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=128&q=75
+[2025-02-05T16:55:06.600Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T16:55:06.603Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T16:55:06.615Z] 📥 Incoming request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T16:55:06.616Z] ✅ Successfully handled request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T16:55:06.635Z] 📥 Incoming request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T16:55:06.636Z] ✅ Successfully handled request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T16:55:06.655Z] 📥 Incoming request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T16:55:06.656Z] ✅ Successfully handled request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T16:55:06.680Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=1920&q=75
+[2025-02-05T16:55:06.683Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=1920&q=75
+[2025-02-05T16:55:06.699Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=1920&q=75
+[2025-02-05T16:55:06.702Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=1920&q=75
+[2025-02-05T16:55:07.143Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T16:55:07.178Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T16:55:07.179Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738768716930
+[2025-02-05T16:55:07.187Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738768716930
+[2025-02-05T16:55:07.188Z] 📥 Incoming request: GET /api/products
+[2025-02-05T16:55:07.195Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T16:55:07.202Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T16:55:07.210Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T16:55:07.223Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-05T16:55:07.234Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-05T16:55:07.250Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T16:55:07.256Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T16:55:07.264Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738768716930
+[2025-02-05T16:55:07.270Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738768716930
+[2025-02-05T16:55:07.284Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo_white_bg.5c008c37.png&w=1920&q=75
+[2025-02-05T16:55:07.286Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo_white_bg.5c008c37.png&w=1920&q=75
+[2025-02-05T16:55:32.618Z] 📥 Incoming request: GET /
+[2025-02-05T16:55:32.622Z] ✅ Successfully handled request: GET /
+[2025-02-05T16:55:32.733Z] 📥 Incoming request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T16:55:32.735Z] ✅ Successfully handled request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T16:55:32.796Z] 📥 Incoming request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T16:55:32.797Z] ✅ Successfully handled request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T16:55:32.813Z] 📥 Incoming request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T16:55:32.815Z] ✅ Successfully handled request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T16:55:32.833Z] 📥 Incoming request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T16:55:32.835Z] ✅ Successfully handled request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T16:55:32.854Z] 📥 Incoming request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T16:55:32.855Z] ✅ Successfully handled request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T16:55:32.873Z] 📥 Incoming request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T16:55:32.874Z] ✅ Successfully handled request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T16:55:32.893Z] 📥 Incoming request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T16:55:32.894Z] ✅ Successfully handled request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T16:55:32.914Z] 📥 Incoming request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T16:55:32.914Z] ✅ Successfully handled request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T16:55:32.934Z] 📥 Incoming request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T16:55:32.935Z] ✅ Successfully handled request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T16:55:32.953Z] 📥 Incoming request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T16:55:32.954Z] ✅ Successfully handled request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T16:55:32.973Z] 📥 Incoming request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T16:55:32.974Z] ✅ Successfully handled request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T16:55:32.993Z] 📥 Incoming request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T16:55:32.994Z] ✅ Successfully handled request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T16:55:33.014Z] 📥 Incoming request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T16:55:33.015Z] ✅ Successfully handled request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T16:55:33.033Z] 📥 Incoming request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T16:55:33.034Z] ✅ Successfully handled request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T16:55:33.053Z] 📥 Incoming request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T16:55:33.054Z] ✅ Successfully handled request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T16:55:33.072Z] 📥 Incoming request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T16:55:33.074Z] ✅ Successfully handled request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T16:55:33.099Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=1920&q=75
+[2025-02-05T16:55:33.101Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=1920&q=75
+[2025-02-05T16:55:33.120Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T16:55:33.121Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T16:55:33.139Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=128&q=75
+[2025-02-05T16:55:33.140Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=128&q=75
+[2025-02-05T16:55:33.158Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=1920&q=75
+[2025-02-05T16:55:33.160Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=1920&q=75
+[2025-02-05T16:55:33.179Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=1920&q=75
+[2025-02-05T16:55:33.180Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=1920&q=75
+[2025-02-05T16:55:33.500Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T16:55:33.510Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T16:55:33.519Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T16:55:33.526Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T16:55:33.539Z] 📥 Incoming request: GET /api/products
+[2025-02-05T16:55:33.546Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T16:55:33.559Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T16:55:33.566Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T16:55:33.977Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-05T16:55:33.983Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-05T16:55:34.002Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T16:55:34.010Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T16:55:34.017Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T16:55:34.024Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T16:55:34.037Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo_white_bg.5c008c37.png&w=1920&q=75
+[2025-02-05T16:55:34.039Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo_white_bg.5c008c37.png&w=1920&q=75
+[2025-02-05T16:55:42.443Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T16:55:42.449Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T16:55:42.462Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738768716930
+[2025-02-05T16:55:42.468Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738768716930
+[2025-02-05T16:55:42.482Z] 📥 Incoming request: GET /api/products
+[2025-02-05T16:55:42.486Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T16:55:42.501Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T16:55:42.507Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T16:55:42.555Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738768716930
+[2025-02-05T16:55:42.561Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738768716930
+[2025-02-05T16:55:42.578Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T16:55:42.585Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T16:55:45.861Z] 📥 Incoming request: GET /
+[2025-02-05T16:55:45.863Z] ✅ Successfully handled request: GET /
+[2025-02-05T16:55:46.431Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T16:55:46.438Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T16:55:46.450Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T16:55:46.456Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T16:55:46.469Z] 📥 Incoming request: GET /api/products
+[2025-02-05T16:55:46.473Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T16:55:46.490Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T16:55:46.494Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T16:55:46.682Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T16:55:46.687Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T16:55:46.695Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T16:55:46.701Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T16:56:11.498Z] 📥 Incoming request: GET /
+[2025-02-05T16:56:11.502Z] ✅ Successfully handled request: GET /
+[2025-02-05T16:56:11.705Z] 📥 Incoming request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T16:56:11.706Z] ✅ Successfully handled request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T16:56:11.717Z] 📥 Incoming request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T16:56:11.719Z] ✅ Successfully handled request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T16:56:11.736Z] 📥 Incoming request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T16:56:11.737Z] ✅ Successfully handled request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T16:56:11.756Z] 📥 Incoming request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T16:56:11.757Z] ✅ Successfully handled request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T16:56:11.776Z] 📥 Incoming request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T16:56:11.777Z] ✅ Successfully handled request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T16:56:11.795Z] 📥 Incoming request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T16:56:11.796Z] ✅ Successfully handled request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T16:56:11.816Z] 📥 Incoming request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T16:56:11.817Z] ✅ Successfully handled request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T16:56:11.836Z] 📥 Incoming request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T16:56:11.837Z] ✅ Successfully handled request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T16:56:11.856Z] 📥 Incoming request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T16:56:11.857Z] ✅ Successfully handled request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T16:56:11.876Z] 📥 Incoming request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T16:56:11.877Z] ✅ Successfully handled request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T16:56:11.896Z] 📥 Incoming request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T16:56:11.897Z] ✅ Successfully handled request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T16:56:11.915Z] 📥 Incoming request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T16:56:11.916Z] ✅ Successfully handled request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T16:56:11.937Z] 📥 Incoming request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T16:56:11.937Z] ✅ Successfully handled request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T16:56:11.957Z] 📥 Incoming request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T16:56:11.959Z] ✅ Successfully handled request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T16:56:11.976Z] 📥 Incoming request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T16:56:11.977Z] ✅ Successfully handled request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T16:56:11.996Z] 📥 Incoming request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T16:56:11.997Z] ✅ Successfully handled request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T16:56:12.020Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=1920&q=75
+[2025-02-05T16:56:12.022Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=1920&q=75
+[2025-02-05T16:56:12.041Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T16:56:12.042Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T16:56:12.065Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=128&q=75
+[2025-02-05T16:56:12.067Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=128&q=75
+[2025-02-05T16:56:12.082Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=1920&q=75
+[2025-02-05T16:56:12.083Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=1920&q=75
+[2025-02-05T16:56:12.102Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=1920&q=75
+[2025-02-05T16:56:12.103Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=1920&q=75
+[2025-02-05T16:56:12.120Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T16:56:12.127Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T16:56:12.139Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T16:56:12.144Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T16:56:12.160Z] 📥 Incoming request: GET /api/products
+[2025-02-05T16:56:12.165Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T16:56:12.180Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T16:56:12.185Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T16:56:12.245Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T16:56:12.250Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T16:56:12.264Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T16:56:12.269Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T16:56:12.283Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo_white_bg.5c008c37.png&w=1920&q=75
+[2025-02-05T16:56:12.284Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo_white_bg.5c008c37.png&w=1920&q=75
+[2025-02-05T16:56:12.587Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-05T16:56:12.590Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-05T17:07:39.353Z] 🚀 Next.js app is being prepared...
+[2025-02-05T17:07:39.370Z] ✅ Server ready at http://localhost:3000
+[2025-02-05T17:07:39.865Z] 📥 Incoming request: GET /
+[2025-02-05T17:07:39.902Z] ✅ Successfully handled request: GET /
+[2025-02-05T17:07:41.295Z] 📥 Incoming request: GET /
+[2025-02-05T17:07:41.299Z] ✅ Successfully handled request: GET /
+[2025-02-05T17:25:01.274Z] 📥 Incoming request: GET /
+[2025-02-05T17:25:01.279Z] ✅ Successfully handled request: GET /
+[2025-02-05T17:25:01.530Z] 📥 Incoming request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T17:25:01.538Z] ✅ Successfully handled request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T17:25:01.655Z] 📥 Incoming request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T17:25:01.659Z] ✅ Successfully handled request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T17:25:01.673Z] 📥 Incoming request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T17:25:01.678Z] ✅ Successfully handled request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T17:25:01.694Z] 📥 Incoming request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T17:25:01.699Z] ✅ Successfully handled request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T17:25:01.713Z] 📥 Incoming request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T17:25:01.716Z] ✅ Successfully handled request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T17:25:01.734Z] 📥 Incoming request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T17:25:01.737Z] ✅ Successfully handled request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T17:25:01.754Z] 📥 Incoming request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T17:25:01.757Z] ✅ Successfully handled request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T17:25:01.783Z] 📥 Incoming request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T17:25:01.785Z] ✅ Successfully handled request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T17:25:01.842Z] 📥 Incoming request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T17:25:01.845Z] ✅ Successfully handled request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T17:25:01.868Z] 📥 Incoming request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T17:25:01.871Z] ✅ Successfully handled request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T17:25:01.888Z] 📥 Incoming request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T17:25:01.890Z] ✅ Successfully handled request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T17:25:01.917Z] 📥 Incoming request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T17:25:01.919Z] ✅ Successfully handled request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T17:25:01.970Z] 📥 Incoming request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T17:25:01.972Z] ✅ Successfully handled request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T17:25:02.015Z] 📥 Incoming request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T17:25:02.017Z] ✅ Successfully handled request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T17:25:02.044Z] 📥 Incoming request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T17:25:02.046Z] ✅ Successfully handled request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T17:25:02.065Z] 📥 Incoming request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T17:25:02.067Z] ✅ Successfully handled request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T17:25:02.090Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=640&q=75
+[2025-02-05T17:25:02.113Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T17:25:02.121Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=640&q=75
+[2025-02-05T17:25:02.125Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T17:25:02.136Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=64&q=75
+[2025-02-05T17:25:02.139Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=64&q=75
+[2025-02-05T17:25:02.157Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=828&q=75
+[2025-02-05T17:25:02.160Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=828&q=75
+[2025-02-05T17:25:02.189Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=640&q=75
+[2025-02-05T17:25:02.194Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=640&q=75
+[2025-02-05T17:25:02.311Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T17:25:02.361Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T17:25:02.362Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738776303021
+[2025-02-05T17:25:02.374Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738776303021
+[2025-02-05T17:25:02.375Z] 📥 Incoming request: GET /api/products
+[2025-02-05T17:25:02.384Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T17:25:02.384Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T17:25:02.395Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T17:25:02.564Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738776303021
+[2025-02-05T17:25:03.004Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738776303021
+[2025-02-05T17:25:03.370Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo_white_bg.5c008c37.png&w=750&q=75
+[2025-02-05T17:25:03.375Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo_white_bg.5c008c37.png&w=750&q=75
+[2025-02-05T17:25:03.392Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T17:25:03.400Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T17:27:56.339Z] 📥 Incoming request: GET /
+[2025-02-05T17:27:56.342Z] ✅ Successfully handled request: GET /
+[2025-02-05T17:27:58.570Z] 📥 Incoming request: GET /
+[2025-02-05T17:27:58.574Z] ✅ Successfully handled request: GET /
+[2025-02-05T17:27:58.958Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-05T17:27:58.970Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-05T17:27:59.781Z] 📥 Incoming request: GET /
+[2025-02-05T17:27:59.784Z] ✅ Successfully handled request: GET /
+[2025-02-05T17:28:00.200Z] 📥 Incoming request: GET /
+[2025-02-05T17:28:00.202Z] ✅ Successfully handled request: GET /
+[2025-02-05T17:50:19.970Z] 📥 Incoming request: GET /
+[2025-02-05T17:50:19.974Z] ✅ Successfully handled request: GET /
+[2025-02-05T17:58:40.057Z] 📥 Incoming request: GET /
+[2025-02-05T17:58:40.060Z] ✅ Successfully handled request: GET /
+[2025-02-05T18:05:32.964Z] 📥 Incoming request: GET /
+[2025-02-05T18:05:32.966Z] ✅ Successfully handled request: GET /
+[2025-02-05T18:05:33.218Z] 📥 Incoming request: GET /
+[2025-02-05T18:05:33.220Z] ✅ Successfully handled request: GET /
+[2025-02-05T18:05:33.308Z] 📥 Incoming request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T18:05:33.310Z] ✅ Successfully handled request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T18:05:33.326Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=640&q=75
+[2025-02-05T18:05:33.328Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=640&q=75
+[2025-02-05T18:05:33.345Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T18:05:33.348Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T18:05:33.366Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=828&q=75
+[2025-02-05T18:05:33.368Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=828&q=75
+[2025-02-05T18:05:33.488Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=64&q=75
+[2025-02-05T18:05:33.490Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=64&q=75
+[2025-02-05T18:05:33.506Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=640&q=75
+[2025-02-05T18:05:33.508Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=640&q=75
+[2025-02-05T18:05:33.592Z] 📥 Incoming request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T18:05:33.593Z] ✅ Successfully handled request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T18:05:33.630Z] 📥 Incoming request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T18:05:33.632Z] ✅ Successfully handled request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T18:05:33.673Z] 📥 Incoming request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T18:05:33.675Z] ✅ Successfully handled request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T18:05:33.717Z] 📥 Incoming request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T18:05:33.718Z] ✅ Successfully handled request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T18:05:33.754Z] 📥 Incoming request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T18:05:33.756Z] ✅ Successfully handled request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T18:05:33.807Z] 📥 Incoming request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T18:05:33.809Z] ✅ Successfully handled request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T18:05:33.858Z] 📥 Incoming request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T18:05:33.859Z] ✅ Successfully handled request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T18:05:33.875Z] 📥 Incoming request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T18:05:33.877Z] ✅ Successfully handled request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T18:05:33.895Z] 📥 Incoming request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T18:05:33.896Z] ✅ Successfully handled request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T18:05:33.916Z] 📥 Incoming request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T18:05:33.917Z] ✅ Successfully handled request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T18:05:33.935Z] 📥 Incoming request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T18:05:33.937Z] ✅ Successfully handled request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T18:05:33.956Z] 📥 Incoming request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T18:05:33.957Z] ✅ Successfully handled request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T18:05:33.975Z] 📥 Incoming request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T18:05:33.977Z] ✅ Successfully handled request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T18:05:33.995Z] 📥 Incoming request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T18:05:33.996Z] ✅ Successfully handled request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T18:05:34.015Z] 📥 Incoming request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T18:05:34.017Z] ✅ Successfully handled request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T18:05:34.041Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo_white_bg.5c008c37.png&w=750&q=75
+[2025-02-05T18:05:34.042Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo_white_bg.5c008c37.png&w=750&q=75
+[2025-02-05T18:05:34.087Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T18:05:34.094Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T18:05:34.108Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738778735092
+[2025-02-05T18:05:34.114Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738778735092
+[2025-02-05T18:05:34.126Z] 📥 Incoming request: GET /api/products
+[2025-02-05T18:05:34.133Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T18:05:34.146Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T18:05:34.153Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T18:05:34.168Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-05T18:05:34.171Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-05T18:05:34.204Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T18:05:34.215Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T18:05:34.222Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738778735092
+[2025-02-05T18:05:34.229Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738778735092
+[2025-02-05T18:05:34.440Z] 📥 Incoming request: GET /
+[2025-02-05T18:05:34.443Z] ✅ Successfully handled request: GET /
+[2025-02-05T18:05:34.568Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-05T18:05:34.573Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-05T18:05:34.744Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-05T18:05:34.748Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-05T18:05:49.079Z] 📥 Incoming request: GET /
+[2025-02-05T18:05:49.081Z] ✅ Successfully handled request: GET /
+[2025-02-05T18:05:49.315Z] 📥 Incoming request: GET /
+[2025-02-05T18:05:49.317Z] ✅ Successfully handled request: GET /
+[2025-02-05T18:05:49.368Z] 📥 Incoming request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T18:05:49.370Z] ✅ Successfully handled request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T18:05:49.389Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=640&q=75
+[2025-02-05T18:05:49.390Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=640&q=75
+[2025-02-05T18:05:49.407Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T18:05:49.408Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T18:05:49.426Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=828&q=75
+[2025-02-05T18:05:49.427Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=828&q=75
+[2025-02-05T18:05:49.447Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=64&q=75
+[2025-02-05T18:05:49.448Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=64&q=75
+[2025-02-05T18:05:49.530Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=640&q=75
+[2025-02-05T18:05:49.531Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=640&q=75
+[2025-02-05T18:05:49.546Z] 📥 Incoming request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T18:05:49.547Z] ✅ Successfully handled request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T18:05:49.566Z] 📥 Incoming request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T18:05:49.567Z] ✅ Successfully handled request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T18:05:49.586Z] 📥 Incoming request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T18:05:49.587Z] ✅ Successfully handled request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T18:05:49.606Z] 📥 Incoming request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T18:05:49.607Z] ✅ Successfully handled request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T18:05:49.626Z] 📥 Incoming request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T18:05:49.627Z] ✅ Successfully handled request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T18:05:49.647Z] 📥 Incoming request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T18:05:49.648Z] ✅ Successfully handled request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T18:05:49.665Z] 📥 Incoming request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T18:05:49.666Z] ✅ Successfully handled request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T18:05:49.690Z] 📥 Incoming request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T18:05:49.691Z] ✅ Successfully handled request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T18:05:49.710Z] 📥 Incoming request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T18:05:49.711Z] ✅ Successfully handled request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T18:05:49.730Z] 📥 Incoming request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T18:05:49.731Z] ✅ Successfully handled request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T18:05:49.751Z] 📥 Incoming request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T18:05:49.752Z] ✅ Successfully handled request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T18:05:49.770Z] 📥 Incoming request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T18:05:49.771Z] ✅ Successfully handled request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T18:05:49.790Z] 📥 Incoming request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T18:05:49.791Z] ✅ Successfully handled request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T18:05:49.809Z] 📥 Incoming request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T18:05:49.810Z] ✅ Successfully handled request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T18:05:49.830Z] 📥 Incoming request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T18:05:49.831Z] ✅ Successfully handled request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T18:05:49.854Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo_white_bg.5c008c37.png&w=750&q=75
+[2025-02-05T18:05:49.855Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo_white_bg.5c008c37.png&w=750&q=75
+[2025-02-05T18:05:49.884Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T18:05:49.892Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T18:05:49.904Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738778750897
+[2025-02-05T18:05:49.910Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738778750897
+[2025-02-05T18:05:49.924Z] 📥 Incoming request: GET /api/products
+[2025-02-05T18:05:49.930Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T18:05:49.944Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T18:05:49.950Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T18:05:49.963Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-05T18:05:49.967Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-05T18:05:49.995Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T18:05:50.002Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T18:05:50.012Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738778750897
+[2025-02-05T18:05:50.019Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738778750897
+[2025-02-05T18:05:50.221Z] 📥 Incoming request: GET /
+[2025-02-05T18:05:50.223Z] ✅ Successfully handled request: GET /
+[2025-02-05T18:05:50.350Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-05T18:05:50.354Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-05T18:05:50.485Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-05T18:05:50.488Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-05T18:12:06.155Z] 📥 Incoming request: GET /
+[2025-02-05T18:12:06.157Z] ✅ Successfully handled request: GET /
+[2025-02-05T18:16:29.328Z] 📥 Incoming request: GET /
+[2025-02-05T18:16:29.331Z] ✅ Successfully handled request: GET /
+[2025-02-05T18:32:40.689Z] 📥 Incoming request: GET /
+[2025-02-05T18:32:40.692Z] ✅ Successfully handled request: GET /
+[2025-02-05T18:32:47.742Z] 📥 Incoming request: GET /
+[2025-02-05T18:32:47.744Z] ✅ Successfully handled request: GET /
+[2025-02-05T18:32:47.846Z] 📥 Incoming request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T18:32:47.848Z] ✅ Successfully handled request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T18:32:47.863Z] 📥 Incoming request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T18:32:47.864Z] ✅ Successfully handled request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T18:32:47.882Z] 📥 Incoming request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T18:32:47.883Z] ✅ Successfully handled request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T18:32:47.902Z] 📥 Incoming request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T18:32:47.904Z] ✅ Successfully handled request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T18:32:47.924Z] 📥 Incoming request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T18:32:47.924Z] ✅ Successfully handled request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T18:32:47.942Z] 📥 Incoming request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T18:32:47.943Z] ✅ Successfully handled request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T18:32:47.962Z] 📥 Incoming request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T18:32:47.963Z] ✅ Successfully handled request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T18:32:47.982Z] 📥 Incoming request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T18:32:47.983Z] ✅ Successfully handled request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T18:32:48.002Z] 📥 Incoming request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T18:32:48.003Z] ✅ Successfully handled request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T18:32:48.023Z] 📥 Incoming request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T18:32:48.024Z] ✅ Successfully handled request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T18:32:48.043Z] 📥 Incoming request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T18:32:48.043Z] ✅ Successfully handled request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T18:32:48.062Z] 📥 Incoming request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T18:32:48.063Z] ✅ Successfully handled request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T18:32:48.084Z] 📥 Incoming request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T18:32:48.085Z] ✅ Successfully handled request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T18:32:48.103Z] 📥 Incoming request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T18:32:48.104Z] ✅ Successfully handled request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T18:32:48.123Z] 📥 Incoming request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T18:32:48.124Z] ✅ Successfully handled request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T18:32:48.143Z] 📥 Incoming request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T18:32:48.144Z] ✅ Successfully handled request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T18:32:48.169Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=1920&q=75
+[2025-02-05T18:32:48.172Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=1920&q=75
+[2025-02-05T18:32:48.186Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T18:32:48.187Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T18:32:48.208Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=128&q=75
+[2025-02-05T18:32:48.210Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=128&q=75
+[2025-02-05T18:32:48.227Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=1920&q=75
+[2025-02-05T18:32:48.229Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=1920&q=75
+[2025-02-05T18:32:48.247Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=1920&q=75
+[2025-02-05T18:32:48.249Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=1920&q=75
+[2025-02-05T18:32:48.266Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T18:32:48.274Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T18:32:48.287Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738780368879
+[2025-02-05T18:32:48.292Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738780368879
+[2025-02-05T18:32:48.305Z] 📥 Incoming request: GET /api/products
+[2025-02-05T18:32:48.313Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T18:32:48.327Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T18:32:48.332Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T18:32:48.364Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T18:32:48.371Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T18:32:48.381Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738780368879
+[2025-02-05T18:32:48.386Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738780368879
+[2025-02-05T18:32:48.493Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo_white_bg.5c008c37.png&w=1920&q=75
+[2025-02-05T18:32:48.496Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo_white_bg.5c008c37.png&w=1920&q=75
+[2025-02-05T18:32:48.582Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-05T18:32:48.585Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-05T18:32:54.954Z] 📥 Incoming request: GET /
+[2025-02-05T18:32:54.956Z] ✅ Successfully handled request: GET /
+[2025-02-05T18:32:55.066Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T18:32:55.073Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T18:32:55.086Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738780368879
+[2025-02-05T18:32:55.093Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738780368879
+[2025-02-05T18:32:55.107Z] 📥 Incoming request: GET /api/products
+[2025-02-05T18:32:55.114Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T18:32:55.125Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T18:32:55.131Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T18:32:55.170Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T18:32:55.175Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T18:32:55.184Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738780368879
+[2025-02-05T18:32:55.189Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738780368879
+[2025-02-05T18:33:03.822Z] 📥 Incoming request: GET /backoffice
+[2025-02-05T18:33:03.826Z] ✅ Successfully handled request: GET /backoffice
+[2025-02-05T18:33:03.904Z] 📥 Incoming request: GET /_next/static/chunks/app/backoffice/layout-01e193b288f96d2d.js
+[2025-02-05T18:33:03.905Z] ✅ Successfully handled request: GET /_next/static/chunks/app/backoffice/layout-01e193b288f96d2d.js
+[2025-02-05T18:33:03.922Z] 📥 Incoming request: GET /_next/static/chunks/ca377847-53fb95a7dca42d55.js
+[2025-02-05T18:33:03.923Z] ✅ Successfully handled request: GET /_next/static/chunks/ca377847-53fb95a7dca42d55.js
+[2025-02-05T18:33:03.942Z] 📥 Incoming request: GET /_next/static/chunks/8759-e966647eac5e2198.js
+[2025-02-05T18:33:03.943Z] ✅ Successfully handled request: GET /_next/static/chunks/8759-e966647eac5e2198.js
+[2025-02-05T18:33:03.962Z] 📥 Incoming request: GET /_next/static/chunks/app/backoffice/page-e42b435c367fcff8.js
+[2025-02-05T18:33:03.963Z] ✅ Successfully handled request: GET /_next/static/chunks/app/backoffice/page-e42b435c367fcff8.js
+[2025-02-05T18:33:04.011Z] 📥 Incoming request: GET /api/users
+[2025-02-05T18:33:04.017Z] ✅ Successfully handled request: GET /api/users
+[2025-02-05T18:33:04.028Z] 📥 Incoming request: GET /api/commande
+[2025-02-05T18:33:04.035Z] ✅ Successfully handled request: GET /api/commande
+[2025-02-05T18:33:04.047Z] 📥 Incoming request: GET /api/products
+[2025-02-05T18:33:04.053Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T18:33:04.067Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T18:33:04.074Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T18:33:04.087Z] 📥 Incoming request: GET /?_rsc=bpufw
+[2025-02-05T18:33:04.091Z] ✅ Successfully handled request: GET /?_rsc=bpufw
+[2025-02-05T18:33:04.111Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T18:33:04.118Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T18:33:05.299Z] 📥 Incoming request: GET /backoffice/utilisateur
+[2025-02-05T18:33:05.302Z] ✅ Successfully handled request: GET /backoffice/utilisateur
+[2025-02-05T18:33:05.387Z] 📥 Incoming request: GET /_next/static/chunks/app/backoffice/utilisateur/page-bed721a907a016fc.js
+[2025-02-05T18:33:05.388Z] ✅ Successfully handled request: GET /_next/static/chunks/app/backoffice/utilisateur/page-bed721a907a016fc.js
+[2025-02-05T18:33:05.422Z] 📥 Incoming request: GET /api/users
+[2025-02-05T18:33:05.429Z] ✅ Successfully handled request: GET /api/users
+[2025-02-05T18:33:05.441Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T18:33:05.447Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T18:33:05.460Z] 📥 Incoming request: GET /?_rsc=rdrfe
+[2025-02-05T18:33:05.462Z] ✅ Successfully handled request: GET /?_rsc=rdrfe
+[2025-02-05T18:33:05.495Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T18:33:05.502Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T18:33:05.948Z] 📥 Incoming request: GET /backoffice/product
+[2025-02-05T18:33:05.954Z] ✅ Successfully handled request: GET /backoffice/product
+[2025-02-05T18:33:06.046Z] 📥 Incoming request: GET /_next/static/chunks/app/backoffice/product/page-11ae6a684000d93b.js
+[2025-02-05T18:33:06.047Z] ✅ Successfully handled request: GET /_next/static/chunks/app/backoffice/product/page-11ae6a684000d93b.js
+[2025-02-05T18:33:06.084Z] 📥 Incoming request: GET /api/products
+[2025-02-05T18:33:06.091Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T18:33:06.103Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T18:33:06.109Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T18:33:06.121Z] 📥 Incoming request: GET /?_rsc=1icq6
+[2025-02-05T18:33:06.124Z] ✅ Successfully handled request: GET /?_rsc=1icq6
+[2025-02-05T18:33:06.147Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T18:33:06.153Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T18:33:06.519Z] 📥 Incoming request: GET /backoffice/recette
+[2025-02-05T18:33:06.522Z] ✅ Successfully handled request: GET /backoffice/recette
+[2025-02-05T18:33:06.606Z] 📥 Incoming request: GET /_next/static/chunks/app/backoffice/recette/page-446b16c4dbf8997e.js
+[2025-02-05T18:33:06.607Z] ✅ Successfully handled request: GET /_next/static/chunks/app/backoffice/recette/page-446b16c4dbf8997e.js
+[2025-02-05T18:33:06.640Z] 📥 Incoming request: GET /api/recettes
+[2025-02-05T18:33:06.648Z] ✅ Successfully handled request: GET /api/recettes
+[2025-02-05T18:33:06.659Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T18:33:06.666Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T18:33:06.680Z] 📥 Incoming request: GET /?_rsc=3vt1l
+[2025-02-05T18:33:06.682Z] ✅ Successfully handled request: GET /?_rsc=3vt1l
+[2025-02-05T18:33:06.704Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T18:33:06.710Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T18:33:07.119Z] 📥 Incoming request: GET /backoffice/commande
+[2025-02-05T18:33:07.123Z] ✅ Successfully handled request: GET /backoffice/commande
+[2025-02-05T18:33:07.205Z] 📥 Incoming request: GET /_next/static/chunks/app/backoffice/commande/page-0915cc8e6486724d.js
+[2025-02-05T18:33:07.206Z] ✅ Successfully handled request: GET /_next/static/chunks/app/backoffice/commande/page-0915cc8e6486724d.js
+[2025-02-05T18:33:07.240Z] 📥 Incoming request: GET /api/commande
+[2025-02-05T18:33:07.247Z] ✅ Successfully handled request: GET /api/commande
+[2025-02-05T18:33:07.258Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T18:33:07.264Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T18:33:07.278Z] 📥 Incoming request: GET /?_rsc=1bx8x
+[2025-02-05T18:33:07.281Z] ✅ Successfully handled request: GET /?_rsc=1bx8x
+[2025-02-05T18:33:07.304Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T18:33:07.311Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T18:33:07.605Z] 📥 Incoming request: GET /backoffice/categorie
+[2025-02-05T18:33:07.609Z] ✅ Successfully handled request: GET /backoffice/categorie
+[2025-02-05T18:33:07.691Z] 📥 Incoming request: GET /_next/static/chunks/app/backoffice/categorie/page-b02d723526bb7bb9.js
+[2025-02-05T18:33:07.693Z] ✅ Successfully handled request: GET /_next/static/chunks/app/backoffice/categorie/page-b02d723526bb7bb9.js
+[2025-02-05T18:33:07.727Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T18:33:07.734Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T18:33:07.746Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T18:33:07.752Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T18:33:07.767Z] 📥 Incoming request: GET /?_rsc=12g1n
+[2025-02-05T18:33:07.769Z] ✅ Successfully handled request: GET /?_rsc=12g1n
+[2025-02-05T18:33:07.786Z] 📥 Incoming request: GET /backoffice/categorie/add?_rsc=12g1n
+[2025-02-05T18:33:07.790Z] ✅ Successfully handled request: GET /backoffice/categorie/add?_rsc=12g1n
+[2025-02-05T18:33:07.811Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T18:33:07.819Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T18:33:07.838Z] 📥 Incoming request: GET /_next/static/chunks/app/backoffice/categorie/add/page-03fd8d37a0f26971.js
+[2025-02-05T18:33:07.840Z] ✅ Successfully handled request: GET /_next/static/chunks/app/backoffice/categorie/add/page-03fd8d37a0f26971.js
+[2025-02-05T18:33:08.098Z] 📥 Incoming request: GET /backoffice/ingredient
+[2025-02-05T18:33:08.102Z] ✅ Successfully handled request: GET /backoffice/ingredient
+[2025-02-05T18:33:08.209Z] 📥 Incoming request: GET /_next/static/chunks/app/backoffice/ingredient/page-1ad8ccd002ba554f.js
+[2025-02-05T18:33:08.210Z] ✅ Successfully handled request: GET /_next/static/chunks/app/backoffice/ingredient/page-1ad8ccd002ba554f.js
+[2025-02-05T18:33:08.244Z] 📥 Incoming request: GET /api/ingredients
+[2025-02-05T18:33:08.251Z] ✅ Successfully handled request: GET /api/ingredients
+[2025-02-05T18:33:08.263Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T18:33:08.269Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T18:33:08.284Z] 📥 Incoming request: GET /?_rsc=12dk5
+[2025-02-05T18:33:08.287Z] ✅ Successfully handled request: GET /?_rsc=12dk5
+[2025-02-05T18:33:08.329Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T18:33:08.336Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T18:33:09.026Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738780368879
+[2025-02-05T18:33:09.032Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738780368879
+[2025-02-05T18:33:09.045Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T18:33:09.051Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T18:33:09.064Z] 📥 Incoming request: GET /api/products
+[2025-02-05T18:33:09.072Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T18:33:09.085Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738780368879
+[2025-02-05T18:33:09.094Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738780368879
+[2025-02-05T18:33:18.288Z] 📥 Incoming request: GET /snap-and-cook
+[2025-02-05T18:33:18.291Z] ✅ Successfully handled request: GET /snap-and-cook
+[2025-02-05T18:33:18.396Z] 📥 Incoming request: GET /_next/static/chunks/app/snap-and-cook/page-83af885a01693d05.js
+[2025-02-05T18:33:18.397Z] ✅ Successfully handled request: GET /_next/static/chunks/app/snap-and-cook/page-83af885a01693d05.js
+[2025-02-05T18:33:18.434Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T18:33:18.441Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T18:33:18.453Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738780368879
+[2025-02-05T18:33:18.458Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738780368879
+[2025-02-05T18:33:18.472Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T18:33:18.477Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T18:33:18.510Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T18:33:18.515Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T18:33:18.526Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738780368879
+[2025-02-05T18:33:18.530Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738780368879
+[2025-02-05T18:33:21.369Z] 📥 Incoming request: GET /
+[2025-02-05T18:33:21.371Z] ✅ Successfully handled request: GET /
+[2025-02-05T18:33:21.468Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T18:33:21.474Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T18:33:21.486Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738780368879
+[2025-02-05T18:33:21.492Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738780368879
+[2025-02-05T18:33:21.506Z] 📥 Incoming request: GET /api/products
+[2025-02-05T18:33:21.511Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T18:33:21.526Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T18:33:21.532Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T18:33:21.564Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T18:33:21.570Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T18:33:21.579Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738780368879
+[2025-02-05T18:33:21.585Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738780368879
+[2025-02-05T18:59:42.310Z] 📥 Incoming request: GET /
+[2025-02-05T18:59:42.312Z] ✅ Successfully handled request: GET /
+[2025-02-05T18:59:42.355Z] 📥 Incoming request: GET /
+[2025-02-05T18:59:42.357Z] ✅ Successfully handled request: GET /
+[2025-02-05T18:59:42.374Z] 📥 Incoming request: GET /
+[2025-02-05T18:59:42.377Z] ✅ Successfully handled request: GET /
+[2025-02-05T18:59:42.798Z] 📥 Incoming request: GET /
+[2025-02-05T18:59:42.800Z] ✅ Successfully handled request: GET /
+[2025-02-05T18:59:43.123Z] 📥 Incoming request: GET /
+[2025-02-05T18:59:43.125Z] ✅ Successfully handled request: GET /
+[2025-02-05T18:59:43.696Z] 📥 Incoming request: GET /
+[2025-02-05T18:59:43.698Z] ✅ Successfully handled request: GET /
+[2025-02-05T18:59:43.876Z] 📥 Incoming request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T18:59:43.878Z] ✅ Successfully handled request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T18:59:44.212Z] 📥 Incoming request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T18:59:44.214Z] ✅ Successfully handled request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T18:59:44.231Z] 📥 Incoming request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T18:59:44.232Z] ✅ Successfully handled request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T18:59:44.364Z] 📥 Incoming request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T18:59:44.366Z] ✅ Successfully handled request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T18:59:44.382Z] 📥 Incoming request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T18:59:44.383Z] ✅ Successfully handled request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T18:59:44.402Z] 📥 Incoming request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T18:59:44.403Z] ✅ Successfully handled request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T18:59:44.451Z] 📥 Incoming request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T18:59:44.452Z] ✅ Successfully handled request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T18:59:44.471Z] 📥 Incoming request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T18:59:44.472Z] ✅ Successfully handled request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T18:59:44.567Z] 📥 Incoming request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T18:59:44.568Z] ✅ Successfully handled request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T18:59:44.586Z] 📥 Incoming request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T18:59:44.587Z] ✅ Successfully handled request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T18:59:44.612Z] 📥 Incoming request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T18:59:44.614Z] ✅ Successfully handled request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T18:59:44.721Z] 📥 Incoming request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T18:59:44.722Z] ✅ Successfully handled request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T18:59:44.750Z] 📥 Incoming request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T18:59:44.751Z] ✅ Successfully handled request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T18:59:44.773Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=640&q=75
+[2025-02-05T18:59:44.775Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=640&q=75
+[2025-02-05T18:59:44.794Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T18:59:44.795Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T18:59:44.884Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=64&q=75
+[2025-02-05T18:59:44.885Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=64&q=75
+[2025-02-05T18:59:44.897Z] 📥 Incoming request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T18:59:44.898Z] ✅ Successfully handled request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T18:59:44.918Z] 📥 Incoming request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T18:59:44.918Z] ✅ Successfully handled request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T18:59:44.938Z] 📥 Incoming request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T18:59:44.938Z] ✅ Successfully handled request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T18:59:45.048Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=640&q=75
+[2025-02-05T18:59:45.049Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=640&q=75
+[2025-02-05T18:59:45.159Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=828&q=75
+[2025-02-05T18:59:45.161Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=828&q=75
+[2025-02-05T18:59:45.495Z] 📥 Incoming request: GET /
+[2025-02-05T18:59:45.497Z] ✅ Successfully handled request: GET /
+[2025-02-05T18:59:45.744Z] 📥 Incoming request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T18:59:45.745Z] ✅ Successfully handled request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T18:59:46.387Z] 📥 Incoming request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T18:59:46.388Z] ✅ Successfully handled request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T18:59:46.406Z] 📥 Incoming request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T18:59:46.407Z] ✅ Successfully handled request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T18:59:46.879Z] 📥 Incoming request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T18:59:46.880Z] ✅ Successfully handled request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T18:59:46.899Z] 📥 Incoming request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T18:59:46.901Z] ✅ Successfully handled request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T18:59:46.918Z] 📥 Incoming request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T18:59:46.919Z] ✅ Successfully handled request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T18:59:46.938Z] 📥 Incoming request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T18:59:46.939Z] ✅ Successfully handled request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T18:59:46.958Z] 📥 Incoming request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T18:59:46.959Z] ✅ Successfully handled request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T18:59:47.309Z] 📥 Incoming request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T18:59:47.311Z] ✅ Successfully handled request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T18:59:47.555Z] 📥 Incoming request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T18:59:47.556Z] ✅ Successfully handled request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T18:59:47.574Z] 📥 Incoming request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T18:59:47.574Z] ✅ Successfully handled request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T18:59:47.593Z] 📥 Incoming request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T18:59:47.594Z] ✅ Successfully handled request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T18:59:47.613Z] 📥 Incoming request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T18:59:47.614Z] ✅ Successfully handled request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T18:59:47.704Z] 📥 Incoming request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T18:59:47.705Z] ✅ Successfully handled request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T18:59:47.723Z] 📥 Incoming request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T18:59:47.724Z] ✅ Successfully handled request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T18:59:48.089Z] 📥 Incoming request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T18:59:48.090Z] ✅ Successfully handled request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T18:59:48.111Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=64&q=75
+[2025-02-05T18:59:48.112Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=64&q=75
+[2025-02-05T18:59:48.132Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=640&q=75
+[2025-02-05T18:59:48.132Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=640&q=75
+[2025-02-05T18:59:48.150Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T18:59:48.150Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T18:59:48.170Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=640&q=75
+[2025-02-05T18:59:48.170Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=640&q=75
+[2025-02-05T18:59:48.192Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=828&q=75
+[2025-02-05T18:59:48.192Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=828&q=75
+[2025-02-05T19:00:05.882Z] 📥 Incoming request: GET /
+[2025-02-05T19:00:05.884Z] ✅ Successfully handled request: GET /
+[2025-02-05T19:00:06.404Z] 📥 Incoming request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T19:00:06.405Z] ✅ Successfully handled request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T19:00:06.418Z] 📥 Incoming request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T19:00:06.419Z] ✅ Successfully handled request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T19:00:06.513Z] 📥 Incoming request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T19:00:06.514Z] ✅ Successfully handled request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T19:00:06.539Z] 📥 Incoming request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T19:00:06.541Z] ✅ Successfully handled request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T19:00:06.560Z] 📥 Incoming request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T19:00:06.561Z] ✅ Successfully handled request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T19:00:06.579Z] 📥 Incoming request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T19:00:06.579Z] ✅ Successfully handled request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T19:00:06.719Z] 📥 Incoming request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T19:00:06.720Z] ✅ Successfully handled request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T19:00:06.739Z] 📥 Incoming request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T19:00:06.739Z] ✅ Successfully handled request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T19:00:06.818Z] 📥 Incoming request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T19:00:06.818Z] ✅ Successfully handled request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T19:00:06.907Z] 📥 Incoming request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T19:00:06.908Z] ✅ Successfully handled request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T19:00:06.926Z] 📥 Incoming request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T19:00:06.927Z] ✅ Successfully handled request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T19:00:06.991Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=1920&q=75
+[2025-02-05T19:00:06.992Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=1920&q=75
+[2025-02-05T19:00:07.011Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T19:00:07.012Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T19:00:07.030Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=128&q=75
+[2025-02-05T19:00:07.030Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=128&q=75
+[2025-02-05T19:00:07.066Z] 📥 Incoming request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T19:00:07.068Z] ✅ Successfully handled request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T19:00:07.086Z] 📥 Incoming request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T19:00:07.087Z] ✅ Successfully handled request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T19:00:07.152Z] 📥 Incoming request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T19:00:07.153Z] ✅ Successfully handled request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T19:00:07.187Z] 📥 Incoming request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T19:00:07.189Z] ✅ Successfully handled request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T19:00:07.228Z] 📥 Incoming request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T19:00:07.229Z] ✅ Successfully handled request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T19:00:07.254Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=1920&q=75
+[2025-02-05T19:00:07.255Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=1920&q=75
+[2025-02-05T19:00:07.328Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=1920&q=75
+[2025-02-05T19:00:07.329Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=1920&q=75
+[2025-02-05T19:00:09.733Z] 📥 Incoming request: GET /
+[2025-02-05T19:00:09.734Z] ✅ Successfully handled request: GET /
+[2025-02-05T19:00:10.516Z] 📥 Incoming request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T19:00:10.518Z] ✅ Successfully handled request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T19:00:10.531Z] 📥 Incoming request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T19:00:10.532Z] ✅ Successfully handled request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T19:00:10.713Z] 📥 Incoming request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T19:00:10.715Z] ✅ Successfully handled request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T19:00:10.732Z] 📥 Incoming request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T19:00:10.733Z] ✅ Successfully handled request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T19:00:10.753Z] 📥 Incoming request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T19:00:10.754Z] ✅ Successfully handled request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T19:00:10.772Z] 📥 Incoming request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T19:00:10.773Z] ✅ Successfully handled request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T19:00:10.792Z] 📥 Incoming request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T19:00:10.793Z] ✅ Successfully handled request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T19:00:10.835Z] 📥 Incoming request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T19:00:10.836Z] ✅ Successfully handled request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T19:00:10.875Z] 📥 Incoming request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T19:00:10.876Z] ✅ Successfully handled request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T19:00:10.980Z] 📥 Incoming request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T19:00:10.981Z] ✅ Successfully handled request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T19:00:10.999Z] 📥 Incoming request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T19:00:11.000Z] ✅ Successfully handled request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T19:00:11.024Z] 📥 Incoming request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T19:00:11.025Z] ✅ Successfully handled request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T19:00:11.044Z] 📥 Incoming request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T19:00:11.045Z] ✅ Successfully handled request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T19:00:11.146Z] 📥 Incoming request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T19:00:11.147Z] ✅ Successfully handled request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T19:00:11.192Z] 📥 Incoming request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T19:00:11.195Z] ✅ Successfully handled request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T19:00:11.211Z] 📥 Incoming request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T19:00:11.212Z] ✅ Successfully handled request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T19:00:11.264Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T19:00:11.265Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T19:00:11.282Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=1920&q=75
+[2025-02-05T19:00:11.283Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=1920&q=75
+[2025-02-05T19:00:11.319Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=128&q=75
+[2025-02-05T19:00:11.320Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=128&q=75
+[2025-02-05T19:00:11.341Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=1920&q=75
+[2025-02-05T19:00:11.342Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=1920&q=75
+[2025-02-05T19:00:11.359Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=1920&q=75
+[2025-02-05T19:00:11.359Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=1920&q=75
+[2025-02-05T19:00:20.860Z] 📥 Incoming request: GET /
+[2025-02-05T19:00:20.862Z] ✅ Successfully handled request: GET /
+[2025-02-05T19:00:21.155Z] 📥 Incoming request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T19:00:21.156Z] ✅ Successfully handled request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T19:00:21.662Z] 📥 Incoming request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T19:00:21.663Z] ✅ Successfully handled request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T19:00:21.862Z] 📥 Incoming request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T19:00:21.863Z] ✅ Successfully handled request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T19:00:21.882Z] 📥 Incoming request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T19:00:21.883Z] ✅ Successfully handled request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T19:00:21.901Z] 📥 Incoming request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T19:00:21.902Z] ✅ Successfully handled request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T19:00:21.921Z] 📥 Incoming request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T19:00:21.922Z] ✅ Successfully handled request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T19:00:21.942Z] 📥 Incoming request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T19:00:21.943Z] ✅ Successfully handled request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T19:00:21.963Z] 📥 Incoming request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T19:00:21.963Z] ✅ Successfully handled request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T19:00:22.018Z] 📥 Incoming request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T19:00:22.019Z] ✅ Successfully handled request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T19:00:22.043Z] 📥 Incoming request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T19:00:22.044Z] ✅ Successfully handled request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T19:00:22.182Z] 📥 Incoming request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T19:00:22.183Z] ✅ Successfully handled request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T19:00:22.202Z] 📥 Incoming request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T19:00:22.203Z] ✅ Successfully handled request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T19:00:22.221Z] 📥 Incoming request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T19:00:22.222Z] ✅ Successfully handled request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T19:00:22.287Z] 📥 Incoming request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T19:00:22.289Z] ✅ Successfully handled request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T19:00:22.342Z] 📥 Incoming request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T19:00:22.343Z] ✅ Successfully handled request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T19:00:22.376Z] 📥 Incoming request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T19:00:22.377Z] ✅ Successfully handled request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T19:00:22.792Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T19:00:22.794Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T19:00:22.812Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=640&q=75
+[2025-02-05T19:00:22.813Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=640&q=75
+[2025-02-05T19:00:22.831Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=640&q=75
+[2025-02-05T19:00:22.832Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=640&q=75
+[2025-02-05T19:00:22.851Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=64&q=75
+[2025-02-05T19:00:22.852Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=64&q=75
+[2025-02-05T19:00:22.980Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=828&q=75
+[2025-02-05T19:00:22.982Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=828&q=75
+[2025-02-05T19:00:39.645Z] 📥 Incoming request: GET /
+[2025-02-05T19:00:39.647Z] ✅ Successfully handled request: GET /
+[2025-02-05T19:00:40.012Z] 📥 Incoming request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T19:00:40.014Z] ✅ Successfully handled request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T19:00:40.333Z] 📥 Incoming request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T19:00:40.336Z] ✅ Successfully handled request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T19:00:40.352Z] 📥 Incoming request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T19:00:40.353Z] ✅ Successfully handled request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T19:00:40.373Z] 📥 Incoming request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T19:00:40.374Z] ✅ Successfully handled request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T19:00:40.394Z] 📥 Incoming request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T19:00:40.395Z] ✅ Successfully handled request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T19:00:40.413Z] 📥 Incoming request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T19:00:40.414Z] ✅ Successfully handled request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T19:00:40.433Z] 📥 Incoming request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T19:00:40.434Z] ✅ Successfully handled request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T19:00:40.838Z] 📥 Incoming request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T19:00:40.839Z] ✅ Successfully handled request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T19:00:40.856Z] 📥 Incoming request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T19:00:40.857Z] ✅ Successfully handled request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T19:00:40.877Z] 📥 Incoming request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T19:00:40.878Z] ✅ Successfully handled request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T19:00:40.897Z] 📥 Incoming request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T19:00:40.898Z] ✅ Successfully handled request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T19:00:40.917Z] 📥 Incoming request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T19:00:40.918Z] ✅ Successfully handled request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T19:00:40.937Z] 📥 Incoming request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T19:00:40.938Z] ✅ Successfully handled request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T19:00:40.999Z] 📥 Incoming request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T19:00:41.000Z] ✅ Successfully handled request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T19:00:41.290Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=1920&q=75
+[2025-02-05T19:00:41.291Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=1920&q=75
+[2025-02-05T19:00:41.310Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=128&q=75
+[2025-02-05T19:00:41.311Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=128&q=75
+[2025-02-05T19:00:41.329Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T19:00:41.330Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T19:00:41.343Z] 📥 Incoming request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T19:00:41.344Z] ✅ Successfully handled request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T19:00:41.362Z] 📥 Incoming request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T19:00:41.363Z] ✅ Successfully handled request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T19:00:41.387Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=1920&q=75
+[2025-02-05T19:00:41.388Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=1920&q=75
+[2025-02-05T19:00:41.455Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=1920&q=75
+[2025-02-05T19:00:41.455Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=1920&q=75
+[2025-02-05T19:30:20.006Z] 🚀 Next.js app is being prepared...
+[2025-02-05T19:30:20.016Z] ✅ Server ready at http://localhost:3000
+[2025-02-05T19:30:20.534Z] 📥 Incoming request: GET /
+[2025-02-05T19:30:20.572Z] ✅ Successfully handled request: GET /
+[2025-02-05T19:30:27.072Z] 📥 Incoming request: GET /
+[2025-02-05T19:30:27.075Z] ✅ Successfully handled request: GET /
+[2025-02-05T19:30:40.536Z] 🚀 Next.js app is being prepared...
+[2025-02-05T19:30:40.551Z] ✅ Server ready at http://localhost:3000
+[2025-02-05T19:30:41.004Z] 📥 Incoming request: GET /
+[2025-02-05T19:30:41.040Z] ✅ Successfully handled request: GET /
+[2025-02-05T19:30:42.281Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T19:30:42.318Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T19:30:42.319Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:30:42.330Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:30:42.330Z] 📥 Incoming request: GET /api/products
+[2025-02-05T19:30:42.337Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T19:30:42.339Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T19:30:42.348Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T19:30:42.851Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T19:30:42.858Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T19:30:42.909Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:30:42.915Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:38:35.098Z] 🚀 Next.js app is being prepared...
+[2025-02-05T19:38:35.106Z] ✅ Server ready at http://localhost:3000
+[2025-02-05T19:38:35.575Z] 📥 Incoming request: GET /
+[2025-02-05T19:38:35.610Z] ✅ Successfully handled request: GET /
+[2025-02-05T19:38:36.564Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-05T19:38:36.580Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-05T19:38:36.689Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T19:38:36.722Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T19:38:36.724Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:38:36.733Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:38:36.734Z] 📥 Incoming request: GET /api/products
+[2025-02-05T19:38:36.741Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T19:38:36.747Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T19:38:36.755Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T19:38:36.809Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T19:38:36.815Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T19:38:36.882Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:38:36.887Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:43:49.654Z] 🚀 Next.js app is being prepared...
+[2025-02-05T19:43:49.670Z] ✅ Server ready at http://localhost:3000
+[2025-02-05T19:43:50.140Z] 📥 Incoming request: GET /
+[2025-02-05T19:43:50.179Z] ✅ Successfully handled request: GET /
+[2025-02-05T19:43:50.324Z] 📥 Incoming request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T19:43:50.330Z] ✅ Successfully handled request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T19:43:50.337Z] 📥 Incoming request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T19:43:50.339Z] ✅ Successfully handled request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T19:43:50.357Z] 📥 Incoming request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T19:43:50.359Z] ✅ Successfully handled request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T19:43:50.377Z] 📥 Incoming request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T19:43:50.380Z] ✅ Successfully handled request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T19:43:50.397Z] 📥 Incoming request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T19:43:50.399Z] ✅ Successfully handled request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T19:43:50.417Z] 📥 Incoming request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T19:43:50.419Z] ✅ Successfully handled request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T19:43:50.438Z] 📥 Incoming request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T19:43:50.440Z] ✅ Successfully handled request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T19:43:50.456Z] 📥 Incoming request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T19:43:50.458Z] ✅ Successfully handled request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T19:43:50.478Z] 📥 Incoming request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T19:43:50.479Z] ✅ Successfully handled request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T19:43:50.497Z] 📥 Incoming request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T19:43:50.499Z] ✅ Successfully handled request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T19:43:50.517Z] 📥 Incoming request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T19:43:50.519Z] ✅ Successfully handled request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T19:43:50.536Z] 📥 Incoming request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T19:43:50.538Z] ✅ Successfully handled request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T19:43:50.558Z] 📥 Incoming request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T19:43:50.559Z] ✅ Successfully handled request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T19:43:50.579Z] 📥 Incoming request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T19:43:50.581Z] ✅ Successfully handled request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T19:43:50.598Z] 📥 Incoming request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T19:43:50.599Z] ✅ Successfully handled request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T19:43:50.617Z] 📥 Incoming request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T19:43:50.618Z] ✅ Successfully handled request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T19:43:50.644Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=1920&q=75
+[2025-02-05T19:43:50.663Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=1920&q=75
+[2025-02-05T19:43:50.665Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T19:43:50.668Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T19:43:50.683Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=128&q=75
+[2025-02-05T19:43:50.685Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=128&q=75
+[2025-02-05T19:43:50.703Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=1920&q=75
+[2025-02-05T19:43:50.705Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=1920&q=75
+[2025-02-05T19:43:50.722Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=1920&q=75
+[2025-02-05T19:43:50.724Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=1920&q=75
+[2025-02-05T19:43:50.904Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-05T19:43:50.918Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-05T19:43:51.524Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T19:43:51.556Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T19:43:51.557Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:43:51.564Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:43:51.564Z] 📥 Incoming request: GET /api/products
+[2025-02-05T19:43:51.571Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T19:43:51.578Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T19:43:51.585Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T19:43:51.629Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T19:43:51.636Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T19:43:51.672Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:43:51.677Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:43:51.691Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo_white_bg.5c008c37.png&w=1920&q=75
+[2025-02-05T19:43:51.694Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo_white_bg.5c008c37.png&w=1920&q=75
+[2025-02-05T19:44:11.006Z] 📥 Incoming request: GET /
+[2025-02-05T19:44:11.011Z] ✅ Successfully handled request: GET /
+[2025-02-05T19:44:11.812Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-05T19:44:11.817Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-05T19:44:11.831Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T19:44:11.841Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T19:44:11.855Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:44:11.863Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:44:11.871Z] 📥 Incoming request: GET /api/products
+[2025-02-05T19:44:11.879Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T19:44:11.891Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T19:44:11.898Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T19:44:11.942Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T19:44:11.953Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T19:44:12.049Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:44:12.056Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:44:30.618Z] 📥 Incoming request: GET /
+[2025-02-05T19:44:30.621Z] ✅ Successfully handled request: GET /
+[2025-02-05T19:44:31.057Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-05T19:44:31.061Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-05T19:44:31.074Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T19:44:31.080Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T19:44:31.094Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:44:31.100Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:44:31.113Z] 📥 Incoming request: GET /api/products
+[2025-02-05T19:44:31.118Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T19:44:31.132Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T19:44:31.140Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T19:44:31.183Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T19:44:31.188Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T19:44:31.234Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:44:31.240Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:49:10.657Z] 🚀 Next.js app is being prepared...
+[2025-02-05T19:49:10.666Z] ✅ Server ready at http://localhost:3000
+[2025-02-05T19:49:11.150Z] 📥 Incoming request: GET /
+[2025-02-05T19:49:11.182Z] 📥 Incoming request: GET /
+[2025-02-05T19:49:11.184Z] 📥 Incoming request: GET /
+[2025-02-05T19:49:11.187Z] 📥 Incoming request: GET /
+[2025-02-05T19:49:11.188Z] 📥 Incoming request: GET /
+[2025-02-05T19:49:11.191Z] 📥 Incoming request: GET /
+[2025-02-05T19:49:11.193Z] 📥 Incoming request: GET /
+[2025-02-05T19:49:11.194Z] 📥 Incoming request: GET /
+[2025-02-05T19:49:11.196Z] 📥 Incoming request: GET /
+[2025-02-05T19:49:11.212Z] ✅ Successfully handled request: GET /
+[2025-02-05T19:49:11.212Z] ✅ Successfully handled request: GET /
+[2025-02-05T19:49:11.212Z] ✅ Successfully handled request: GET /
+[2025-02-05T19:49:11.212Z] ✅ Successfully handled request: GET /
+[2025-02-05T19:49:11.212Z] ✅ Successfully handled request: GET /
+[2025-02-05T19:49:11.212Z] ✅ Successfully handled request: GET /
+[2025-02-05T19:49:11.212Z] ✅ Successfully handled request: GET /
+[2025-02-05T19:49:11.212Z] ✅ Successfully handled request: GET /
+[2025-02-05T19:49:11.212Z] ✅ Successfully handled request: GET /
+[2025-02-05T19:49:11.354Z] 📥 Incoming request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T19:49:11.361Z] ✅ Successfully handled request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T19:49:11.490Z] 📥 Incoming request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T19:49:11.492Z] ✅ Successfully handled request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T19:49:11.508Z] 📥 Incoming request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T19:49:11.511Z] ✅ Successfully handled request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T19:49:11.528Z] 📥 Incoming request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T19:49:11.531Z] ✅ Successfully handled request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T19:49:11.548Z] 📥 Incoming request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T19:49:11.550Z] ✅ Successfully handled request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T19:49:11.568Z] 📥 Incoming request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T19:49:11.569Z] ✅ Successfully handled request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T19:49:11.589Z] 📥 Incoming request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T19:49:11.590Z] ✅ Successfully handled request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T19:49:11.608Z] 📥 Incoming request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T19:49:11.609Z] ✅ Successfully handled request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T19:49:11.628Z] 📥 Incoming request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T19:49:11.630Z] ✅ Successfully handled request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T19:49:11.648Z] 📥 Incoming request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T19:49:11.650Z] ✅ Successfully handled request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T19:49:11.668Z] 📥 Incoming request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T19:49:11.670Z] ✅ Successfully handled request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T19:49:11.688Z] 📥 Incoming request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T19:49:11.690Z] ✅ Successfully handled request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T19:49:11.708Z] 📥 Incoming request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T19:49:11.710Z] ✅ Successfully handled request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T19:49:11.728Z] 📥 Incoming request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T19:49:11.729Z] ✅ Successfully handled request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T19:49:11.748Z] 📥 Incoming request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T19:49:11.749Z] ✅ Successfully handled request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T19:49:11.768Z] 📥 Incoming request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T19:49:11.770Z] ✅ Successfully handled request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T19:49:11.794Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=1920&q=75
+[2025-02-05T19:49:11.816Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T19:49:11.821Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=1920&q=75
+[2025-02-05T19:49:11.824Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T19:49:11.834Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=128&q=75
+[2025-02-05T19:49:11.837Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=128&q=75
+[2025-02-05T19:49:11.853Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=1920&q=75
+[2025-02-05T19:49:11.857Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=1920&q=75
+[2025-02-05T19:49:11.872Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=1920&q=75
+[2025-02-05T19:49:11.874Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=1920&q=75
+[2025-02-05T19:49:12.770Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-05T19:49:12.788Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-05T19:49:13.005Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T19:49:13.040Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T19:49:13.040Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:49:13.049Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:49:13.050Z] 📥 Incoming request: GET /api/products
+[2025-02-05T19:49:13.057Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T19:49:13.065Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T19:49:13.073Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T19:49:13.130Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T19:49:13.138Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T19:49:13.196Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:49:13.203Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:49:13.224Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo_white_bg.5c008c37.png&w=1920&q=75
+[2025-02-05T19:49:13.228Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo_white_bg.5c008c37.png&w=1920&q=75
+[2025-02-05T19:49:32.891Z] 📥 Incoming request: GET /api/products
+[2025-02-05T19:49:32.897Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T19:49:33.044Z] 📥 Incoming request: GET /_next/static/chunks/framework-1ec85e83ffeb8a74.js
+[2025-02-05T19:49:33.046Z] ✅ Successfully handled request: GET /_next/static/chunks/framework-1ec85e83ffeb8a74.js
+[2025-02-05T19:49:33.064Z] 📥 Incoming request: GET /_next/static/chunks/main-55fe389bc80b3c77.js
+[2025-02-05T19:49:33.065Z] ✅ Successfully handled request: GET /_next/static/chunks/main-55fe389bc80b3c77.js
+[2025-02-05T19:49:33.116Z] 📥 Incoming request: GET /_next/static/chunks/pages/_app-c9ef09d97714d9a0.js
+[2025-02-05T19:49:33.117Z] ✅ Successfully handled request: GET /_next/static/chunks/pages/_app-c9ef09d97714d9a0.js
+[2025-02-05T19:49:33.136Z] 📥 Incoming request: GET /_next/static/chunks/pages/_error-34df4b788d70a0b4.js
+[2025-02-05T19:49:33.137Z] ✅ Successfully handled request: GET /_next/static/chunks/pages/_error-34df4b788d70a0b4.js
+[2025-02-05T19:49:33.156Z] 📥 Incoming request: GET /_next/static/aFlqyQelcJDj_KALa8Oxu/_buildManifest.js
+[2025-02-05T19:49:33.157Z] ✅ Successfully handled request: GET /_next/static/aFlqyQelcJDj_KALa8Oxu/_buildManifest.js
+[2025-02-05T19:49:33.176Z] 📥 Incoming request: GET /_next/static/aFlqyQelcJDj_KALa8Oxu/_ssgManifest.js
+[2025-02-05T19:49:33.177Z] ✅ Successfully handled request: GET /_next/static/aFlqyQelcJDj_KALa8Oxu/_ssgManifest.js
+[2025-02-05T19:49:53.756Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T19:49:53.766Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T19:50:13.364Z] 📥 Incoming request: GET /api/products
+[2025-02-05T19:50:13.373Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T19:53:38.141Z] 🚀 Next.js app is being prepared...
+[2025-02-05T19:53:38.156Z] ✅ Server ready at http://localhost:3000
+[2025-02-05T19:53:38.622Z] 📥 Incoming request: GET /
+[2025-02-05T19:53:38.657Z] ✅ Successfully handled request: GET /
+[2025-02-05T19:53:39.941Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-05T19:53:39.957Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-05T19:53:40.078Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T19:53:40.109Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T19:53:40.111Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:53:40.119Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:53:40.120Z] 📥 Incoming request: GET /api/products
+[2025-02-05T19:53:40.127Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T19:53:40.137Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T19:53:40.145Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T19:53:40.196Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T19:53:40.202Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T19:53:40.275Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T19:53:40.280Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:32:51.521Z] 🚀 Next.js app is being prepared...
+[2025-02-05T20:32:51.529Z] ✅ Server ready at http://localhost:3000
+[2025-02-05T20:32:52.005Z] 📥 Incoming request: GET /
+[2025-02-05T20:32:52.042Z] ✅ Successfully handled request: GET /
+[2025-02-05T20:32:52.571Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-05T20:32:52.588Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-05T20:32:52.600Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T20:32:52.632Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T20:32:52.633Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:32:52.641Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:32:52.642Z] 📥 Incoming request: GET /api/products
+[2025-02-05T20:32:52.649Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T20:32:52.658Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T20:32:52.665Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T20:32:52.705Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T20:32:52.713Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T20:32:52.720Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:32:52.726Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:33:09.221Z] 📥 Incoming request: GET /auth/signin
+[2025-02-05T20:33:09.226Z] ✅ Successfully handled request: GET /auth/signin
+[2025-02-05T20:33:09.406Z] 📥 Incoming request: GET /_next/static/chunks/app/auth/signin/page-d37f45593f6673cc.js
+[2025-02-05T20:33:09.412Z] ✅ Successfully handled request: GET /_next/static/chunks/app/auth/signin/page-d37f45593f6673cc.js
+[2025-02-05T20:33:09.501Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.b043589f.png&w=1920&q=75
+[2025-02-05T20:33:09.518Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fscan_food.d51b7a22.webp&w=1920&q=75
+[2025-02-05T20:33:09.523Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.b043589f.png&w=1920&q=75
+[2025-02-05T20:33:09.525Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fscan_food.d51b7a22.webp&w=1920&q=75
+[2025-02-05T20:33:09.536Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgrocerystore.d9fd3900.webp&w=3840&q=75
+[2025-02-05T20:33:09.538Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgrocerystore.d9fd3900.webp&w=3840&q=75
+[2025-02-05T20:33:09.556Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2FEpidrive.90617c60.webp&w=640&q=75
+[2025-02-05T20:33:09.558Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2FEpidrive.90617c60.webp&w=640&q=75
+[2025-02-05T20:33:09.578Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fproduits-regionaux-et-locaux-nav.182c06d9.webp&w=1200&q=75
+[2025-02-05T20:33:09.580Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fproduits-regionaux-et-locaux-nav.182c06d9.webp&w=1200&q=75
+[2025-02-05T20:33:09.597Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fcharcuterie-et-traiteur.555ba87c.webp&w=1920&q=75
+[2025-02-05T20:33:09.599Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fcharcuterie-et-traiteur.555ba87c.webp&w=1920&q=75
+[2025-02-05T20:33:09.616Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Ffood_presentation.c2cf3030.webp&w=3840&q=75
+[2025-02-05T20:33:09.619Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Ffood_presentation.c2cf3030.webp&w=3840&q=75
+[2025-02-05T20:33:09.636Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fpains-et-patisseries.51c1bfd9.webp&w=1920&q=75
+[2025-02-05T20:33:09.639Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fpains-et-patisseries.51c1bfd9.webp&w=1920&q=75
+[2025-02-05T20:33:09.657Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgrocery_drive.3d9b4de6.webp&w=1920&q=75
+[2025-02-05T20:33:09.660Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgrocery_drive.3d9b4de6.webp&w=1920&q=75
+[2025-02-05T20:33:09.676Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fepicerie-fine-regionale.d42658f7.webp&w=1200&q=75
+[2025-02-05T20:33:09.679Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fepicerie-fine-regionale.d42658f7.webp&w=1200&q=75
+[2025-02-05T20:33:09.697Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Ffood-bak.a104fab5.webp&w=1080&q=75
+[2025-02-05T20:33:09.700Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Ffood-bak.a104fab5.webp&w=1080&q=75
+[2025-02-05T20:33:09.717Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fmarket_bakset.9e372238.webp&w=1080&q=75
+[2025-02-05T20:33:09.719Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fmarket_bakset.9e372238.webp&w=1080&q=75
+[2025-02-05T20:33:09.736Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdrive.f700d9ba.webp&w=3840&q=75
+[2025-02-05T20:33:09.739Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdrive.f700d9ba.webp&w=3840&q=75
+[2025-02-05T20:33:09.756Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T20:33:09.762Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T20:33:09.807Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T20:33:09.813Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T20:33:11.025Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T20:33:11.035Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T20:33:11.377Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T20:33:11.384Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T20:33:14.208Z] 📥 Incoming request: GET /cart
+[2025-02-05T20:33:14.211Z] ✅ Successfully handled request: GET /cart
+[2025-02-05T20:33:14.389Z] 📥 Incoming request: GET /_next/static/chunks/app/cart/page-4b13198d5ab58b6d.js
+[2025-02-05T20:33:14.391Z] ✅ Successfully handled request: GET /_next/static/chunks/app/cart/page-4b13198d5ab58b6d.js
+[2025-02-05T20:33:14.505Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T20:33:14.512Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T20:33:14.524Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:33:14.530Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:33:14.543Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T20:33:14.549Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T20:33:14.564Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:33:14.575Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:33:14.608Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T20:33:14.621Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T20:33:14.622Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:33:14.632Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:33:22.932Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T20:33:22.943Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T20:33:22.992Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T20:33:23.000Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T20:33:32.144Z] 📥 Incoming request: GET /api/products/search?query=pommes
+[2025-02-05T20:33:32.152Z] ✅ Successfully handled request: GET /api/products/search?query=pommes
+[2025-02-05T20:33:33.164Z] 📥 Incoming request: GET /search?query=pommes&_rsc=rxx9e
+[2025-02-05T20:33:33.173Z] ✅ Successfully handled request: GET /search?query=pommes&_rsc=rxx9e
+[2025-02-05T20:33:33.198Z] 📥 Incoming request: GET /_next/static/chunks/9868-00bf08136d1a9377.js
+[2025-02-05T20:33:33.202Z] ✅ Successfully handled request: GET /_next/static/chunks/9868-00bf08136d1a9377.js
+[2025-02-05T20:33:33.216Z] 📥 Incoming request: GET /_next/static/chunks/app/search/page-7813aeccdc445be3.js
+[2025-02-05T20:33:33.218Z] ✅ Successfully handled request: GET /_next/static/chunks/app/search/page-7813aeccdc445be3.js
+[2025-02-05T20:33:33.532Z] 📥 Incoming request: GET /api/products/search?query=pommes
+[2025-02-05T20:33:33.540Z] ✅ Successfully handled request: GET /api/products/search?query=pommes
+[2025-02-05T20:33:35.085Z] 📥 Incoming request: GET /
+[2025-02-05T20:33:35.088Z] ✅ Successfully handled request: GET /
+[2025-02-05T20:33:35.532Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T20:33:35.540Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T20:33:35.551Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:33:35.558Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:33:35.570Z] 📥 Incoming request: GET /api/products
+[2025-02-05T20:33:35.576Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T20:33:35.591Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T20:33:35.598Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T20:33:35.861Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T20:33:35.867Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T20:33:35.883Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:33:35.888Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:35:34.608Z] 📥 Incoming request: GET /
+[2025-02-05T20:35:34.610Z] ✅ Successfully handled request: GET /
+[2025-02-05T20:35:35.106Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T20:35:35.112Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T20:35:35.122Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:35:35.128Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:35:35.142Z] 📥 Incoming request: GET /api/products
+[2025-02-05T20:35:35.148Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T20:35:35.162Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T20:35:35.167Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T20:35:35.407Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-05T20:35:35.412Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-05T20:35:35.442Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T20:35:35.449Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T20:35:35.480Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:35:35.487Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:47:57.601Z] 📥 Incoming request: GET /
+[2025-02-05T20:47:57.603Z] ✅ Successfully handled request: GET /
+[2025-02-05T20:47:57.644Z] 📥 Incoming request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T20:47:57.646Z] ✅ Successfully handled request: GET /_next/static/css/6c9b4c81c62bd900.css
+[2025-02-05T20:47:57.753Z] 📥 Incoming request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T20:47:57.754Z] ✅ Successfully handled request: GET /_next/static/chunks/webpack-96db220e7d39047f.js
+[2025-02-05T20:47:57.771Z] 📥 Incoming request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T20:47:57.773Z] ✅ Successfully handled request: GET /_next/static/chunks/4bd1b696-09371e7442b0b805.js
+[2025-02-05T20:47:57.791Z] 📥 Incoming request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T20:47:57.792Z] ✅ Successfully handled request: GET /_next/static/chunks/1517-37cbf6a238aa917f.js
+[2025-02-05T20:47:57.810Z] 📥 Incoming request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T20:47:57.811Z] ✅ Successfully handled request: GET /_next/static/chunks/main-app-193515ec5bb1313a.js
+[2025-02-05T20:47:57.830Z] 📥 Incoming request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T20:47:57.831Z] ✅ Successfully handled request: GET /_next/static/chunks/c16f53c3-87d69bf053c2590e.js
+[2025-02-05T20:47:57.850Z] 📥 Incoming request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T20:47:57.851Z] ✅ Successfully handled request: GET /_next/static/chunks/2615-9734632c7a79c1b0.js
+[2025-02-05T20:47:57.870Z] 📥 Incoming request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T20:47:57.871Z] ✅ Successfully handled request: GET /_next/static/chunks/5565-7f96b6a128c23b24.js
+[2025-02-05T20:47:57.890Z] 📥 Incoming request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T20:47:57.891Z] ✅ Successfully handled request: GET /_next/static/chunks/7551-1f6b96cac89ce265.js
+[2025-02-05T20:47:57.910Z] 📥 Incoming request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T20:47:57.911Z] ✅ Successfully handled request: GET /_next/static/chunks/2877-1657cc75effbbf76.js
+[2025-02-05T20:47:57.930Z] 📥 Incoming request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T20:47:57.931Z] ✅ Successfully handled request: GET /_next/static/chunks/2234-675980edfb0c9b90.js
+[2025-02-05T20:47:57.950Z] 📥 Incoming request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T20:47:57.951Z] ✅ Successfully handled request: GET /_next/static/chunks/4415-3174de832b8a3e2b.js
+[2025-02-05T20:47:57.970Z] 📥 Incoming request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T20:47:57.972Z] ✅ Successfully handled request: GET /_next/static/chunks/9089-f868d47e5b07b93d.js
+[2025-02-05T20:47:57.990Z] 📥 Incoming request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T20:47:57.991Z] ✅ Successfully handled request: GET /_next/static/chunks/app/layout-e5831d538e8d8e69.js
+[2025-02-05T20:47:58.011Z] 📥 Incoming request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T20:47:58.012Z] ✅ Successfully handled request: GET /_next/static/chunks/8173-4d8b0d33b83c6d48.js
+[2025-02-05T20:47:58.031Z] 📥 Incoming request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T20:47:58.032Z] ✅ Successfully handled request: GET /_next/static/chunks/app/page-048f4ab94da74883.js
+[2025-02-05T20:47:58.056Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=640&q=75
+[2025-02-05T20:47:58.059Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnoel-homepage.e0411975.png&w=640&q=75
+[2025-02-05T20:47:58.076Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T20:47:58.077Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frepas-hiver.9231091c.jpg&w=3840&q=75
+[2025-02-05T20:47:58.095Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=64&q=75
+[2025-02-05T20:47:58.097Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgastronomy.175766ae.webp&w=64&q=75
+[2025-02-05T20:47:58.116Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=828&q=75
+[2025-02-05T20:47:58.117Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadventcalendar.8007b0f6.png&w=828&q=75
+[2025-02-05T20:47:58.135Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=640&q=75
+[2025-02-05T20:47:58.136Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdonation_png.6e775a25.png&w=640&q=75
+[2025-02-05T20:47:58.154Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T20:47:58.158Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T20:47:58.173Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738788478741
+[2025-02-05T20:47:58.177Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738788478741
+[2025-02-05T20:47:58.193Z] 📥 Incoming request: GET /api/products
+[2025-02-05T20:47:58.199Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T20:47:58.213Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T20:47:58.218Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T20:47:58.262Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738788478741
+[2025-02-05T20:47:58.266Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738788478741
+[2025-02-05T20:47:58.296Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T20:47:58.302Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T20:47:58.337Z] 📥 Incoming request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo_white_bg.5c008c37.png&w=750&q=75
+[2025-02-05T20:47:58.338Z] ✅ Successfully handled request: GET /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo_white_bg.5c008c37.png&w=750&q=75
+[2025-02-05T20:47:58.731Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-05T20:47:58.735Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-05T20:50:33.305Z] 📥 Incoming request: GET /
+[2025-02-05T20:50:33.307Z] ✅ Successfully handled request: GET /
+[2025-02-05T20:50:35.216Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-05T20:50:35.221Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-05T20:50:35.290Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T20:50:35.295Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T20:50:35.310Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:50:35.316Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:50:35.328Z] 📥 Incoming request: GET /api/products
+[2025-02-05T20:50:35.332Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T20:50:35.349Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T20:50:35.353Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T20:50:35.519Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T20:50:35.524Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T20:50:35.710Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:50:35.714Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:54:30.634Z] 📥 Incoming request: GET /
+[2025-02-05T20:54:30.636Z] ✅ Successfully handled request: GET /
+[2025-02-05T20:54:32.303Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-05T20:54:32.307Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-05T20:54:32.322Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T20:54:32.328Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T20:54:32.343Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:54:32.348Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:54:32.362Z] 📥 Incoming request: GET /api/products
+[2025-02-05T20:54:32.368Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T20:54:32.382Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T20:54:32.387Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T20:54:32.444Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T20:54:32.449Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-05T20:54:32.480Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:54:32.486Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-05T20:55:16.534Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T20:55:16.539Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T20:56:03.952Z] 📥 Incoming request: GET /api/categories
+[2025-02-05T20:56:03.958Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-05T20:56:09.068Z] 📥 Incoming request: GET /api/categories/produits-regionaux
+[2025-02-05T20:56:09.075Z] ✅ Successfully handled request: GET /api/categories/produits-regionaux
+[2025-02-05T21:18:59.453Z] 📥 Incoming request: GET /api/categories/produits-regionaux
+[2025-02-05T21:18:59.459Z] ✅ Successfully handled request: GET /api/categories/produits-regionaux
+[2025-02-05T21:18:59.773Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-05T21:18:59.776Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-05T21:20:57.092Z] 📥 Incoming request: GET /backoffice
+[2025-02-05T21:20:57.097Z] ✅ Successfully handled request: GET /backoffice
+[2025-02-05T21:20:57.311Z] 📥 Incoming request: GET /_next/static/chunks/app/backoffice/layout-01e193b288f96d2d.js
+[2025-02-05T21:20:57.312Z] ✅ Successfully handled request: GET /_next/static/chunks/app/backoffice/layout-01e193b288f96d2d.js
+[2025-02-05T21:20:57.331Z] 📥 Incoming request: GET /_next/static/chunks/ca377847-53fb95a7dca42d55.js
+[2025-02-05T21:20:57.332Z] ✅ Successfully handled request: GET /_next/static/chunks/ca377847-53fb95a7dca42d55.js
+[2025-02-05T21:20:57.350Z] 📥 Incoming request: GET /_next/static/chunks/8759-e966647eac5e2198.js
+[2025-02-05T21:20:57.351Z] ✅ Successfully handled request: GET /_next/static/chunks/8759-e966647eac5e2198.js
+[2025-02-05T21:20:57.371Z] 📥 Incoming request: GET /_next/static/chunks/app/backoffice/page-e42b435c367fcff8.js
+[2025-02-05T21:20:57.372Z] ✅ Successfully handled request: GET /_next/static/chunks/app/backoffice/page-e42b435c367fcff8.js
+[2025-02-05T21:20:57.490Z] 📥 Incoming request: GET /api/users
+[2025-02-05T21:20:57.496Z] ✅ Successfully handled request: GET /api/users
+[2025-02-05T21:20:57.509Z] 📥 Incoming request: GET /api/commande
+[2025-02-05T21:20:57.514Z] ✅ Successfully handled request: GET /api/commande
+[2025-02-05T21:20:57.529Z] 📥 Incoming request: GET /api/products
+[2025-02-05T21:20:57.533Z] ✅ Successfully handled request: GET /api/products
+[2025-02-05T21:20:57.547Z] 📥 Incoming request: GET /api/auth/session
+[2025-02-05T21:20:57.552Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-05T21:20:57.568Z] 📥 Incoming request: GET /?_rsc=bpufw
+[2025-02-05T21:20:57.570Z] ✅ Successfully handled request: GET /?_rsc=bpufw
+[2025-02-05T21:20:57.591Z] 📥 Incoming request: POST /api/auth/_log
+[2025-02-05T21:20:57.596Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-06T00:55:41.752Z] 🚀 Next.js app is being prepared...
+[2025-02-06T00:55:41.762Z] ✅ Server ready at http://localhost:3000
+[2025-02-06T00:55:42.308Z] 📥 Incoming request: GET /api/categories
+[2025-02-06T00:55:42.375Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-06T01:07:20.345Z] 📥 Incoming request: GET /
+[2025-02-06T01:07:20.360Z] ✅ Successfully handled request: GET /
+[2025-02-06T01:07:20.519Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-06T01:07:20.533Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-06T01:07:20.855Z] 📥 Incoming request: GET /
+[2025-02-06T01:07:20.859Z] ✅ Successfully handled request: GET /
+[2025-02-06T01:07:22.943Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-06T01:07:22.948Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-06T01:10:29.081Z] 📥 Incoming request: GET /api/categories
+[2025-02-06T01:10:29.092Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-06T01:10:29.379Z] 📥 Incoming request: GET /favicon.ico
+[2025-02-06T01:10:29.383Z] ✅ Successfully handled request: GET /favicon.ico
