@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import RecommendedRecettes from "@/components/client/recette/RecommendedRecettes";
-import { Produit, Recette } from "../../../types";
+import { Recette } from "../../../types";
 import AuthModal from "@/components/AuthModal";
 
 type CartItem = {
@@ -20,6 +20,7 @@ type CartItem = {
   prix: number;
 };
 
+
 export default function CartPage() {
   const { status } = useSession();
   const router = useRouter();
@@ -29,8 +30,9 @@ export default function CartPage() {
   const [isLoadingRecettes, setIsLoadingRecettes] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [recommendedRecettes, setRecommendedRecettes] = useState<Recette[]>([]);
-  const [error, setError] = useState<string | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showRecommendedRecettes, setShowRecommendedRecettes] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   /**
    * 🔹 Récupère l'ID de session (ou le crée si inexistant)
@@ -63,67 +65,14 @@ export default function CartPage() {
     }
   }, [getOrCreateSessionId]);
 
-  /**
-   * 🔹 Récupère les recettes recommandées
-   */
-  const fetchRecettes = useCallback(async (cartItems: CartItem[]) => {
-    if (cartItems.length === 0) {
-      setRecommendedRecettes([]);
-      return;
-    }
-    setIsLoadingRecettes(true);
+  const handleUpdateQuantity = async (productId: number, newQuantity: number) => {
+    if (newQuantity < 1) return; // Empêche les quantités négatives
+
     try {
-      const response = await fetch("/api/jimmy/recettes", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ panier: cartItems }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error("Erreur API OpenAI:", errorData);
-        setError(errorData.error || "Erreur lors de la réception des recettes.");
-        return;
-      }
-
-      const result = await response.json();
-      if (result?.recipes) {
-        setRecommendedRecettes(result.recipes);
-      } else {
-        setRecommendedRecettes([]);
-      }
-    } catch (error) {
-      console.error("Erreur lors de la récupération des recettes:", error);
-    } finally {
-      setIsLoadingRecettes(false);
-    }
-  }, []);
-
-  /**
-   * 🔹 Supprime un produit du panier
-   */
-  const handleRemove = async (itemId: number) => {
-    try {
-      const res = await fetch(`/api/cart/${itemId}?sessionId=${sessionId}`, { method: "DELETE" });
-      if (res.ok) {
-        setCartItems((prevItems) => prevItems.filter((item) => item.produit.id !== itemId));
-      } else {
-        console.error("Erreur lors de la suppression de l'article:", res.statusText);
-      }
-    } catch (error) {
-      console.error("Erreur lors de la suppression de l'article:", error);
-    }
-  };
-
-  /**
-   * 🔹 Met à jour la quantité d'un produit
-   */
-  const handleUpdateQuantity = async (itemId: number, quantity: number) => {
-    try {
-      const res = await fetch(`/api/cart/${itemId}`, {
+      const res = await fetch(`/api/cart/${productId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ quantity, sessionId }),
+        body: JSON.stringify({ quantity: newQuantity, sessionId }),
       });
 
       if (res.ok) {
@@ -143,32 +92,60 @@ export default function CartPage() {
     }
   };
 
-  /**
-   * 🔹 Redirige l'utilisateur vers le paiement
-   */
-  const handleCheckout = () => {
-    if (status === "authenticated") {
-      router.push("/checkout");
-    } else {
-      setShowAuthModal(true);
+  const handleRemove = async (productId: number) => {
+    try {
+      const res = await fetch(`/api/cart/${productId}?sessionId=${sessionId}`, {
+        method: "DELETE",
+      });
+
+      if (res.ok) {
+        // Mettre à jour l'état local du panier après suppression
+        setCartItems((prevItems) => prevItems.filter((item) => item.produit.id !== productId));
+      } else {
+        console.error("Erreur lors de la suppression de l'article:", res.statusText);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la suppression de l'article:", error);
     }
   };
+  
+  /**
+   * 🔹 Récupère les recettes recommandées
+   */
+  const fetchRecettes = useCallback(async () => {
+    if (cartItems.length === 0) return;
+    setIsLoadingRecettes(true);
+    try {
+      const response = await fetch("/api/jimmy/recettes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ panier: cartItems }),
+      });
 
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      setShowAuthModal(true);
+      if (!response.ok) {
+        console.error("Erreur lors de la récupération des recettes.");
+        return;
+      }
+
+      const result = await response.json();
+      setRecommendedRecettes(result.recipes);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des recettes:", error);
+    } finally {
+      setIsLoadingRecettes(false);
     }
-  }, [status]);
+  }, [cartItems]);
 
   useEffect(() => {
     fetchCart();
   }, [fetchCart]);
 
   useEffect(() => {
-    if (cartItems.length > 0) {
-      fetchRecettes(cartItems);
+    console.log("Recette sélectionnée :", recommendedRecettes);
+    if (showRecommendedRecettes) {
+      fetchRecettes();
     }
-  }, [cartItems, fetchRecettes]);
+  }, [showRecommendedRecettes]);
 
   const totalAmount = cartItems.reduce((acc, item) => acc + item.prix * item.quantite, 0);
 
@@ -194,18 +171,50 @@ export default function CartPage() {
                 <p className="text-gray-500">{item.produit.description}</p>
                 <p className="mt-2">{item.prix}€ x {item.quantite}</p>
               </div>
-              <button onClick={() => handleRemove(item.produit.id)} className="text-red-500 hover:text-red-700 ml-4">
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => handleUpdateQuantity(item.produit.id, item.quantite - 1)}
+                  className="px-3 py-1 bg-red-500 text-white rounded-md disabled:bg-gray-300"
+                  disabled={item.quantite <= 1}
+                >
+                  -
+                </button>
+                <span className="font-semibold">{item.quantite}</span>
+                <button
+                  onClick={() => handleUpdateQuantity(item.produit.id, item.quantite + 1)}
+                  className="px-3 py-1 bg-blue-600 text-white rounded-md"
+                >
+                  +
+                </button>
+              </div>
+              <button
+                onClick={() => handleRemove(item.produit.id)}
+                className="text-red-500 hover:text-red-700 ml-4"
+              >
                 Supprimer
               </button>
             </div>
           ))}
+
           <div className="text-xl font-bold text-right">Total: {totalAmount.toFixed(2)} €</div>
-          <button onClick={handleCheckout} className="mt-4 bg-orange-300 hover:bg-orange-500 py-2 px-10 rounded-lg">
-            Passer à la caisse
+
+          {/* 🔹 Bouton pour afficher les recettes recommandées */}
+          <button
+            onClick={() => setShowRecommendedRecettes(!showRecommendedRecettes)}
+            className="mt-4 bg-blue-500 hover:bg-blue-700 py-2 px-10 rounded-lg text-white"
+          >
+            {showRecommendedRecettes ? "Masquer les recettes recommandées" : "Voir les recettes recommandées"}
           </button>
-          {sessionId && (
+
+          {/* 🔹 Affichage conditionnel des recettes recommandées */}
+          {showRecommendedRecettes && sessionId && (
             <RecommendedRecettes sessionId={sessionId} setCartItems={setCartItems} allRecettes={recommendedRecettes} />
           )}
+
+          <button onClick={() => router.push("/checkout")} className="mt-4 bg-orange-300 hover:bg-orange-500 py-2 px-10 rounded-lg">
+            Passer à la caisse
+          </button>
+
           {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
         </div>
       )}

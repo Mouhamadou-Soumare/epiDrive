@@ -11,14 +11,23 @@ import { Produit } from "types";
 const ProductList = () => {
   const { produits, loading, error } = useGetProduits();
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 10;
 
   // Filtrage des produits en fonction de la recherche
   const filteredProducts = produits?.filter((product: Produit) =>
     product.name.toLowerCase().includes(searchQuery.toLowerCase())
   ) || [];
 
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const paginatedProducts = filteredProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
+    setCurrentPage(1);
   };
 
   if (loading) {
@@ -39,7 +48,7 @@ const ProductList = () => {
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
           <Link
             href="/backoffice/product/add"
-            className="block rounded-md button-secondary px-3 py-2 text-center text-sm font-semibold  shadow-sm text-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="block rounded-md button-secondary px-3 py-2 text-center text-sm font-semibold shadow-sm text-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Créer un produit
           </Link>
@@ -54,37 +63,44 @@ const ProductList = () => {
         />
       </div>
 
-      {filteredProducts.length > 0 ? (
+      {paginatedProducts.length > 0 ? (
         <div className="mt-8 flow-root">
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
               <table className="min-w-full divide-y divide-gray-300">
                 <thead>
                   <tr>
-                    <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
-                      Id
-                    </th>
-                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      Nom
-                    </th>
-                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      Slug
-                    </th>
-                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      Prix
-                    </th>
-                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      Info
-                    </th>
+                    <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Id</th>
+                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Nom</th>
+                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Slug</th>
+                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Prix</th>
+                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Info</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {filteredProducts.map((product: Produit) => (
+                  {paginatedProducts.map((product: Produit) => (
                     <ProductRow key={product.id} product={product} />
                   ))}
                 </tbody>
               </table>
             </div>
+          </div>
+          <div className="mt-4 flex justify-center items-center space-x-4">
+            <button
+              className="px-4 py-2 border rounded-md disabled:opacity-50"
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+            >
+              Précédent
+            </button>
+            <span>Page {currentPage} sur {totalPages}</span>
+            <button
+              className="px-4 py-2 border rounded-md disabled:opacity-50"
+              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+            >
+              Suivant
+            </button>
           </div>
         </div>
       ) : (

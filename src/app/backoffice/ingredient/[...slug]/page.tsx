@@ -66,7 +66,6 @@ export default function AddProductFromIngredientPage() {
       slug: updatedIngredient.name.toLowerCase().replace(/ /g, '-'), // Génération automatique du slug
     };
     
-
     const success = await addProduit(newProduct, "/path/to/"+updatedIngredient.name+".jpg");
     setSubmitResult(success ? "success" : "error");
     if (success) {
