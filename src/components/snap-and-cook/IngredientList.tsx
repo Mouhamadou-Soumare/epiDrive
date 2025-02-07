@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 
-
-
 type Product = { id: number; name: string; prix: number };
 
 interface IngredientListProps {
@@ -11,21 +9,16 @@ interface IngredientListProps {
   cart: { [productId: number]: number };
   addToCart: (productId: number, quantity: number) => void; 
   removeFromCart: (productId: number) => void;
+  setIsModalOpen: (isOpen: boolean) => void;
+  setCart: (cart: { [productId: number]: number }) => void;
 }
 
-export default function IngredientList({ products, cart, addToCart, removeFromCart }: IngredientListProps) {
+export default function IngredientList({ products, cart, addToCart, removeFromCart, setIsModalOpen, setCart }: IngredientListProps) {
   const [localCart, setLocalCart] = useState<{ [productId: number]: number }>(cart); 
 
   const handleQuantityChange = (productId: number, change: number) => {
     setLocalCart((prevCart) => {
       const newQuantity = (prevCart[productId] || 0) + change;
-
-      if (newQuantity > 0) {
-        addToCart(productId, change); // Ajoute au panier global
-      } else {
-        removeFromCart(productId); // Supprime du panier global
-      }
-
       return newQuantity >= 0 ? { ...prevCart, [productId]: newQuantity } : prevCart;
     });
   };
@@ -35,12 +28,26 @@ export default function IngredientList({ products, cart, addToCart, removeFromCa
    */
   const handleConfirmAddToCart = () => {
     Object.entries(localCart).forEach(([productId, quantity]) => {
-      if (quantity > 0) {
-        addToCart(Number(productId), quantity);
+      const product = products.find((p) => p.id === Number(productId));
+      if (product && quantity > 0) {
+        addToCart(product.id, quantity);
       }
     });
-    //alert("Produits ajoutés au panier !");
+
+    alert("Panier mis à jour !");
+  
+    // Réinitialiser les quantités à 0 tout en conservant les produits
+    const updatedCart = Object.keys(localCart).reduce((acc, productId) => {
+      acc[Number(productId)] = 0;
+      return acc;
+    }, {} as { [productId: number]: number });
+
+    setCart(updatedCart);
+
+    // Fermer la modal
+    setIsModalOpen(false);
   };
+  
 
   return (
     <div className="space-y-4">
