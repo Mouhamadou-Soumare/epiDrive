@@ -35,7 +35,7 @@ export function useGetProduits() {
 }
 
 // Hook pour récupérer un produit spécifique
-export function useGetProduit(id: number | null) {
+export function useGetProduit(id: string | null) {
   const [produit, setProduit] = useState<Produit | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -58,7 +58,7 @@ export function useGetProduit(id: number | null) {
           slug: data.slug || "", 
           prix: data.prix || 0,
           description: data.description || "",
-          categorieId: data.categorieId ?? null, 
+          categorieId: data.categorie.id ?? null, 
         };
 
         setProduit(produitFormate); // ✅ Maintenant, `setProduit` reçoit bien un seul produit
@@ -74,7 +74,6 @@ export function useGetProduit(id: number | null) {
 
   return { produit, loading, error };
 }
-
 
 // Hook pour créer un produit
 export function useAddProduit() {
@@ -135,8 +134,9 @@ export function useDeleteProduit() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const deleteProduit = async (id: number): Promise<string> => {
+  const deleteProduit = async (id: string): Promise<string> => {
     try {
+      console.log('id', id);
       setLoading(true);
       const response = await fetch(`${API_BASE_URL}/${id}`, {
         method: 'DELETE',

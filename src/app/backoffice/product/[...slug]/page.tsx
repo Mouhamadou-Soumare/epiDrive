@@ -12,19 +12,18 @@ import { useGetProduit, useDeleteProduit } from "@/hooks/products/useProduits";
 import { Produit } from "types";
 
 export default function ProductDetails() {
-  const params = useParams();
-  const slug = params ? (Array.isArray(params.slug) ? params.slug[params.slug.length - 1] : params.slug) : null;
+  const { slug } = useParams() as { slug: string | string[] };
+  const productSlug = Array.isArray(slug) ? slug[slug.length - 1] : slug;
 
-  const produitId = parseInt(slug, 10);
   const { produit, loading: productLoading, error: productError } = useGetProduit(
-    isNaN(produitId) ? null : produitId
+    productSlug
   ) as { produit: Produit | null, loading: boolean, error: any };
     const { deleteProduit, loading: deletingProduct, error: deleteError } = useDeleteProduit();
 
   const handleDelete = useCallback(async () => {
     if (!produit) return;
 
-    const success = await deleteProduit(produit.id);
+    const success = await deleteProduit(produit.slug);
     if (success) {
       window.location.assign("/backoffice/product");
     }

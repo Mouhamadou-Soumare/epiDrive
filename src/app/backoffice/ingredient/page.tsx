@@ -2,25 +2,25 @@
 
 import { useState, useEffect } from "react";
 import SearchInput from "../components/SearchInput";
-import { useGetIngredients, useDeleteIngredient } from "@/hooks/ingredients/useIngredients"; // Import des hooks
-import { Ingredient } from "types"; // Assurez-vous que le type est défini dans vos types
+import { useGetIngredients, useDeleteIngredient } from "@/hooks/ingredients/useIngredients";
+import { Ingredient } from "types";
 import Link from "next/link";
 
 const IngredientList = () => {
-  const { ingredients, loading, error } = useGetIngredients(); // Hook pour récupérer les ingrédients
-  const { deleteIngredient } = useDeleteIngredient(); // Hook pour supprimer un ingrédient
+  const { ingredients, loading, error } = useGetIngredients();
+  const { deleteIngredient } = useDeleteIngredient();
 
   const [filteredIngredients, setFilteredIngredients] = useState<Ingredient[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 10;
 
-  // Mise à jour de la liste filtrée lorsque les ingrédients sont récupérés
   useEffect(() => {
     if (ingredients.length > 0) {
       setFilteredIngredients(ingredients);
     }
   }, [ingredients]);
 
-  // Filtrage des ingrédients en fonction de la recherche
   useEffect(() => {
     const filtered = ingredients.filter((ingredient: Ingredient) =>
       ingredient.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -28,8 +28,15 @@ const IngredientList = () => {
     setFilteredIngredients(filtered);
   }, [searchQuery, ingredients]);
 
+  const totalPages = Math.ceil(filteredIngredients.length / itemsPerPage);
+  const paginatedIngredients = filteredIngredients.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
+    setCurrentPage(1);
   };
 
   const handleDeleteIngredient = async (id: number) => {
@@ -54,9 +61,7 @@ const IngredientList = () => {
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h1 className="text-base font-semibold text-gray-900">Liste des ingrédients</h1>
-          <p className="mt-2 text-sm text-gray-700">
-            Listing des ingrédients disponibles
-          </p>
+          <p className="mt-2 text-sm text-gray-700">Listing des ingrédients disponibles</p>
         </div>
       </div>
 
@@ -68,35 +73,13 @@ const IngredientList = () => {
         />
       </div>
 
-      {filteredIngredients.length > 0 ? (
+      {paginatedIngredients.length > 0 ? (
         <div className="mt-8 flow-root">
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
               <table className="min-w-full divide-y divide-gray-300">
-                <thead>
-                  <tr>
-                    <th className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
-                      Id
-                    </th>
-                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      Nom
-                    </th>
-                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      Description
-                    </th>
-                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      Prix (€)
-                    </th>
-                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      Catégorie
-                    </th>
-                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {filteredIngredients.map((ingredient) => (
+                  {paginatedIngredients.map((ingredient) => (
                     <tr key={ingredient.id}>
                       <td className="py-4 pl-4 pr-3 text-sm sm:pl-0">{ingredient.id}</td>
                       <td className="px-3 py-4 text-sm">{ingredient.name}</td>
@@ -104,23 +87,19 @@ const IngredientList = () => {
                       <td className="px-3 py-4 text-sm">{ingredient.prix.toFixed(2)}</td>
                       <td className="px-3 py-4 text-sm">{ingredient.categorie}</td>
                       <td className="px-3 py-4 text-sm">
-                        <Link href={`/backoffice/ingredient/${ingredient.id}`}
-                          className="flex text-green-600 hover:text-red-900"
-                        >
-                          Ajouter
-                        </Link>
-                        <button
-                          onClick={() => handleDeleteIngredient(ingredient.id)}
-                          className="text-red-600 hover:text-red-900"
-                        >
-                          Supprimer
-                        </button>
+                        <Link href={`/backoffice/ingredient/${ingredient.id}`} className="flex text-green-600 hover:text-red-900">Ajouter</Link>
+                        <button onClick={() => handleDeleteIngredient(ingredient.id)} className="text-red-600 hover:text-red-900">Supprimer</button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
+          </div>
+          <div className="mt-4 flex justify-center items-center space-x-4">
+            <button className="px-4 py-2 border rounded-md disabled:opacity-50" onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>Précédent</button>
+            <span>Page {currentPage} sur {totalPages}</span>
+            <button className="px-4 py-2 border rounded-md disabled:opacity-50" onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>Suivant</button>
           </div>
         </div>
       ) : (
