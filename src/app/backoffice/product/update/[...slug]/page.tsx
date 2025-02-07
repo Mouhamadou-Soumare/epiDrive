@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import TextInput from "../../components/TextInput";
 import TextareaInput from "../../components/TextareaInput";
-import SelectInput from "../../components/SelectInput";
 import { useGetProduit, useUpdateProduit } from "@/hooks/products/useProduits";
 import { useGetCategories } from "@/hooks/categories/useCategories";
 import Alert from "../../../components/Alert";
@@ -14,9 +13,8 @@ export default function UpdateProductPage() {
   const { slug } = useParams() as { slug: string | string[] };
   const productSlug = Array.isArray(slug) ? slug[slug.length - 1] : slug;
 
-  const productId = parseInt(productSlug, 10);
   const { produit, loading: productLoading, error: productError } = useGetProduit(
-    isNaN(productId) ? null : productId
+    productSlug
   ) as { produit: Produit | null, loading: any, error: any };
     const { categories, loading: categoriesLoading, error: categoriesError } = useGetCategories() as { categories: Categorie[], loading: any, error: any };
   const { updateProduit, loading: updatingProduct, error: updateError } = useUpdateProduit();
@@ -56,7 +54,10 @@ export default function UpdateProductPage() {
         // Gestion spécifique pour categorieId
         if (name === "categorieId") {
           const selectedCategory = categories.find((cat) => cat.id === updatedValue);
-          return { ...prev, categorie: selectedCategory || null };
+          return { ...prev, 
+            categorie: selectedCategory || null, 
+            categorieId: updatedValue 
+          };
         }
 
         if (name === "imagePath") {
@@ -157,7 +158,7 @@ export default function UpdateProductPage() {
           <select
             id="categorieId"
             name="categorieId"
-            value={updatedProduit.categorie?.id || ""}
+            value={updatedProduit.categorieId}
             onChange={handleInputChange}
             required
             className="w-full rounded-md border border-gray-300 bg-gray-50 py-2 px-3 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"

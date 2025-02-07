@@ -68,72 +68,6 @@ export default function SnapAndCook() {
     }
   };
   
-
-  const fetchMatchingProducts = async (ingredients: Ingredient[], dish: Recette) => {
-    const productList: Produit[] = [];
-    const ingredientsList: Ingredient[] = [];
-  
-    for (const ingredient of ingredients) {
-      try {
-        const response = await fetch(`/api/products/${ingredient.name.toLowerCase().replace(/ /g, '-')}`, {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
-  
-        if (response.ok) {
-          const existingProduct = await response.json();
-          if (existingProduct) {
-            productList.push({
-              ...existingProduct,
-              slug: existingProduct.name.toLowerCase().replace(/ /g, '-'),
-              description: "Description par défaut",
-              categorieId: null,
-            });
-            continue;
-          }
-        }
-  
-        const newIngredient = {
-          id: Date.now(), // ✅ Ajout d'un ID temporaire
-          name: ingredient.name,
-          description: ingredient.description,
-          prix: ingredient.prix,
-          categorie: ingredient.categorie,
-        };
-  
-        const createdIngredient = await useAddIngredient(newIngredient);
-  
-        if (!createdIngredient.id) {
-          console.warn("L'ingrédient créé ne contient pas d'ID, un ID temporaire sera utilisé.");
-          createdIngredient.id = Date.now();
-        }
-  
-        ingredientsList.push(createdIngredient);
-      } catch (error) {
-        console.error(`Erreur avec l'ingrédient ${ingredient.name} :`, error);
-      }
-    }
-  
-    try {
-      // const newRecette = await addRecette({
-      //   title: dish.title,
-      //   description: dish.description,
-      //   instructions: dish.instructions,
-      //   image: dish.image,
-      //   produits: productList,
-      //   ingredients: ingredientsList, // ✅ Maintenant tous les ingrédients ont un `id`
-      //   user: { id: 1 },
-      // });
-  
-    } catch (error) {
-      console.error("Erreur lors de l'ajout de la recette :", error);
-    }
-  
-    setProducts(productList);
-    setIngredients(ingredientsList);
-  };
-  
-  
   const handleBatchAddToCart = (productId: number, quantity: number) => {
     const product = products.find((p) => p.id === productId);
     if (product) {
@@ -157,6 +91,17 @@ export default function SnapAndCook() {
       return updatedCart;
     });
   };
+
+  const handleCloseModal = () => {
+    // Réinitialiser les quantités à 0 tout en conservant les produits
+    const updatedCart = Object.keys(cart).reduce((acc, productId) => {
+      acc[Number(productId)] = 0;
+      return acc;
+    }, {} as { [productId: number]: number });
+  
+    setCart(updatedCart); 
+    setIsModalOpen(false); 
+  };  
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
@@ -206,6 +151,9 @@ export default function SnapAndCook() {
       {/* Modal pour afficher les produits */}
       <Transition appear show={isModalOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={() => setIsModalOpen(false)}>
+          {/* Overlay noir semi-transparent */}
+          <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" />
+
           <div className="fixed inset-0 overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-4 text-center">
               <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-2xl bg-white p-8 text-left align-middle shadow-xl transition-all">
@@ -216,12 +164,14 @@ export default function SnapAndCook() {
                 <IngredientList
                   products={products}
                   cart={cart}
-                  addToCart={ handleBatchAddToCart}
+                  addToCart={handleBatchAddToCart}
                   removeFromCart={handleRemoveFromCart}
+                  setIsModalOpen={setIsModalOpen}
+                  setCart={setCart} 
                 />
 
                 <button
-                  onClick={() => setIsModalOpen(false)}
+                  onClick={handleCloseModal}
                   className="mt-6 w-full py-3 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 transition-colors duration-200"
                 >
                   Fermer

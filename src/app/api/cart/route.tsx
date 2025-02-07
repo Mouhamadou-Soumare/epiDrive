@@ -2,15 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
 export async function POST(req: NextRequest) {
-  const { productId, quantity, sessionId, userId } = await req.json();
+  const { productId, quantity, sessionId, userId, update } = await req.json();
 
   if (!productId || (!sessionId && !userId)) {
-    return NextResponse.json({ error: 'Paramètres requis manquants' }, { status: 400 });
+    return NextResponse.json({ error: "Paramètres requis manquants" }, { status: 400 });
   }
 
   const produit = await prisma.produit.findUnique({ where: { id: productId } });
   if (!produit) {
-    return NextResponse.json({ error: 'Produit non trouvé' }, { status: 404 });
+    return NextResponse.json({ error: "Produit non trouvé" }, { status: 404 });
   }
 
   const panier = await prisma.panier.upsert({
@@ -38,9 +38,9 @@ export async function POST(req: NextRequest) {
       quantite: quantity,
       prix: produit.prix,
     },
-    update: {
-      quantite: { increment: quantity },
-    },
+    update: update
+      ? { quantite: quantity } // Remplace la quantité si `update` est `true`
+      : { quantite: { increment: quantity } }, // Sinon, incrémente
   });
 
   return NextResponse.json(item, { status: 201 });

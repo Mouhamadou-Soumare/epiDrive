@@ -14,42 +14,41 @@ export default function useAddCart() {
   const [sessionId, setSessionId] = useState<string | null>(null);
 
   useEffect(() => {
-    const storedSessionId = localStorage.getItem('sessionId');
+    const storedSessionId = localStorage.getItem("sessionId");
     if (!storedSessionId) {
       const newSessionId = uuidv4();
-      localStorage.setItem('sessionId', newSessionId);
+      localStorage.setItem("sessionId", newSessionId);
       setSessionId(newSessionId);
     } else {
       setSessionId(storedSessionId);
     }
   }, []);
 
-  const addToCart = async (item: CartItem) => {
+  const addToCart = async (item: CartItem & { update?: boolean }) => {
     if (!sessionId) {
-      console.error('Session ID non défini');
+      console.error("Session ID non défini");
       return;
     }
 
     try {
-      const response = await fetch('/api/cart', {
-        method: 'POST',
+      const response = await fetch("/api/cart", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           ...item,
           sessionId,
+          update: item.update || false, // Nouvel attribut
         }),
       });
 
       if (!response.ok) {
-        throw new Error('Erreur lors de l\'ajout au panier');
+        throw new Error("Erreur lors de la mise à jour du panier");
       }
-
-      alert('Produit ajouté au panier !');
     } catch (error) {
       console.error("Erreur lors de l'ajout au panier:", error);
-      alert("Impossible d'ajouter le produit au panier");
+      alert("Impossible de mettre à jour le panier");
     }
   };
 

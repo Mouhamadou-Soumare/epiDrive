@@ -58,6 +58,7 @@ export async function POST(req: Request) {
     const slug = name.toLowerCase().replace(/ /g, '-');
     console.log('Creating product with body:', body);
 
+    // Création du produit
     const newProduct = await prisma.produit.create({
       data: {
         name,
@@ -68,6 +69,7 @@ export async function POST(req: Request) {
       },
     });
 
+    // Gestion de l'image si un path est fourni
     if (path) {
       const newImage = await prisma.image.create({
         data: { path },
@@ -79,10 +81,43 @@ export async function POST(req: Request) {
       console.log("Image created for product:", newImage);
     }
 
+    // Récupérer toutes les recettes qui contiennent un ingrédient ayant ce nom
+    const recettes = await prisma.recette.findMany({
+      where: {
+        ingredients: {
+          some: {
+            name: name, // Vérifie si un ingrédient du même nom existe dans la recette
+          },
+        },
+      },
+      include: {
+        produits: true, // Pour voir les produits déjà associés
+      },
+    });
+
+    console.log(`Found ${recettes.length} recipes containing ingredient "${name}"`);
+
+    // Associer le nouveau produit aux recettes trouvées
+    if (recettes.length > 0) {
+      for (const recette of recettes) {
+        await prisma.recette.update({
+          where: { id: recette.id },
+          data: {
+            produits: {
+              connect: { id: newProduct.id }, // Associe le produit à la recette
+            },
+          },
+        });
+      }
+      console.log(`Added new product "${newProduct.name}" to ${recettes.length} recipes`);
+    }
+
     console.log("POST API/products: Product created:", newProduct);
     return NextResponse.json(newProduct, { status: 201 });
+
   } catch (error) {
     console.error('Error creating product:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
+
