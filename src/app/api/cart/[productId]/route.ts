@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-export async function PUT(req: NextRequest, { params }: { params: { productId: string } }) {
-  const { productId } = params;
-  const { quantity, sessionId, userId } = await req.json();
+export async function PUT(
+  request: Request,
+  { params }: { params: Promise<{ productId: string }> }
+) {
+  const { productId } = await params; // Attendre la résolution de params
+  const { quantity, sessionId, userId } = await request.json();
 
   if (!productId || (!sessionId && !userId)) {
     return NextResponse.json({ error: "Paramètres requis manquants" }, { status: 400 });
@@ -55,9 +58,12 @@ export async function PUT(req: NextRequest, { params }: { params: { productId: s
 }
 
 // Handler pour DELETE
-export async function DELETE(req: NextRequest, { params }: { params: { productId: string } }) {
-  const { productId } = params;
-  const { sessionId, userId } = Object.fromEntries(new URL(req.url).searchParams);
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ productId: string }> }
+) {
+  const { productId } = await params; // Attendre la résolution de params
+  const { sessionId, userId } = Object.fromEntries(new URL(request.url).searchParams);
 
   if (!productId || (!sessionId && !userId)) {
     return NextResponse.json({ error: "Paramètres requis manquants" }, { status: 400 });
