@@ -4,13 +4,18 @@ export enum Role {
     MAGASINIER = "MAGASINIER",
 }
 
-
 export enum CommandeStatus {
     EN_ATTENTE,
     EN_PREPARATION,
     EXPEDIEE,
     LIVREE,
     ANNULEE, // Enum pour les statuts de commande
+}
+
+export enum Livraison_Type {
+    DOMICILE,
+    DRIVE,
+    EMPORTER
 }
 
 export interface User {
@@ -52,6 +57,7 @@ export interface Commande {
     user: User; // Relation avec l'utilisateur
     quantites: QuantiteCommande[];
     livraison?: Livraison; // Relation avec une adresse de livraison
+    type: Livraison_Type;
 }
 
 export interface Produit {

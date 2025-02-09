@@ -7,6 +7,7 @@ import { ArrowLeftIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/ou
 import AuthenticatorCards from '@/components/AuthenticatorCards';
 
 export default function RegisterPage() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -31,13 +32,14 @@ export default function RegisterPage() {
       const res = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ name, email, password }),
       });
 
       if (res.ok) {
         // Connexion automatique après inscription réussie
         const signInResult = await signIn('credentials', {
           redirect: false,
+          name,
           email,
           password,
         });
@@ -81,6 +83,25 @@ export default function RegisterPage() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          <div className='pb-4'>
+            <label
+              htmlFor="name"
+              className="block text-md font-medium leading-6 text-gray-900 pb-2"
+            >
+              Nom
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              autoComplete="username"
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="block w-full bg-slate-200	pt-4 pb-4 px-3 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+          </div>
+
           <div className="pb-4">
             <label
               htmlFor="email"

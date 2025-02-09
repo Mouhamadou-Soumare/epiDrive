@@ -12,6 +12,9 @@ export async function createCommandes() {
     // Statuts possibles pour les commandes
     const status = ['EN_ATTENTE', 'EN_PREPARATION', 'EXPEDIEE', 'LIVREE', 'ANNULEE'];
 
+    // Statuts possibles pour les commandes
+    const type = ['DOMICILE', 'DRIVE', 'EMPORTER'];
+    
     // Vérification des produits disponibles
     const products = await prisma.produit.findMany();
     if (products.length < 3) {
@@ -54,6 +57,7 @@ export async function createCommandes() {
         const commande = await prisma.commande.create({
             data: {
                 status: faker.helpers.arrayElement(status),
+                type: faker.helpers.arrayElement(type),
                 createdAt: randomDate,
                 user: {
                     connect: { id: userId },

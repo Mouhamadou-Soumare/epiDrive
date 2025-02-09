@@ -9,14 +9,6 @@ interface Product {
   quantity: number;
 }
 
-interface CheckoutBody {
-  produits: Product[];
-  adresse: string;
-  ville: string;
-  codePostal: string;
-  pays: string;
-}
-
 // Initialiser Stripe avec la clé secrète et la version de l'API
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 });
@@ -24,8 +16,13 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 // Route POST pour créer une session Stripe Checkout
 export async function POST(req: Request) {
   try {
-    const body: CheckoutBody = await req.json();
-    const { produits, adresse, ville, codePostal, pays } = body;
+    const body = await req.json();
+    const { orderSummary } = body;
+
+    const produits = orderSummary.items;
+    const shippingAddress = orderSummary.shippingAddress;
+    const totalAmount = orderSummary.totalAmount;
+    const livraisonType = orderSummary.livraisonType;
 
     if (!produits || produits.length === 0) {
       return NextResponse.json(
@@ -63,10 +60,10 @@ export async function POST(req: Request) {
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/checkout-success`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/checkout-cancel`,
       metadata: {
-        adresse,
-        ville,
-        codePostal,
-        pays,
+        adresse: shippingAddress.adresse,
+        ville: shippingAddress.ville,
+        codePostal: shippingAddress.codePostal,
+        pays: shippingAddress.pays,
       },
     });
 
