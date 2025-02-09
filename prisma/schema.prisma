@@ -64,6 +64,7 @@ model Commande {
   user      User               @relation(fields: [fk_userId], references: [id], map: "Commande_User_fkey")
   livraison Livraison?         @relation("CommandeLivraison")
   quantites QuantiteCommande[]
+  type      Livraison_Type     @default(DOMICILE)
 
   @@index([fk_userId], map: "Commande_User_fkey")
 }
@@ -179,6 +180,12 @@ enum Role {
   USER
   ADMIN
   MAGASINIER
+}
+
+enum Livraison_Type {
+  DOMICILE
+  DRIVE
+  EMPORTER
 }
 
 enum CommandeStatus {

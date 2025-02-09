@@ -20,6 +20,7 @@ export default function CheckoutSuccess() {
       image: string;
     }[];
     totalAmount: number;
+    livraisonType: string;
     shippingAddress: {
       adresse: string;
       ville: string;
@@ -54,6 +55,7 @@ export default function CheckoutSuccess() {
   
       const commande = {
         status: "EN_ATTENTE",
+        type: orderSummary.livraisonType,
         paymentId: randomBytes(16).toString("hex"),
         userId,
         infosAdresse: orderSummary.shippingAddress,
