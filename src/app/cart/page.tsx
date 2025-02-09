@@ -32,7 +32,6 @@ export default function CartPage() {
   const [recommendedRecettes, setRecommendedRecettes] = useState<Recette[]>([]);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showRecommendedRecettes, setShowRecommendedRecettes] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   /**
    * 🔹 Récupère l'ID de session (ou le crée si inexistant)
@@ -68,6 +67,7 @@ export default function CartPage() {
   const handleUpdateQuantity = async (productId: number, newQuantity: number) => {
     if (newQuantity < 1) return; // Empêche les quantités négatives
 
+    console.log("Nouvelle status:", status);
     try {
       const res = await fetch(`/api/cart/${productId}`, {
         method: "PUT",
@@ -141,7 +141,6 @@ export default function CartPage() {
   }, [fetchCart]);
 
   useEffect(() => {
-    console.log("Recette sélectionnée :", recommendedRecettes);
     if (showRecommendedRecettes) {
       fetchRecettes();
     }
@@ -198,22 +197,42 @@ export default function CartPage() {
 
           <div className="text-xl font-bold text-right">Total: {totalAmount.toFixed(2)} €</div>
 
-          {/* 🔹 Bouton pour afficher les recettes recommandées */}
-          <button
-            onClick={() => setShowRecommendedRecettes(!showRecommendedRecettes)}
-            className="mt-4 bg-blue-500 hover:bg-blue-700 py-2 px-10 rounded-lg text-white"
-          >
-            {showRecommendedRecettes ? "Masquer les recettes recommandées" : "Voir les recettes recommandées"}
-          </button>
+          <div className="mt-4">
+            <button
+              onClick={() => setShowRecommendedRecettes(!showRecommendedRecettes)}
+              className="mt-4 bg-blue-500 hover:bg-blue-700 py-2 px-10 rounded-lg text-white"
+            >
+              {showRecommendedRecettes ? "Masquer les recettes recommandées" : "Voir les recettes recommandées"}
+            </button>
 
-          {/* 🔹 Affichage conditionnel des recettes recommandées */}
-          {showRecommendedRecettes && sessionId && (
-            <RecommendedRecettes sessionId={sessionId} setCartItems={setCartItems} allRecettes={recommendedRecettes} />
-          )}
+            {showRecommendedRecettes && sessionId && (
+              isLoadingRecettes ? (
+                <div className="text-center mt-4">Chargement des recettes...</div>
+              ) : recommendedRecettes.length === 0 ? (
+                <div className="text-center mt-4">Aucune recette recommandée</div>
+              ) : (
+                <RecommendedRecettes sessionId={sessionId} setCartItems={setCartItems} allRecettes={recommendedRecettes} />
+              )
+            )}
+          </div>
 
-          <button onClick={() => router.push("/checkout")} className="mt-4 bg-orange-300 hover:bg-orange-500 py-2 px-10 rounded-lg">
-            Passer à la caisse
-          </button>
+          {
+            status == "authenticated" ? (
+              <button
+                onClick={() => router.push("/checkout")}
+                className="mt-4 bg-orange-300 hover:bg-orange-500 py-2 px-10 rounded-lg"
+              >
+                Passer à la caisse
+              </button>
+            ) : (
+              <button
+                onClick={() => setShowAuthModal(true)}
+                className="mt-4 bg-orange-300 hover:bg-orange-500 py-2 px-10 rounded-lg"
+              >
+                Se connecter pour passer à la caisse
+              </button>
+            )
+          }
 
           {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
         </div>

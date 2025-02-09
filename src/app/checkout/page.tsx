@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-
+import { useSession } from "next-auth/react";
+import { Livraison_Type } from "../../../types";
 import { useAddCommande } from '@/hooks/commandes/useCommandes';
+import { useGetLivraisons } from '@/hooks/livraisons/useLivraisons';
 
 type CartItem = {
   id: number;
@@ -15,16 +17,18 @@ type CartItem = {
     image: { path: string };
   };
   quantite: number;
-  prix: number;
 };
 
-
 export default function SearchResultsPage() {
+  const { data: session, status } = useSession();
+  const userId = session?.user?.id; // ID utilisateur
+  const { livraisons, loading: loadingLivraisons, error } = useGetLivraisons(); // Utilisation du hook
+  const { loading: addingCommande, error: addError } = useAddCommande();
+
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [sessionId, setSessionId] = useState<string | null>(null);
-  const {  loading: addingCommande, error: addError } = useAddCommande();
-
+  const [livraisonType, setLivraisonType] = useState<Livraison_Type | null>(null);
+  const [selectedAdresseId, setSelectedAdresseId] = useState<number | null>(null);
   const [formData, setFormData] = useState({
     adresse: '',
     ville: '',
@@ -37,6 +41,7 @@ export default function SearchResultsPage() {
     ville: '',
     codePostal: '',
     pays: '',
+    livraisonType: '',
   });
 
   const router = useRouter();
@@ -47,41 +52,50 @@ export default function SearchResultsPage() {
       sessionId = `session_${Math.random().toString(36).substring(2, 15)}`;
       localStorage.setItem('sessionId', sessionId);
     }
-
-    setSessionId(sessionId);
     return sessionId;
   }
-
+  
   useEffect(() => {
     async function fetchCart() {
-      const sessionId = getOrCreateSessionId();
       try {
-        const res = await fetch(`/api/cart?sessionId=${sessionId}`);
+        const res = await fetch(`/api/cart?sessionId=${getOrCreateSessionId()}`);
         const data = await res.json();
-        if (res.ok) {
-          setCartItems(data);
-        } else {
-          console.error('Erreur de récupération du panier:', data.error);
-        }
+        if (res.ok) setCartItems(data);
+        else console.error('Erreur de récupération du panier:', data.error);
       } catch (error) {
         console.error("Erreur lors de la récupération du panier:", error);
       } finally {
         setLoading(false);
       }
     }
-  
     fetchCart();
   }, []);
 
-  useEffect(() => {
-    console.log("CartItems updated:", cartItems);
-  }, [cartItems]);
+  // 🔹 Filtrer les adresses pour ne récupérer que celles de l'utilisateur connecté
+  const userLivraisons = livraisons?.filter(livraison => livraison.fk_userId === parseInt(userId)) || [];
 
-  const totalAmount = cartItems.reduce((acc, item) => acc + item.prix * item.quantite, 0);
+  // 🔹 Remplir le formulaire quand une adresse est sélectionnée
+  const handleAdresseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedId = Number(e.target.value);
+    setSelectedAdresseId(selectedId);
+    const selectedAdresse = userLivraisons.find(a => a.id === selectedId);
+    if (selectedAdresse) {
+      setFormData({
+        adresse: selectedAdresse.adresse,
+        ville: selectedAdresse.ville,
+        codePostal: selectedAdresse.codePostal,
+        pays: selectedAdresse.pays,
+      });
+    }
+  };
 
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    if (name === "livraisonType") {
+      setLivraisonType(value as unknown as Livraison_Type);
+    }
   };
 
   const validateForm = () => {
@@ -90,79 +104,60 @@ export default function SearchResultsPage() {
       ville: formData.ville ? '' : 'Ville est requise.',
       codePostal: /^[0-9]{5}$/.test(formData.codePostal) ? '' : 'Code postal invalide.',
       pays: formData.pays ? '' : 'Pays est requis.',
+      livraisonType: livraisonType ? '' : 'Méthode de livraison requise.',
     };
 
     setErrors(newErrors);
     return Object.values(newErrors).every((error) => error === '');
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     if (validateForm()) {
       console.log("Données soumises :", formData);
-  
-      // Formater les données des produits avec les clés attendues
+
       const produits = cartItems.map((item) => ({
         id: item.produit.id,
         name: item.produit.name,
-        quantity: item.quantite, // Utilisation de `quantity`
-        price: item.produit.prix, // Utilisation de `price`
+        quantity: item.quantite,
+        price: item.produit.prix,
         image: item.produit.image.path,
         total: item.produit.prix * item.quantite,
       }));
+
       console.log("Produits envoyés à l'API Checkout :", produits);
-  
+
       const orderSummary = {
         items: produits,
         totalAmount: produits.reduce((total, item) => total + item.total, 0),
-        shippingAddress: {
-          adresse: formData.adresse,
-          ville: formData.ville,
-          codePostal: formData.codePostal,
-          pays: formData.pays,
-        },
+        shippingAddress: formData,
+        livraisonType,
       };
-  
+
       try {
-        // Appeler l'API Stripe pour créer une session de paiement
         const response = await fetch("/api/checkout", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            produits,
-            adresse: formData.adresse,
-            ville: formData.ville,
-            codePostal: formData.codePostal,
-            pays: formData.pays,
-          }),
+          body: JSON.stringify({ orderSummary }),
         });
-  
+
         const data = await response.json();
-  
         if (data.url) {
-          // Enregistrer le résumé de commande dans localStorage
           localStorage.setItem("orderSummary", JSON.stringify(orderSummary));
-  
-          // Rediriger vers la page de paiement Stripe
           window.location.href = data.url;
         } else {
-          console.error("Erreur lors de la création de la session Stripe:", data.error);
-          alert("Une erreur est survenue. Veuillez réessayer.");
+          alert("Erreur lors de la création de la session Stripe.");
         }
       } catch (error) {
         console.error("Erreur lors de la validation du formulaire:", error);
-        alert("Une erreur inattendue est survenue. Veuillez réessayer.");
       }
     } else {
       alert("Veuillez corriger les erreurs du formulaire.");
     }
   };
-  
-  
-  
 
-  if (loading || addingCommande) return <div>Chargement ...</div>;
+  if (loading || loadingLivraisons || addingCommande) return <div>Chargement ...</div>;
   if (addError) return <div>Erreur lors de la soumission de la commande</div>;
   if (cartItems.length === 0) return <div>Votre panier est vide</div>;
 
@@ -170,69 +165,67 @@ export default function SearchResultsPage() {
     <div className="bg-white p-8 mx-10">
       <h2 className="text-2xl font-bold mb-4">Informations de Livraison</h2>
       <form onSubmit={handleSubmit}>
+
+        {/* 🔹 Dropdown des adresses enregistrées si disponible */}
+        {userId && userLivraisons.length > 0 && (
+          <div className="mb-4">
+            <label htmlFor="adresseExistante" className="block text-sm font-medium text-gray-700">
+              Choisissez une adresse enregistrée :
+            </label>
+            <select
+              id="adresseExistante"
+              value={selectedAdresseId || ""}
+              onChange={handleAdresseChange}
+              className="mt-1 block w-full border rounded-md p-2"
+            >
+              <option value="">Sélectionner une adresse</option>
+              {userLivraisons.map((adresse) => (
+                <option key={adresse.id} value={adresse.id}>
+                  {adresse.adresse}, {adresse.ville}, {adresse.codePostal}, {adresse.pays}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {/* Formulaire classique d'adresse */}
+        {["adresse", "ville", "codePostal", "pays"].map((field) => (
+          <div key={field} className="mb-4">
+            <label htmlFor={field} className="block text-sm font-medium text-gray-700">
+              {field.charAt(0).toUpperCase() + field.slice(1)}
+            </label>
+            <input
+              type="text"
+              id={field}
+              name={field}
+              value={formData[field]}
+              onChange={handleInputChange}
+              className="mt-1 block w-full border rounded-md p-2"
+              required
+            />
+          </div>
+        ))}
+
+        {/* 🔹 Dropdown pour le type de livraison */}
         <div className="mb-4">
-          <label htmlFor="adresse" className="block text-sm font-medium text-gray-700">Adresse</label>
-          <input
-            type="text"
-            id="adresse"
-            name="adresse"
-            value={formData.adresse}
+          <label htmlFor="livraisonType" className="block text-sm font-medium text-gray-700">Méthode de Livraison</label>
+          <select
+            id="livraisonType"
+            name="livraisonType"
+            value={livraisonType || ""}
             onChange={handleInputChange}
-            className={`mt-1 block w-full border rounded-md p-2 focus:ring focus:ring-blue-500 focus:border-blue-500 ${errors.adresse ? 'border-red-500' : 'border-gray-300'}`}
+            className={`mt-1 block w-full border rounded-md p-2 ${errors.livraisonType ? 'border-red-500' : 'border-gray-300'}`}
             required
-          />
-          {errors.adresse && <p className="text-red-500 text-sm mt-1">{errors.adresse}</p>}
+          >
+            <option value="">Sélectionnez une méthode</option>
+            <option value="DOMICILE">DOMICILE</option>
+            <option value="DRIVE">DRIVE</option>
+            <option value="EMPORTER">EMPORTER</option>
+          </select>
+          {errors.livraisonType && <p className="text-red-500 text-sm mt-1">{errors.livraisonType}</p>}
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="ville" className="block text-sm font-medium text-gray-700">Ville</label>
-          <input
-            type="text"
-            id="ville"
-            name="ville"
-            value={formData.ville}
-            onChange={handleInputChange}
-            className={`mt-1 block w-full border rounded-md p-2 focus:ring focus:ring-blue-500 focus:border-blue-500 ${errors.ville ? 'border-red-500' : 'border-gray-300'}`}
-            required
-          />
-          {errors.ville && <p className="text-red-500 text-sm mt-1">{errors.ville}</p>}
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="codePostal" className="block text-sm font-medium text-gray-700">Code Postal</label>
-          <input
-            type="text"
-            id="codePostal"
-            name="codePostal"
-            value={formData.codePostal}
-            onChange={handleInputChange}
-            className={`mt-1 block w-full border rounded-md p-2 focus:ring focus:ring-blue-500 focus:border-blue-500 ${errors.codePostal ? 'border-red-500' : 'border-gray-300'}`}
-            required
-          />
-          {errors.codePostal && <p className="text-red-500 text-sm mt-1">{errors.codePostal}</p>}
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="pays" className="block text-sm font-medium text-gray-700">Pays</label>
-          <input
-            type="text"
-            id="pays"
-            name="pays"
-            value={formData.pays}
-            onChange={handleInputChange}
-            className={`mt-1 block w-full border rounded-md p-2 focus:ring focus:ring-blue-500 focus:border-blue-500 ${errors.pays ? 'border-red-500' : 'border-gray-300'}`}
-            required
-          />
-          {errors.pays && <p className="text-red-500 text-sm mt-1">{errors.pays}</p>}
-        </div>
-
-<div className='text-right'>
-        <button
-          type="submit"
-          className="w-auto text-white bg-orange-300 hover:bg-orange-500 text-black focus:ring-2 focus:ring-indigo-500  py-2 px-4 rounded-md  transition duration-200"
-        >
-          Soumettre
-        </button></div>
+        <button type="submit" className="w-auto text-white bg-orange-300 py-2 px-4 rounded-md">Soumettre</button>
       </form>
     </div>
   );
