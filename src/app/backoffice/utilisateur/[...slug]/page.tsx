@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { UsersIcon } from '@heroicons/react/24/outline';
 import CommandeCard from "../components/CommandeCard";
 import { useGetUser } from "@/hooks/users/useUsers";
@@ -10,31 +10,33 @@ import { useParams } from 'next/navigation';
 const UserDetail = () => {
   const { slug } = useParams() as { slug: string | string[] };
   const userId = Array.isArray(slug) ? slug[slug.length - 1] : slug;
-  const userIdNumber = parseInt(userId, 10);
+  const userIdNumber = useMemo(() => parseInt(userId, 10), [userId]);
+
   const { user, loading, error } = useGetUser(
     isNaN(userIdNumber) ? null : userIdNumber
-  ) as { user: User | null, loading: any, error: any };
+  ) as { user: User | null, loading: boolean, error: any };
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 10;
 
-  const commandes = user?.commandes || [];
+  const commandes = user?.commandes ?? [];
   const totalPages = Math.ceil(commandes.length / itemsPerPage);
-  const paginatedCommandes = commandes.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
 
-  const commandePrice = commandes.reduce(
-    (total: number, cmd: Commande) =>
-      total +
-      cmd.quantites.reduce((cmdTotal: number, qte) => cmdTotal + qte.prix, 0),
-    0
-  );
+  // Optimisation de la pagination avec useMemo
+  const paginatedCommandes = useMemo(() => {
+    return commandes.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+    );
+  }, [commandes, currentPage]);
 
-  if (loading) return <div className="lg:pl-72">Chargement...</div>;
-  if (error) return <div className="lg:pl-72 text-red-500">Erreur : {error}</div>;
-  if (!user) return <div className="lg:pl-72">Utilisateur non trouvé</div>;
+  // Pagination optimisée avec useCallback
+  const handlePrevPage = useCallback(() => setCurrentPage((prev) => Math.max(prev - 1, 1)), []);
+  const handleNextPage = useCallback(() => setCurrentPage((prev) => Math.min(prev + 1, totalPages)), [totalPages]);
+
+  if (loading) return <div className="text-center text-lg font-medium">🔄 Chargement...</div>;
+  if (error) return <div className="text-center text-red-500 font-medium">❌ Erreur : {error}</div>;
+  if (!user) return <div className="text-center text-gray-500">❌ Utilisateur non trouvé</div>;
 
   return (
     <div className="mx-auto max-w-2xl py-4 sm:py-4 lg:max-w-7xl">
@@ -70,17 +72,19 @@ const UserDetail = () => {
             </div>
             <div className="mt-4 flex justify-center items-center space-x-4">
               <button
-                className="px-4 py-2 border rounded-md disabled:opacity-50"
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                className="px-4 py-2 border rounded-md disabled:opacity-50 focus:ring-2 focus:ring-indigo-500"
+                onClick={handlePrevPage}
                 disabled={currentPage === 1}
+                aria-label="Page précédente"
               >
                 Précédent
               </button>
               <span>Page {currentPage} sur {totalPages}</span>
               <button
-                className="px-4 py-2 border rounded-md disabled:opacity-50"
-                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                className="px-4 py-2 border rounded-md disabled:opacity-50 focus:ring-2 focus:ring-indigo-500"
+                onClick={handleNextPage}
                 disabled={currentPage === totalPages}
+                aria-label="Page suivante"
               >
                 Suivant
               </button>

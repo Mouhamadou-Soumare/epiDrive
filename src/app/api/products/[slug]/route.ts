@@ -57,9 +57,9 @@ export async function PATCH(req: NextRequest, { params }: Params) {
       return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
     }
 
-    const { name, prix, description, categorie, path } = data;
+    const { name, prix, description, categorieId, path } = data;
 
-    if (!name || !prix || !description || !categorie) {
+    if (!name || !prix || !description || !categorieId) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
@@ -94,7 +94,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
         name,
         prix: parseFloat(prix),
         description,
-        categorieId: parseInt(categorie.id, 10),
+        categorieId: parseInt(categorieId, 10),
       },
     });
 

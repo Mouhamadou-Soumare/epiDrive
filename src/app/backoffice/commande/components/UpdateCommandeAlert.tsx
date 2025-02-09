@@ -1,28 +1,32 @@
 'use client';
 
+import { useState, useCallback } from "react";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { ExclamationTriangleIcon, XMarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline';
-import { useState } from 'react';
 
 interface UpdateCommandeAlertProps {
   message: string;
   open: boolean;
   setOpen: (open: boolean) => void;
-  user: { username: string }; // L'utilisateur avec son username
-  commandeId: number; // L'ID de la commande
+  user: { username: string };
+  commandeId: number;
 }
 
 export const UpdateCommandeAlert = ({ message: initialMessage, open, setOpen, user, commandeId }: UpdateCommandeAlertProps) => {
   const [message, setMessage] = useState(initialMessage);
   const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
-  };
+  }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setSuccessMessage(null);
+    setErrorMessage(null);
 
     try {
       const payload = {
@@ -32,13 +36,11 @@ export const UpdateCommandeAlert = ({ message: initialMessage, open, setOpen, us
         commandeId,
       };
 
-      console.log('Payload envoyé :', payload);
+      console.log("📩 Payload envoyé :", payload);
 
       const response = await fetch('/api/sendEmail', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
 
@@ -46,23 +48,23 @@ export const UpdateCommandeAlert = ({ message: initialMessage, open, setOpen, us
         throw new Error("Erreur lors de l'envoi de l'email");
       }
 
-      console.log("✅ Email envoyé avec succès");
-      setOpen(false);
+      setSuccessMessage("✅ Email envoyé avec succès !");
+      setTimeout(() => setOpen(false), 2000);
     } catch (error) {
-      console.error("❌ Erreur lors de la notification à l'utilisateur", error);
+      setErrorMessage("❌ Une erreur s'est produite lors de l'envoi.");
     } finally {
       setLoading(false);
     }
-  };
+  }, [message, commandeId, user, setOpen]);
 
   return (
-    <Dialog open={open} onClose={() => setOpen(false)} className="fixed inset-0 z-50 flex justify-center items-center lg:pl-72">
+    <Dialog open={open} onClose={() => setOpen(false)} className="fixed inset-0 z-50 flex justify-center items-center">
       <DialogBackdrop className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
 
       <div className="flex min-h-full w-full items-center justify-center p-4 text-center sm:p-0">
-        <DialogPanel className="relative transform overflow-hidden rounded-lg bg-white px-6 pb-6 pt-5 text-left shadow-xl drop-shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+        <DialogPanel className="relative transform overflow-hidden rounded-lg bg-white px-6 pb-6 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
           {/* Bouton Fermer */}
-          <div className="absolute right-0 top-0 pr-4 pt-4 sm:block">
+          <div className="absolute right-0 top-0 pr-4 pt-4">
             <button
               type="button"
               onClick={() => setOpen(false)}
@@ -87,6 +89,10 @@ export const UpdateCommandeAlert = ({ message: initialMessage, open, setOpen, us
               </p>
             </div>
           </div>
+
+          {/* Messages de succès et d'erreur */}
+          {successMessage && <p className="mt-4 text-green-600 font-semibold text-sm" aria-live="polite">{successMessage}</p>}
+          {errorMessage && <p className="mt-4 text-red-600 font-semibold text-sm" aria-live="assertive">{errorMessage}</p>}
 
           {/* Champ de texte */}
           <div className="mt-4">
@@ -113,8 +119,20 @@ export const UpdateCommandeAlert = ({ message: initialMessage, open, setOpen, us
                   : "bg-indigo-600 hover:bg-indigo-500 text-white"
               }`}
             >
-              {loading ? "Envoi en cours..." : "Envoyer"}
-              <PaperAirplaneIcon className="ml-2 h-5 w-5 text-white" />
+              {loading ? (
+                <>
+                  <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                  </svg>
+                  Envoi...
+                </>
+              ) : (
+                <>
+                  Envoyer
+                  <PaperAirplaneIcon className="ml-2 h-5 w-5 text-white" />
+                </>
+              )}
             </button>
           </div>
         </DialogPanel>
