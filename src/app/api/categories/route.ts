@@ -3,6 +3,15 @@ import prisma from '@/lib/prisma';
 
 export async function GET() {
   try {
+    console.log("📢 API /categories: Début du traitement...");
+
+    // Vérifier si Prisma est bien initialisé
+    if (!prisma) {
+      console.error("❌ Prisma Client n'est pas initialisé correctement.");
+      return NextResponse.json({ error: "Erreur interne du serveur: Prisma Client non initialisé." }, { status: 500 });
+    }
+
+    console.log("🛠 Récupération des catégories depuis la base de données...");
 
     // Récupération des catégories avec sous-catégories et images
     const categories = await prisma.categorie.findMany({
@@ -16,9 +25,11 @@ export async function GET() {
       },
     });
 
+    console.log(`✅ Récupération réussie : ${categories.length} catégories trouvées.`);
+
     if (categories.length === 0) {
-      console.error("No categories found");
-      return NextResponse.json({ message: 'No categories found' }, { status: 404 });
+      console.warn("⚠️ Aucune catégorie trouvée.");
+      return NextResponse.json({ error: "Aucune catégorie trouvée." }, { status: 404 });
     }
 
     // Formattage des catégories
@@ -54,12 +65,31 @@ export async function GET() {
       })),
     }));
 
+    console.log("✅ Catégories formatées avec succès.");
+    
     return NextResponse.json(formattedCategories, { status: 200 });
-  } catch (error) {
-    console.error("Error in GET API/categories:", error);
-    return new Response(JSON.stringify({ error: 'Failed to fetch categories' }), { status: 500 });
+  } catch (error: any) {
+    console.error("❌ ERREUR DANS API /categories:", error);
+
+    let errorMessage = "Erreur inconnue.";
+    
+    // Erreur Prisma spécifique
+    if (error instanceof Error) {
+      if (error.message.includes("P2021")) {
+        errorMessage = "La table demandée dans la base de données est introuvable.";
+      } else if (error.message.includes("P2002")) {
+        errorMessage = "Conflit de clé unique dans la base de données.";
+      } else if (error.message.includes("P1001")) {
+        errorMessage = "Connexion à la base de données échouée. Vérifiez DATABASE_URL.";
+      } else {
+        errorMessage = `Erreur Prisma: ${error.message}`;
+      }
+    }
+
+    return NextResponse.json({ error: `Échec de la récupération des catégories: ${errorMessage}` }, { status: 500 });
   }
 }
+
 
 export async function POST(req: Request) {
   const body = await req.json();
