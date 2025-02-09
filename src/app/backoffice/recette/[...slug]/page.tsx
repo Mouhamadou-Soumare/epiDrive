@@ -1,6 +1,7 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useCallback, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import ImageDisplay from "../components/ImageDisplay";
 import ProduitCard from "../components/ProduitCard";
@@ -10,29 +11,53 @@ import { Produit, Recette, Ingredient } from "types";
 import { useGetRecette, useDeleteRecette } from "@/hooks/recettes/useRecettes";
 
 export default function RecetteDetails() {
+  const router = useRouter();
   const { slug } = useParams() as { slug: string | string[] };
   const recetteSlug = Array.isArray(slug) ? slug[slug.length - 1] : slug;
 
   const recetteId = parseInt(recetteSlug, 10);
   const { recette, loading: recetteLoading, error: recetteError } = useGetRecette(
     isNaN(recetteId) ? null : recetteId
-  ) as { recette: Recette, loading: any, error: any };
-    const { deleteRecette, loading: deleteRecetteLoading, error: deleteRecetteError } = useDeleteRecette();
+  );
+  const { deleteRecette, loading: deleteRecetteLoading, error: deleteRecetteError } = useDeleteRecette();
 
-  const handleDelete = async () => {
-    if (recette) {
-      try {
-        await deleteRecette(recette.id);
-        window.location.href = "/backoffice/recette";
-      } catch (err) {
-        console.error("Erreur lors de la suppression de la recette:", err);
-      }
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDelete = useCallback(async () => {
+    if (!recette) return;
+
+    const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer cette recette ?");
+    if (!confirmDelete) return;
+
+    setIsDeleting(true);
+    try {
+      await deleteRecette(recette.id);
+      router.push("/backoffice/recette");
+    } catch (err) {
+      console.error("Erreur lors de la suppression de la recette:", err);
+    } finally {
+      setIsDeleting(false);
     }
-  };
+  }, [recette, deleteRecette, router]);
 
-  if (recetteLoading || deleteRecetteLoading) return <div className="lg:pl-72">Chargement...</div>;
-  if (recetteError) return <div className="lg:pl-72">Erreur lors de la récupération de la recette</div>;
-  if (!recette) return <div className="lg:pl-72">Recette non trouvée</div>;
+  if (recetteLoading || deleteRecetteLoading || isDeleting) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
+        <div className="text-center">
+          <p className="text-lg font-semibold text-gray-700">Chargement...</p>
+          <div className="mt-4 animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (recetteError) {
+    return <Alert message="Erreur lors de la récupération de la recette." type="error" />;
+  }
+
+  if (!recette) {
+    return <div className="text-center text-gray-500">❌ Recette non trouvée</div>;
+  }
 
   return (
     <div className="bg-white">
@@ -49,22 +74,23 @@ export default function RecetteDetails() {
 
             <h3 className="mt-6 text-lg font-bold text-gray-900">Produits</h3>
             <ul role="list" className="divide-y divide-gray-200">
-              {recette.produits.length > 0 ? (recette.produits.map((produit: Produit) => (
-                <ProduitCard key={produit.id} produit={produit} />
-              ))) : (<p>pas de produits en bdd pour cette recette</p>)}
+              {recette.produits.length > 0 ? (
+                recette.produits.map((produit: Produit) => <ProduitCard key={produit.id} produit={produit} />)
+              ) : (
+                <p>Aucun produit associé</p>
+              )}
             </ul>
 
-            { recette.ingredients ? (
+            {recette.ingredients && recette.ingredients.length > 0 && (
               <>
-              <h3 className="mt-6 text-lg font-bold text-gray-900">Ingredients</h3>
-              <ul role="list" className="divide-y divide-gray-200">
-                {recette.ingredients.map((ingredient: Ingredient) => (
-                  <IngredientCard key={ingredient.id} ingredient={ingredient} />
-                ))}
-              </ul>
-              </> ) : null
-            }
-
+                <h3 className="mt-6 text-lg font-bold text-gray-900">Ingrédients</h3>
+                <ul role="list" className="divide-y divide-gray-200">
+                  {recette.ingredients.map((ingredient: Ingredient) => (
+                    <IngredientCard key={ingredient.id} ingredient={ingredient} />
+                  ))}
+                </ul>
+              </>
+            )}
           </section>
         </div>
 

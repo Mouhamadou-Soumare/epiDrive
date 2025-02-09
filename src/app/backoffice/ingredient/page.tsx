@@ -70,6 +70,7 @@ const IngredientList = () => {
           searchQuery={searchQuery}
           onSearchChange={handleSearchChange}
           placeholder="Rechercher un ingrédient"
+          aria_label="Rechercher un ingrédient"
         />
       </div>
 

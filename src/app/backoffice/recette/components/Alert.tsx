@@ -1,19 +1,22 @@
 interface AlertProps {
-    message: string;
-    type: 'success' | 'error';
-  }
-  
-const Alert: React.FC<AlertProps> = ({ message, type }) => (
-    <div
-        className={`px-4 py-3 rounded relative mb-4 ${
-        type === 'success' ? 'bg-green-100 border border-green-400 text-green-700' : 'bg-red-100 border border-red-400 text-red-700'
-        }`}
-        role="alert"
-    >
-        <span className="font-bold">{type === 'success' ? 'Succès!' : 'Erreur!'}</span>
+message: string;
+type: "success" | "error" | "warning";
+}
+
+const Alert: React.FC<AlertProps> = ({ message, type }) => {
+    const bgColor = {
+        success: "bg-green-100 border-green-400 text-green-700",
+        error: "bg-red-100 border-red-400 text-red-700",
+        warning: "bg-yellow-100 border-yellow-400 text-yellow-700",
+    };
+
+    return (
+        <div className={`${bgColor[type]} border px-4 py-3 rounded relative mb-4`} role="alert">
+        <span className="font-bold">{type === "success" ? "Succès !" : type === "error" ? "Erreur !" : "Attention !"}</span>
         <span className="block sm:inline"> {message}</span>
-    </div>
-);
+        </div>
+    );
+};
 
 export default Alert;
   
