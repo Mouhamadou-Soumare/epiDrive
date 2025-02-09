@@ -54,6 +54,7 @@ const CategoryList = () => {
           searchQuery={searchQuery} 
           onSearchChange={handleSearchChange} 
           placeholder="Rechercher une catégorie"
+          aria_label="Rechercher une catégorie"
         />
       </div>
 

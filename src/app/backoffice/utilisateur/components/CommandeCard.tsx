@@ -17,9 +17,8 @@ const CommandeCard: React.FC<CommandeCardProps> = ({ commande }) => {
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{getPriceCommande()} €</td>
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{commande.status}</td>
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-        <Link href={`/backoffice/commande/${commande.id}`} className="a-primary svg-hover">
-        <EyeIcon className="h-6 w-6 "/>
-
+        <Link href={`/backoffice/commande/${commande.id}`} aria-label={`Voir la commande ${commande.id}`}>
+          <EyeIcon className="h-6 w-6 hover:text-indigo-600 focus:ring-2 focus:ring-indigo-500" />
         </Link>
       </td>
     </tr>

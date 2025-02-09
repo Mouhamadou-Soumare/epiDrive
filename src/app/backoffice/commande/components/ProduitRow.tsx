@@ -13,8 +13,7 @@ const ProduitRow: React.FC<ProduitRowProps> = ({ produit }) => (
     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{produit.prix} €</td>
     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
       <Link href={`/backoffice/product/${produit.slug}`} className="a-primary svg-hover">
-      <EyeIcon className="h-6 w-6"/>
-
+        <EyeIcon className="h-6 w-6 hover:text-indigo-500 focus:ring-2 focus:ring-indigo-500" />
       </Link>
     </td>
   </tr>
