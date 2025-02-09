@@ -1,0 +1,25 @@
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION BEGIN
+PassengerAppRoot "/home/rusu2228/epidriveProd"
+PassengerBaseURI "/"
+PassengerNodejs "/home/rusu2228/nodevenv/epidriveProd/20/bin/node"
+PassengerAppType node
+PassengerStartupFile server.cjs
+PassengerEnv NODE_ENV production
+PassengerEnv PORT 3000
+PassengerEnv DATABASE_URL mysql://rusu2228_mouha:Testepidrive@109.234.166.85:3306/rusu2228_epidrive
+PassengerEnv NEXTAUTH_SECRET nkwWWgNRQ3kEkccxuVi2h0SRWdEfaw6h2T4eQWSDJSw
+PassengerEnv RESEND_API_KEY re_CrrFoyzx_AUC7t9ARpNsKeoPCmEHaDirN
+PassengerEnv RESEND_EMAIL_FROM "Acme <onboarding@resend.dev>"
+PassengerEnv RESEND_EMAIL_TO mouhamadou-soumare@hotmail.com
+PassengerEnv STRIPE_SECRET_KEY sk_test_51QjeQT4Fw1Z6GBQmcbpXQx6J5n2o9eZ15ptYySrtEtcNvNEvLoyfKZCmvVjaHLNubV0WSL3V8teuBm4GzjYeZWC000ITrxyrYl
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION END
+# DO NOT REMOVE OR MODIFY. CLOUDLINUX ENV VARS CONFIGURATION BEGIN
+<IfModule Litespeed>
+SetEnv NEXTAUTH_SECRET nkwWWgNRQ3kEkccxuVi2h0SRWdEfaw6h2T4eQWSDJSw
+SetEnv RESEND_API_KEY re_CrrFoyzx_AUC7t9ARpNsKeoPCmEHaDirN
+SetEnv RESEND_EMAIL_FROM Acme <onboarding@resend.dev>
+SetEnv RESEND_EMAIL_TO mouhamadou-soumare@hotmail.com
+SetEnv STRIPE_SECRET_KEY sk_test_51QjeQT4Fw1Z6GBQmcbpXQx6J5n2o9eZ15ptYySrtEtcNvNEvLoyfKZCmvVjaHLNubV0WSL3V8teuBm4GzjYeZWC000ITrxyrYl
+SetEnv DATABASE_URL mysql://rusu2228_mouha:Testepidrive@109.234.166.85:3306/rusu2228_epidrive
+</IfModule>
+# DO NOT REMOVE OR MODIFY. CLOUDLINUX ENV VARS CONFIGURATION END
