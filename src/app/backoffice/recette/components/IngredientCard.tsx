@@ -6,10 +6,14 @@ interface IngredientCardProps {
 }
 
 const IngredientCard: React.FC<IngredientCardProps> = ({ ingredient }) => (
-  <li className="py-1 flex items-center justify-between">
-  <Link href={`/backoffice/ingredient/${ingredient.id}`}>
-    <p className="text-base text-gray-500">{ingredient.name}</p>
-  </Link>
+  <li className="py-2 px-4 flex items-center justify-between bg-gray-50 rounded-md hover:bg-gray-100 transition">
+    <Link
+      href={`/backoffice/ingredient/${ingredient.id}`}
+      className="text-gray-700 hover:text-indigo-600 font-medium"
+      aria-label={`Voir l'ingrédient ${ingredient.name}`}
+    >
+      {ingredient.name}
+    </Link>
   </li>
 );
 

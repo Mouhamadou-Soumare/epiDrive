@@ -59,6 +59,7 @@ export function useGetProduit(id: string | null) {
           prix: data.prix || 0,
           description: data.description || "",
           categorieId: data.categorie.id ?? null, 
+          image: data.image || null,
         };
 
         setProduit(produitFormate); // ✅ Maintenant, `setProduit` reçoit bien un seul produit
