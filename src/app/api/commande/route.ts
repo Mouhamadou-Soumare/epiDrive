@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { CommandeStatus } from '@prisma/client'; // ✅ Importer l'énumération CommandeStatus
+import { CommandeStatus, Livraison_Type } from '@prisma/client'; 
 
 // Définition du type pour les produits reçus dans la commande
 interface ProduitCommande {
@@ -12,7 +12,7 @@ interface ProduitCommande {
 
 // Définition du type pour le corps de la requête
 interface CommandeBody {
-  status: CommandeStatus; // ✅ Utilisation du type Prisma au lieu de string
+  status: CommandeStatus; 
   paymentId?: string;
   userId: string;
   infosAdresse: {
@@ -22,6 +22,7 @@ interface CommandeBody {
     pays: string;
   };
   produits: ProduitCommande[];
+  type: Livraison_Type;
 }
 
 export async function GET() {
@@ -51,12 +52,12 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body: CommandeBody = await req.json();
-    const { status, paymentId, userId, infosAdresse, produits } = body;
+    const { status, paymentId, userId, infosAdresse, produits, type } = body;
 
     console.log('Creating commande with body:', body);
 
     // Vérification des champs requis
-    if (!status || !userId || !infosAdresse || !produits || produits.length === 0) {
+    if (!status || !userId || !infosAdresse || !produits || !type || produits.length === 0) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
@@ -67,6 +68,11 @@ export async function POST(req: Request) {
     // ✅ Vérifier que `status` est une valeur valide de `CommandeStatus`
     if (!Object.values(CommandeStatus).includes(status)) {
       return NextResponse.json({ error: `Invalid status: ${status}` }, { status: 400 });
+    }
+
+    // ✅ Vérifier que `type` est une valeur valide de `Livraison_Type`
+    if (!Object.values(Livraison_Type).includes(type)) {
+      return NextResponse.json({ error: `Invalid type: ${type}` }, { status: 400 });
     }
 
     const livraisonData = {
@@ -82,10 +88,36 @@ export async function POST(req: Request) {
         status, // ✅ Plus d'erreur, car `status` est du bon type
         paymentId: paymentId || null,
         user: { connect: { id: parseInt(userId, 10) } }, // Conversion de l'id en Int
-        livraison: { create: livraisonData },
+        type
       },
     });
 
+    const existingLivraison = await prisma.livraison.findFirst({
+      where: {
+        ...livraisonData,
+        fk_userId: parseInt(userId, 10),
+      },
+    });
+
+    if (existingLivraison) {
+      await prisma.commande.update({
+        where: { id: newCommande.id },
+        data: { livraison: { connect: { id: existingLivraison.id } } },
+      });
+    } else {
+      const newLivraison = await prisma.livraison.create({
+        data: {
+          ...livraisonData,
+          user: { connect: { id: parseInt(userId, 10) } },
+        },
+      });
+
+      await prisma.commande.update({
+        where: { id: newCommande.id },
+        data: { livraison: { connect: { id: newLivraison.id } } },
+      });
+    }
+    
     // Ajout des produits à la commande
     for (const produit of produits) {
       if (!produit.id || !produit.quantite || produit.quantite <= 0) {
