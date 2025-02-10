@@ -38,7 +38,7 @@ import {
 import SearchBar from "./SearchBar";
 import { useGetMainCategories } from "@/hooks/categories/useGetMainCategories";
 import CartSlideOver from "./client/product/cart/CartSlideOver";
-import { useGetCart } from "@/hooks/cart/useGetCart";
+import { useCart } from "@/context/CartContext";
 
 
 
@@ -125,7 +125,7 @@ export default function Navbar() {
   const { categories, loading: categoriesLoading, error } = useGetMainCategories();
   const [open, setOpen] = useState(false); 
   const [cartOpen, setCartOpen] = useState(false);
-  const { cartItems, loading: cartLoading  } = useGetCart(); 
+  const { cartItems, loading: cartLoading } = useCart();
   const { data: session, status } = useSession({
     required: false,
   });
@@ -327,14 +327,19 @@ export default function Navbar() {
             onClick={() => setCartOpen(true)} 
             className="relative -m-2 flex items-center p-2"
           >
-            <ShoppingCartIcon aria-hidden="true" className={`h-7 w-7 flex-shrink-0 ${
-              totalItems > 0 ? "text-yellow-500" : "text-orange-400 hover:text-gray-500"
-            }`} />
-            {totalItems > 0 && (
-              <span className="ml-2 text-md font-medium text-gray-700 hover:text-gray-800">
-                {totalItems}
-              </span>
-            )}            <span className="sr-only">Voir le panier</span>
+           <ShoppingCartIcon 
+  aria-hidden="true" 
+  className={`h-7 w-7 flex-shrink-0 ${
+    totalItems > 0 ? "text-yellow-500" : "text-orange-400 hover:text-gray-500"
+  }`}
+/>
+{totalItems > 0 && (
+  <span className="ml-2 text-md font-medium text-gray-700 hover:text-gray-800">
+    {totalItems}
+  </span>
+)}
+  
+                     <span className="sr-only">Voir le panier</span>
           </button>
           
 

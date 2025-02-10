@@ -19,14 +19,14 @@ type CartItem = {
 };
 
 interface RecommendedRecettesProps {
-  sessionId: string;
-  setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
+  // sessionId: string;
+  // setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
   allRecettes: Recette[];
 }
 
 const RecommendedRecettes: React.FC<RecommendedRecettesProps> = ({
-  sessionId,
-  setCartItems,
+  // sessionId,
+  // setCartItems,
   allRecettes,
 }) => {
   const [recommendedRecettes, setRecommendedRecettes] = useState<Recette[]>([]);

@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 function getOrCreateSessionId() {
-  const sessionId = localStorage.getItem('sessionId');
+  const sessionId = localStorage.getItem("sessionId");
   if (!sessionId) {
     const newSessionId = `session-${Date.now()}`;
-    localStorage.setItem('sessionId', newSessionId);
+    localStorage.setItem("sessionId", newSessionId);
     return newSessionId;
   }
   return sessionId;
@@ -29,41 +29,48 @@ export function useGetCart() {
 
     try {
       const res = await fetch(`/api/cart?sessionId=${sessionId}`);
-      let data;
-      try {
-        data = await res.json();
-      } catch (jsonError) {
-        throw new Error('Failed to parse JSON response');
-      }
+      const data = await res.json();
 
       if (res.ok) {
         setCartItems(data);
       } else {
-        console.error('Erreur de récupération du panier:', data.error || 'Erreur de réponse non spécifiée');
+        console.error(
+          "Erreur de récupération du panier:",
+          data.error || "Erreur de réponse non spécifiée"
+        );
       }
-    } catch (error: unknown) {
-      let errorMessage = 'Erreur inconnue lors de la récupération du panier';
-      if (error instanceof Error) {
-        errorMessage = `${error.name}: ${error.message}`;
-      } else if (typeof error === 'string') {
-        errorMessage = error;
-      } else if (error && typeof error === 'object') {
-        errorMessage = JSON.stringify(error);
-      }
-      console.error('Erreur lors de la récupération du panier:', errorMessage);
+    } catch (error) {
+      console.error("Erreur lors de la récupération du panier:", error);
     } finally {
       setLoading(false);
     }
   }
 
   useEffect(() => {
-    fetchCart();
+    fetchCart(); // Chargement initial du panier
+
+    // Initialisation du SSE
+    const eventSource = new EventSource("/api/cart/updates");
+
+    eventSource.onmessage = (event) => {
+      console.log("📢 Mise à jour du panier reçue via SSE:", event.data);
+      try {
+        const updatedCart = JSON.parse(event.data);
+        setCartItems(updatedCart);
+      } catch (error) {
+        console.error("Erreur de parsing du panier SSE:", error);
+      }
+    };
+
+    eventSource.onerror = (error) => {
+      console.error("❌ Erreur SSE:", error);
+      eventSource.close();
+    };
+
+    return () => {
+      eventSource.close(); // Fermeture de la connexion SSE à la destruction du composant
+    };
   }, []);
 
-  function refreshCart() {
-    setLoading(true);
-    fetchCart();
-  }
-
-  return { cartItems, loading, refreshCart };
+  return { cartItems, loading, refreshCart: fetchCart };
 }

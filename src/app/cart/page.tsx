@@ -1,118 +1,69 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import RecommendedRecettes from "@/components/client/recette/RecommendedRecettes";
+import { useCart } from "@/context/CartContext";
 import { Recette } from "../../../types";
 import AuthModal from "@/components/AuthModal";
-
-type CartItem = {
-  id: number;
-  produit: {
-    id: number;
-    name: string;
-    prix: number;
-    description: string;
-    image: { path: string };
-  };
-  quantite: number;
-  prix: number;
-};
-
 
 export default function CartPage() {
   const { status } = useSession();
   const router = useRouter();
 
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  // 🔥 Utilisation du contexte global CartProvider
+  const { cartItems, loading, updateQuantity, deleteProduct } = useCart();
+  const [localCart, setLocalCart] = useState(cartItems);
+  const updateTimeout = useRef<{ [key: number]: NodeJS.Timeout }>({});
+
   const [isLoadingRecettes, setIsLoadingRecettes] = useState(false);
-  const [sessionId, setSessionId] = useState<string | null>(null);
   const [recommendedRecettes, setRecommendedRecettes] = useState<Recette[]>([]);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showRecommendedRecettes, setShowRecommendedRecettes] = useState(false);
 
-  /**
-   * 🔹 Récupère l'ID de session (ou le crée si inexistant)
-   */
-  const getOrCreateSessionId = useCallback(() => {
-    let sessionId = localStorage.getItem("sessionId");
-    if (!sessionId) {
-      sessionId = `session_${Math.random().toString(36).substring(2, 15)}`;
-      localStorage.setItem("sessionId", sessionId);
+  // ✅ Met à jour `localCart` uniquement au premier chargement
+  useEffect(() => {
+    if (localCart.length === 0) {
+      setLocalCart(cartItems);
     }
-    setSessionId(sessionId);
-    return sessionId;
-  }, []);
+  }, [cartItems]);
 
-  /**
-   * 🔹 Récupère le panier depuis l'API
-   */
-  const fetchCart = useCallback(async () => {
-    const sessionId = getOrCreateSessionId();
-    setLoading(true);
-    try {
-      const res = await fetch(`/api/cart?sessionId=${sessionId}`);
-      if (!res.ok) throw new Error(`Erreur API: ${res.status}`);
-      const data = await res.json();
-      setCartItems(data);
-    } catch (error) {
-      console.error("Erreur lors de la récupération du panier:", error);
-    } finally {
-      setLoading(false);
+  // ✅ Mise à jour optimisée des quantités (Optimistic UI)
+  const handleUpdateQuantity = (productId: number, newQuantity: number) => {
+    if (newQuantity < 1) {
+      handleRemove(productId);
+      return;
     }
-  }, [getOrCreateSessionId]);
 
-  const handleUpdateQuantity = async (productId: number, newQuantity: number) => {
-    if (newQuantity < 1) return; // Empêche les quantités négatives
+    // ✅ Mise à jour instantanée du panier local (optimistic UI)
+    setLocalCart((prev) =>
+      prev.map((item) =>
+        item.produit.id === productId ? { ...item, quantite: newQuantity } : item
+      )
+    );
 
-    console.log("Nouvelle status:", status);
-    try {
-      const res = await fetch(`/api/cart/${productId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ quantity: newQuantity, sessionId }),
-      });
-
-      if (res.ok) {
-        const updatedItem = await res.json();
-        setCartItems((prevItems) =>
-          prevItems.map((item) =>
-            item.produit.id === updatedItem.fk_produit
-              ? { ...item, quantite: updatedItem.quantite, prix: updatedItem.prix }
-              : item
-          )
-        );
-      } else {
-        console.error("Erreur lors de la mise à jour de la quantité:", res.statusText);
-      }
-    } catch (error) {
-      console.error("Erreur lors de la mise à jour de la quantité:", error);
+    // ✅ Supprime le timeout existant pour éviter le spam API
+    if (updateTimeout.current[productId]) {
+      clearTimeout(updateTimeout.current[productId]);
     }
+
+    // ✅ Déclenche l'API après un petit délai (évite requêtes multiples)
+    updateTimeout.current[productId] = setTimeout(() => {
+      updateQuantity(productId, newQuantity);
+    }, 300);
   };
 
-  const handleRemove = async (productId: number) => {
-    try {
-      const res = await fetch(`/api/cart/${productId}?sessionId=${sessionId}`, {
-        method: "DELETE",
-      });
-
-      if (res.ok) {
-        // Mettre à jour l'état local du panier après suppression
-        setCartItems((prevItems) => prevItems.filter((item) => item.produit.id !== productId));
-      } else {
-        console.error("Erreur lors de la suppression de l'article:", res.statusText);
-      }
-    } catch (error) {
-      console.error("Erreur lors de la suppression de l'article:", error);
-    }
+  // ✅ Suppression optimisée (optimistic UI)
+  const handleRemove = (productId: number) => {
+    setLocalCart((prev) => prev.filter((item) => item.produit.id !== productId));
+    deleteProduct(productId);
   };
-  
+
   /**
-   * 🔹 Récupère les recettes recommandées
+   * 🔹 Récupération des recettes recommandées
    */
-  const fetchRecettes = useCallback(async () => {
+  const fetchRecettes = async () => {
     if (cartItems.length === 0) return;
     setIsLoadingRecettes(true);
     try {
@@ -134,11 +85,7 @@ export default function CartPage() {
     } finally {
       setIsLoadingRecettes(false);
     }
-  }, [cartItems]);
-
-  useEffect(() => {
-    fetchCart();
-  }, [fetchCart]);
+  };
 
   useEffect(() => {
     if (showRecommendedRecettes) {
@@ -146,7 +93,10 @@ export default function CartPage() {
     }
   }, [showRecommendedRecettes]);
 
-  const totalAmount = cartItems.reduce((acc, item) => acc + item.prix * item.quantite, 0);
+  const totalAmount = localCart.reduce(
+    (acc, item) => acc + item.prix * item.quantite,
+    0
+  );
 
   if (loading)
     return (
@@ -158,17 +108,26 @@ export default function CartPage() {
   return (
     <div className="bg-white p-8 mx-auto px-56">
       <h1 className="text-3xl font-bold mb-6">Votre panier</h1>
-      {cartItems.length === 0 ? (
+      {localCart.length === 0 ? (
         <p className="text-gray-500">Votre panier est vide</p>
       ) : (
         <div className="space-y-4">
-          {cartItems.map((item) => (
-            <div key={item.id} className="flex flex-col md:flex-row items-center justify-between border-b pb-4">
-              <img src={item.produit.image.path} alt={item.produit.name} className="w-20 h-20 object-cover rounded" />
+          {localCart.map((item) => (
+            <div
+              key={item.id}
+              className="flex flex-col md:flex-row items-center justify-between border-b pb-4"
+            >
+              <img
+                src={item.produit.image.path}
+                alt={item.produit.name}
+                className="w-20 h-20 object-cover rounded"
+              />
               <div className="flex-1 ml-4">
                 <h3 className="text-lg font-semibold">{item.produit.name}</h3>
                 <p className="text-gray-500">{item.produit.description}</p>
-                <p className="mt-2">{item.prix}€ x {item.quantite}</p>
+                <p className="mt-2">
+                  {item.prix}€ x {item.quantite}
+                </p>
               </div>
               <div className="flex items-center space-x-2">
                 <button
@@ -195,44 +154,45 @@ export default function CartPage() {
             </div>
           ))}
 
-          <div className="text-xl font-bold text-right">Total: {totalAmount.toFixed(2)} €</div>
+          <div className="text-xl font-bold text-right">
+            Total: {totalAmount.toFixed(2)} €
+          </div>
 
           <div className="mt-4">
             <button
               onClick={() => setShowRecommendedRecettes(!showRecommendedRecettes)}
               className="mt-4 bg-blue-500 hover:bg-blue-700 py-2 px-10 rounded-lg text-white"
             >
-              {showRecommendedRecettes ? "Masquer les recettes recommandées" : "Voir les recettes recommandées"}
+              {showRecommendedRecettes
+                ? "Masquer les recettes recommandées"
+                : "Voir les recettes recommandées"}
             </button>
 
-            {showRecommendedRecettes && sessionId && (
-              isLoadingRecettes ? (
+            {showRecommendedRecettes &&
+              (isLoadingRecettes ? (
                 <div className="text-center mt-4">Chargement des recettes...</div>
               ) : recommendedRecettes.length === 0 ? (
                 <div className="text-center mt-4">Aucune recette recommandée</div>
               ) : (
-                <RecommendedRecettes sessionId={sessionId} setCartItems={setCartItems} allRecettes={recommendedRecettes} />
-              )
-            )}
+                <RecommendedRecettes allRecettes={recommendedRecettes} />
+              ))}
           </div>
 
-          {
-            status == "authenticated" ? (
-              <button
-                onClick={() => router.push("/checkout")}
-                className="mt-4 bg-orange-300 hover:bg-orange-500 py-2 px-10 rounded-lg"
-              >
-                Passer à la caisse
-              </button>
-            ) : (
-              <button
-                onClick={() => setShowAuthModal(true)}
-                className="mt-4 bg-orange-300 hover:bg-orange-500 py-2 px-10 rounded-lg"
-              >
-                Se connecter pour passer à la caisse
-              </button>
-            )
-          }
+          {status === "authenticated" ? (
+            <button
+              onClick={() => router.push("/checkout")}
+              className="mt-4 bg-orange-300 hover:bg-orange-500 py-2 px-10 rounded-lg"
+            >
+              Passer à la caisse
+            </button>
+          ) : (
+            <button
+              onClick={() => setShowAuthModal(true)}
+              className="mt-4 bg-orange-300 hover:bg-orange-500 py-2 px-10 rounded-lg"
+            >
+              Se connecter pour passer à la caisse
+            </button>
+          )}
 
           {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
         </div>
