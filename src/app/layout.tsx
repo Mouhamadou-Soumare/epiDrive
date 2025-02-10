@@ -29,10 +29,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="fr">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {/* ClientSessionWrapper gère les composants clients */}
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         <ClientSessionWrapper>
-          {/* Correction: CartProvider englobe correctement les enfants */}
           <CartProvider>
             <ClientNavbarWrapper />
             {children}

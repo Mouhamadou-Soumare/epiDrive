@@ -19,7 +19,7 @@ export default function RegisterPage() {
   // Vérifie si l'utilisateur est déjà connecté
   useEffect(() => {
     if (status === 'authenticated') {
-      router.push('/dashboard'); // Redirige vers le dashboard
+      router.push('/'); 
     }
   }, [status, router]);
 

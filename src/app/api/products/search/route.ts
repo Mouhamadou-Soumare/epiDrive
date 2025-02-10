@@ -40,15 +40,16 @@ export async function GET(req: NextRequest) {
     }));
     */
    
-    const formattedProducts = products.map((product: { id: number; name: string; slug: string; description: string; prix: number; image: { path: string } | null; categorie: { id: number; name: string; slug: string } | null }) => ({
+    const formattedProducts = products.map((product) => ({
       id: product.id,
       name: product.name,
       prix: product.prix,
-      image: product.image?.path || '',
       slug: product.slug,
       description: product.description,
+      image: product.image, // On retourne l'objet Image
       categorie: product.categorie?.name || 'Uncategorized',
     }));
+    
 
     const uniqueCategories = Array.from(
       new Set(products.map((product: { categorie: { id: number; name: string; slug: string } | null }) => product.categorie))
