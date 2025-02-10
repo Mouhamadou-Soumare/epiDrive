@@ -6,6 +6,7 @@ import { ReactNode } from "react";
 import ClientSessionWrapper from "../components/ClientSessionWrapper";
 import ClientNavbarWrapper from "@/components/ClientNavbarWrapper";
 import ClientFooterWrapper from "@/components/ClientFooterWrapper";
+import { CartProvider } from "@/context/CartContext";
 
 // Définition des polices locales
 const geistSans = localFont({
@@ -27,13 +28,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {/* ClientSessionWrapper gère les composants clients */}
         <ClientSessionWrapper>
-          <ClientNavbarWrapper />
-          {children}
-          <ClientFooterWrapper />
+          {/* Correction: CartProvider englobe correctement les enfants */}
+          <CartProvider>
+            <ClientNavbarWrapper />
+            {children}
+            <ClientFooterWrapper />
+          </CartProvider>
         </ClientSessionWrapper>
       </body>
     </html>

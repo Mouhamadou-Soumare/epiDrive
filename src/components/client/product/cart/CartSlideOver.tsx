@@ -1,8 +1,9 @@
 "use client";
 
+import { useState, useEffect, useRef, useContext } from "react";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useGetCart } from "@/hooks/cart/useGetCart";
+import { XMarkIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { CartContext } from "@/context/CartContext";
 
 type CartSlideOverProps = {
   open: boolean;
@@ -10,12 +11,54 @@ type CartSlideOverProps = {
 };
 
 export default function CartSlideOver({ open, setOpen }: CartSlideOverProps) {
-  const { cartItems, loading, refreshCart } = useGetCart();
+  const cartContext = useContext(CartContext);
+  if (!cartContext) return null; // Sécurité en cas de problème de contexte
 
-  const subtotal = cartItems.reduce(
-    (total: number, item) => total + item.prix * item.quantite,
-    0
-  );
+  const { cartItems, loading, updateQuantity, deleteProduct } = cartContext;
+  const [localCart, setLocalCart] = useState(cartItems);
+  const updateTimeout = useRef<{ [key: number]: NodeJS.Timeout }>({});
+
+  // 🔥 Synchronisation locale du panier avec le contexte global
+  useEffect(() => {
+    setLocalCart(cartItems);
+  }, [cartItems]);
+
+  // 🔥 Gestion optimisée de la mise à jour de quantité
+  const handleUpdateQuantity = (productId: number, newQuantity: number) => {
+    if (newQuantity < 1) {
+      handleDeleteProduct(productId);
+      return;
+    }
+
+    // ✅ MAJ instantanée du panier local (optimistic UI)
+    setLocalCart((prev) =>
+      prev.map((item) =>
+        item.produit.id === productId ? { ...item, quantite: newQuantity } : item
+      )
+    );
+
+    // ✅ Suppression d'un timeout en cours (évite le spam d'API)
+    if (updateTimeout.current[productId]) {
+      clearTimeout(updateTimeout.current[productId]);
+    }
+
+    // ✅ Déclenchement de l'API après un court délai (évite les requêtes multiples)
+    updateTimeout.current[productId] = setTimeout(() => {
+      updateQuantity(productId, newQuantity);
+    }, 300);
+  };
+
+  // 🔥 Suppression instantanée d'un produit
+  const handleDeleteProduct = (productId: number) => {
+    // ✅ Mise à jour locale immédiate (optimistic UI)
+    setLocalCart((prev) => prev.filter((item) => item.produit.id !== productId));
+
+    // ✅ Suppression dans l'API
+    deleteProduct(productId);
+  };
+
+  // ✅ Calcul instantané du sous-total
+  const subtotal = localCart.reduce((total, item) => total + item.prix * item.quantite, 0);
 
   return (
     <Dialog open={open} onClose={() => setOpen(false)} className="relative z-10">
@@ -26,58 +69,90 @@ export default function CartSlideOver({ open, setOpen }: CartSlideOverProps) {
           <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
             <DialogPanel className="pointer-events-auto w-screen max-w-md">
               <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
+                
+                {/* 🔹 En-tête du panier */}
                 <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
                   <div className="flex items-start justify-between">
                     <DialogTitle className="text-lg font-medium text-gray-900">Panier</DialogTitle>
                     <button onClick={() => setOpen(false)} className="-m-2 p-2 text-gray-400 hover:text-gray-500">
-                      <span className="sr-only">Fermer le panneau</span>
                       <XMarkIcon className="h-6 w-6" />
                     </button>
                   </div>
 
+                  {/* 🔹 Contenu du panier */}
                   <div className="mt-8">
-                    <div className="flow-root">
-                      {loading ? (
-                        <p>Chargement...</p>
-                      ) : cartItems.length === 0 ? (
-                        <p>Votre panier est vide</p>
-                      ) : (
-                        <ul role="list" className="-my-6 divide-y divide-gray-200">
-                          {cartItems.map((item) => (
-                            <li key={item.id} className="flex py-6">
-                              <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                <img
-                                  src={item.produit.image.path}
-                                  alt={`Image de ${item.produit.name}`}
-                                  className="h-full w-full object-cover object-center"
-                                />
+                    {loading ? (
+                      <p>Chargement...</p>
+                    ) : localCart.length === 0 ? (
+                      <p>Votre panier est vide</p>
+                    ) : (
+                      <ul className="-my-6 divide-y divide-gray-200">
+                        {localCart.map((item) => (
+                          <li key={item.id} className="flex py-6 items-center">
+                            {/* Image du produit */}
+                            <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                              <img
+                                src={item.produit.image.path}
+                                alt={`Image de ${item.produit.name}`}
+                                className="h-full w-full object-cover object-center"
+                              />
+                            </div>
+
+                            {/* Infos et gestion des quantités */}
+                            <div className="ml-4 flex flex-1 flex-col">
+                              <div className="flex justify-between text-base font-medium text-gray-900">
+                                <h3>{item.produit.name}</h3>
+                                <p className="ml-4">{item.prix} €</p>
                               </div>
-                              <div className="ml-4 flex flex-1 flex-col">
-                                <div className="flex justify-between text-base font-medium text-gray-900">
-                                  <h3>{item.produit.name}</h3>
-                                  <p className="ml-4">{item.prix} €</p>
-                                </div>
-                                <p className="mt-1 text-sm text-gray-500">Quantité: {item.quantite}</p>
+
+                              {/* 🔹 Gestion quantité */}
+                              <div className="mt-2 flex items-center space-x-2">
+                                <button
+                                  className="px-2 py-1 border border-gray-300 rounded-md hover:bg-gray-100"
+                                  onClick={() => handleUpdateQuantity(item.produit.id, item.quantite - 1)}
+                                >
+                                  -
+                                </button>
+                                <p className="text-sm text-gray-500">{item.quantite}</p>
+                                <button
+                                  className="px-2 py-1 border border-gray-300 rounded-md hover:bg-gray-100"
+                                  onClick={() => handleUpdateQuantity(item.produit.id, item.quantite + 1)}
+                                >
+                                  +
+                                </button>
                               </div>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
+                            </div>
+
+                            {/* 🔹 Bouton supprimer */}
+                            <button
+                              className="ml-4 text-red-600 hover:text-red-800"
+                              onClick={() => handleDeleteProduct(item.produit.id)}
+                            >
+                              <TrashIcon className="h-5 w-5" />
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 </div>
 
+                {/* 🔹 Footer */}
                 <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                   <div className="flex justify-between text-base font-medium text-gray-900">
                     <p>Sous-total</p>
                     <p>{subtotal.toFixed(2)} €</p>
                   </div>
+                  
+                  {/* 🔹 Bouton validation */}
                   <button
-                  onClick={() => {window.location.href = '/cart'}}
-                  className="mt-6 flex w-full items-center justify-center rounded-md bg-indigo-600 px-6 py-3 text-base font-medium text-white hover:bg-indigo-700">
+                    onClick={() => { window.location.href = '/cart' }}
+                    className="mt-6 flex w-full items-center justify-center rounded-md bg-indigo-600 px-6 py-3 text-base font-medium text-white hover:bg-indigo-700"
+                  >
                     Passer à la caisse
                   </button>
                 </div>
+
               </div>
             </DialogPanel>
           </div>
