@@ -157,7 +157,9 @@ export default function SearchResultsPage() {
     }
   };
 
-  if (loading || loadingLivraisons || addingCommande) return <div>Chargement ...</div>;
+  if (loading || loadingLivraisons || addingCommande) return <div className="min-h-screen flex justify-center items-center">
+  <span className="loader-cate-prod"></span>
+</div>;
   if (addError) return <div>Erreur lors de la soumission de la commande</div>;
   if (cartItems.length === 0) return <div>Votre panier est vide</div>;
 
