@@ -51,7 +51,6 @@ export default function SnapAndCook() {
         return;
       }
   
-      console.log("Réponse API :", result); // Debugging
   
       const ingredientsArray = Array.isArray(result.dish?.ingredients) ? result.dish.ingredients : [];
       const productArray = Array.isArray(result.dish?.produits) ? result.dish.produits : [];

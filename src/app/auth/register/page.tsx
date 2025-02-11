@@ -68,7 +68,7 @@ export default function RegisterPage() {
         if (signInResult?.error) {
           setError("Inscription réussie, mais échec de la connexion automatique.");
         } else {
-          router.push('/dashboard');
+          router.push('/profile');
         }
       } else {
         const errorData = await res.json();

@@ -10,7 +10,7 @@ export const ProductCard = ({ product }: { product: Produit }) => {
   useEffect(() => {
     const fetchCategorie = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/categories/${product.categorieId}`);
+        const response = await fetch(`/api/categories/${product.categorieId}`);
         if (!response.ok) {
           throw new Error('Erreur de chargement de la catégorie');
         }

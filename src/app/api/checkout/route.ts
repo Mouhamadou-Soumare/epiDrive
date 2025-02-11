@@ -1,83 +1,53 @@
-import { NextResponse } from 'next/server';
-import Stripe from 'stripe';
+import { NextResponse } from "next/server";
+import Stripe from "stripe";
 
-// Définition des types des produits et du corps de la requête
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-}
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {});
 
-// Initialiser Stripe avec la clé secrète et la version de l'API
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-});
-
-// Route POST pour créer une session Stripe Checkout
+/**
+ * 📌 Crée une session de paiement Stripe
+ */
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { orderSummary } = body;
+    const { orderSummary } = await req.json();
 
-    const produits = orderSummary.items;
-    const shippingAddress = orderSummary.shippingAddress;
-    const totalAmount = orderSummary.totalAmount;
-    const livraisonType = orderSummary.livraisonType;
-
-    if (!produits || produits.length === 0) {
-      return NextResponse.json(
-        { error: 'Aucun produit dans la commande' },
-        { status: 400 }
-      );
+    if (!orderSummary?.items?.length) {
+      return NextResponse.json({ error: "Aucun produit dans la commande" }, { status: 400 });
     }
 
-    const lineItems = produits.map((product) => {
-      if (
-        typeof product.price !== 'number' ||
-        product.price <= 0 ||
-        typeof product.quantity !== 'number' ||
-        product.quantity <= 0
-      ) {
-        throw new Error(`Produit invalide : ${JSON.stringify(product)}`);
+    const lineItems = orderSummary.items.map(({ name, price, quantity }) => {
+      if (typeof price !== "number" || price <= 0 || typeof quantity !== "number" || quantity <= 0) {
+        throw new Error(`Produit invalide : ${JSON.stringify({ name, price, quantity })}`);
       }
 
       return {
         price_data: {
-          currency: 'eur',
-          product_data: {
-            name: product.name,
-          },
-          unit_amount: Math.round(product.price * 100), // Convertir en centimes
+          currency: "eur",
+          product_data: { name },
+          unit_amount: Math.round(price * 100), 
         },
-        quantity: product.quantity,
+        quantity,
       };
     });
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
+      payment_method_types: ["card"],
       line_items: lineItems,
-      mode: 'payment',
+      mode: "payment",
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/checkout-success`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/checkout-cancel`,
       metadata: {
-        adresse: shippingAddress.adresse,
-        ville: shippingAddress.ville,
-        codePostal: shippingAddress.codePostal,
-        pays: shippingAddress.pays,
+        adresse: orderSummary.shippingAddress.adresse,
+        ville: orderSummary.shippingAddress.ville,
+        codePostal: orderSummary.shippingAddress.codePostal,
+        pays: orderSummary.shippingAddress.pays,
       },
     });
 
     return NextResponse.json({ url: session.url });
   } catch (error) {
-    if (error instanceof Error) {
-      console.error('Erreur lors de la création de la session Stripe:', error);
-      return NextResponse.json(
-        { error: 'Erreur interne du serveur', details: error.message },
-        { status: 500 }
-      );
-    }
+    console.error(" Erreur lors de la création de la session Stripe :", error);
     return NextResponse.json(
-      { error: 'Erreur inconnue' },
+      { error: "Erreur interne du serveur", details: error instanceof Error ? error.message : "Erreur inconnue" },
       { status: 500 }
     );
   }
