@@ -1,4 +1,4 @@
-import prisma from "../../lib/prisma.js";
+import prisma from "../../lib/prisma.mjs";
 import { faker } from '@faker-js/faker';
 
 export async function createPanier() {

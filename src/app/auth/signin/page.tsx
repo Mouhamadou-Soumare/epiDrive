@@ -44,7 +44,7 @@ export default function SignInPage() {
       if (result?.error) {
         setError("Identifiants incorrects. Veuillez réessayer.");
       } else {
-        router.push('/dashboard'); // Redirige vers le dashboard après connexion
+        router.push('/'); // Redirige vers le dashboard après connexion
       }
     } catch (err) {
       setError("Une erreur est survenue. Réessayez plus tard.");
@@ -53,7 +53,7 @@ export default function SignInPage() {
 
   useEffect(() => {
     if (status === 'authenticated') {
-      router.push('/dashboard'); // Redirige si déjà connecté
+      router.push('/'); // Redirige si déjà connecté
     }
   }, [status, router]);
 

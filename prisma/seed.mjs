@@ -1,13 +1,13 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient(); 
 
-import { generateSlug } from './seed/generateSlug.js';
-import { categories } from './seed/categories.js';
-import { createSubcategories } from './seed/subcategories.js';
-import { createUsers } from './seed/users.js';
-import { createRecettes } from './seed/recette.js';
-import { createCommandes } from './seed/commande.js';
-import { createPanier } from './seed/panier.js';
+import { generateSlug } from './seed/generateSlug.mjs';
+import { categories } from './seed/categories.mjs';
+import { createSubcategories } from './seed/subcategories.mjs';
+import { createUsers } from './seed/users.mjs';
+import { createRecettes } from './seed/recette.mjs';
+import { createCommandes } from './seed/commande.mjs';
+import { createPanier } from './seed/panier.mjs';
 
 async function main() {
     try {

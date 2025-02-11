@@ -26,10 +26,10 @@ export async function createUsers() {
         livraisons: {
           create: [
             {
-              adresse: faker.address.streetAddress(),
-              ville: faker.address.city(),
-              codePostal: faker.address.zipCode(),
-              pays: faker.address.country(),
+              adresse: faker.location.streetAddress(),
+              ville: faker.location.city(),
+              codePostal: faker.location.zipCode(),
+              pays: faker.location.country(),
             },
           ],
         },
@@ -46,7 +46,7 @@ export async function createUsers() {
 
   const adminUser = await prisma.user.create({
     data: {
-      username: faker.internet.userName(),
+      username: faker.internet.username(),
       email: faker.internet.email(),
       password: hashedAdminPassword,
       role: 'ADMIN',

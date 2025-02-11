@@ -1,5 +1,5 @@
-import prisma from "../../lib/prisma.js";
-import { generateSlug } from './generateSlug.js';
+import prisma from "../../lib/prisma.mjs";
+import { generateSlug } from './generateSlug.mjs';
 
 export async function createProducts(subCategory, existingSubCategory) {
     if (!subCategory || !subCategory.produits) {
