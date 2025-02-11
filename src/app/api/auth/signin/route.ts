@@ -1,35 +1,35 @@
-import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
-import bcrypt from 'bcryptjs';
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
+import bcrypt from "bcryptjs";
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { email, password } = body;
+    // Récupération des données de la requête
+    const { email, password } = await req.json();
 
+    // Vérification des champs requis
     if (!email || !password) {
-      return NextResponse.json({ message: 'Email et mot de passe requis' }, { status: 400 });
+      return NextResponse.json({ message: "Email et mot de passe requis" }, { status: 400 });
     }
 
-    // Vérifiez si l'utilisateur existe
-    const user = await prisma.user.findUnique({
-      where: { email },
-    });
+    // Recherche de l'utilisateur en base de données
+    const user = await prisma.user.findUnique({ where: { email } });
 
+    // Vérification si l'utilisateur existe
     if (!user) {
-      return NextResponse.json({ message: 'Utilisateur non trouvé' }, { status: 404 });
+      return NextResponse.json({ message: "Utilisateur non trouvé" }, { status: 404 });
     }
 
-    // Vérifiez le mot de passe
+    // Comparaison du mot de passe fourni avec le hash stocké
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return NextResponse.json({ message: 'Mot de passe incorrect' }, { status: 401 });
+      return NextResponse.json({ message: "Mot de passe incorrect" }, { status: 401 });
     }
 
-    // Authentification réussie
-    return NextResponse.json({ message: 'Connexion réussie' }, { status: 200 });
+    // Réponse de succès (authentification réussie)
+    return NextResponse.json({ message: "Connexion réussie" }, { status: 200 });
   } catch (error) {
-    console.error('Erreur lors de la connexion :', error);
-    return NextResponse.json({ message: 'Erreur interne du serveur' }, { status: 500 });
+    console.error("Erreur lors de la connexion :", error);
+    return NextResponse.json({ message: "Erreur interne du serveur" }, { status: 500 });
   }
 }

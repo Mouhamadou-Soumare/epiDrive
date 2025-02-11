@@ -41,7 +41,6 @@ export async function GET() {
       return NextResponse.json({ message: 'No commandes found' }, { status: 404 });
     }
 
-    console.log("GET API/commande: commande found:", commandes);
     return NextResponse.json(commandes, { status: 200 });
   } catch (error) {
     console.error('Error fetching commandes:', error);

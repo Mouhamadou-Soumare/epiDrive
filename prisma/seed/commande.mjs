@@ -1,4 +1,4 @@
-import prisma from "../../lib/prisma.js";
+import prisma from "../../lib/prisma.mjs";
 import { faker } from '@faker-js/faker';
 
 export async function createCommandes() {
@@ -44,14 +44,15 @@ export async function createCommandes() {
 
         // Génération des données de livraison
         const livraisonData = {
-            adresse: faker.address.streetAddress(),
-            ville: faker.address.city(),
-            codePostal: faker.address.zipCode(),
-            pays: faker.address.country(),
+            adresse: faker.location.streetAddress(),
+            ville: faker.location.city(),
+            codePostal: faker.location.zipCode(),
+            pays: faker.location.country(),
             user: {
                 connect: { id: userId },
             },
         };
+        
 
         // Création de la commande avec livraison associée
         const commande = await prisma.commande.create({

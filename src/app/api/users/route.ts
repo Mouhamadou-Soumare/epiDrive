@@ -22,7 +22,6 @@ export async function GET() {
 
     const usersWithoutPassword = users.map(({ password: _, ...userWithoutPassword }) => userWithoutPassword);
 
-    console.log("GET API/users: users found:", usersWithoutPassword);
     return NextResponse.json(usersWithoutPassword, { status: 200 });
   } catch (error) {
     console.error('Error fetching users:', error);
