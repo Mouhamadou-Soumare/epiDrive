@@ -38,7 +38,6 @@ export async function GET() {
         : null,
     }));
 
-    console.log("GET API/products: products found:", transformedProducts);
     return NextResponse.json(transformedProducts, { status: 200 });
   } catch (error) {
     console.error('Error fetching products:', error);

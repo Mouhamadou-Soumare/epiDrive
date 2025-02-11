@@ -64,7 +64,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
    */
   useEffect(() => {
     refreshCart();
-    const eventSource = new EventSource("/app/cart/updates");
+    const eventSource = new EventSource("/api/cart/updates");
 
     eventSource.onmessage = () => {
       console.log("📢 Mise à jour via SSE !");

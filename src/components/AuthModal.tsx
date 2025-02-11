@@ -62,18 +62,17 @@ const AuthModal = ({ onClose, onAuthenticate }: AuthModalProps) => {
         return;
       }
 
-      if (isSigningUp) {
-        const signInResult = await signIn('credentials', {
-          redirect: false,
-          email,
-          password,
-        });
+      // 🔹 Connexion automatique après inscription
+      const signInResult = await signIn('credentials', {
+        redirect: false,
+        email,
+        password,
+      });
 
-        if (signInResult?.error) {
-          setError(signInResult.error);
-          setLoading(false);
-          return;
-        }
+      if (signInResult?.error) {
+        setError(signInResult.error);
+        setLoading(false);
+        return;
       }
 
       if (onAuthenticate) {
@@ -81,7 +80,7 @@ const AuthModal = ({ onClose, onAuthenticate }: AuthModalProps) => {
       }
 
       onClose();
-      router.refresh(); 
+      await router.refresh(); // 🔄 Rafraîchissement de la session utilisateur
     } catch (err) {
       setError("Erreur de connexion au serveur.");
     } finally {
@@ -90,8 +89,14 @@ const AuthModal = ({ onClose, onAuthenticate }: AuthModalProps) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md relative">
+    <div 
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+      onClick={onClose} 
+    >
+      <div 
+        className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md relative"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Bouton de fermeture */}
         <button
           onClick={onClose}
