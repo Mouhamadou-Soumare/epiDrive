@@ -35,6 +35,7 @@ export async function GET(req: NextRequest, { params }: Params) {
       slug: product.slug,
       description: product.description,
       categorie: product.categorie || 'Uncategorized',
+      stock: product.stock
     };
 
     console.log("Produit trouvé :", transformedProduct);
@@ -95,6 +96,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
         prix: parseFloat(prix),
         description,
         categorieId: parseInt(categorieId, 10),
+        stock: parseInt(data.stock, 10),
       },
     });
 
