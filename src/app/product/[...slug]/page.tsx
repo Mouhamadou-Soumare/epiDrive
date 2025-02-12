@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CheckIcon, ShieldCheckIcon } from "@heroicons/react/20/solid";
 import { useCart } from "@/context/CartContext"; 
+import LoaderComponent from "@/components/LoaderComponent";
 
 type Product = {
   id: number;
@@ -58,9 +59,7 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex justify-center items-center">
-        <span className="loader-cate-prod"></span>
-      </div>
+      <LoaderComponent/>
     );
   }
 
