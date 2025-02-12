@@ -1,5 +1,9 @@
+// api/commande/[slug]/route.ts
+
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+
+import { sendCommandeUpdate } from "../updates/route";
 
 /**
  * Récupère une commande par son ID (slug)
@@ -51,6 +55,9 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ slug: 
         data: { ...livraison },
       });
     }
+
+    // 🔔 Notifier les clients SSE de la mise à jour
+    await sendCommandeUpdate(updatedCommande);
 
     return NextResponse.json(updatedCommande);
   } catch (error) {

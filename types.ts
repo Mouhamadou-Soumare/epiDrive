@@ -73,6 +73,7 @@ export interface Produit {
     quantitePaniers?: QuantitePanier[]; // Produits dans des paniers
     quantiteCommandes?: QuantiteCommande[]; // Produits dans des commandes
     recettes?: Recette[]; // Relation avec des recettes
+    stock: number;
 }
 
 export interface Ingredient {

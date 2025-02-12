@@ -125,6 +125,16 @@ export async function POST(req: Request) {
           prix: produit.prix,
         },
       });
+      
+      // Mise à jour du stock du produit
+      await prisma.produit.update({
+        where: { id: produit.id },
+        data: {
+          stock: {
+            decrement: produit.quantite,
+          },
+        },
+      });
     }
 
     return NextResponse.json(newCommande, { status: 201 });

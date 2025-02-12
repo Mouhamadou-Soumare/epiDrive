@@ -3,49 +3,48 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export async function GET() {
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const userId = searchParams.get('userId');
+
+  if (!userId) {
+    return NextResponse.json(
+      { error: 'User ID is required' },
+      { status: 400 }
+    );
+  }
+
   try {
-    const now = new Date();
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const userOrders = await prisma.commande.findMany({
+      where: {
+        user: {
+          id: parseInt(userId),
+        },
+      }
+    });
 
-    // Récupération parallèle des statistiques
-    const [ordersThisMonth, totalSpent, favoriteItems, purchaseHistory] = await Promise.all([
-      // Nombre de commandes depuis le début du mois
-      prisma.commande.count({
-        where: { createdAt: { gte: startOfMonth } },
-      }),
-      // Somme totale des commandes
-      prisma.quantiteCommande.aggregate({
-        _sum: { prix: true },
-      }),
-      // Nombre total de produits (supposés comme favoris)
-      prisma.produit.count(),
-      // Historique des commandes
-      prisma.commande.findMany({
-        where: { createdAt: { gte: startOfMonth } },
-        select: { createdAt: true },
-      }),
-    ]);
+    const totalSpent = await prisma.quantiteCommande.aggregate({
+      _sum: {
+        prix: true,
+      },
+      where: {
+        commande: {
+          user: {
+            id: parseInt(userId),
+          },
+        },
+      },
+    });
 
-    // Grouper les résultats par jour
-    const groupedHistory = purchaseHistory.reduce((acc, curr) => {
-      const date = curr.createdAt.toISOString().split('T')[0];
-      acc[date] = (acc[date] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
-
-    // Formatter les données en tableau pour le graphique
-    const formattedHistory = Object.keys(groupedHistory).map((date) => ({
-      date,
-      total: groupedHistory[date],
-    }));
+    console.log('Successfully retrieved statistics:', {
+      ordersThisMonth: userOrders,
+      totalSpent: totalSpent._sum.prix
+    });
 
     // Structurer les statistiques
     const stats = {
-      ordersThisMonth: ordersThisMonth || 0,
-      totalSpent: totalSpent._sum.prix || 0,
-      favoriteItems: favoriteItems || 0,
-      purchaseHistory: formattedHistory,
+      ordersThisMonth: userOrders.length || 0,
+      totalSpent: totalSpent._sum.prix || 0
     };
 
     console.log('Statistiques récupérées avec succès:', stats);
