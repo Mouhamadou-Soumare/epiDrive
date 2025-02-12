@@ -43,6 +43,14 @@ export default function AddRecettePage() {
     setRecette((prev) => ({ ...prev, [name]: value }));
   }, []);
 
+  const [newImage, setNewImage] = useState<File | null>(null);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files && e.target.files[0]) {
+          setNewImage(e.target.files[0]);
+      }
+  };
+
   const handleAddProduit = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
     const produitId = parseInt(e.target.value);
     const produit = produits?.find((p: Produit) => p.id === produitId);
@@ -83,7 +91,7 @@ export default function AddRecettePage() {
       return;
     }
 
-    const success = await addRecette(recette);
+    const success = await addRecette(recette, newImage);
     if (success) {
       setSubmitSuccess(true);
       setTimeout(() => {
@@ -104,6 +112,19 @@ export default function AddRecettePage() {
         <FormInputField id="title" name="title" value={recette.title} label="Titre" onChange={handleInputChange} />
         <FormInputField id="description" name="description" value={recette.description} label="Description" type="textarea" onChange={handleInputChange} />
         <FormInputField id="instructions" name="instructions" value={recette.instructions} label="Instructions" type="textarea" onChange={handleInputChange} />
+
+        <div className="mb-5">
+            <label htmlFor="productImage" className="block mb-2 text-sm font-medium text-gray-900">Chemin de l'image</label>
+            <input
+            type="file"
+            id="productImage"
+            name="productImage"
+            accept="image/*"
+            
+            className="mt-1 block w-full text-sm text-gray-500 border-gray-300 rounded-md"
+            onChange={handleImageChange}
+            />
+        </div>
 
         <div className="mb-5">
           <label htmlFor="produit" className="block mb-2 text-sm font-medium text-gray-900">Ingrédients</label>
