@@ -4,31 +4,44 @@ import { useState, useMemo, useCallback } from "react";
 import { useGetCommandes } from "@/hooks/commandes/useCommandes";
 import CommandeRow from "./components/CommandeRow";
 import SearchInput from "../components/SearchInput";
-import { Commande } from "types";
+import { Commande, CommandeStatus } from "types";
 
 const CommandeList = () => {
   const { commandes, loading, error } = useGetCommandes();
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedStatus, setSelectedStatus] = useState<string>(""); // Filtre statut
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 10;
 
-  const filteredCommandes = useMemo(
-    () => commandes.filter((commande: Commande) =>
-      commande.id.toString().toLowerCase().includes(searchQuery.toLowerCase())
-    ),
-    [commandes, searchQuery]
-  );
+  // Filtrage des commandes
+  const filteredCommandes = useMemo(() => {
+    return commandes.filter((commande: Commande) => {
+      const matchSearch = commande.id.toString().toLowerCase().includes(searchQuery.toLowerCase());
+      const matchStatus = selectedStatus === "" || commande.status === selectedStatus;
+      return matchSearch && matchStatus;
+    });
+  }, [commandes, searchQuery, selectedStatus]);
 
   const totalPages = Math.ceil(filteredCommandes.length / itemsPerPage);
-  const paginatedCommandes = useMemo(
-    () => filteredCommandes.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage),
-    [filteredCommandes, currentPage]
-  );
 
+  // Pagination des commandes
+  const paginatedCommandes = useMemo(() => {
+    return filteredCommandes.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+    );
+  }, [filteredCommandes, currentPage]);
+
+  // Gestion des événements
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
     setCurrentPage(1);
   }, []);
+
+  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedStatus(e.target.value);
+    setCurrentPage(1);
+  };
 
   if (loading) return <div className="text-gray-700 text-center py-6">Chargement des commandes...</div>;
   if (error) return <div className="text-red-500 text-center py-6">Erreur : {error}</div>;
@@ -42,6 +55,7 @@ const CommandeList = () => {
         </div>
       </div>
 
+      {/* Barre de recherche et Filtre */}
       <div className="flex flex-col mt-4 sm:flex-row gap-4 w-full">
         <SearchInput
           searchQuery={searchQuery}
@@ -49,6 +63,21 @@ const CommandeList = () => {
           placeholder="Rechercher une commande"
           aria_label="Rechercher une commande"
         />
+
+        {/* Filtre Statut */}
+        <select
+          value={selectedStatus}
+          onChange={handleStatusChange}
+          className="border rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500"
+          aria-label="Filtrer par statut"
+        >
+          <option value="">Tous les statuts</option>
+          <option value={CommandeStatus.EN_ATTENTE}>En attente</option>
+          <option value={CommandeStatus.EN_PREPARATION}>En préparation</option>
+          <option value={CommandeStatus.EXPEDIEE}>Expédiée</option>
+          <option value={CommandeStatus.LIVREE}>Livrée</option>
+          <option value={CommandeStatus.ANNULEE}>Annulée</option>
+        </select>
       </div>
 
       {paginatedCommandes.length > 0 ? (

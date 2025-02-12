@@ -11,19 +11,27 @@ import { Produit } from "types";
 const ProductList = () => {
   const { produits, loading, error } = useGetProduits();
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [minPrice, setMinPrice] = useState<string>("");
+  const [maxPrice, setMaxPrice] = useState<string>("");
+  const [sortOrder, setSortOrder] = useState<string>("asc");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 10;
 
-  // Filtrage optimisé avec useMemo
+  // Filtrage des produits
   const filteredProducts = useMemo(() => {
-    return produits?.filter((product: Produit) =>
-      product.name.toLowerCase().includes(searchQuery.toLowerCase())
-    ) || [];
-  }, [searchQuery, produits]);
+    return produits
+      ?.filter((product: Produit) => {
+        const matchSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchMinPrice = minPrice ? product.prix >= parseFloat(minPrice) : true;
+        const matchMaxPrice = maxPrice ? product.prix <= parseFloat(maxPrice) : true;
+        return matchSearch && matchMinPrice && matchMaxPrice;
+      })
+      .sort((a, b) => (sortOrder === "asc" ? a.prix - b.prix : b.prix - a.prix)) || [];
+  }, [searchQuery, minPrice, maxPrice, sortOrder, produits]);
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
-  // Pagination optimisée avec useMemo
+  // Pagination des produits
   const paginatedProducts = useMemo(() => {
     return filteredProducts.slice(
       (currentPage - 1) * itemsPerPage,
@@ -31,13 +39,27 @@ const ProductList = () => {
     );
   }, [currentPage, filteredProducts]);
 
-  // Fonction de recherche optimisée avec useCallback
+  // Gestion des événements
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
     setCurrentPage(1);
   }, []);
 
-  // Gestion de la pagination avec useCallback
+  const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMinPrice(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMaxPrice(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortOrder(e.target.value);
+    setCurrentPage(1);
+  };
+
   const handlePrevPage = useCallback(() => setCurrentPage((prev) => Math.max(prev - 1, 1)), []);
   const handleNextPage = useCallback(() => setCurrentPage((prev) => Math.min(prev + 1, totalPages)), [totalPages]);
 
@@ -66,14 +88,45 @@ const ProductList = () => {
         </div>
       </div>
 
-      {/* Barre de recherche */}
+      {/* Barre de recherche et filtres */}
       <div className="flex flex-col mt-4 sm:flex-row gap-4 w-full">
         <SearchInput
           searchQuery={searchQuery}
           onSearchChange={handleSearchChange}
           placeholder="Rechercher un produit"
-          aria_label="Rechercher une produit"
+          aria_label="Rechercher un produit"
         />
+
+        {/* Filtre Prix Min */}
+        <input
+          type="number"
+          value={minPrice}
+          onChange={handleMinPriceChange}
+          placeholder="Prix min"
+          className="border rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500"
+          aria-label="Filtrer par prix minimum"
+        />
+
+        {/* Filtre Prix Max */}
+        <input
+          type="number"
+          value={maxPrice}
+          onChange={handleMaxPriceChange}
+          placeholder="Prix max"
+          className="border rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500"
+          aria-label="Filtrer par prix maximum"
+        />
+
+        {/* Tri par Prix */}
+        <select
+          value={sortOrder}
+          onChange={handleSortChange}
+          className="border rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500"
+          aria-label="Trier par prix"
+        >
+          <option value="asc">Prix croissant</option>
+          <option value="desc">Prix décroissant</option>
+        </select>
       </div>
 
       {/* Table des produits */}
