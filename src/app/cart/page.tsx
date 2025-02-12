@@ -7,6 +7,7 @@ import RecommendedRecettes from "@/components/client/recette/RecommendedRecettes
 import { useCart } from "@/context/CartContext";
 import { Recette } from "../../../types";
 import AuthModal from "@/components/AuthModal";
+import LoaderComponent from "@/components/LoaderComponent";
 
 export default function CartPage() {
   const { status } = useSession();
@@ -100,9 +101,7 @@ export default function CartPage() {
 
   if (loading)
     return (
-      <div className="min-h-screen min-w-screen flex justify-center items-center">
-        <span className="loader-cate-prod"></span>
-      </div>
+    <LoaderComponent/>
     );
 
   return (
