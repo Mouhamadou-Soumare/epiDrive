@@ -41,6 +41,7 @@ export async function createProducts(subCategory, existingSubCategory) {
                                 path: imagePath, // Utilisation du chemin d'image dynamique
                             },
                         },
+                        stock: 10
                     },
                 });
 

@@ -36,6 +36,7 @@ export async function GET() {
             parentId: product.categorie.parentId,
           }
         : null,
+      stock: product.stock,
     }));
 
     return NextResponse.json(transformedProducts, { status: 200 });
@@ -65,6 +66,7 @@ export async function POST(req: Request) {
         prix: parseFloat(prix.toString()),
         slug,
         categorieId: parseInt(categorieId),
+        stock: 10
       },
     });
 
