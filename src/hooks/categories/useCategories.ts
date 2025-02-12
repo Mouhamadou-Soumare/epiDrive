@@ -67,17 +67,27 @@ export function useAddCategory() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const addCategory = async (newCategory: Omit<Categorie, "id">, path?: string): Promise<Categorie> => {
+  const addCategory = async (newCategory: Omit<Categorie, "id">, newImage?: File): Promise<Categorie> => {
     try {
       setLoading(true);
-      const response = await fetch(API_BASE_URL, {
+
+      const formData = new FormData();
+      formData.append("name", newCategory.name);
+      formData.append("description", newCategory.description);
+      formData.append("parentId", newCategory.parentId.toString());
+      formData.append("newImage", newImage);
+
+      const response = await fetch(`${API_BASE_URL}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...newCategory, path }),
+        body: formData,
       });
-      const data = (await response.json()) as Categorie;
-      if (!response.ok) throw new Error((data as unknown as FetchError).error || "Failed to add category");
-      return data;
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Échec de la création de la catégorie");
+      }
+
+      return await response.json();
     } catch (err) {
       setError((err as Error).message);
       throw err;
@@ -94,17 +104,27 @@ export function useUpdateCategory() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const updateCategory = async (slug: string, updatedCategory: Partial<Categorie>): Promise<Categorie> => {
+  const updateCategory = async (slug: string, updatedCategory: Partial<Categorie>, newImage?: File): Promise<Categorie> => {
     try {
       setLoading(true);
+
+      const formData = new FormData();
+      formData.append("updatedCategory", JSON.stringify(updatedCategory));
+      if (newImage) {
+        formData.append("newImage", newImage);
+      }
+
       const response = await fetch(`${API_BASE_URL}/${slug}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedCategory),
+        body: formData, 
       });
-      const data = (await response.json()) as Categorie;
-      if (!response.ok) throw new Error((data as unknown as FetchError).error || "Failed to update category");
-      return data;
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to update category");
+      }
+
+      return await response.json();
     } catch (err) {
       setError((err as Error).message);
       throw err;

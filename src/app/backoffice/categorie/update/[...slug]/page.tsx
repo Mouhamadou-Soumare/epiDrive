@@ -13,6 +13,7 @@ export default function UpdateCategoryPage() {
   const { category, loading: categoryLoading, error: categoryError } = useGetCategory(slug) as { category: Categorie | null, loading: any, error: any };
   const { categories, loading: categoriesLoading, error: categoriesError } = useGetCategories() as { categories: Categorie[], loading: any, error: any };
   const { updateCategory, loading: updateLoading, error: updateError } = useUpdateCategory();
+  const [newImage, setNewImage] = useState<File | null>(null);
 
   const [updatedCategory, setUpdatedCategory] = useState<Categorie | null>(null);
   const [submitResult, setSubmitResult] = useState<string | null>(null);
@@ -22,6 +23,12 @@ export default function UpdateCategoryPage() {
       setUpdatedCategory(category);
     }
   }, [category]);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setNewImage(e.target.files[0]);
+    }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -36,11 +43,6 @@ export default function UpdateCategoryPage() {
           return { ...prev, parentId: parseInt(value), parentCategory: selectedCategory || null };
         }
 
-        // Gestion spécifique pour imagePath
-        if (name === "imagePath") {
-          return { ...prev, image: { ...prev.image, path: value } };
-        }
-
         return { ...prev, [name]: value };
       });
     }
@@ -49,7 +51,7 @@ export default function UpdateCategoryPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (updatedCategory) {
-      const success = await updateCategory(slug, updatedCategory);
+      const success = await updateCategory(slug, updatedCategory, newImage);
       setSubmitResult(success ? 'success' : 'error');
     }
   };
@@ -82,18 +84,19 @@ export default function UpdateCategoryPage() {
         <FormInputField
           id="description"
           name="description"
-          value={updatedCategory.description}
+          value={updatedCategory.description || "description"}
           label="Description"
           type="textarea"
           onChange={handleInputChange}
         />
         {updatedCategory.image && (
           <FormInputField
+            type="image"
             id="imagePath"
             name="imagePath"
-            value={updatedCategory.image.path || ''}
+            value={updatedCategory.image.path}
             label="Chemin de l'image"
-            onChange={handleInputChange}
+            onChange={handleImageChange}
           />
         )}
 
