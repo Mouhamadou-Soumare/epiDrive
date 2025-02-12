@@ -2,10 +2,12 @@
 
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Dialog, Disclosure } from '@headlessui/react';
+import { Dialog, Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { XMarkIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import Pagination from './Pagination';
 import SortDropdown from './client/product/search/SortDropdown';
+import { Produit } from 'types';
+import LoaderComponent from './LoaderComponent';
 
 type Product = {
   id: number;
@@ -97,7 +99,7 @@ export default function SearchResultsPage() {
     fetchProducts();
   }, [query]);
 
-  if (loading) return <div>Chargement...</div>;
+  if (loading) return <LoaderComponent/>;
   if (products.length === 0) return <div>Aucun produit trouvé pour la recherche "{query}"</div>;
 
   return (
@@ -121,11 +123,11 @@ export default function SearchResultsPage() {
               <form className="mt-4">
                 {/* Catégorie Filter */}
                 <Disclosure as="div" className="border-t border-gray-200 pt-4 pb-4">
-                  <Disclosure.Button className="flex items-center justify-between w-full text-gray-400 hover:text-gray-500">
+                  <DisclosureButton className="flex items-center justify-between w-full text-gray-400 hover:text-gray-500">
                     <span className="text-sm font-medium text-gray-900">Catégorie</span>
                     <ChevronDownIcon className="h-5 w-5 transform group-data-[open]:-rotate-180" />
-                  </Disclosure.Button>
-                  <Disclosure.Panel className="pt-4">
+                  </DisclosureButton>
+                  <DisclosurePanel className="pt-4">
                     <div className="space-y-4">
                       {categories.map((category) => (
                         <div key={category.id} className="flex items-center">
@@ -144,7 +146,7 @@ export default function SearchResultsPage() {
                         </div>
                       ))}
                     </div>
-                  </Disclosure.Panel>
+                  </DisclosurePanel>
                 </Disclosure>
               </form>
             </Dialog.Panel>
