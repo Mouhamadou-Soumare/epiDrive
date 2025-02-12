@@ -1,3 +1,5 @@
+import { promises as fs } from "fs";
+import path from "path";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
@@ -80,51 +82,74 @@ export async function GET(
   }
 }
 
-
 /**
  * Met à jour une catégorie via son slug
  */
 export async function PATCH(
   req: Request,
-  { params }: { params: Promise<{ slug: string }> }
+  { params }: { params: { slug: string } }
 ) {
-  const { slug } = await params;
-  const data = await req.json();
+  const { slug } = params;
 
   if (!slug) {
     return NextResponse.json({ error: "Slug requis" }, { status: 400 });
   }
 
-  const { name, description, image, parentId } = data;
-
   try {
-    console.log(`Mise à jour de la catégorie: ${slug}`);
+    const formData = await req.formData();
+    const updatedCategory = JSON.parse(formData.get("updatedCategory") as string);
+    const newImage = formData.get("newImage") as File | null;
 
+    console.log("updatedCategory:", updatedCategory);
+    console.log("newImage:", newImage);
+
+    // Vérifier si la catégorie existe
     const existingCategory = await prisma.categorie.findUnique({
       where: { slug },
+      include: { image: true }, // Charger l'image existante
     });
 
     if (!existingCategory) {
       return NextResponse.json({ error: "Catégorie non trouvée" }, { status: 404 });
     }
 
-    const updatedCategory = await prisma.categorie.update({
+    let imageId = existingCategory.imageId; // Conserver l'image actuelle
+
+    if (newImage) {
+      const bytes = await newImage.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+
+      const uploadDir = path.join(process.cwd(), "public/img/category");
+      await fs.mkdir(uploadDir, { recursive: true }); // Crée le dossier si inexistant
+
+      const fileName = `${Date.now()}-${newImage.name}`;
+      const filePath = path.join(uploadDir, fileName);
+      await fs.writeFile(filePath, buffer);
+
+      const imagePath = `/img/category/${fileName}`; // Chemin relatif pour l'image
+
+      // Ajouter la nouvelle image dans la base de données
+      const newImageRecord = await prisma.image.create({
+        data: { path: imagePath },
+      });
+
+      imageId = newImageRecord.id; // Mettre à jour l'ID de l'image
+    }
+
+    // Mettre à jour la catégorie
+    const updatedCategoryData = await prisma.categorie.update({
       where: { slug },
       data: {
-        name,
-        description,
-        image: image
-          ? { update: { path: image.path } }
-          : undefined,
-        parent: parentId
-          ? { connect: { id: parentId } }
-          : undefined,
+        name: updatedCategory.name,
+        description: updatedCategory.description,
+        imageId, // Associer la nouvelle image
+        parentId: updatedCategory.parentId || null,
       },
+      include: { image: true }, // Inclure l'image mise à jour dans la réponse
     });
 
-    console.log(`Catégorie mise à jour: ${slug}`, updatedCategory);
-    return NextResponse.json(updatedCategory);
-  } catch (error: unknown) {
+    return NextResponse.json(updatedCategoryData);
+  } catch (error) {
     console.error("Erreur lors de la mise à jour :", error);
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Erreur interne du serveur" },
