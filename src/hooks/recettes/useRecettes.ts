@@ -69,17 +69,39 @@ export function useAddRecette() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const addRecette = async (newRecette: Omit<Recette, 'id'>): Promise<Recette> => {
+  const addRecette = async (newRecette: Omit<Recette, "id">, newImage?: File): Promise<Recette> => {
     try {
       setLoading(true);
-      const response = await fetch(API_BASE_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newRecette),
+
+      const formData = new FormData();
+      formData.append("title", newRecette.title);
+      formData.append("description", newRecette.description);
+      formData.append("instructions", newRecette.instructions);
+      formData.append("userId", newRecette.user.id.toString());
+
+      if (newRecette.produits) {
+        formData.append("produits", JSON.stringify(newRecette.produits.map(p => p.id)));
+      }
+
+      if (newRecette.ingredients) {
+        formData.append("ingredients", JSON.stringify(newRecette.ingredients.map(i => i.id)));
+      }
+
+      if (newImage) {
+        formData.append("newImage", newImage);
+      }
+
+      const response = await fetch(`${API_BASE_URL}`, {
+        method: "POST",
+        body: formData, // Pas de `Content-Type`
       });
-      const data: Recette = await response.json();
-      if (!response.ok) throw new Error((data as unknown as FetchError).message || 'Failed to add recette');
-      return data; // Retourne la recette créée
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Échec de la création de la recette");
+      }
+
+      return await response.json();
     } catch (err) {
       setError((err as Error).message);
       throw err;
@@ -96,17 +118,35 @@ export function useUpdateRecette() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const updateRecette = async (id: number, updatedRecette: Partial<Recette>): Promise<Recette> => {
+  const updateRecette = async (id: number, updatedRecette: Partial<Recette>, newImage?: File): Promise<Recette> => {
     try {
       setLoading(true);
+
+      const formData = new FormData();
+      formData.append("title", updatedRecette.title || "");
+      formData.append("description", updatedRecette.description || "");
+      formData.append("instructions", updatedRecette.instructions || "");
+      formData.append("userId", updatedRecette.user.id.toString() || "");
+
+      if (updatedRecette.produits) {
+        formData.append("produits", JSON.stringify(updatedRecette.produits.map(p => p.id)));
+      }
+
+      if (newImage) {
+        formData.append("newImage", newImage);
+      }
+
       const response = await fetch(`${API_BASE_URL}/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedRecette),
+        method: "PATCH",
+        body: formData, // Pas de `Content-Type`
       });
-      const data: Recette = await response.json();
-      if (!response.ok) throw new Error((data as unknown as FetchError).message || 'Failed to update recette');
-      return data; // Retourne la recette mise à jour
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Échec de la mise à jour de la recette");
+      }
+
+      return await response.json();
     } catch (err) {
       setError((err as Error).message);
       throw err;

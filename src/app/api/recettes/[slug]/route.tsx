@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { Produit, Ingredient } from 'types';
 
+import { promises as fs } from "fs";
+import path from "path";
+
 // GET a specific recette by ID
 export async function GET(
   request: Request,
@@ -39,6 +42,7 @@ export async function GET(
         name: produit.name,
         slug: produit.slug,
         prix: produit.prix,
+        stock: produit.stock,
       })),
       ingredients: recette.ingredients.map((ingredient: Ingredient) => ({
         id: ingredient.id,
@@ -61,25 +65,44 @@ export async function PATCH(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params; // Attendre la résolution de params
-  const body = await request.json();
 
   if (!slug) {
     return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
   }
 
-  const { title, description, instructions, user, produits, image } = body;
-
-  if (!title || !description || !instructions || !user) {
-    return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-  }
-
   try {
-    const existingRecette = await prisma.recette.findUnique({
-      where: { id: parseInt(slug) },
-    });
+    const formData = await request.formData();
+    const title = formData.get("title") as string;
+    const description = formData.get("description") as string;
+    const instructions = formData.get("instructions") as string;
+    const userId = parseInt(formData.get("userId") as string, 10);
+    const produits = formData.get("produits") ? JSON.parse(formData.get("produits") as string) : [];
+    const newImage = formData.get("newImage") as File | null;
+
+    if (!title || !description || !instructions || !userId) {
+      return NextResponse.json({ error: "Champs requis manquants" }, { status: 400 });
+    }
+
+    const existingRecette = await prisma.recette.findUnique({ where: { id: parseInt(slug) } });
 
     if (!existingRecette) {
-      return NextResponse.json({ error: 'Recette not found' }, { status: 404 });
+      return NextResponse.json({ error: "Recette non trouvée" }, { status: 404 });
+    }
+
+    let imagePath = existingRecette.image;
+
+    if (newImage) {
+      const bytes = await newImage.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+
+      const uploadDir = path.join(process.cwd(), "public/img/recette");
+      await fs.mkdir(uploadDir, { recursive: true });
+
+      const fileName = `${Date.now()}-${newImage.name}`;
+      const filePath = path.join(uploadDir, fileName);
+      await fs.writeFile(filePath, buffer);
+
+      imagePath = `/img/recette/${fileName}`;
     }
 
     const updatedRecette = await prisma.recette.update({
@@ -88,38 +111,16 @@ export async function PATCH(
         title,
         description,
         instructions,
-        user: { connect: { id: user.id } },
-        produits: {
-          set: [],
-          connect: produits.map((produit: Produit) => ({ id: produit.id })),
-        },
-        image: image || existingRecette.image,
-      },
-      include: {
-        user: true,
-        produits: true,
+        image: imagePath,
+        user: { connect: { id: userId } },
+        produits: { set: produits.map((id: number) => ({ id })) },
       },
     });
 
-    const transformedRecette = {
-      id: updatedRecette.id,
-      title: updatedRecette.title,
-      description: updatedRecette.description,
-      instructions: updatedRecette.instructions,
-      image: updatedRecette.image || '/img/placeholder.webp',
-      user: { id: updatedRecette.user.id, username: updatedRecette.user.username },
-      produits: updatedRecette.produits.map((produit: Produit) => ({
-        id: produit.id,
-        name: produit.name,
-        slug: produit.slug,
-        prix: produit.prix,
-      })),
-    };
-
-    return NextResponse.json(transformedRecette);
+    return NextResponse.json(updatedRecette);
   } catch (error) {
-    console.error("Error updating recette:", error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error("Erreur lors de la mise à jour de la recette :", error);
+    return NextResponse.json({ error: "Erreur interne du serveur" }, { status: 500 });
   }
 }
 

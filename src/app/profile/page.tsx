@@ -32,8 +32,6 @@ function ProfileContent() {
   const [loading, setLoading] = useState(true);
   const [currentDate, setCurrentDate] = useState('');
 
-  // Redirection si non authentifié
-  console.log(status);
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.replace('/auth/signin');
@@ -49,7 +47,8 @@ function ProfileContent() {
   useEffect(() => {
     async function fetchStats() {
       try {
-        const res = await fetch('/api/stats');
+        if(!session?.user?.id) return;
+        const res = await fetch('/api/stats?userId='+session?.user?.id);
         const data = await res.json();
         setStats(data);
       } catch (error) {
@@ -60,40 +59,11 @@ function ProfileContent() {
     }
 
     fetchStats();
-  }, []);
+  }, [session]);
 
   if (status === 'loading' || loading) {
     return <LoaderComponent />;
   }
-
-  // Données pour le graphique
-  const chartData = {
-    labels: stats?.purchaseHistory?.map((item: any) => item.date) || [],
-    datasets: [
-      {
-        label: 'Achats journaliers',
-        data: stats?.purchaseHistory?.map((item: any) => item.total) || [],
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1,
-        fill: true,
-      },
-    ],
-  };
-
-  const chartOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: true,
-        position: 'top' as const,
-      },
-      title: {
-        display: true,
-        text: "Nombre d'achats par jour",
-      },
-    },
-  };
 
   return (
     <div className="min-h-screen bg-white py-8">
@@ -158,24 +128,15 @@ function ProfileContent() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               <div className="bg-gray-200 p-4 rounded-lg text-center">
                 <h4 className="text-2xl font-bold text-blue-600">{stats?.ordersThisMonth || 0}</h4>
-                <p className="text-black">Commandes ce mois-ci</p>
+                <p className="text-black">Commandes total</p>
               </div>
               <div className="bg-gray-200 p-4 rounded-lg text-center">
                 <h4 className="text-2xl font-bold text-blue-600">{stats?.totalSpent || 0}€</h4>
                 <p className="text-black">Total dépensé</p>
               </div>
-              <div className="bg-gray-200 p-4 rounded-lg text-center">
-                <h4 className="text-2xl font-bold text-blue-600">{stats?.favoriteItems || 0}</h4>
-                <p className="text-black">Articles favoris</p>
-              </div>
             </div>
           </div>
 
-          {/* Graphique */}
-          <div className="md:col-span-3 bg-white p-6 rounded-lg shadow-md mt-6">
-            <h3 className="text-xl font-bold mb-4 text-black">Historique des achats</h3>
-            <Line data={chartData} options={chartOptions} className="w-full h-64" />
-          </div>
         </div>
       </div>
     </div>

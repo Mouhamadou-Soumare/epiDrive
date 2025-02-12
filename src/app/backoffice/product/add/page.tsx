@@ -23,23 +23,25 @@ export default function AddProductPage() {
         categorieId: "",
     });
 
-    const [imagePath, setImagePath] = useState<string>("");
     const [submitResult, setSubmitResult] = useState<string | null>(null);
     const [loadingState, setLoadingState] = useState<boolean>(false);
+    const [newImage, setNewImage] = useState<File | null>(null);
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setNewImage(e.target.files[0]);
+        }
+    };
 
     // Gestion du changement des champs
     const handleInputChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
             const { name, value } = e.target;
 
-            if (name === "productImage") {
-                setImagePath(value);
-            } else {
-                setProduct((prev) => ({
-                    ...prev,
-                    [name]: value,
-                }));
-            }
+            setProduct((prev) => ({
+                ...prev,
+                [name]: value,
+            }));
         },
         []
     );
@@ -71,10 +73,11 @@ export default function AddProductPage() {
                 prix: parseFloat(product.prix),
                 imageId: parseInt(product.imageId, 10),
                 categorieId: parseInt(product.categorieId, 10),
+                stock: 0, 
             };
 
             setLoadingState(true);
-            const success = await addProduit(productWithSlug, imagePath);
+            const success = await addProduit(productWithSlug, newImage);
 
             if (success) {
                 setSubmitResult("Produit ajouté avec succès !");
@@ -86,7 +89,7 @@ export default function AddProductPage() {
                 setLoadingState(false); 
             }
         },
-        [product, imagePath, addProduit, router]
+        [product, newImage, addProduit, router]
     );
 
     if (loadingCategories) return <p>Chargement des catégories...</p>;
@@ -136,14 +139,19 @@ export default function AddProductPage() {
                             onChange={handleInputChange}
                             required
                         />
-                        <TextInput
-                            label="Image URL"
+
+                        <div className="mb-5">
+                            <label htmlFor="productImage" className="block mb-2 text-sm font-medium text-gray-900">Chemin de l'image</label>
+                            <input
+                            type="file"
                             id="productImage"
                             name="productImage"
-                            value={imagePath}
-                            onChange={handleInputChange}
-                            required
-                        />
+                            accept="image/*"
+                            
+                            className="mt-1 block w-full text-sm text-gray-500 border-gray-300 rounded-md"
+                            onChange={handleImageChange}
+                            />
+                        </div>
                         <SelectInput
                             label="Catégorie"
                             id="categorieId"
