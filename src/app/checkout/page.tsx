@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { Livraison_Type } from "../../../types";
 import { useAddCommande } from '@/hooks/commandes/useCommandes';
 import { useGetLivraisons } from '@/hooks/livraisons/useLivraisons';
+import LoaderComponent from '@/components/LoaderComponent';
 
 type CartItem = {
   id: number;
@@ -157,9 +158,7 @@ export default function SearchResultsPage() {
     }
   };
 
-  if (loading || loadingLivraisons || addingCommande) return <div className="min-h-screen flex justify-center items-center">
-  <span className="loader-cate-prod"></span>
-</div>;
+  if (loading || loadingLivraisons || addingCommande) return <LoaderComponent />
   if (addError) return <div>Erreur lors de la soumission de la commande</div>;
   if (cartItems.length === 0) return <div>Votre panier est vide</div>;
 

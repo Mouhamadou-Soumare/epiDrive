@@ -4,10 +4,10 @@
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import LoadingSpinner from '../../components/LoadingSpinner';
 import { Chart, LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import Link from 'next/link';
+import LoaderComponent from '@/components/LoaderComponent';
 
 // Enregistrer les composants Chart.js
 Chart.register(LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend);
@@ -62,7 +62,7 @@ function ProfileContent() {
   }, [session]);
 
   if (status === 'loading' || loading) {
-    return <LoadingSpinner />;
+    return <LoaderComponent />;
   }
 
   return (

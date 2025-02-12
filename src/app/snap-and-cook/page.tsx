@@ -47,15 +47,24 @@ export default function SnapAndCook() {
       const result = await response.json();
   
       if (!response.ok) {
-        setError(result.error || "Erreur lors de l'analyse de l'image.");
+        setError(result.error?.message || result.error || "Erreur lors de l'analyse de l'image.");
         return;
       }
   
+      if (!result.dish || typeof result.dish !== "object") {
+        setError("Aucune recette valide détectée.");
+        return;
+      }
+  
+      // Vérifier que title est bien une chaîne de caractères
+      if (!result.dish.title || typeof result.dish.title !== "string") {
+        setError("Titre de recette invalide.");
+        return;
+      }
   
       const ingredientsArray = Array.isArray(result.dish?.ingredients) ? result.dish.ingredients : [];
       const productArray = Array.isArray(result.dish?.produits) ? result.dish.produits : [];
   
-      // 🔹 Mise à jour de la recette et des ingrédients
       setDish(result.dish);
       setIngredients(ingredientsArray);
       setProducts(productArray);
@@ -66,6 +75,7 @@ export default function SnapAndCook() {
       setLoadingImage(false);
     }
   };
+  
   
   const handleBatchAddToCart = (productId: number, quantity: number) => {
     const product = products.find((p) => p.id === productId);
@@ -118,8 +128,8 @@ export default function SnapAndCook() {
         <div className="mt-8 max-w-xl mx-auto">
           <div className="bg-white p-6 rounded-lg shadow-md mb-6">
             <h2 className="text-2xl font-semibold text-gray-700">Plat détecté :</h2>
-            <p className="text-lg text-gray-600 mt-2">{dish ? dish.title : "Aucun plat détecté"}</p>
-          </div>
+            <p className="text-lg text-gray-600 mt-2">{typeof dish?.title === "string" ? dish.title : "Aucun plat détecté"}</p>
+            </div>
 
           <div className="bg-white p-6 rounded-lg shadow-md mb-6">
             <h2 className="text-2xl font-semibold text-gray-700">Ingrédients détectés :</h2>

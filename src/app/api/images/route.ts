@@ -1,42 +1,40 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
+/**
+ * Récupère toutes les images
+ */
 export async function GET() {
   try {
-    console.log("Fetching all images...");
-
     const images = await prisma.image.findMany();
 
-    if (images.length === 0) {
-      return NextResponse.json({ message: 'No images found' }, { status: 404 });
+    if (!images.length) {
+      return NextResponse.json({ message: 'Aucune image trouvée' }, { status: 404 });
     }
 
-    console.log("GET API/images: images found:", images);
     return NextResponse.json(images, { status: 200 });
   } catch (error) {
-    console.error('Error fetching images:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('Erreur lors de la récupération des images :', error);
+    return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
   }
 }
 
+/**
+ * Ajoute une nouvelle image
+ */
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { path } = body;
+    const { path } = await req.json();
 
     if (!path) {
-      return NextResponse.json({ error: 'Path is required' }, { status: 400 });
+      return NextResponse.json({ error: 'Le chemin de l’image est requis' }, { status: 400 });
     }
 
-    console.log('Creating image with body:', body);
-    const newImage = await prisma.image.create({
-      data: { path },
-    });
+    const newImage = await prisma.image.create({ data: { path } });
 
-    console.log('POST API/images: image created:', newImage);
     return NextResponse.json(newImage, { status: 201 });
   } catch (error) {
-    console.error('Error creating image:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('Erreur lors de la création de l’image :', error);
+    return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
   }
 }

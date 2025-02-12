@@ -1,81 +1,63 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-// GET a specific log by ID
+/**
+ * Récupère un log spécifique par ID
+ */
 export async function GET(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params; // Attendre la résolution de params
+  const { id } = await params;
+  const logId = parseInt(id, 10);
 
-  if (!id) {
-    return NextResponse.json({ error: 'ID is required' }, { status: 400 });
-  }
-
-  const logId = parseInt(id);
-  if (isNaN(logId)) {
-    return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
+  if (!id || isNaN(logId)) {
+    return NextResponse.json({ error: 'ID invalide' }, { status: 400 });
   }
 
   try {
-    console.log("Fetching log with ID:", logId);
-
     const log = await prisma.log.findUnique({
       where: { id: logId },
-      include: {
-        user: true,
-      },
+      include: { user: true },
     });
 
     if (!log) {
-      return NextResponse.json({ error: 'Log not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Log introuvable' }, { status: 404 });
     }
 
-    console.log('GET API/logs/' + id + ': log found:', log);
     return NextResponse.json(log, { status: 200 });
   } catch (error) {
-    console.error('Error fetching log:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('Erreur lors de la récupération du log :', error);
+    return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
   }
 }
 
-// 🛠 Handler DELETE : Supprimer un log par ID
-// DELETE a specific log by ID
+/**
+ * Supprime un log spécifique par ID
+ */
 export async function DELETE(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params; // Attendre la résolution de params
+  const { id } = await params;
+  const logId = parseInt(id, 10);
 
-  if (!id) {
-    return NextResponse.json({ error: 'ID is required' }, { status: 400 });
-  }
-
-  const logId = parseInt(id);
-  if (isNaN(logId)) {
-    return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
+  if (!id || isNaN(logId)) {
+    return NextResponse.json({ error: 'ID invalide' }, { status: 400 });
   }
 
   try {
-    console.log("Deleting log with ID:", logId);
-
-    const log = await prisma.log.findUnique({
-      where: { id: logId },
-    });
+    const log = await prisma.log.findUnique({ where: { id: logId } });
 
     if (!log) {
-      return NextResponse.json({ error: 'Log not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Log introuvable' }, { status: 404 });
     }
 
-    await prisma.log.delete({
-      where: { id: logId },
-    });
+    await prisma.log.delete({ where: { id: logId } });
 
-    console.log('DELETE API/logs/' + id + ': log deleted');
-    return NextResponse.json({ message: 'Log deleted successfully' }, { status: 200 });
+    return NextResponse.json({ message: 'Log supprimé avec succès' }, { status: 200 });
   } catch (error) {
-    console.error('Error deleting log:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error(' Erreur lors de la suppression du log :', error);
+    return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
   }
 }
-
