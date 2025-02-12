@@ -47,8 +47,6 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
   }
 }
 
-
-
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
   const { id } = resolvedParams;
@@ -64,7 +62,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
 
   try {
     const body = await req.json();
-    const { username, email, role, imageId } = body;
+    const { username, email } = body;
 
     console.log('Updating user with ID:', userId);
 
@@ -80,7 +78,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     // Update user
     const updatedUser = await prisma.user.update({
       where: { id: userId },
-      data: { username, email, role, imageId },
+      data: { username, email },
     });
 
     // Exclure le mot de passe de la réponse
