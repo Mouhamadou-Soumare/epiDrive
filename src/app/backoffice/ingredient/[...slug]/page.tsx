@@ -27,6 +27,14 @@ export default function AddProductFromIngredientPage() {
   const [updatedIngredient, setUpdatedIngredient] = useState<Ingredient | null>(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
 
+  const [newImage, setNewImage] = useState<File | null>(null);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files && e.target.files[0]) {
+          setNewImage(e.target.files[0]);
+      }
+  };
+
   useEffect(() => {
     if (ingredient) {
       setUpdatedIngredient(ingredient);
@@ -63,10 +71,11 @@ export default function AddProductFromIngredientPage() {
       description: updatedIngredient.description,
       prix: updatedIngredient.prix,
       categorieId: selectedCategoryId,
-      slug: updatedIngredient.name.toLowerCase().replace(/ /g, '-'), // Génération automatique du slug
+      slug: updatedIngredient.name.toLowerCase().replace(/ /g, '-'), 
+      stock: 10,
     };
     
-    const success = await addProduit(newProduct, "/path/to/"+updatedIngredient.name+".jpg");
+    const success = await addProduit(newProduct, newImage);
     setSubmitResult(success ? "success" : "error");
     if (success) {
       await deleteIngredient(updatedIngredient.id);
@@ -134,6 +143,20 @@ export default function AddProductFromIngredientPage() {
           step={0.01}
           required
         />
+
+        <div className="mb-5">
+            <label htmlFor="productImage" className="block mb-2 text-sm font-medium text-gray-900">Chemin de l'image</label>
+            <input
+            type="file"
+            id="productImage"
+            name="productImage"
+            accept="image/*"
+            
+            className="mt-1 block w-full text-sm text-gray-500 border-gray-300 rounded-md"
+            onChange={handleImageChange}
+            />
+        </div>
+
         <div className="mb-5">
           <label htmlFor="categorieId" className="block mb-2 text-sm font-medium text-gray-900">
             Catégorie

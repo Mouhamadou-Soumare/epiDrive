@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { Produit, Ingredient } from 'types';
 
+import { promises as fs } from "fs";
+import path from "path";
+
 // Définition du type de Recette
 interface Recette {
   id: number;
@@ -49,6 +52,7 @@ export async function GET() {
         prix: produit.prix,
         description: produit.description || "Aucune description", // Valeur par défaut
         categorieId: produit.categorie ? produit.categorie.id : null, // Vérification de la catégorie
+        stock: produit.stock,
       })),
       ingredients: recette.ingredients.map((ingredient) => ({
         id: ingredient.id,
@@ -69,22 +73,32 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    console.log('Creating new recette with body:', body);
+    const formData = await request.formData();
+    const title = formData.get("title") as string;
+    const description = formData.get("description") as string;
+    const instructions = formData.get("instructions") as string;
+    const userId = parseInt(formData.get("userId") as string, 10);
+    const produits = formData.get("produits") ? JSON.parse(formData.get("produits") as string) : [];
+    const newImage = formData.get("newImage") as File | null;
 
-    const { title, description, instructions, user, produits, ingredients } = body;
-
-    if (!title || !description || !instructions || !user) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    if (!title || !description || !instructions || !userId) {
+      return NextResponse.json({ error: "Champs requis manquants" }, { status: 400 });
     }
 
-    const image = `/img/recette/${title.toLowerCase().replace(/ /g, '-')}.webp`;
+    let imagePath = `/img/recette/default.webp`;
 
-    const checkExistingRecette = await prisma.recette.findFirst({ where: { title } });
+    if (newImage) {
+      const bytes = await newImage.arrayBuffer();
+      const buffer = Buffer.from(bytes);
 
-    if (checkExistingRecette) {
-      console.log("Recette already exists");
-      return NextResponse.json(checkExistingRecette, { status: 201 });
+      const uploadDir = path.join(process.cwd(), "public/img/recette");
+      await fs.mkdir(uploadDir, { recursive: true });
+
+      const fileName = `${Date.now()}-${newImage.name}`;
+      const filePath = path.join(uploadDir, fileName);
+      await fs.writeFile(filePath, buffer);
+
+      imagePath = `/img/recette/${fileName}`;
     }
 
     const newRecette = await prisma.recette.create({
@@ -92,21 +106,16 @@ export async function POST(request: Request) {
         title,
         description,
         instructions,
-        image,
-        user: { connect: { id: user.id } },
-        produits: produits
-          ? { connect: produits.map((produit: { id: number }) => ({ id: produit.id })) }
-          : undefined,
-        ingredients: ingredients
-          ? { connect: ingredients.map((ingredient: { id: number }) => ({ id: ingredient.id })) }
-          : undefined,
+        image: imagePath,
+        user: { connect: { id: userId } },
+        produits: { connect: produits.map((id: number) => ({ id })) },
       },
     });
 
-    console.log("POST API/recettes/ : ", newRecette);
     return NextResponse.json(newRecette, { status: 201 });
   } catch (error) {
-    console.error("Error creating recette:", error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error("Erreur lors de la création de la recette :", error);
+    return NextResponse.json({ error: "Échec de la création de la recette" }, { status: 500 });
   }
 }
+

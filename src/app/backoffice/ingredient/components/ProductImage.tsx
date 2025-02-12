@@ -12,9 +12,7 @@ const ProductImage: React.FC<ProductImageProps> = ({ image, altText }) => (
       <Image 
         src={image.path} 
         alt={altText} 
-        fill
-        className="object-cover object-center"
-        sizes="(max-width: 768px) 100vw, 400px" // Optimisation responsive
+          className="h-full w-full object-cover object-center" 
         priority // Si important pour le chargement initial
       />
     ) : (

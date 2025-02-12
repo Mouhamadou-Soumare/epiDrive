@@ -67,7 +67,7 @@ const products = [
   },
 ];
 const callsToAction = [
-  { name: "Voir la démo", href: "#", icon: PlayCircleIcon },
+  { name: "Poser des questions à notre IA", href: "/chatIA", icon: PlayCircleIcon },
   { name: "Contactez-nous", href: "#", icon: PhoneIcon },
   { name: "Voir toutes les catégories", href: "#", icon: RectangleGroupIcon },
 ];

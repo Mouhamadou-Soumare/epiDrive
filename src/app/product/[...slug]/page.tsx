@@ -12,6 +12,7 @@ type Product = {
   prix: number;
   description: string;
   image: { path: string };
+  stock: number;
 };
 
 export default function ProductDetailPage() {
@@ -102,24 +103,30 @@ export default function ProductDetailPage() {
                 handleAddToCart();
               }}
             >
-              <div className="mt-6">
-                <label htmlFor="quantity" className="block text-sm font-medium text-gray-700">
-                  Quantité
-                </label>
-                <select
-                  id="quantity"
-                  name="quantity"
-                  value={quantity}
-                  onChange={(e) => setQuantity(Number(e.target.value))}
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                >
-                  {Array.from({ length: 10 }, (_, i) => i + 1).map((qty) => (
-                    <option key={qty} value={qty}>
-                      {qty}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            {
+              product.stock <= 0 ? (
+                <div className="text-red-500 text-lg font-semibold">❌ Ce produit est en rupture de stock</div>
+              ) : (
+                <div className="mt-6">
+                  <label htmlFor="quantity" className="block text-sm font-medium text-gray-700">
+                    Quantité
+                  </label>
+                  <select
+                    id="quantity"
+                    name="quantity"
+                    value={quantity}
+                    onChange={(e) => setQuantity(Number(e.target.value))}
+                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  >
+                    {Array.from({ length: product.stock }, (_, i) => i + 1).map((qty) => (
+                      <option key={qty} value={qty}>
+                        {qty}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )
+            }
 
               <div className="mt-10">
                 <button

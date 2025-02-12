@@ -60,6 +60,7 @@ export function useGetProduit(id: string | null) {
           description: data.description || "",
           categorieId: data.categorie.id ?? null, 
           image: data.image || null,
+          stock: data.stock || 0,
         };
 
         setProduit(produitFormate); // ✅ Maintenant, `setProduit` reçoit bien un seul produit
@@ -81,17 +82,30 @@ export function useAddProduit() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const addProduit = async (newProduct: Omit<Produit, 'id'>, path?: string): Promise<Produit> => {
+  const addProduit = async (newProduct: Omit<Produit, "id">, newImage?: File): Promise<Produit> => {
     try {
       setLoading(true);
-      const response = await fetch(API_BASE_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...newProduct, path }),
+
+      const formData = new FormData();
+      formData.append("name", newProduct.name);
+      formData.append("description", newProduct.description);
+      formData.append("prix", newProduct.prix.toString());
+      formData.append("categorieId", newProduct.categorieId.toString());
+      formData.append("slug", newProduct.slug);
+      formData.append("stock", newProduct.stock.toString());
+      if (newImage) formData.append("newImage", newImage);
+
+      const response = await fetch(`${API_BASE_URL}`, {
+        method: "POST",
+        body: formData, 
       });
-      const data: Produit = await response.json();
-      if (!response.ok) throw new Error((data as unknown as FetchError).message || 'Failed to create product');
-      return data;
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Échec de la création du produit");
+      }
+
+      return await response.json();
     } catch (err) {
       setError((err as Error).message);
       throw err;
@@ -108,17 +122,31 @@ export function useUpdateProduit() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const updateProduit = async (slug: string, product: Partial<Produit>, path?: string): Promise<Produit> => {
+  const updateProduit = async (slug: string, product: Partial<Produit>, newImage?: File): Promise<Produit> => {
     try {
       setLoading(true);
+
+      const formData = new FormData();
+      formData.append("name", product.name as string);
+      formData.append("description", product.description as string);
+      formData.append("prix", product.prix?.toString() || "0");
+      formData.append("categorieId", product.categorieId?.toString() || "0");
+      formData.append("stock", product.stock?.toString() || "0");
+      if (newImage) {
+        formData.append("newImage", newImage);
+      }
+
       const response = await fetch(`${API_BASE_URL}/${slug}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...product, path }),
+        method: "PATCH",
+        body: formData, // 🔥 PAS de `Content-Type`, FormData le gère !
       });
-      const data: Produit = await response.json();
-      if (!response.ok) throw new Error((data as unknown as FetchError).message || 'Failed to update product');
-      return data;
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Échec de la mise à jour du produit");
+      }
+
+      return await response.json();
     } catch (err) {
       setError((err as Error).message);
       throw err;
