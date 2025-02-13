@@ -33,9 +33,9 @@ export const ProductGrid = ({ products }: { products: Product[] }) => {
                   <div className="absolute inset-x-0 top-0 flex h-72 items-end justify-end overflow-hidden rounded-lg p-4">
                     <div
                       aria-hidden="true"
-                      className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-orange-epidrive opacity-25"
+                      className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-orange-epidrive opacity-55"
                     />
-                    <p className="relative text-lg font-semibold text-white">{product.prix}€</p> {/* Remplace `price` par `prix` */}
+                    <p className="relative text-2xl  text-white font-bold">{product.prix}€</p> 
                   </div>
                 </div>
                 <div className="mt-6">

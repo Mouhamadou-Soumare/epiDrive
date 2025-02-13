@@ -100,7 +100,7 @@ const UpdateUserPage = () => {
         <div className="mt-4 flex justify-between">
           <button
             type="submit"
-            className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 disabled:opacity-50"
+            className="px-4 py-2 button-primary text-white rounded-md hover:bg-orange-700 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 disabled:opacity-50"
             disabled={loadingUpdate}
           >
             {loadingUpdate ? "Mise à jour..." : "Mettre à jour"}

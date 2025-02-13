@@ -33,12 +33,12 @@ export async function createProducts(subCategory, existingSubCategory) {
                         prix: product.price || 0, // Définit un prix par défaut si absent
                         categorie: {
                             connect: {
-                                id: existingSubCategory.id, // Connexion à la sous-catégorie existante
+                                id: existingSubCategory.id, 
                             },
                         },
                         image: {
                             create: {
-                                path: imagePath, // Utilisation du chemin d'image dynamique
+                                path: imagePath, 
                             },
                         },
                         stock: 10

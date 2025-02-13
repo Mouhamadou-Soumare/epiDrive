@@ -66,7 +66,7 @@ export default function CategoryDetails() {
             <div className="flex gap-4 flex-col">
               <Link
                 href={`/backoffice/categorie/update/${category.slug}`}
-                className="flex w-full items-center justify-center bold rounded-md px-8 py-3 text-white bg-orange-300 hover:bg-orange-500 text-black focus:ring-2 focus:ring-indigo-500"
+                className="flex w-full items-center justify-center bold rounded-md px-8 py-3 text-white button-primary hover:bg-orange-500 text-black focus:ring-2 focus:ring-indigo-500"
               >
                 Modifier la catégorie
               </Link>
