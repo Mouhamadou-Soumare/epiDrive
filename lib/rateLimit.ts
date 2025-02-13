@@ -1,7 +1,7 @@
 const rateLimitMap = new Map<string, { count: number; timestamp: number }>();
 
-const RATE_LIMIT = 10; // Nombre max de requêtes
-const TIME_FRAME = 60 * 1000; // 1 minute
+const RATE_LIMIT = 3;
+const TIME_FRAME = 60 * 1000; 
 
 export function rateLimit(ip: string): boolean {
   const now = Date.now();
