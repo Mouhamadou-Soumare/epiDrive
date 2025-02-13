@@ -62,7 +62,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
 
     const userId = parseInt(id, 10);
     const body = await req.json();
-    const { username, email, role, imageId } = body;
+    const { username, email } = body;
 
     console.log('Mise à jour de l\'utilisateur avec l\'ID :', userId);
 
@@ -75,7 +75,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     // Mise à jour de l'utilisateur
     const updatedUser = await prisma.user.update({
       where: { id: userId },
-      data: { username, email, role, imageId },
+      data: { username, email },
     });
 
     // Suppression du mot de passe avant de renvoyer l'utilisateur

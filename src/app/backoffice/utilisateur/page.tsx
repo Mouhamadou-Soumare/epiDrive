@@ -4,21 +4,25 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import SearchInput from "../components/SearchInput";
 import UtilisateurRow from "./components/UtilisateurRow";
 import { useGetUsers } from "@/hooks/users/useUsers";
-import { User } from "types";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { User, Role } from "types"; 
 
 const UtilisateurList = () => {
   const { users, loading, error } = useGetUsers();
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedRole, setSelectedRole] = useState<string>(""); 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 10;
 
   // Filtrage optimisé avec useMemo (évite recalculs inutiles)
   const filteredUtilisateurs = useMemo(() => {
-    return users.filter((user: User) =>
-      user.username.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [searchQuery, users]);
+    return users.filter((user: User) => {
+      return (
+        user.username.toLowerCase().includes(searchQuery.toLowerCase()) &&
+        (selectedRole === "" || user.role === selectedRole)
+      );
+    });
+  }, [searchQuery, selectedRole, users]);
 
   const totalPages = Math.ceil(filteredUtilisateurs.length / itemsPerPage);
   const paginatedUtilisateurs = useMemo(() => {
@@ -33,6 +37,11 @@ const UtilisateurList = () => {
     setSearchQuery(e.target.value);
     setCurrentPage(1);
   }, []);
+
+  const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedRole(e.target.value);
+    setCurrentPage(1);
+  };
 
   if (loading) {
     return <LoadingSpinner/>;
@@ -51,14 +60,27 @@ const UtilisateurList = () => {
         </div>
       </div>
 
-      {/* Barre de recherche */}
+      {/* Barre de recherche et Filtre */}
       <div className="flex flex-col mt-4 sm:flex-row gap-4 w-full">
         <SearchInput
           searchQuery={searchQuery}
           onSearchChange={handleSearchChange}
           placeholder="Rechercher un utilisateur"
-          aria_label="Rechercher une utilisateur"
+          aria_label="Rechercher un utilisateur"
         />
+
+        {/* Dropdown Filtre Rôle */}
+        <select
+          value={selectedRole}
+          onChange={handleRoleChange}
+          className="border rounded-md px-4 py-2 focus:ring-2 focus:ring-indigo-500"
+          aria-label="Filtrer par rôle"
+        >
+          <option value="">Tous les rôles</option>
+          <option value={Role.USER}>Utilisateur</option>
+          <option value={Role.ADMIN}>Administrateur</option>
+          <option value={Role.MAGASINIER}>Magasinier</option>
+        </select>
       </div>
 
       {/* Table des utilisateurs */}
