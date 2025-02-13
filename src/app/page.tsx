@@ -93,7 +93,6 @@ export default function HomePage() {
   ];
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
       <main>
         <HeroSectionHomepage />
 
@@ -175,7 +174,6 @@ export default function HomePage() {
           </section>
         </div>
 
-        {/* Featured Products Section */}
         <section className="bg-white py-16 sm:py-24 lg:py-32 mx-auto max-w-7xl">
           <h2 className="text-lg font-semibold text-black-600 text-center">
             Plaisir & Praticité
@@ -207,7 +205,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* FAQ Section */}
         <div className="mx-auto max-w-2xl divide-y divide-gray-900/10 px-6 pb-8 lg:max-w-7xl lg:px-8">
           <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">
             FAQ
@@ -231,7 +228,6 @@ export default function HomePage() {
           </dl>
         </div>
 
-        {/* CTA Section */}
         <section className="button-secondary py-16 text-white text-center">
           <h2 className="text-4xl font-bold mb-4">
             Commencez avec EpiDrive dès aujourd'hui !

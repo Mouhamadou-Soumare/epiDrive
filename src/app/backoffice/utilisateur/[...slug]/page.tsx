@@ -36,8 +36,8 @@ const UserDetail = () => {
   const handleNextPage = useCallback(() => setCurrentPage((prev) => Math.min(prev + 1, totalPages)), [totalPages]);
 
   if (loading) return <LoadingSpinner/>;
-  if (error) return <div className="text-center text-red-500 font-medium">❌ Erreur : {error}</div>;
-  if (!user) return <div className="text-center text-gray-500">❌ Utilisateur non trouvé</div>;
+  if (error) return <div className="text-center text-red-500 font-medium"> Erreur : {error}</div>;
+  if (!user) return <div className="text-center text-gray-500"> Utilisateur non trouvé</div>;
 
   return (
     <div className="mx-auto max-w-2xl py-4 sm:py-4 lg:max-w-7xl">

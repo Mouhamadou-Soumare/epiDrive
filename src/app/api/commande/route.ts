@@ -139,7 +139,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(newCommande, { status: 201 });
   } catch (error) {
-    console.error('❌ Erreur lors de la création de la commande :', error);
+    console.error(' Erreur lors de la création de la commande :', error);
     return NextResponse.json(
       { error: 'Erreur interne du serveur', details: (error as Error).message },
       { status: 500 }

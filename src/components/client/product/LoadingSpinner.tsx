@@ -1,4 +1,3 @@
-// src/components/LoadingSpinner.tsx
 export default function LoadingSpinner() {
     return (
       <div className="flex items-center justify-center min-h-screen transition-opacity duration-500">
