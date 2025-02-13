@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
+import { NextResponse } from "next/server";
+import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -10,12 +10,15 @@ export async function POST(req: Request) {
   try {
     const { userName, commandeId, email } = await req.json();
 
-    console.log('Payload reçu:', { userName, commandeId, email });
+    console.log("Payload reçu:", { userName, commandeId, email });
 
     // Validation des paramètres requis
     if (!userName || !commandeId || !email) {
       return NextResponse.json(
-        { error: "Les informations de l'utilisateur ou de la commande sont manquantes." },
+        {
+          error:
+            "Les informations de l'utilisateur ou de la commande sont manquantes.",
+        },
         { status: 400 }
       );
     }
@@ -23,7 +26,10 @@ export async function POST(req: Request) {
     const senderEmail = process.env.RESEND_EMAIL_FROM;
     if (!senderEmail) {
       return NextResponse.json(
-        { error: "L'adresse email d'expédition (RESEND_EMAIL_FROM) doit être définie dans le fichier .env." },
+        {
+          error:
+            "L'adresse email d'expédition (RESEND_EMAIL_FROM) doit être définie dans le fichier .env.",
+        },
         { status: 500 }
       );
     }
@@ -137,8 +143,8 @@ export async function POST(req: Request) {
   `;
 
     const filledTemplate = htmlTemplate
-      .replace('{{commandeId}}', commandeId)
-      .replace('{{userName}}', userName);
+      .replace("{{commandeId}}", commandeId)
+      .replace("{{userName}}", userName);
 
     // Envoi de l'email avec Resend
     const { data, error } = await resend.emails.send({
@@ -148,7 +154,7 @@ export async function POST(req: Request) {
       html: filledTemplate,
     });
 
-    console.log('Réponse Resend:', { data, error });
+    console.log("Réponse Resend:", { data, error });
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
@@ -157,6 +163,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true, data });
   } catch (error) {
     console.error("Erreur lors de l'envoi de l'email de confirmation:", error);
-    return NextResponse.json({ error: "Erreur lors de l'envoi de l'email." }, { status: 500 });
+    return NextResponse.json(
+      { error: "Erreur lors de l'envoi de l'email." },
+      { status: 500 }
+    );
   }
 }

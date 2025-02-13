@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
-import { promises as fs } from 'fs';
-import path from 'path';
+import { NextRequest, NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
+import { promises as fs } from "fs";
+import path from "path";
 
 /**
  * Récupère une recette spécifique via son slug
@@ -11,23 +11,28 @@ export async function GET(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { slug } = await params; 
+    const { slug } = await params;
 
     if (!slug) {
-      return NextResponse.json({ error: 'Slug requis.' }, { status: 400 });
+      return NextResponse.json({ error: "Slug requis." }, { status: 400 });
     }
 
     const recette = await prisma.recette.findUnique({
       where: { id: parseInt(slug, 10) },
       include: {
         user: { select: { id: true, username: true } },
-        produits: { select: { id: true, name: true, slug: true, prix: true, stock: true } },
+        produits: {
+          select: { id: true, name: true, slug: true, prix: true, stock: true },
+        },
         ingredients: { select: { id: true, name: true } },
       },
     });
 
     if (!recette) {
-      return NextResponse.json({ error: 'Recette non trouvée.' }, { status: 404 });
+      return NextResponse.json(
+        { error: "Recette non trouvée." },
+        { status: 404 }
+      );
     }
 
     const formattedRecette = {
@@ -35,7 +40,7 @@ export async function GET(
       title: recette.title,
       description: recette.description,
       instructions: recette.instructions,
-      image: recette.image || '/img/placeholder.webp',
+      image: recette.image || "/img/placeholder.webp",
       user: recette.user,
       produits: recette.produits,
       ingredients: recette.ingredients,
@@ -43,10 +48,12 @@ export async function GET(
 
     console.log(`Recette trouvée: ${recette.title}`);
     return NextResponse.json(formattedRecette, { status: 200 });
-
   } catch (error) {
     console.error("Erreur lors de la récupération de la recette:", error);
-    return NextResponse.json({ error: 'Erreur interne du serveur.' }, { status: 500 });
+    return NextResponse.json(
+      { error: "Erreur interne du serveur." },
+      { status: 500 }
+    );
   }
 }
 
@@ -60,7 +67,7 @@ export async function PATCH(
   try {
     const { slug } = await params;
     if (!slug) {
-      return NextResponse.json({ error: 'Slug requis.' }, { status: 400 });
+      return NextResponse.json({ error: "Slug requis." }, { status: 400 });
     }
 
     const formData = await request.formData();
@@ -68,16 +75,26 @@ export async function PATCH(
     const description = formData.get("description") as string;
     const instructions = formData.get("instructions") as string;
     const userId = parseInt(formData.get("userId") as string, 10);
-    const produits = formData.get("produits") ? JSON.parse(formData.get("produits") as string) : [];
+    const produits = formData.get("produits")
+      ? JSON.parse(formData.get("produits") as string)
+      : [];
     const newImage = formData.get("newImage") as File | null;
 
     if (!title || !description || !instructions || isNaN(userId)) {
-      return NextResponse.json({ error: "Champs requis manquants." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Champs requis manquants." },
+        { status: 400 }
+      );
     }
 
-    const existingRecette = await prisma.recette.findUnique({ where: { id: parseInt(slug, 10) } });
+    const existingRecette = await prisma.recette.findUnique({
+      where: { id: parseInt(slug, 10) },
+    });
     if (!existingRecette) {
-      return NextResponse.json({ error: "Recette non trouvée." }, { status: 404 });
+      return NextResponse.json(
+        { error: "Recette non trouvée." },
+        { status: 404 }
+      );
     }
 
     let imagePath = existingRecette.image;
@@ -109,10 +126,12 @@ export async function PATCH(
 
     console.log(`Recette mise à jour : ${updatedRecette.title}`);
     return NextResponse.json(updatedRecette, { status: 200 });
-
   } catch (error) {
     console.error("Erreur lors de la mise à jour de la recette :", error);
-    return NextResponse.json({ error: "Erreur interne du serveur." }, { status: 500 });
+    return NextResponse.json(
+      { error: "Erreur interne du serveur." },
+      { status: 500 }
+    );
   }
 }
 
@@ -126,7 +145,7 @@ export async function DELETE(
   try {
     const { slug } = await params;
     if (!slug) {
-      return NextResponse.json({ error: 'Slug requis.' }, { status: 400 });
+      return NextResponse.json({ error: "Slug requis." }, { status: 400 });
     }
 
     await prisma.recette.delete({
@@ -134,10 +153,15 @@ export async function DELETE(
     });
 
     console.log(`Recette supprimée : ${slug}`);
-    return NextResponse.json({ message: 'Recette supprimée avec succès.' }, { status: 200 });
-
+    return NextResponse.json(
+      { message: "Recette supprimée avec succès." },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Erreur lors de la suppression de la recette :", error);
-    return NextResponse.json({ error: "Erreur interne du serveur." }, { status: 500 });
+    return NextResponse.json(
+      { error: "Erreur interne du serveur." },
+      { status: 500 }
+    );
   }
 }

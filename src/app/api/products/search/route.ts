@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import { NextRequest, NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 
 /**
  * Recherche de produits par nom avec récupération des images et catégories associées.
@@ -7,13 +7,16 @@ import prisma from '@/lib/prisma';
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const query = searchParams.get('query');
+    const query = searchParams.get("query");
 
     if (!query) {
-      return NextResponse.json({ error: 'Le paramètre de recherche est requis' }, { status: 400 });
+      return NextResponse.json(
+        { error: "Le paramètre de recherche est requis" },
+        { status: 400 }
+      );
     }
 
-    console.log(`🔍 Recherche de produits contenant : ${query}`);
+    console.log(` Recherche de produits contenant : ${query}`);
 
     const products = await prisma.produit.findMany({
       where: {
@@ -33,7 +36,10 @@ export async function GET(req: NextRequest) {
     });
 
     if (!products.length) {
-      return NextResponse.json({ message: 'Aucun produit trouvé' }, { status: 404 });
+      return NextResponse.json(
+        { message: "Aucun produit trouvé" },
+        { status: 404 }
+      );
     }
 
     // Récupération des images et catégories associées
@@ -54,9 +60,15 @@ export async function GET(req: NextRequest) {
       prix: product.prix,
       slug: product.slug,
       description: product.description,
-      imageSrc: images.find((img) => img.id === product.imageid)?.path || 'https://via.placeholder.com/300',
+      imageSrc:
+        images.find((img) => img.id === product.imageid)?.path ||
+        "https://via.placeholder.com/300",
       imageAlt: `Image de ${product.name}`,
-      categorie: categories.find((cat) => cat.id === product.categorieId) || { id: null, name: 'Non catégorisé', slug: '' },
+      categorie: categories.find((cat) => cat.id === product.categorieId) || {
+        id: null,
+        name: "Non catégorisé",
+        slug: "",
+      },
     }));
 
     // Extraction des catégories uniques
@@ -67,10 +79,15 @@ export async function GET(req: NextRequest) {
     }));
 
     console.log(` ${formattedProducts.length} produits trouvés`);
-    return NextResponse.json({ products: formattedProducts, categories: uniqueCategories }, { status: 200 });
-
+    return NextResponse.json(
+      { products: formattedProducts, categories: uniqueCategories },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error('Erreur lors de la recherche des produits:', error);
-    return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
+    console.error("Erreur lors de la recherche des produits:", error);
+    return NextResponse.json(
+      { error: "Erreur interne du serveur" },
+      { status: 500 }
+    );
   }
 }
