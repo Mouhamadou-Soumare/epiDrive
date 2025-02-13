@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
   const stream = new TransformStream();
   const writer = stream.writable.getWriter();
   const encoder = new TextEncoder();
-  
+
   const clientId = crypto.randomUUID();
   clients.push({ id: clientId, res: writer });
 
@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
 
   req.signal.addEventListener("abort", () => {
     console.log(`Client déconnecté : ${clientId}`);
-    clients = clients.filter(client => client.id !== clientId);
+    clients = clients.filter((client) => client.id !== clientId);
     writer.close();
   });
 
@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
     headers: {
       "Content-Type": "text/event-stream",
       "Cache-Control": "no-cache",
-      "Connection": "keep-alive",
+      Connection: "keep-alive",
     },
   });
 }
@@ -45,7 +45,10 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
 
     if (!body.cart) {
-      return new Response(JSON.stringify({ error: "Aucune donnée de panier reçue" }), { status: 400 });
+      return new Response(
+        JSON.stringify({ error: "Aucune donnée de panier reçue" }),
+        { status: 400 }
+      );
     }
 
     console.log(`Mise à jour du panier reçue :`, body.cart);
@@ -65,6 +68,9 @@ export async function POST(req: NextRequest) {
     return new Response(JSON.stringify({ success: true }), { status: 200 });
   } catch (error) {
     console.error("Erreur lors de la mise à jour du panier:", error);
-    return new Response(JSON.stringify({ error: "Erreur interne du serveur" }), { status: 500 });
+    return new Response(
+      JSON.stringify({ error: "Erreur interne du serveur" }),
+      { status: 500 }
+    );
   }
 }
