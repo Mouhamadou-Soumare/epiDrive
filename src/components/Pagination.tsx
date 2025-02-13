@@ -20,7 +20,6 @@ export default function Pagination({ totalItems, itemsPerPage, currentPage, onPa
 
   return (
     <nav className="flex items-center justify-between border-t border-gray-200 px-4 sm:px-0 mt-16 mb-10">
-      {/* Previous button */}
       <div className="-mt-px flex w-0 flex-1">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
@@ -32,7 +31,6 @@ export default function Pagination({ totalItems, itemsPerPage, currentPage, onPa
         </button>
       </div>
 
-      {/* Page numbers */}
       <div className="hidden md:-mt-px md:flex">
         {visiblePages.map((page) => (
           <button
@@ -63,7 +61,6 @@ export default function Pagination({ totalItems, itemsPerPage, currentPage, onPa
         )}
       </div>
 
-      {/* Next button */}
       <div className="-mt-px flex w-0 flex-1 justify-end">
         <button
           onClick={() => handlePageChange(currentPage + 1)}
