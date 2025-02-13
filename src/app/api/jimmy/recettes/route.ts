@@ -120,7 +120,7 @@ export async function POST(req: NextRequest) {
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error("❌ Erreur API OpenAI:", errorData);
+      console.error(" Erreur API OpenAI:", errorData);
       return NextResponse.json({ error: errorData.error || "Erreur OpenAI" }, { status: response.status });
     }
 
@@ -167,7 +167,7 @@ export async function POST(req: NextRequest) {
       }
 
       if (existingRecipe) {
-        console.log(`✅ Recette existante trouvée: ${existingRecipe.title}`);
+        console.log(` Recette existante trouvée: ${existingRecipe.title}`);
         db_recipes.push(existingRecipe);
         continue;
       }
@@ -221,7 +221,7 @@ export async function POST(req: NextRequest) {
         }, include: { ingredients: true, produits: true },
       });
 
-      console.log(`✅ Nouvelle recette créée: ${newRecipe.title}`);
+      console.log(` Nouvelle recette créée: ${newRecipe.title}`);
       db_recipes.push(newRecipe);
     }
 
@@ -229,7 +229,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ recipes: db_recipes });
 
   } catch (error) {
-    console.error("❌ Erreur lors de la génération des recettes:", error);
+    console.error(" Erreur lors de la génération des recettes:", error);
     return NextResponse.json({ error: "Erreur interne" }, { status: 500 });
   }
 }

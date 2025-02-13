@@ -69,7 +69,7 @@ const products = [
 const callsToAction = [
   { name: "Poser des questions à notre IA", href: "/chatIA", icon: PlayCircleIcon },
   { name: "Contactez-nous", href: "#", icon: PhoneIcon },
-  { name: "Voir toutes les catégories", href: "#", icon: RectangleGroupIcon },
+  { name: "Voir toutes les catégories", href: "/category", icon: RectangleGroupIcon },
 ];
 
 const social = [
@@ -204,7 +204,6 @@ export default function Navbar() {
   return (
     <header className="relative isolate z-10 ">
       <div aria-label="Top">
-        {/* Top navigation */}
         <div className="bg-gray-900">
           <div className="mx-auto min-h-11 flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
             <div className="flex gap-x-4 ">
@@ -242,7 +241,6 @@ export default function Navbar() {
           </a>
         </div>
         <div className="flex items-center lg:hidden space-x-4">
-          {/* 🔍 Icône Search : Passe en champ input avec transition fluide */}
           <div className="relative flex items-center">
             {!searchOpen ? (
               <button
@@ -266,7 +264,6 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* 🛒 Panier avec badge dynamique */}
           <button
             onClick={() => setCartOpen(true)}
             className="relative p-2 transition-transform duration-300 ease-in-out hover:scale-110"
@@ -279,7 +276,6 @@ export default function Navbar() {
             )}
           </button>
 
-          {/* 👤 Connexion/Déconnexion */}
           {status === "loading" ? (
             <div className="text-gray-500">Chargement...</div>
           ) : session ? (
@@ -301,7 +297,6 @@ export default function Navbar() {
             </a>
           )}
 
-          {/* 🍔 Icône Menu Mobile */}
           <button
             onClick={() => setMobileMenuOpen(true)}
             className="p-2 transition-transform duration-300 ease-in-out hover:scale-110"
@@ -336,7 +331,6 @@ export default function Navbar() {
               className="absolute inset-x-0 top-0 -z-10 bg-white pt-14 shadow-lg ring-1 ring-gray-900/5 transition data-[closed]:-translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in rounded-lg	mt-navbar w-11/12	mx-auto"
             >
               <div className="flex flex-rpw">
-                {/* Première grid avec le titre "Mes courses" */}
                 <div className="px-6 py-10 lg:px-8 pt-8">
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">
                     Mes courses
@@ -371,7 +365,6 @@ export default function Navbar() {
                   </div>
                 </div>
 
-                {/* Deuxième grid avec le titre "Maison & loisirs" */}
                 <div className="px-6 py-10 lg:px-8 pt-8">
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">
                     Maison & loisirs

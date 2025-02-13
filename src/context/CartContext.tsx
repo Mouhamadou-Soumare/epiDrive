@@ -42,7 +42,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   /**
-   * 🔄 Rafraîchit le panier depuis l'API
+   * Rafraîchit le panier depuis l'API
    */
   const refreshCart = useCallback(async () => {
     const sessionId = getOrCreateSessionId();
@@ -53,14 +53,14 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
       const data = await res.json();
       setCartItems(data);
     } catch (error) {
-      console.error("❌ Erreur récupération panier:", error);
+      console.error(" Erreur récupération panier:", error);
     } finally {
       setLoading(false);
     }
   }, [getOrCreateSessionId]);
 
   /**
-   * 🖥️ SSE: Mise à jour automatique du panier
+   *  SSE: Mise à jour automatique du panier
    */
   useEffect(() => {
     refreshCart();
@@ -77,7 +77,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   }, [refreshCart]);
 
   /**
-   * ➕ Ajoute un produit au panier avec mise à jour instantanée
+   * Ajoute un produit au panier avec mise à jour instantanée
    */
   const addToCart = async (productId: number, quantity: number, price: number) => {
     setCartItems((prev) => {
@@ -110,7 +110,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   /**
-   * 🔄 Met à jour la quantité d'un produit
+   * Met à jour la quantité d'un produit
    */
   const updateQuantity = async (productId: number, newQuantity: number) => {
     if (newQuantity < 1) {
@@ -134,7 +134,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   /**
-   * ❌ Supprime un produit du panier
+   *  Supprime un produit du panier
    */
   const deleteProduct = async (productId: number) => {
     setCartItems((prev) => prev.filter((item) => item.produit.id !== productId));

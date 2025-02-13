@@ -17,7 +17,7 @@ export default function ChatIA() {
 
     return (
         <div className="bg-white min-h-screen flex flex-col items-center p-4">
-            <h1 className="text-2xl font-bold mb-4">Chat Cuisine 🍽️</h1>
+            <h1 className="text-2xl font-bold mb-4">Chat Cuisine </h1>
             <form onSubmit={handleSubmit} className="w-full max-w-md flex">
                 <input
                     type="text"

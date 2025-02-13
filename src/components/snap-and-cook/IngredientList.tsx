@@ -23,9 +23,7 @@ export default function IngredientList({ products, cart, addToCart, removeFromCa
     });
   };
 
-  /**
-   * 🔹 Valide l'ajout des produits au panier.
-   */
+  
   const handleConfirmAddToCart = () => {
     Object.entries(localCart).forEach(([productId, quantity]) => {
       const product = products.find((p) => p.id === Number(productId));
@@ -36,7 +34,6 @@ export default function IngredientList({ products, cart, addToCart, removeFromCa
 
     alert("Panier mis à jour !");
   
-    // Réinitialiser les quantités à 0 tout en conservant les produits
     const updatedCart = Object.keys(localCart).reduce((acc, productId) => {
       acc[Number(productId)] = 0;
       return acc;
@@ -44,7 +41,6 @@ export default function IngredientList({ products, cart, addToCart, removeFromCa
 
     setCart(updatedCart);
 
-    // Fermer la modal
     setIsModalOpen(false);
   };
   

@@ -1,18 +1,18 @@
 [2025-02-06T20:41:15.554Z] 📥 Incoming request: GET /
-[2025-02-06T20:41:15.557Z] ✅ Successfully handled request: GET /
+[2025-02-06T20:41:15.557Z]  Successfully handled request: GET /
 [2025-02-06T20:41:16.208Z] 📥 Incoming request: GET /api/categories
-[2025-02-06T20:41:16.216Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-06T20:41:16.216Z]  Successfully handled request: GET /api/categories
 [2025-02-06T20:41:16.227Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
-[2025-02-06T20:41:16.234Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-06T20:41:16.234Z]  Successfully handled request: GET /api/cart?sessionId=session-1738774533211
 [2025-02-06T20:41:16.246Z] 📥 Incoming request: GET /api/products
-[2025-02-06T20:41:16.255Z] ✅ Successfully handled request: GET /api/products
+[2025-02-06T20:41:16.255Z]  Successfully handled request: GET /api/products
 [2025-02-06T20:41:16.271Z] 📥 Incoming request: GET /api/auth/session
-[2025-02-06T20:41:16.278Z] ✅ Successfully handled request: GET /api/auth/session
+[2025-02-06T20:41:16.278Z]  Successfully handled request: GET /api/auth/session
 [2025-02-06T20:41:16.285Z] 📥 Incoming request: GET /favicon.ico
-[2025-02-06T20:41:16.298Z] ✅ Successfully handled request: GET /favicon.ico
+[2025-02-06T20:41:16.298Z]  Successfully handled request: GET /favicon.ico
 [2025-02-06T20:41:16.600Z] 📥 Incoming request: POST /api/auth/_log
-[2025-02-06T20:41:16.607Z] ✅ Successfully handled request: POST /api/auth/_log
+[2025-02-06T20:41:16.607Z]  Successfully handled request: POST /api/auth/_log
 [2025-02-06T20:41:16.614Z] 📥 Incoming request: GET /api/cart?sessionId=session-1738774533211
-[2025-02-06T20:41:16.620Z] ✅ Successfully handled request: GET /api/cart?sessionId=session-1738774533211
+[2025-02-06T20:41:16.620Z]  Successfully handled request: GET /api/cart?sessionId=session-1738774533211
 [2025-02-06T20:41:17.488Z] 📥 Incoming request: GET /api/categories
-[2025-02-06T20:41:17.495Z] ✅ Successfully handled request: GET /api/categories
+[2025-02-06T20:41:17.495Z]  Successfully handled request: GET /api/categories

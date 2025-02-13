@@ -1,31 +1,31 @@
 {
   "compilerOptions": {
-    "typeRoots": ["./src/@types", "./node_modules/@types"], // Définir les répertoires de types personnalisés
-    "jsx": "preserve", // Permet de gérer JSX sans transformation (idéal pour Next.js)
-    "esModuleInterop": true, // Supporte les modules ES
-    "allowSyntheticDefaultImports": true, // Autorise les importations par défaut synthétiques
-    "moduleResolution": "node", // Résolution des modules en mode Node.js
-    "skipLibCheck": true, // Ignore les vérifications des types des fichiers de bibliothèque
-    "lib": ["dom", "dom.iterable", "esnext"], // Support des fonctionnalités modernes de DOM et ESNext
-    "allowJs": true, // Autorise les fichiers JavaScript
-    "strict": false, // Active les options strictes pour TypeScript
+    "typeRoots": ["./src/@types", "./node_modules/@types"],
+    "jsx": "preserve", 
+    "esModuleInterop": true, 
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node", 
+    "skipLibCheck": true, 
+    "lib": ["dom", "dom.iterable", "esnext"], 
+    "allowJs": true,
+    "strict": false, 
     "noImplicitAny": false,
-    "noEmit": true, // Empêche l'émission de fichiers compilés
-    "module": "esnext", // Module ESNext
-    "resolveJsonModule": true, // Support pour importer des fichiers JSON
-    "isolatedModules": true, // Isolation des modules (nécessaire pour Next.js)
-    "incremental": true, // Active la compilation incrémentale pour de meilleures performances
-    "target": "ES2017", // Cible ES2017
-    "baseUrl": "./", // Base pour les chemins relatifs
+    "noEmit": true, 
+    "module": "esnext", 
+    "resolveJsonModule": true, 
+    "isolatedModules": true, 
+    "incremental": true, 
+    "target": "ES2017", 
+    "baseUrl": "./", 
     "paths": {
-      "@/*": ["./src/*"], // Alias général pour `src`
-      "@lib/*": ["./lib/*"], // Alias pour `lib`
-      "@components/*": ["./src/components/*"], // Alias pour `components`
-      "@services/*": ["./src/services/*"] // Alias pour `services`
+      "@/*": ["./src/*"], 
+      "@lib/*": ["./lib/*"], 
+      "@components/*": ["./src/components/*"], 
+      "@services/*": ["./src/services/*"] 
     },
     "plugins": [
       {
-        "name": "next" // Plugin spécifique pour Next.js
+        "name": "next" 
       }
     ]
   },

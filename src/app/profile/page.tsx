@@ -1,98 +1,55 @@
-// src/app/profile/page.tsx
-'use client';
+"use client";
 
-import { useSession, signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { Chart, LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend } from 'chart.js';
-import { Line } from 'react-chartjs-2';
-import Link from 'next/link';
-import LoaderComponent from '@/components/LoaderComponent';
-
-// Enregistrer les composants Chart.js
-Chart.register(LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend);
-
-// Fonction pour formater une date en dd/MM/yyyy
-const formatDate = (date: Date) => {
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
-};
+import { signOut } from "next-auth/react";
+import Link from "next/link";
+import LoaderComponent from "@/components/LoaderComponent";
+import { useUserProfile } from "@/hooks/users/useUserProfile";
+import {
+  ArrowRightOnRectangleIcon,
+  CalendarIcon,
+  CurrencyEuroIcon,
+  EnvelopeIcon,
+  ShoppingBagIcon,
+  UserIcon,
+} from "@heroicons/react/24/outline";
 
 export default function ProfilePage() {
   return <ProfileContent />;
 }
 
 function ProfileContent() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
+  const { session, status, stats, loading, currentDate } = useUserProfile();
 
-  const [stats, setStats] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [currentDate, setCurrentDate] = useState('');
-
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.replace('/auth/signin');
-    }
-  }, [status]);
-
-  // Initialiser la date
-  useEffect(() => {
-    setCurrentDate(formatDate(new Date()));
-  }, []);
-
-  // Récupération des statistiques depuis l'API
-  useEffect(() => {
-    async function fetchStats() {
-      try {
-        if(!session?.user?.id) return;
-        const res = await fetch('/api/stats?userId='+session?.user?.id);
-        const data = await res.json();
-        setStats(data);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des statistiques:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchStats();
-  }, [session]);
-
-  if (status === 'loading' || loading) {
+  if (status === "loading" || loading) {
     return <LoaderComponent />;
   }
 
   return (
-    <div className="min-h-screen bg-white py-8">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-          {/* Sidebar */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-bold mb-4 text-black">Navigation</h2>
-            <ul className="space-y-3">
-              <li>
-                <Link href="/profile" className="text-blue-600 hover:text-blue-800">
-                  Mon Profil
+    <div className="min-h-screen bg-gray-100 py-12">
+      <div className="max-w-6xl mx-auto px-6 sm:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          
+          {/* 🔹 Sidebar Navigation */}
+          <div className="bg-white p-6 rounded-xl shadow-lg">
+            <h2 className="text-xl font-semibold text-gray-900 mb-5">Mon compte</h2>
+            <ul className="space-y-4">
+              <li className="flex items-center space-x-2">
+                <ShoppingBagIcon className="h-5 w-5 text-gray-600" />
+                <Link href="/profile/orders" className="text-gray-700 hover:text-orange-700 font-medium">
+                  Mes commandes
                 </Link>
               </li>
-              <li>
-                <Link href="/profile/orders" className="text-blue-600 hover:text-blue-800">
-                  Commandes
-                </Link>
-              </li>
-              <li>
-                <Link href="/profile/settings" className="text-blue-600 hover:text-blue-800">
+              <li className="flex items-center space-x-2">
+                <UserIcon className="h-5 w-5 text-gray-600" />
+                <Link href="/profile/settings" className="text-gray-700 hover:text-orange-700 font-medium">
                   Paramètres
                 </Link>
               </li>
-              <li>
+              <li className="flex items-center space-x-2">
+                <ArrowRightOnRectangleIcon className="h-5 w-5 text-red-500" />
                 <button
-                  onClick={() => signOut({ callbackUrl: '/' })}
-                  className="text-red-600 hover:text-red-800"
+                  onClick={() => signOut({ callbackUrl: "/" })}
+                  className="text-red-600 hover:text-red-800 font-medium"
                 >
                   Déconnexion
                 </button>
@@ -100,40 +57,60 @@ function ProfileContent() {
             </ul>
           </div>
 
-          {/* Carte de profil */}
-          <div className="md:col-span-2 bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-6 text-black">
-              Bienvenue sur Epidrive, {session?.user?.name}
+          {/* 🔹 Carte Profil Utilisateur */}
+          <div className="md:col-span-2 bg-white p-6 rounded-xl shadow-lg">
+            <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+              Bienvenue, {session?.user?.name || "Utilisateur"}
             </h2>
+
             <div className="flex items-center space-x-6">
-              <img
-                src={session?.user?.image || '/default-avatar.png'}
-                alt="Avatar"
-                className="w-24 h-24 rounded-full shadow-md"
-              />
-              <div>
-                <p className="text-black">
-                  <strong>Email :</strong> {session?.user?.email}
-                </p>
-                <p className="text-black">
-                  <strong>Client depuis :</strong> {currentDate}
-                </p>
+              {/* Avatar Utilisateur */}
+              <div className="relative">
+                <img
+                  src={session?.user?.image || "/default-avatar.png"}
+                  alt="Avatar"
+                  className="w-24 h-24 rounded-full shadow-md border border-gray-300"
+                />
+              </div>
+
+              {/* Informations Utilisateur */}
+              <div className="text-gray-700 flex flex-col space-y-2">
+                <div className="flex items-center space-x-2">
+                  <EnvelopeIcon className="h-5 w-5 text-gray-500" />
+                  <p className="text-sm font-medium">{session?.user?.email}</p>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <CalendarIcon className="h-5 w-5 text-gray-500" />
+                  <p className="text-sm font-medium">Client depuis : {currentDate}</p>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Statistiques */}
-          <div className="md:col-span-3 bg-white p-6 rounded-lg shadow-md mt-6">
-            <h3 className="text-xl font-bold mb-4 text-black">Statistiques de vos achats</h3>
+          {/* 🔹 Statistiques des achats */}
+          <div className="md:col-span-3 bg-white p-6 rounded-xl shadow-lg mt-6">
+            <h3 className="text-xl font-semibold text-gray-900 mb-5">Mes statistiques</h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              <div className="bg-gray-200 p-4 rounded-lg text-center">
+
+              <div className="bg-blue-100 p-6 rounded-lg text-center">
+                <ShoppingBagIcon className="h-8 w-8 text-blue-600 mx-auto mb-2" />
                 <h4 className="text-2xl font-bold text-blue-600">{stats?.ordersThisMonth || 0}</h4>
-                <p className="text-black">Commandes total</p>
+                <p className="text-gray-700">Commandes total</p>
               </div>
-              <div className="bg-gray-200 p-4 rounded-lg text-center">
-                <h4 className="text-2xl font-bold text-blue-600">{stats?.totalSpent || 0}€</h4>
-                <p className="text-black">Total dépensé</p>
+
+              <div className="bg-green-100 p-6 rounded-lg text-center">
+                <CurrencyEuroIcon className="h-8 w-8 text-green-600 mx-auto mb-2" />
+                <h4 className="text-2xl font-bold text-green-600">{stats?.totalSpent || 0}€</h4>
+                <p className="text-gray-700">Total dépensé</p>
               </div>
+
+              <div className="bg-yellow-100 p-6 rounded-lg text-center">
+                <UserIcon className="h-8 w-8 text-yellow-600 mx-auto mb-2" />
+                <h4 className="text-2xl font-bold text-yellow-600">Premium</h4>
+                <p className="text-gray-700">Statut du compte</p>
+              </div>
+
             </div>
           </div>
 

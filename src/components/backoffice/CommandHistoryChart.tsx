@@ -11,7 +11,6 @@ import {
   ChartOptions,
 } from "chart.js";
 
-// Enregistrer les composants nécessaires de Chart.js
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const CommandHistoryRealtimeChart = () => {
@@ -22,21 +21,18 @@ const CommandHistoryRealtimeChart = () => {
   useEffect(() => {
     if (!data || data.length === 0) return;
 
-    // Transformation des données pour le graphique
     const groupedData = data.reduce((acc: Record<string, Record<string, number>>, item: any) => {
       const { dateGroup, status, count } = item;
       if (!acc[dateGroup]) acc[dateGroup] = {};
-      acc[dateGroup][status] = parseInt(count, 10); // Convertir les nombres
+      acc[dateGroup][status] = parseInt(count, 10);
       return acc;
     }, {});
 
     const labels = Object.keys(groupedData);
     const statuses = ["ALL", "EN_ATTENTE", "EN_PREPARATION", "EXPEDIEE", "LIVREE", "ANNULEE"];
     
-    // Filtrage des données en fonction du statut sélectionné
     const filteredStatuses = statuses.filter((status) => selectedStatus === "ALL" || status === selectedStatus);
 
-    // Création des datasets
     const datasets = filteredStatuses.map((status) => ({
       label: status,
       data: labels.map((date) => groupedData[date][status] || 0),
@@ -46,7 +42,6 @@ const CommandHistoryRealtimeChart = () => {
     setFormattedData({ labels, datasets });
   }, [data, selectedStatus]);
 
-  // Options du graphique
   const options: ChartOptions<"bar"> = useMemo(() => ({
     responsive: true,
     plugins: {
@@ -75,11 +70,9 @@ const CommandHistoryRealtimeChart = () => {
 
   return (
     <div>
-      {/* Gestion du chargement et des erreurs */}
       {loading && <p className="text-center text-lg font-medium">🔄 Chargement des données en temps réel...</p>}
-      {error && <p className="text-red-500 text-center">❌ Erreur : {error}</p>}
+      {error && <p className="text-red-500 text-center"> Erreur : {error}</p>}
 
-      {/* Affichage du filtre si les données sont présentes */}
       {data && data.length > 0 && (
         <div className="mb-4">
           <label htmlFor="status-filter" className="mr-2 font-medium">
@@ -100,7 +93,6 @@ const CommandHistoryRealtimeChart = () => {
         </div>
       )}
 
-      {/* Affichage du graphique ou message s'il n'y a pas de données */}
       {formattedData.labels.length > 0 ? (
         <Bar data={formattedData} options={options} />
       ) : (
@@ -110,7 +102,6 @@ const CommandHistoryRealtimeChart = () => {
   );
 };
 
-// Fonction pour associer une couleur spécifique à chaque statut
 function getColorForStatus(status: string) {
   const colors: Record<string, string> = {
     EN_ATTENTE: "#FF6384", // Rouge

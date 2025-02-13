@@ -80,7 +80,7 @@ const AuthModal = ({ onClose, onAuthenticate }: AuthModalProps) => {
       }
 
       onClose();
-      await router.refresh(); // 🔄 Rafraîchissement de la session utilisateur
+      await router.refresh(); 
     } catch (err) {
       setError("Erreur de connexion au serveur.");
     } finally {
@@ -97,7 +97,6 @@ const AuthModal = ({ onClose, onAuthenticate }: AuthModalProps) => {
         className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md relative"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Bouton de fermeture */}
         <button
           onClick={onClose}
           className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
@@ -105,7 +104,6 @@ const AuthModal = ({ onClose, onAuthenticate }: AuthModalProps) => {
           ✕
         </button>
 
-        {/* Titre avec icône */}
         <div className="flex flex-row align-baseline gap-4 mb-6 items-center">
           <h2 className="text-3xl font-bold">
             {isSigningUp ? 'Créer un compte' : 'Se connecter'}
@@ -113,14 +111,12 @@ const AuthModal = ({ onClose, onAuthenticate }: AuthModalProps) => {
           <ArrowRightOnRectangleIcon className="w-8 h-8 text-gray-600" />
         </div>
 
-        {/* Message d'erreur */}
         {error && (
           <div className="text-red-500 bg-red-100 rounded-lg py-2 px-4 mb-4">
             {error}
           </div>
         )}
 
-        {/* Formulaire */}
         <form onSubmit={handleSubmit} className="space-y-6">
           {isSigningUp && (
             <div>
@@ -168,7 +164,6 @@ const AuthModal = ({ onClose, onAuthenticate }: AuthModalProps) => {
           </button>
         </form>
 
-        {/* Lien pour basculer entre connexion et inscription */}
         <p className="text-sm text-center mt-4">
           {isSigningUp ? 'Déjà un compte ?' : 'Pas encore de compte ?'}{' '}
           <button

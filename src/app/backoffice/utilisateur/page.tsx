@@ -48,7 +48,7 @@ const UtilisateurList = () => {
   }
 
   if (error) {
-    return <div className="text-center text-red-500 font-medium">❌ Erreur : {error}</div>;
+    return <div className="text-center text-red-500 font-medium"> Erreur : {error}</div>;
   }
 
   return (

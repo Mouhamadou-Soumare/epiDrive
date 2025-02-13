@@ -1,93 +1,49 @@
-// src/app/auth/edit-profile/page.tsx
+"use client";
 
-'use client';
+import { useEditProfile } from "@/hooks/users/useEditProfile";
+export default function EditProfilePage() {
+  return <EditProfileContent />;
+}
 
-import { useSession, SessionProvider } from 'next-auth/react';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import LoadingSpinner from '../../../components/LoadingSpinner';
-
-function EditProfilePageContent() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
-
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [profileImage, setProfileImage] = useState<File | null>(null);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/auth/signin');
-    } else if (status === 'authenticated' && session?.user) {
-      setName(session.user.name || '');
-      setEmail(session.user.email || '');
-      setPreviewImage(session.user.image ? session.user.image : '/default-avatar.png');
-    }
-  }, [status, session, router]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setErrorMessage('');
-
-    try {
-      const formData = new FormData();
-      formData.append('name', name);
-      formData.append('email', email);
-
-      if (profileImage) {
-        formData.append('file', profileImage);
-      }
-
-      const res = await fetch('/api/profile/update', {
-        method: 'POST',
-        body: formData,
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        router.push('/profile');
-      } else {
-        setErrorMessage(data.message || 'Erreur lors de la mise à jour');
-      }
-    } catch (error) {
-      setErrorMessage('Une erreur s\'est produite');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setProfileImage(file);
-      setPreviewImage(URL.createObjectURL(file));
-    }
-  };
-
-  if (status === 'loading') {
-    return <LoadingSpinner />;
-  }
+function EditProfileContent() {
+  const {
+    name,
+    setName,
+    email,
+    setEmail,
+    previewImage,
+    isSubmitting,
+    errorMessage,
+    handleImageChange,
+    handleSubmit,
+  } = useEditProfile();
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center">
-      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-6 text-gray-800">Modifier le profil</h1>
-        {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-10">
+      <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md">
+        <h1 className="text-2xl font-semibold text-gray-800 text-center mb-6">
+          Modifier le profil
+        </h1>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="text-center mb-6">
-            <label htmlFor="profileImage" className="cursor-pointer">
+        {/* 🔹 Affichage d'erreur */}
+        {errorMessage && (
+          <div className="text-center text-red-500 text-sm font-medium mb-4">
+            {errorMessage}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* 🔹 Avatar */}
+          <div className="text-center">
+            <label htmlFor="profileImage" className="cursor-pointer block">
               <img
-                src={previewImage || '/default-avatar.png'}
+                src={previewImage || "/default-avatar.png"}
                 alt="Avatar Preview"
-                className="w-24 h-24 rounded-full mx-auto object-cover shadow-lg"
+                className="w-24 h-24 rounded-full mx-auto object-cover shadow-md border border-gray-300"
               />
-              <span className="text-indigo-600 block mt-2">Changer l'image</span>
+              <span className="text-indigo-600 text-sm block mt-2">
+                Changer l'image
+              </span>
             </label>
             <input
               type="file"
@@ -98,8 +54,9 @@ function EditProfilePageContent() {
             />
           </div>
 
+          {/* 🔹 Champ Nom */}
           <div>
-            <label className="block text-gray-700">Nom</label>
+            <label className="block text-sm font-medium text-gray-700">Nom</label>
             <input
               type="text"
               value={name}
@@ -109,8 +66,9 @@ function EditProfilePageContent() {
             />
           </div>
 
+          {/* 🔹 Champ Email */}
           <div>
-            <label className="block text-gray-700">Email</label>
+            <label className="block text-sm font-medium text-gray-700">Email</label>
             <input
               type="email"
               value={email}
@@ -120,25 +78,20 @@ function EditProfilePageContent() {
             />
           </div>
 
+          {/* 🔹 Bouton Enregistrer */}
           <button
             type="submit"
-            className={`w-full button-primary hover:bg-orange-700 text-white py-2 px-4 rounded-full ${
-              isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+            className={`w-full py-2 px-4 text-white rounded-full transition ${
+              isSubmitting
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-orange-500 hover:bg-orange-600"
             }`}
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Enregistrement...' : 'Enregistrer les modifications'}
+            {isSubmitting ? <div> Chargement ... </div> : "Enregistrer les modifications"}
           </button>
         </form>
       </div>
     </div>
-  );
-}
-
-export default function EditProfilePage() {
-  return (
-    <SessionProvider>
-      <EditProfilePageContent />
-    </SessionProvider>
   );
 }
