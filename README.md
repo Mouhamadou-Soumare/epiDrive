@@ -3,7 +3,28 @@
 <p align="center">
   <a href="#"><img src="https://github.com/Mouhamadou-Soumare/epiDrive/blob/main/public/img/logo.png" alt="EpiDrive" width="100"></a>
 </p>
-<p align="center">Epidrive - Faites de vos courses un plaisir, alliant saveurs et praticité en un clic.</p>
+Epidrive - Faites de vos courses un plaisir, alliant saveurs et praticité en un clic.
+
+**Site en production :** [EpiDrive](https://epidriveprod.rusu2228.odns.fr/)
+**Tableau kanban :** [Notion](https://believed-joggers-659.notion.site/11accd89483e80e19d77f1dc809ec0d4?v=12accd89483e80658149000c9e74ea8e&pvs=4)
+**Wireframe :** [Figma](https://www.figma.com/design/7wZVr5moBPdppHnSTdV6Zl/EEMI---Drive-Carrefour?node-id=176-1806&t=OFkuL1t2STlzgoxB-1)
+**Diagrame UML :** [Plantuml](https://img.plantuml.biz/plantuml/png/hLRDRfj04Bxp57jCrKHgAkLG3bMGWreanw6kK_LcRM7iRW8itPyqKTBtIPx3BzR1BB26nMwa-cAO6SryytspivnBHONIUUPvK2Yc7iY4AbXpmO0yUWH_Rrdg4rQe-gMWEVZaZeha9nL7fnzEtzHscUcrovw2J0Gh5UE5JnJScpGifsk8xCGb5GYWCVrfuSI2fvgfLu4PALeAbc3yAkFKMAJYoQsLS0WhQTWO8hjMB6CI_LeuqMa9OWmXv9HbBaT9fVpDHThvtf-T6P_W6IQ3GkVaQ3ADmjdYc0GNbz7ic5m6duAlqImAvoOs4O38qa3v9CK7nNAme4zudjCYTKkC4w6qR0g5isMmM62jy9ZWSpmFus0UBA8hh1f-ZyEBA4JFDFesh_w3sUnw6ePjCm-v4NNOgGjXpLkPkXshssN5wL29ARiJb4bUEFkXgG0fdJBSiInpEXAUGioH2LkaTrrRiZEVDUOUlCQM6AvthIKj68Z1i6-jRbMm1vpdo3aPeynyqRHwWBs2_p91zcaKx1xfv_f71eSwgG_eMEKzBVrhNPkh0rNda81IxZOnm2tss8ugf18wgSnoiBjUfK9Kh0Ma3D_-qnhhSTGkASTKlkgOTP2NXiaXT64STWUiZHestsJgBN9N6YEgWy2ASlUI5LbF2cijyBLx8IGrfKC5Sr0KoQ0-kS5jSe30KRbZoY0V4xivHD7koaMTyQZiMPSqvxfGlTjhR55FhYxZQOZNGpZv74xsNmdsDVRqT7B27xlhmIVLVGHUQp01WxNYauIZ1T5xZSxxGhUFcnUl-zQeefy-jhUzJmIi1TSbUCsHDldwu-GJlMq0-eM7WRJ4ZumQv4XIQzgjZYphldWh_GvVLLlDHA1OKk52UzYy0Fw97T0OM0ywqiwbt3odkzsx_0xrpCQrWeobfqWRTqYwDf3USArGDaVHxWh6iAMvShtEQl1RKv0np3G8Q6jjtQv2UAYHnTKA4gN1yywXIAlFrxy0)
+
+
+## Compte Admin DEMO en prod
+- Identifiant: admindemo@epidrive.com
+- Mdp : Epidrivedemo1234
+
+---
+
+## 🛠 **Technologies Utilisées**
+- **Frontend** : Next.js (App Router, Tailwind CSS)
+- **Backend** : Node.js, API Next.js
+- **Base de données** : PostgreSQL
+- **IA** : OpenAI / Hugging Face (analyse de texte et d’image)
+- **Paiement** : Intégration Stripe
+- **Déploiement** : O2Switch
+- **Gestion de projet** : Méthode Agile (Scrum)
 
 ## Comment utiliser ce projet
 
@@ -72,14 +93,71 @@ $ npx prisma db seed
 
 ## Fonctionnalités
 
-- **Page d'accueil** : Affiche les principales fonctionnalités et recommandations de produits.
-- **Pages produits et catégories** :
-  - `/categories` : Liste les catégories de produits disponibles.
-  - `/category/[slug]` : Affiche les sous-catégories et produits d'une catégorie spécifique.
-  - `/product/[slug]` : Détails d'un produit spécifique.
-- **Boutique** : `/shop` affiche tous les produits disponibles.
-- **Page de contact** : `/contact`.
+- **Page d'accueil** : Presente l'application et recommandations de produits.
+- **Authentification** :
+  - `/register` : Connexion
+  - `/signin` : Inscription
+- **Back-office** : Backoffice de l'application
+  - `/categorie` : Liste des catégories
+  - `/categorie/[...slug]` : Voir la catégorie
+  - `/categorie/add` : Ajouter une catégorie
+  - `/categorie/update/[...slug]` : Mise à jour de la catégorie
+
+  - `/commande` : Liste des commandes
+  - `/commande/[...slug]` : Voir la commande
+
+  - `/ingredient` : Liste des ingredients
+  - `/ingredient/[...slug]` : Voir l'ingredient
+  - `/ingredient/update/[...slug]` : Mise à jour un ingredient
+
+  - `/product` : Liste des produits
+  - `/product/[...slug]` : Voir un produit
+  - `/product/add` : Ajouter une produit
+  - `/product/update/[...slug]` : Mise à jour du produit
+
+  - `/recette` : Liste des recettes
+  - `/recette/[...slug]` : Voir une recette
+  - `/recette/add` : Ajouter une recette
+  - `/recette/update/[...slug]` : Mise à jour de la recette
+
+  - `/utilisateur` : Liste des utilisateur
+  - `/utilisateur/[...slug]` : Voir un utilisateur et ses commandes
+- **Pages categorie** :
+  - `/category` : Liste des categories
+  - `/category/[...slug]` : Voir une categorie
+- **Pages chatIA** :
+  - `/chatIA` : Assistant IA
+- **Pages checkout** :
+  - `/checkout` : Formulaire de livraison
+- **Pages checkout-success** :
+  - `/checkout-success` : Information de la livraison
+- **Pages produit** :
+  - `/product/[...slug]` : Voir un produit
+- **Pages profile** :
+  - `/profile/orders` : Voir les commandes du client 
+  - `/profile/setting` : Modifier les informations du client 
+  - `/profile` : Parametre et statistique du client
+- **Pages snap-and-cook** :
+  - `/snap-and-cook` : Recherher les produits d'une recette à partir d'une photo
 - **404** : Gestion des pages non trouvées.
+
+## 🗂 **Matrice des Droits**
+
+| **Fonctionnalité**                             | 🛒 **Client** | 👨‍💼 **Admin** |
+|------------------------------------------------|---------------|--------------|
+| **Rechercher des produits**                    | Oui           | Oui        |
+| **Ajouter un produit au panier**               | Oui           | Oui        |
+| **Passer une commande**                        | Oui           | Oui        |
+| **Gérer les commandes (CRUD)**                 | Non           | Oui        |
+| **Accéder au dashboard des statistiques**      | Non           | Oui        |
+| **Accéder aux statistiques perso**             | Non           | Oui        |
+| **Utiliser "SnapAndCook" (analyse image)**     | Oui           | Oui        |
+| **Proposer des recettes avec l'IA**            | Oui           | Oui        |
+| **Acces à l'assistant IA**                     | Oui           | Oui        |
+| **Gérer les utilisateurs (CRUD)**              | Non           | Oui        |
+| **Authentification et gestion de session**     | Oui           | Oui        |
+
+---
 
 ## Tests Unitaires
 
@@ -237,7 +315,7 @@ L’application gère l’authentification avec NextAuth.js et Prisma, et propos
 - Redirection automatique des utilisateurs après connexion.
 - Gestion des erreurs et validation des entrées (email, mot de passe sécurisé).
 
-📌 Endpoints associés :
+Endpoints associés :
 
 - `/api/auth/register` → Crée un nouvel utilisateur.
 - `/api/auth/login` → Authentifie un utilisateur.
@@ -247,21 +325,21 @@ L’application gère l’authentification avec NextAuth.js et Prisma, et propos
 
 Seuls les admins enregistrés en base de données peuvent accéder au backoffice.
 
-📌 Mécanismes mis en place :
+Mécanismes mis en place :
 
 - Vérification du rôle admin depuis la base de données avant affichage du backoffice.
 - Middleware pour bloquer l’accès aux utilisateurs non autorisés.
 - Redirection automatique vers `/` si l’utilisateur n’est pas admin.
 - API sécurisée pour vérifier le rôle de l’utilisateur avant de récupérer les données du backoffice.
 
-📌 Endpoints associés :
+Endpoints associés :
 
 - `/api/auth/check-admin` → Vérifie si l’utilisateur est admin en base de données.
 - `/api/backoffice/stats` → Récupère les statistiques (nombre d’utilisateurs, commandes, produits).
 
 ## Tâches effectuées par Ibrahima
 
-### 🔒 Authentification et Sécurité
+### Authentification et Sécurité
 
 - Mise en place de NextAuth.js avec JWT pour la gestion de l'authentification.
 - Sécurisation des mots de passe avec bcrypt et stockage sécurisé en base de données.
@@ -270,7 +348,7 @@ Seuls les admins enregistrés en base de données peuvent accéder au backoffice
 - Implémentation d'un système de rate limiting pour bloquer les attaques par force brute sur la connexion.
 - Développement de la première itération des pages **Sign In** et **Register**.
 
-### 🛡️ Sécurisation du Backoffice
+### Sécurisation du Backoffice
 
 - Restriction de l'accès au Backoffice uniquement aux admins.
 - Ajout d’un middleware Next.js pour gérer l'authentification et les autorisations.
@@ -279,7 +357,7 @@ Seuls les admins enregistrés en base de données peuvent accéder au backoffice
 - Protection des API sensibles en bloquant les utilisateurs non connectés.
 - Fusion des appels API pour optimiser les requêtes et améliorer la rapidité de chargement.
 
-### 👤 Gestion du Profil, Paramètres et Dashboard Utilisateur
+### Gestion du Profil, Paramètres et Dashboard Utilisateur
 
 - Mise en place d'une page "Profil" dynamique, permettant aux utilisateurs de voir et modifier leurs informations.
 - Modification sécurisée des informations personnelles (nom, email, mot de passe).
@@ -290,7 +368,7 @@ Seuls les admins enregistrés en base de données peuvent accéder au backoffice
   - L’état des livraisons en temps réel.
 - Mise en place des paramètres utilisateur, permettant de gérer les préférences de notifications et de sécurité.
 
-### 🚀 Optimisation des API
+### Optimisation des API
 
 - Fusion des appels API pour réduire les requêtes et améliorer les performances.
 - Utilisation de Prisma avec des relations optimisées pour éviter les requêtes multiples.
@@ -298,40 +376,141 @@ Seuls les admins enregistrés en base de données peuvent accéder au backoffice
 - Implémentation de caching pour réduire la charge sur la base de données.
 - Ajout d'une gestion des erreurs améliorée pour éviter les fuites d’informations en production.
 
-### ⚙️ CI/CD et Tests
+### CI/CD et Tests
 
 - Mise en place d’un pipeline GitHub Actions pour automatiser les tests à chaque commit.
 - Ajout de tests unitaires avec Jest pour valider les fonctionnalités critiques.
 - Intégration de Cypress pour tester l’interface et les parcours utilisateurs.
 - Automatisation du déploiement après validation des tests.
 
-### 📦 Gestion des Uploads et Sécurisation des Images
+### Gestion des Uploads et Sécurisation des Images
 
 - Configuration de Multer pour gérer l’upload des fichiers de manière sécurisée.
 - Filtrage des fichiers autorisés (jpg, png, webp) et limitation à 5 Mo.
 - Protection contre les scripts malveillants en bloquant les fichiers exécutables.
 
-### 🌍 Sécurité Avancée (CSRF, CORS, XSS)
+### Sécurité Avancée (CSRF, CORS, XSS)
 
 - Mise en place de tokens CSRF pour protéger les requêtes critiques.
 - Restriction des origines CORS pour empêcher les requêtes non autorisées.
 - Activation d'une Content Security Policy (CSP) pour bloquer les scripts malveillants.
 - Suppression des headers sensibles (X-Powered-By: Next.js) pour réduire l’exposition aux attaques.
 
-### 📌 Développement du projet initial
+### Développement du projet initial
 
 - **Lancement du premier projet Auchan Drive** avec mise en place des bases du projet.
 
-### 🎯 Résumé des Contributions
+### Résumé des Contributions
 
-- ✅ Contribution au développement initial et fusion avec **EpiDrive**.
-- ✅ Gestion complète du profil utilisateur (modification des infos, préférences, avatar).
-- ✅ Mise en place et sécurisation du dashboard utilisateur.
-- ✅ Backoffice sécurisé avec middleware et vérification des rôles.
-- ✅ API optimisées pour un chargement plus rapide et sécurisé.
-- ✅ Authentification robuste avec NextAuth.js, bcrypt et JWT.
-- ✅ Sécurité renforcée contre XSS, CSRF, SQL Injection et attaques par force brute.
-- ✅ CI/CD automatisé pour le projet avec tests et déploiement sécurisé.
+- Contribution au développement initial et fusion avec **EpiDrive**.
+- Gestion complète du profil utilisateur (modification des infos, préférences, avatar).
+- Mise en place et sécurisation du dashboard utilisateur.
+- Backoffice sécurisé avec middleware et vérification des rôles.
+- API optimisées pour un chargement plus rapide et sécurisé.
+- Authentification robuste avec NextAuth.js, bcrypt et JWT.
+- Sécurité renforcée contre XSS, CSRF, SQL Injection et attaques par force brute.
+- CI/CD automatisé pour le projet avec tests et déploiement sécurisé.
+
+## Tâches effectuées par Choeurtis
+
+### Backoffice & Gestion des Données
+
+- Mise en place du Backoffice avec toutes les fonctionnalités essentielles
+- Développement des CRUD complets pour les entités suivantes :
+  - Utilisateurs
+  - Produits
+  - Recettes
+  - Commandes
+  - Catégories
+  - Ingrédients
+- Gestion avancée des fonctionnalités administratives
+
+### Intégration de l’IA
+
+- Implémentation de SnapAndCook pour l’analyse d’image et la reconnaissance des plats
+- Développement de Jimmy pour la génération automatique de recettes basées sur les ingrédients détectés
+- Intégration de ChatIA, un chatbot interactif pour assister les utilisateurs
+
+### Gestion des Commandes
+
+- Implémentation complète du workflow des commandes, incluant :
+  - Ajout au panier
+  - Validation de commande
+  - Gestion des statuts (en attente, payé, en préparation, expédié, livré)
+- Sécurisation et gestion des différentes étapes du processus
+
+### Améliorations et Optimisation
+
+- Mise en place et gestion des différentes fonctions du Backoffice
+- Nettoyage et optimisation du code pour un meilleur maintien et évolutivité
+- Gestion et optimisation des images de l’application
+
+### Front & Backoffice
+
+- Développement et intégration du front-office et du back-office
+- Gestion des erreurs et des exceptions pour assurer une expérience utilisateur fluide
+
+### Gestion de Projet
+
+- Suivi des tâches et organisation sous méthodologie Agile
+- Coordination avec l’équipe pour garantir un développement structuré et efficace
+
+### Développement du projet initial
+
+- **Lancement du premier projet Auchan Drive** avec mise en place des bases du projet.
+
+### Résumé des Contributions
+
+- Mise en place du **Backoffice** avec gestion complète des données.
+- Développement des **CRUD** (Utilisateurs, Produits, Recettes, Commandes, Catégories, Ingrédients).
+- Intégration de **SnapAndCook** (analyse d'image), **Jimmy** (génération de recettes), et **ChatIA** (chatbot).
+- Gestion du **workflow des commandes** et optimisation des étapes de validation.
+- Améliorations UX/UI, sécurisation et nettoyage du code.
+
+## Tâches effectuées par Mouhamadou
+
+### Développement et Infrastructure
+
+- Mise en place de la première version de l'application (backend, frontend, base de données)
+- Création du jeu de données complet avec images optimisées en WebP
+- Implémentation des catégories et sous-catégories de produits
+- Développement de 90% du frontend et création des templates d’email
+- Workflow commande : Ajout au panier ➝ Validation de commande ➝ Paiement Stripe
+- Corrections des sessions utilisateurs
+
+### Intégration de l’IA
+
+- Première itération de "Snap & Cook" : prise de photo d’un plat → détection des ingrédients → ajout automatique à la liste de courses
+- Suggestion de recettes et de plats personnalisés
+- Analyse avancée des ingrédients pour recommander des achats complémentaires
+
+### Identité Visuelle & Expérience Utilisateur
+
+- Création de l’identité visuelle du site (logo, charte graphique, branding)
+- Optimisation du design UX/UI pour une navigation fluide
+- Gestion de la responsivité
+
+### Déploiement et Sécurité
+
+- Hébergement et mise en production sur O2Switch
+- Implémentation de Server-Sent Events (SSE) pour des mises à jour en temps réel (suivi des commandes, notifications, statistiques)
+- Respect des bonnes pratiques de Clean Code
+
+### Gestion de projet
+- Suivi des tâches et organisation sous méthodologie Agile
+- Coordination avec l’équipe pour garantir un développement structuré et efficace
+
+### Développement du projet initial
+
+- **Lancement du premier projet Auchan Drive** avec mise en place des bases du projet.
+
+### Résumé des Contributions
+
+- Développement du **frontend** (90% du front réalisé).
+- Implémentation de **l’IA** pour la reconnaissance d’image et suggestions de recettes.
+- **Intégration Stripe** pour le paiement sécurisé.
+- Mise en production sur **O2Switch** avec **SSE** pour notifications en temps réel.
+- Suivi du projet avec **méthodologie Agile**.
 
 ## Contact
 
