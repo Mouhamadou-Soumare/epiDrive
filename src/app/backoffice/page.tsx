@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -9,9 +9,6 @@ import { useGetCommandes } from "@/hooks/commandes/useCommandes";
 import { useGetProduits } from "@/hooks/products/useProduits";
 import CommandHistoryChart from "@/components/backoffice/CommandHistoryChart";
 import StatCard from "@/app/backoffice/components/StatCard";
-import LoadingSpinner from './components/LoadingSpinner';
-
-
 
 interface ExtendedSession extends Session {
   user: {
@@ -31,11 +28,13 @@ export default function Backoffice() {
   useEffect(() => {
     if (status === "loading") return;
 
+    // Vérifie si l'utilisateur est authentifié
     if (status === "unauthenticated" || !session?.user) {
       router.push("/");
       return;
     }
 
+    // Vérifie si l'utilisateur est admin
     if (session.user.role !== "ADMIN") {
       router.push("/");
       return;
@@ -44,6 +43,7 @@ export default function Backoffice() {
     setIsAdmin(true);
   }, [session, status, router]);
 
+  // Évite de charger les données si l'utilisateur n'est pas admin
   if (isAdmin === null) {
     return <div className="text-center py-10 text-lg font-medium">Chargement...</div>;
   }
@@ -53,8 +53,7 @@ export default function Backoffice() {
   const { produits, loading: loadingProducts, error: errorProducts } = useGetProduits();
 
   if (loadingUsers || loadingCommandes || loadingProducts) {
-
-    return <LoadingSpinner/>;
+    return <div className="text-center py-10 text-lg font-medium">Chargement des données...</div>;
   }
 
   if (errorUsers || errorCommandes || errorProducts) {
