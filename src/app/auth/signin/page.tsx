@@ -6,7 +6,7 @@ import { ArrowLeftIcon, ArrowRightEndOnRectangleIcon } from '@heroicons/react/24
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import AuthenticatorCards from '@/components/AuthenticatorCards';
-import { useSignIn } from '@/hooks/auth/useSignIn';
+import { signIn } from 'next-auth/react';
 
 export default function SignInPage() {
   const { status } = useSession();
@@ -58,11 +58,6 @@ export default function SignInPage() {
     }
   }, [status, router]);
 
-  // Gestion de la soumission du formulaire
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    signInUser(email, password);
-  };
   return (
     <div className="bg-auth h-screen flex flex-wrap pb-0">
       <div className="w-full md:w-1/2 lg:w-1/2 px-8 py-4 items-center content-center flex-auth-form">
