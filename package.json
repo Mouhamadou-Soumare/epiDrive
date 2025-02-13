@@ -27,6 +27,7 @@
     "bcryptjs": "^2.4.3",
     "chart.js": "^4.4.7",
     "clarifai-nodejs-grpc": "^10.9.8",
+    "express-rate-limit": "^7.5.0",
     "mongoose": "^8.9.2",
     "next": "^15.0.3",
     "next-auth": "^4.24.10",
