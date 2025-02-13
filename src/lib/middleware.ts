@@ -7,8 +7,9 @@ export async function middleware(req: NextRequest) {
     const urlPath = req.nextUrl.pathname;
 
     const isBackOfficeRoute = urlPath.startsWith("/backoffice");
-    const protectedRoutes = ["/api/auth", "/api/profile", "/api/backoffice"];
-    const isProtectedRoute = protectedRoutes.some((route) => urlPath.startsWith(route));
+    const isAuthRoute = urlPath.startsWith("/api/auth");
+    const isProfileRoute = urlPath.startsWith("/api/profile");
+    const isBackOfficeApiRoute = urlPath.startsWith("/api/backoffice");
 
     const isAdmin = token?.id === "ADMIN"; 
     const isAuthenticated = !!token;
@@ -17,12 +18,19 @@ export async function middleware(req: NextRequest) {
       console.log("Middleware check:", { urlPath, isAuthenticated, isAdmin });
     }
 
-    if (isBackOfficeRoute && !isAdmin) {
-      return NextResponse.redirect("/auth/signin");
+
+    if (isBackOfficeRoute) {
+      if (!isAdmin) {
+        console.log("Redirection vers /auth/signin car utilisateur non admin");
+        return NextResponse.redirect(new URL("/auth/signin", req.url));
+      }
     }
 
-    if (isProtectedRoute && !isAuthenticated) {
-      return NextResponse.json({ message: "Accès non autorisé" }, { status: 401 });
+    if (isAuthRoute || isProfileRoute || isBackOfficeApiRoute) {
+      if (!isAuthenticated) {
+        console.log("Blocage: Accès non autorisé aux API sensibles");
+        return NextResponse.json({ message: "Accès non autorisé" }, { status: 401 });
+      }
     }
 
     return NextResponse.next();
@@ -33,6 +41,12 @@ export async function middleware(req: NextRequest) {
 }
 
 // Configuration des routes protégées
+
 export const config = {
-  matcher: ["/backoffice/:path*", "/api/auth/:path*", "/api/profile/:path*", "/api/backoffice/:path*"],
+  matcher: [
+    "/backoffice/:path*", 
+    "/api/auth/:path*", 
+    "/api/profile/:path*", 
+    "/api/backoffice/:path*"
+  ],
 };
