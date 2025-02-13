@@ -10,7 +10,10 @@ export async function PUT(
     const { quantity, sessionId, userId } = await request.json();
 
     if (!productId || (!sessionId && !userId)) {
-      return NextResponse.json({ error: "Paramètres requis manquants" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Paramètres requis manquants" },
+        { status: 400 }
+      );
     }
 
     // Récupération du panier associé à l'utilisateur ou à la session
@@ -36,7 +39,10 @@ export async function PUT(
     });
 
     if (!existingItem) {
-      return NextResponse.json({ error: "Produit non trouvé dans le panier" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Produit non trouvé dans le panier" },
+        { status: 404 }
+      );
     }
 
     // Mise à jour de la quantité du produit dans le panier
@@ -52,7 +58,10 @@ export async function PUT(
 
     return NextResponse.json(updatedItem, { status: 200 });
   } catch (error) {
-    console.error("Erreur lors de la mise à jour du produit dans le panier :", error);
+    console.error(
+      "Erreur lors de la mise à jour du produit dans le panier :",
+      error
+    );
     return NextResponse.json({ error: "Erreur interne" }, { status: 500 });
   }
 }
@@ -63,12 +72,16 @@ export async function DELETE(
 ) {
   try {
     const { productId } = params;
-    const { sessionId, userId } = Object.fromEntries(new URL(request.url).searchParams);
+    const { sessionId, userId } = Object.fromEntries(
+      new URL(request.url).searchParams
+    );
 
     if (!productId || (!sessionId && !userId)) {
-      return NextResponse.json({ error: "Paramètres requis manquants" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Paramètres requis manquants" },
+        { status: 400 }
+      );
     }
-
 
     // Récupération du panier de l'utilisateur ou de la session
     const panier = await prisma.panier.findFirst({
@@ -92,9 +105,15 @@ export async function DELETE(
       },
     });
 
-    return NextResponse.json({ message: "Produit supprimé du panier" }, { status: 200 });
+    return NextResponse.json(
+      { message: "Produit supprimé du panier" },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Erreur lors de la suppression du produit:", error);
-    return NextResponse.json({ error: "Erreur interne lors de la suppression du produit" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Erreur interne lors de la suppression du produit" },
+      { status: 500 }
+    );
   }
 }
