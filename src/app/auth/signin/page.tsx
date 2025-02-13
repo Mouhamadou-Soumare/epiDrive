@@ -1,19 +1,22 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { ArrowLeftIcon, ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/outline';
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
-import AuthenticatorCards from '@/components/AuthenticatorCards';
-import { signIn } from 'next-auth/react';
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import {
+  ArrowLeftIcon,
+  ArrowRightEndOnRectangleIcon,
+} from "@heroicons/react/24/outline";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import AuthenticatorCards from "@/components/AuthenticatorCards";
+import { signIn } from "next-auth/react";
 
 export default function SignInPage() {
   const { status } = useSession();
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const validateInputs = () => {
     if (!email || !password) {
@@ -29,12 +32,12 @@ export default function SignInPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     if (!validateInputs()) return;
 
     try {
-      const result = await signIn('credentials', {
+      const result = await signIn("credentials", {
         redirect: false,
         email: email.trim(),
         password,
@@ -43,7 +46,7 @@ export default function SignInPage() {
       if (result?.error) {
         setError("Identifiants incorrects. Veuillez réessayer.");
       } else {
-        router.push('/profile');
+        router.push("/profile");
       }
     } catch (err) {
       setError("Une erreur est survenue. Réessayez plus tard.");
@@ -51,27 +54,26 @@ export default function SignInPage() {
   };
 
   useEffect(() => {
-    if (status === 'authenticated') {
-      router.push('/');
+    if (status === "authenticated") {
+      router.push("/");
     }
   }, [status, router]);
 
   return (
     <div className="bg-auth h-screen flex flex-wrap pb-0">
       <div className="w-full md:w-1/2 lg:w-1/2 px-8 py-4 items-center content-center flex-auth-form">
-
         {/* Retour à l'accueil */}
-        <div className='text-left pb-8'> 
-          <div className='flex flex-row align-baseline items-stretch gap-4 a-primary'>
-            <ArrowLeftIcon className='max-w-6 font-black' /> 
-            <Link href="/">Retour à la page d'accueil</Link>  
-          </div>   
+        <div className="text-left pb-8">
+          <div className="flex flex-row align-baseline items-stretch gap-4 a-primary">
+            <ArrowLeftIcon className="max-w-6 font-black" />
+            <Link href="/">Retour à la page d'accueil</Link>
+          </div>
         </div>
 
         {/* Titre */}
-        <div className='flex flex-row align-baseline items-baseline gap-4'>
+        <div className="flex flex-row align-baseline items-baseline gap-4">
           <h2 className="text-6xl pb-12">Se connecter</h2>
-          <ArrowRightEndOnRectangleIcon className='max-w-10'/> 
+          <ArrowRightEndOnRectangleIcon className="max-w-10" />
         </div>
 
         {/* Message d'erreur */}
@@ -79,8 +81,11 @@ export default function SignInPage() {
 
         {/* Formulaire */}
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className='pb-4'>
-            <label htmlFor="email" className="block text-md font-medium leading-6 text-gray-900 pb-2">
+          <div className="pb-4">
+            <label
+              htmlFor="email"
+              className="block text-md font-medium leading-6 text-gray-900 pb-2"
+            >
               Identifiant
             </label>
             <input
@@ -95,8 +100,11 @@ export default function SignInPage() {
             />
           </div>
 
-          <div className='pb-8'>
-            <label htmlFor="password" className="block text-md font-medium leading-6 text-gray-900 pb-2">
+          <div className="pb-8">
+            <label
+              htmlFor="password"
+              className="block text-md font-medium leading-6 text-gray-900 pb-2"
+            >
               Mot de passe
             </label>
             <input
@@ -109,7 +117,7 @@ export default function SignInPage() {
               onChange={(e) => setPassword(e.target.value)}
               className="block bg-slate-200 pt-4 pb-4 px-3 mb-3 w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
-            <Link href="/auth/reset-password" className='pt-3 a-primary'>
+            <Link href="/auth/reset-password" className="pt-3 a-primary">
               Mot de passe oublié ?
             </Link>
           </div>
@@ -123,8 +131,8 @@ export default function SignInPage() {
             </button>
           </div>
 
-          <div className='text-center a-primary'> 
-            <Link href='/auth/register'>Pas de compte ? Créez-en un.</Link>
+          <div className="text-center a-primary">
+            <Link href="/auth/register">Pas de compte ? Créez-en un.</Link>
           </div>
         </form>
       </div>

@@ -14,7 +14,13 @@ export default function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);
 
   if (loading) return <LoaderComponent />;
-  if (error || !product) return <div className="text-center text-lg font-semibold text-red-500"> Produit non trouvé</div>;
+  if (error || !product)
+    return (
+      <div className="text-center text-lg font-semibold text-red-500">
+        {" "}
+        Produit non trouvé
+      </div>
+    );
 
   return (
     <div className="bg-white">
@@ -26,13 +32,22 @@ export default function ProductDetailPage() {
               {product.name}
             </h1>
             <section className="mt-4">
-              <p className="text-lg text-gray-900 sm:text-xl">{product.prix}€</p>
-              <p className="mt-4 text-base text-gray-500">{product.description}</p>
+              <p className="text-lg text-gray-900 sm:text-xl">
+                {product.prix}€
+              </p>
+              <p className="mt-4 text-base text-gray-500">
+                {product.description}
+              </p>
 
               <div className="mt-6 flex items-center">
-                <CheckIcon aria-hidden="true" className="h-5 w-5 text-green-500" />
+                <CheckIcon
+                  aria-hidden="true"
+                  className="h-5 w-5 text-green-500"
+                />
                 <p className="ml-2 text-sm text-gray-500">
-                  {product.stock > 0 ? "En stock et prêt à être expédié" : "Rupture de stock"}
+                  {product.stock > 0
+                    ? "En stock et prêt à être expédié"
+                    : "Rupture de stock"}
                 </p>
               </div>
             </section>
@@ -41,7 +56,11 @@ export default function ProductDetailPage() {
           {/* Image du produit */}
           <div className="mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center">
             <div className="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg h-96">
-              <img src={product.image} alt={product.name} className="h-full w-full object-cover object-center" />
+              <img
+                src={product.image}
+                alt={product.name}
+                className="h-full w-full object-cover object-center"
+              />
             </div>
           </div>
 
@@ -50,13 +69,21 @@ export default function ProductDetailPage() {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                handleAddToCart(product.id, quantity, product.prix, product.name);
+                handleAddToCart(
+                  product.id,
+                  quantity,
+                  product.prix,
+                  product.name
+                );
               }}
             >
               {/* Sélection de la quantité si en stock */}
               {product.stock > 0 ? (
                 <div className="mt-6">
-                  <label htmlFor="quantity" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="quantity"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Quantité
                   </label>
                   <select
@@ -66,28 +93,36 @@ export default function ProductDetailPage() {
                     onChange={(e) => setQuantity(Number(e.target.value))}
                     className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   >
-                    {Array.from({ length: product.stock }, (_, i) => i + 1).map((qty) => (
-                      <option key={qty} value={qty}>
-                        {qty}
-                      </option>
-                    ))}
+                    {Array.from({ length: product.stock }, (_, i) => i + 1).map(
+                      (qty) => (
+                        <option key={qty} value={qty}>
+                          {qty}
+                        </option>
+                      )
+                    )}
                   </select>
                 </div>
               ) : (
-                <div className="text-red-500 text-lg font-semibold"> Ce produit est en rupture de stock</div>
+                <div className="text-red-500 text-lg font-semibold">
+                  {" "}
+                  Ce produit est en rupture de stock
+                </div>
               )}
 
               <div className="mt-10">
-  <button
-    type="submit"
-    className={`flex w-full items-center justify-center rounded-md px-8 py-3 text-white text-black focus:ring-2 focus:ring-indigo-500 
-      ${product.stock > 0 ? "button-primary hover:bg-orange-500" : "bg-gray-300 cursor-not-allowed opacity-50"}`}
-    disabled={product.stock <= 0}
-  >
-    Ajouter au panier
-  </button>
-</div>
-
+                <button
+                  type="submit"
+                  className={`flex w-full items-center justify-center rounded-md px-8 py-3 text-white text-black focus:ring-2 focus:ring-indigo-500 
+      ${
+        product.stock > 0
+          ? "button-primary hover:bg-orange-500"
+          : "bg-gray-300 cursor-not-allowed opacity-50"
+      }`}
+                  disabled={product.stock <= 0}
+                >
+                  Ajouter au panier
+                </button>
+              </div>
 
               {/* Message de confirmation */}
               {confirmationMessage && (

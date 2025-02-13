@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import LoaderComponent from './LoaderComponent';
+import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import LoaderComponent from "./LoaderComponent";
 
 export default function SettingsPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [name, setName] = useState<string>(session?.user?.name || '');
-  const [email, setEmail] = useState<string>(session?.user?.email || '');
+  const [name, setName] = useState<string>(session?.user?.name || "");
+  const [email, setEmail] = useState<string>(session?.user?.email || "");
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null); 
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -27,37 +27,37 @@ export default function SettingsPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setErrorMessage(null); 
+    setErrorMessage(null);
 
     const formData = new FormData();
-    formData.append('name', name);
-    formData.append('email', email);
+    formData.append("name", name);
+    formData.append("email", email);
     if (profileImage) {
-      formData.append('file', profileImage);
+      formData.append("file", profileImage);
     }
 
     try {
-      const response = await fetch('/api/profile/update', {
-        method: 'POST',
+      const response = await fetch("/api/profile/update", {
+        method: "POST",
         body: formData,
       });
 
       if (response.ok) {
-        router.push('/profile');
+        router.push("/profile");
       } else {
         const data = await response.json();
-        setErrorMessage(data.message || 'Une erreur est survenue.');
+        setErrorMessage(data.message || "Une erreur est survenue.");
       }
     } catch (error) {
-      console.error('Erreur de requête:', error);
-      setErrorMessage('Erreur de connexion au serveur.');
+      console.error("Erreur de requête:", error);
+      setErrorMessage("Erreur de connexion au serveur.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  if (status === 'loading') {
-    return <LoaderComponent/>;
+  if (status === "loading") {
+    return <LoaderComponent />;
   }
 
   if (!session) {
@@ -67,19 +67,21 @@ export default function SettingsPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white p-4">
       <div className="max-w-lg w-full bg-gray-800 rounded-lg shadow-lg p-8">
-        <h1 className="text-3xl font-bold mb-6 text-center">Paramètres du Profil</h1>
+        <h1 className="text-3xl font-bold mb-6 text-center">
+          Paramètres du Profil
+        </h1>
 
         {errorMessage && (
-          <div className="mb-4 text-red-500 text-center">
-            {errorMessage}
-          </div>
+          <div className="mb-4 text-red-500 text-center">{errorMessage}</div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex flex-col items-center">
             <div className="mb-4">
               <Image
-                src={previewImage || session?.user?.image || '/default-avatar.png'}
+                src={
+                  previewImage || session?.user?.image || "/default-avatar.png"
+                }
                 alt="Image de profil"
                 width={120}
                 height={120}
@@ -125,7 +127,9 @@ export default function SettingsPage() {
             disabled={isSubmitting}
             className="w-full bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold py-3 px-4 rounded-full"
           >
-            {isSubmitting ? 'Enregistrement...' : 'Sauvegarder les modifications'}
+            {isSubmitting
+              ? "Enregistrement..."
+              : "Sauvegarder les modifications"}
           </button>
         </form>
       </div>

@@ -13,16 +13,16 @@ const config: Config = {
         foreground: "var(--foreground)",
       },
       animation: {
-        'spin-slow': 'spin 3s linear infinite',
-        'ping-slow': 'ping 2s linear infinite',
+        "spin-slow": "spin 3s linear infinite",
+        "ping-slow": "ping 2s linear infinite",
       },
       keyframes: {
         spin: {
-          from: { transform: 'rotate(0deg)' },
-          to: { transform: 'rotate(360deg)' },
+          from: { transform: "rotate(0deg)" },
+          to: { transform: "rotate(360deg)" },
         },
         ping: {
-          '75%, 100%': { transform: 'scale(1.5)', opacity: "" },
+          "75%, 100%": { transform: "scale(1.5)", opacity: "" },
         },
       },
     },

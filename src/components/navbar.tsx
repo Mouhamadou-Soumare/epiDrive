@@ -67,9 +67,17 @@ const products = [
   },
 ];
 const callsToAction = [
-  { name: "Poser des questions à notre IA", href: "/chatIA", icon: PlayCircleIcon },
+  {
+    name: "Poser des questions à notre IA",
+    href: "/chatIA",
+    icon: PlayCircleIcon,
+  },
   { name: "Contactez-nous", href: "#", icon: PhoneIcon },
-  { name: "Voir toutes les catégories", href: "/category", icon: RectangleGroupIcon },
+  {
+    name: "Voir toutes les catégories",
+    href: "/category",
+    icon: RectangleGroupIcon,
+  },
 ];
 
 const social = [
@@ -279,8 +287,10 @@ export default function Navbar() {
           {status === "loading" ? (
             <div className="text-gray-500">Chargement...</div>
           ) : session ? (
-            <a href="/profile" className="flex items-center gap-2 hover:text-indigo-700">
-
+            <a
+              href="/profile"
+              className="flex items-center gap-2 hover:text-indigo-700"
+            >
               <button
                 onClick={() => signOut()}
                 className="p-2 hover:scale-110 transition-transform"
@@ -466,7 +476,10 @@ export default function Navbar() {
               <div className="text-gray-500">Chargement...</div>
             ) : session ? (
               <div className="flex items-center gap-2">
-                <a href="/profile" className="flex items-center gap-2 hover:text-indigo-700">
+                <a
+                  href="/profile"
+                  className="flex items-center gap-2 hover:text-indigo-700"
+                >
                   <UserCircleIcon className="h-8 w-8 text-orange-400 hover:text-gray-500" />
                   <span className="font-medium text-gray-800">
                     {session.user?.name}

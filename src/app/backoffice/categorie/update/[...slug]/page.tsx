@@ -1,22 +1,48 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import { Categorie } from "../../../../../../types";
 import FormInputField from "../../components/FormInputField";
 import Alert from "../../../components/Alert";
-import { useGetCategory, useGetCategories, useUpdateCategory } from "@/hooks/categories/useCategories";
-import LoadingSpinner from '@/app/backoffice/components/LoadingSpinner';
+import {
+  useGetCategory,
+  useGetCategories,
+  useUpdateCategory,
+} from "@/hooks/categories/useCategories";
+import LoadingSpinner from "@/app/backoffice/components/LoadingSpinner";
 
 export default function UpdateCategoryPage() {
   const { slug } = useParams() as { slug: string };
 
-  const { category, loading: categoryLoading, error: categoryError } = useGetCategory(slug) as { category: Categorie | null, loading: any, error: any };
-  const { categories, loading: categoriesLoading, error: categoriesError } = useGetCategories() as { categories: Categorie[], loading: any, error: any };
-  const { updateCategory, loading: updateLoading, error: updateError } = useUpdateCategory();
+  const {
+    category,
+    loading: categoryLoading,
+    error: categoryError,
+  } = useGetCategory(slug) as {
+    category: Categorie | null;
+    loading: any;
+    error: any;
+  };
+  const {
+    categories,
+    loading: categoriesLoading,
+    error: categoriesError,
+  } = useGetCategories() as {
+    categories: Categorie[];
+    loading: any;
+    error: any;
+  };
+  const {
+    updateCategory,
+    loading: updateLoading,
+    error: updateError,
+  } = useUpdateCategory();
   const [newImage, setNewImage] = useState<File | null>(null);
 
-  const [updatedCategory, setUpdatedCategory] = useState<Categorie | null>(null);
+  const [updatedCategory, setUpdatedCategory] = useState<Categorie | null>(
+    null
+  );
   const [submitResult, setSubmitResult] = useState<string | null>(null);
 
   useEffect(() => {
@@ -31,7 +57,11 @@ export default function UpdateCategoryPage() {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
 
     if (updatedCategory) {
@@ -40,8 +70,14 @@ export default function UpdateCategoryPage() {
 
         // Gestion spécifique pour parentId
         if (name === "parentId") {
-          const selectedCategory = categories.find((cat: Categorie) => cat.id === parseInt(value));
-          return { ...prev, parentId: parseInt(value), parentCategory: selectedCategory || null };
+          const selectedCategory = categories.find(
+            (cat: Categorie) => cat.id === parseInt(value)
+          );
+          return {
+            ...prev,
+            parentId: parseInt(value),
+            parentCategory: selectedCategory || null,
+          };
         }
 
         return { ...prev, [name]: value };
@@ -53,27 +89,42 @@ export default function UpdateCategoryPage() {
     e.preventDefault();
     if (updatedCategory) {
       const success = await updateCategory(slug, updatedCategory, newImage);
-      setSubmitResult(success ? 'success' : 'error');
+      setSubmitResult(success ? "success" : "error");
     }
   };
 
-  if (categoryLoading || categoriesLoading || updateLoading) return <LoadingSpinner/>;
-  if (categoryError || categoriesError) return <div className="lg:pl-72 text-red-500">Erreur lors du chargement des données.</div>;
-  if (!updatedCategory) return <div className="lg:pl-72">Catégorie non trouvée.</div>;
+  if (categoryLoading || categoriesLoading || updateLoading)
+    return <LoadingSpinner />;
+  if (categoryError || categoriesError)
+    return (
+      <div className="lg:pl-72 text-red-500">
+        Erreur lors du chargement des données.
+      </div>
+    );
+  if (!updatedCategory)
+    return <div className="lg:pl-72">Catégorie non trouvée.</div>;
 
   return (
     <>
-      {submitResult === 'success' && (
+      {submitResult === "success" && (
         <Alert message="Catégorie mise à jour avec succès." type="success" />
       )}
-      {submitResult === 'error' && (
-        <Alert message="Une erreur est survenue lors de la mise à jour." type="error" />
+      {submitResult === "error" && (
+        <Alert
+          message="Une erreur est survenue lors de la mise à jour."
+          type="error"
+        />
       )}
       {updateError && (
-        <Alert message="Erreur lors de la mise à jour de la catégorie." type="error" />
+        <Alert
+          message="Erreur lors de la mise à jour de la catégorie."
+          type="error"
+        />
       )}
 
-      <h1 className="text-3xl font-extrabold leading-tight text-gray-900">Modifier la catégorie</h1>
+      <h1 className="text-3xl font-extrabold leading-tight text-gray-900">
+        Modifier la catégorie
+      </h1>
       <form onSubmit={handleSubmit} className="my-6">
         <FormInputField
           id="name"
@@ -102,13 +153,16 @@ export default function UpdateCategoryPage() {
         )}
 
         <div className="mb-5">
-          <label htmlFor="parentId" className="block mb-2 text-sm font-medium text-gray-900">
+          <label
+            htmlFor="parentId"
+            className="block mb-2 text-sm font-medium text-gray-900"
+          >
             Catégorie parente
           </label>
           <select
             id="parentId"
             name="parentId"
-            value={updatedCategory.parentId || ''}
+            value={updatedCategory.parentId || ""}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             onChange={handleInputChange}
           >
@@ -125,7 +179,9 @@ export default function UpdateCategoryPage() {
           type="submit"
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
         >
-          {updateLoading ? "Mise à jour en cours..." : "Mettre à jour la catégorie"}
+          {updateLoading
+            ? "Mise à jour en cours..."
+            : "Mettre à jour la catégorie"}
         </button>
       </form>
     </>
