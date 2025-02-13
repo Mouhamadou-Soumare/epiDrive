@@ -68,7 +68,6 @@ $ npx prisma generate
 
 # Insérer des données de base (seed)
 $ npx prisma db seed
-########################################
 ```
 
 ## Fonctionnalités
