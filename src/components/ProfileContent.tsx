@@ -100,7 +100,7 @@ function ProfileContent() {
               </li>
               <li>
                 <button
-                  onClick={() => signOut({ callbackUrl: '/' })}
+                  onClick={() => signOut({ callbackUrl: process.env.NEXT_PUBLIC_BASE_URL || "/" })}
                   className="text-red-600 hover:text-red-800"
                 >
                   Déconnexion
