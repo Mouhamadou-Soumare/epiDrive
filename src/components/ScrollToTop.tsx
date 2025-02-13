@@ -1,4 +1,3 @@
-// src/components/ScrollToTop.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -6,15 +5,13 @@ import { useState, useEffect } from 'react';
 export default function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
 
-  // Fonction pour faire défiler la page vers le haut
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth', // Ajoute un effet de défilement fluide
+      behavior: 'smooth',
     });
   };
 
-  // Gérer la visibilité du bouton en fonction du défilement
   useEffect(() => {
     const toggleVisibility = () => {
       if (window.pageYOffset > 300) {
@@ -33,7 +30,7 @@ export default function ScrollToTop() {
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 bg-indigo-600 hover:bg-indigo-700 text-white p-4 rounded-full shadow-lg transition duration-300"
+          className="fixed bottom-6 right-6 button-primary hover:bg-orange-700 text-white p-4 rounded-full shadow-lg transition duration-300"
           aria-label="Scroll to top"
         >
             <svg

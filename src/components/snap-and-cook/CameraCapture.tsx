@@ -49,7 +49,7 @@ export default function CameraCapture({ onImageCaptured }: CameraCaptureProps) {
     <div>
       <video ref={videoRef} autoPlay playsInline className="w-full max-h-60 mb-4" />
       {!streaming ? (
-        <button onClick={startCamera} className="px-4 py-2 bg-indigo-600 text-white rounded-md">
+        <button onClick={startCamera} className="px-4 py-2 button-primary text-white rounded-md">
           Activer la caméra
         </button>
       ) : (

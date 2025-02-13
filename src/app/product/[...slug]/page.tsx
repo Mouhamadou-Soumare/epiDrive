@@ -1,80 +1,26 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { CheckIcon, ShieldCheckIcon } from "@heroicons/react/20/solid";
-import { useCart } from "@/context/CartContext"; 
+import { useState } from "react";
+import { CheckIcon } from "@heroicons/react/20/solid";
+import { useProductDetail } from "@/hooks/products/useProductDetails";
+import { useAddToCart } from "@/hooks/cart/useAddToCartProductPage";
 import LoaderComponent from "@/components/LoaderComponent";
-
-type Product = {
-  id: number;
-  name: string;
-  prix: number;
-  description: string;
-  image: string;
-  stock: number;
-};
 
 export default function ProductDetailPage() {
   const { slug } = useParams() as { slug: string | string[] };
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { product, loading, error } = useProductDetail(slug);
+  const { handleAddToCart, confirmationMessage } = useAddToCart();
   const [quantity, setQuantity] = useState(1);
-  const [confirmationMessage, setConfirmationMessage] = useState<string | null>(null);
 
-  const { addToCart } = useCart();
-
-  useEffect(() => {
-    async function fetchProduct() {
-      setLoading(true);
-      try {
-        const productSlug = Array.isArray(slug) ? slug[slug.length - 1] : slug;
-        const res = await fetch(`/api/products/${productSlug}`);
-        if (!res.ok) throw new Error("Erreur lors de la récupération du produit");
-
-        const data = await res.json();
-        setProduct(data);
-        console.log("✅ Produit récupéré:", data);
-      } catch (error) {
-        console.error("❌ Erreur:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchProduct();
-
-    console.log(product);
-  }, [slug]);
-
-  const handleAddToCart = () => {
-    if (!product) return;
-
-    addToCart(product.id, quantity, product.prix);
-
-    // ✅ Affichage du message de confirmation
-    setConfirmationMessage(`Le produit "${product.name}" a été ajouté au panier (${quantity}x).`);
-
-    // ✅ Disparition du message après 3 secondes
-    setTimeout(() => setConfirmationMessage(null), 3000);
-  };
-
-  if (loading) {
-    return (
-      <LoaderComponent/>
-    );
-  }
-
-  if (!product) {
-    return <div className="text-center text-lg font-semibold text-red-500">❌ Produit non trouvé</div>;
-  }
+  if (loading) return <LoaderComponent />;
+  if (error || !product) return <div className="text-center text-lg font-semibold text-red-500">❌ Produit non trouvé</div>;
 
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <div className="lg:grid lg:grid-cols-2 lg:gap-x-8">
-          
-          {/* ✅ Détails du produit */}
+          {/* Détails du produit */}
           <div className="lg:max-w-lg lg:self-end">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               {product.name}
@@ -85,30 +31,30 @@ export default function ProductDetailPage() {
 
               <div className="mt-6 flex items-center">
                 <CheckIcon aria-hidden="true" className="h-5 w-5 text-green-500" />
-                <p className="ml-2 text-sm text-gray-500">En stock et prêt à être expédié</p>
+                <p className="ml-2 text-sm text-gray-500">
+                  {product.stock > 0 ? "En stock et prêt à être expédié" : "Rupture de stock"}
+                </p>
               </div>
             </section>
           </div>
 
-          {/* ✅ Image du produit */}
+          {/* Image du produit */}
           <div className="mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center">
             <div className="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg h-96">
               <img src={product.image} alt={product.name} className="h-full w-full object-cover object-center" />
             </div>
           </div>
 
-          {/* ✅ Formulaire d'ajout au panier */}
+          {/* Formulaire d'achat */}
           <div className="mt-10 lg:col-start-1 lg:row-start-2 lg:max-w-lg lg:self-start">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                handleAddToCart();
+                handleAddToCart(product.id, quantity, product.prix, product.name);
               }}
             >
-            {
-              product.stock <= 0 ? (
-                <div className="text-red-500 text-lg font-semibold">❌ Ce produit est en rupture de stock</div>
-              ) : (
+              {/* Sélection de la quantité si en stock */}
+              {product.stock > 0 ? (
                 <div className="mt-6">
                   <label htmlFor="quantity" className="block text-sm font-medium text-gray-700">
                     Quantité
@@ -127,30 +73,28 @@ export default function ProductDetailPage() {
                     ))}
                   </select>
                 </div>
-              )
-            }
+              ) : (
+                <div className="text-red-500 text-lg font-semibold">❌ Ce produit est en rupture de stock</div>
+              )}
 
               <div className="mt-10">
-                <button
-                  type="submit"
-                  className="flex w-full items-center justify-center rounded-md px-8 py-3 text-white bg-orange-300 hover:bg-orange-500 text-black focus:ring-2 focus:ring-indigo-500"
-                >
-                  Ajouter au panier
-                </button>
-              </div>
+  <button
+    type="submit"
+    className={`flex w-full items-center justify-center rounded-md px-8 py-3 text-white text-black focus:ring-2 focus:ring-indigo-500 
+      ${product.stock > 0 ? "button-primary hover:bg-orange-500" : "bg-gray-300 cursor-not-allowed opacity-50"}`}
+    disabled={product.stock <= 0}
+  >
+    Ajouter au panier
+  </button>
+</div>
 
+
+              {/* Message de confirmation */}
               {confirmationMessage && (
                 <div className="mt-4 p-4 text-green-800 bg-green-200 border border-green-500 rounded-lg text-center">
                   {confirmationMessage}
                 </div>
               )}
-
-              <div className="mt-6 text-center">
-                <a href="#" className="inline-flex items-center text-base font-medium text-gray-500 hover:text-gray-700">
-                  <ShieldCheckIcon aria-hidden="true" className="mr-2 h-6 w-6" />
-                  Garantie à vie
-                </a>
-              </div>
             </form>
           </div>
         </div>

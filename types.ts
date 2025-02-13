@@ -18,6 +18,18 @@ export enum Livraison_Type {
     EMPORTER = "EMPORTER"
 }
 
+export interface CartItem {
+    id: number;
+    produit: {
+      id: number;
+      name: string;
+      prix: number;
+      description: string;
+      image: { path: string };
+    };
+    quantite: number;
+  };
+
 export interface User {
     id: number;
     username: string;
@@ -27,12 +39,12 @@ export interface User {
     updatedAt: Date;
     role: Role;
     imageId?: number;
-    image?: Image; // Relation avec une image
+    image?: Image;
     commandes: Commande[];
     recettes: Recette[];
-    panier?: Panier; // Un utilisateur peut avoir un panier
-    livraisons: Livraison[]; // Relation avec les adresses de livraison
-    logs: Log[]; // Relation avec les logs
+    panier?: Panier;
+    livraisons: Livraison[]; 
+    logs: Log[]; 
 }
 
 export interface Recette {
@@ -40,7 +52,7 @@ export interface Recette {
     title: string;
     description: string;
     instructions: string;
-    image?: string; // Image optionnelle
+    image?: string;
     user?: User;
     produits: Produit[];
     ingredients: Ingredient[];
@@ -49,14 +61,14 @@ export interface Recette {
 export interface Commande {
     error: string;
     id: number;
-    status: CommandeStatus; // Utilisation de l'enum pour le statut
+    status: CommandeStatus;
     paymentId?: string;
     createdAt: Date;
     userId: number;
-    fk_userId: number; // Relation avec un utilisateur
-    user: User; // Relation avec l'utilisateur
+    fk_userId: number; 
+    user: User; 
     quantites: QuantiteCommande[];
-    livraison?: Livraison; // Relation avec une adresse de livraison
+    livraison?: Livraison;
     type: Livraison_Type;
 }
 
@@ -67,12 +79,12 @@ export interface Produit {
     description: string;
     prix: number;
     imageId?: number;
-    image?: Image; // Relation avec une image
-    categorieId: number | null; // Modification ici
-    categorie?: Categorie; // Relation avec la catégorie
-    quantitePaniers?: QuantitePanier[]; // Produits dans des paniers
-    quantiteCommandes?: QuantiteCommande[]; // Produits dans des commandes
-    recettes?: Recette[]; // Relation avec des recettes
+    image?: Image; 
+    categorieId: number | null; 
+    categorie?: Categorie; 
+    quantitePaniers?: QuantitePanier[]; 
+    quantiteCommandes?: QuantiteCommande[];
+    recettes?: Recette[]; 
     stock: number;
 }
 
@@ -91,9 +103,9 @@ export interface QuantitePanier {
     quantite: number;
     prix: number;
     produitId: number;
-    produit: Produit; // Relation avec le produit
+    produit: Produit; 
     panierId: number;
-    panier: Panier; // Relation avec le panier
+    panier: Panier; 
 }
 
 export interface QuantiteCommande {
@@ -101,39 +113,39 @@ export interface QuantiteCommande {
     quantite: number;
     prix: number;
     produitId: number;
-    produit: Produit; // Relation avec le produit
+    produit: Produit; 
     commandeId: number;
-    commande: Commande; // Relation avec la commande
+    commande: Commande;
 }
 
 export interface Image {
     id: number;
     path: string;
-    produits?: Produit[]; // Produits associés à l'image
-    categories?: Categorie[]; // Catégories associées à l'image
-    users?: User[]; // Utilisateurs associés à l'image
+    produits?: Produit[]; 
+    categories?: Categorie[]; 
+    users?: User[]; 
 }
 
 export interface Categorie {
     id: number;
     name: string;
     slug: string;
-    description?: string; // Description optionnelle
+    description?: string;
     imageId?: number;
-    image?: Image; // Relation avec une image
+    image?: Image;
     parentId?: number;
-    parent?: Categorie; // Relation avec une catégorie parent
-    subcategories?: Categorie[]; // Sous-catégories
-    produits?: Produit[]; // Produits associés à la catégorie
+    parent?: Categorie; 
+    subcategories?: Categorie[]; 
+    produits?: Produit[];
 }
 
 export interface Panier {
     id: number;
-    fk_userId?: number; // Relation avec un utilisateur
-    sessionId?: string; // Identifiant de session optionnel
-    user?: User; // Relation avec l'utilisateur
-    produits: QuantitePanier[]; // Produits dans le panier
-    livraison?: Livraison; // Relation avec une livraison
+    fk_userId?: number; 
+    sessionId?: string;
+    user?: User; 
+    produits: QuantitePanier[];
+    livraison?: Livraison; 
 }
 
 export interface Livraison {
@@ -142,19 +154,19 @@ export interface Livraison {
     ville: string;
     codePostal: string;
     pays: string;
-    fk_userId?: number; // Relation avec un utilisateur
-    user?: User; // Relation avec l'utilisateur
-    fk_commande?: number; // Relation avec une commande
-    commande?: Commande; // Relation avec une commande
-    fk_panier?: number; // Relation avec un panier
-    panier?: Panier; // Relation avec un panier
+    fk_userId?: number; 
+    user?: User; 
+    fk_commande?: number; 
+    commande?: Commande; 
+    fk_panier?: number; 
+    panier?: Panier; 
 }
 
 export interface Log {
     id: number;
     action: string;
-    metadata?: Record<string, any>; // Métadonnées pour des informations contextuelles
+    metadata?: Record<string, any>; 
     createdAt: Date;
-    fk_userId: number; // Relation avec un utilisateur
-    user: User; // Relation avec l'utilisateur
+    fk_userId: number;
+    user: User; 
 }
