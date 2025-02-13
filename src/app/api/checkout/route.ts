@@ -4,26 +4,36 @@ import Stripe from "stripe";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {});
 
 /**
- * 📌 Crée une session de paiement Stripe
+ *  Crée une session de paiement Stripe
  */
 export async function POST(req: Request) {
   try {
     const { orderSummary } = await req.json();
 
     if (!orderSummary?.items?.length) {
-      return NextResponse.json({ error: "Aucun produit dans la commande" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Aucun produit dans la commande" },
+        { status: 400 }
+      );
     }
 
     const lineItems = orderSummary.items.map(({ name, price, quantity }) => {
-      if (typeof price !== "number" || price <= 0 || typeof quantity !== "number" || quantity <= 0) {
-        throw new Error(`Produit invalide : ${JSON.stringify({ name, price, quantity })}`);
+      if (
+        typeof price !== "number" ||
+        price <= 0 ||
+        typeof quantity !== "number" ||
+        quantity <= 0
+      ) {
+        throw new Error(
+          `Produit invalide : ${JSON.stringify({ name, price, quantity })}`
+        );
       }
 
       return {
         price_data: {
           currency: "eur",
           product_data: { name },
-          unit_amount: Math.round(price * 100), 
+          unit_amount: Math.round(price * 100),
         },
         quantity,
       };
@@ -47,7 +57,10 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error(" Erreur lors de la création de la session Stripe :", error);
     return NextResponse.json(
-      { error: "Erreur interne du serveur", details: error instanceof Error ? error.message : "Erreur inconnue" },
+      {
+        error: "Erreur interne du serveur",
+        details: error instanceof Error ? error.message : "Erreur inconnue",
+      },
       { status: 500 }
     );
   }

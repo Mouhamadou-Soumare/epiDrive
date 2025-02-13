@@ -12,7 +12,8 @@ export async function GET(
 ) {
   const { slug } = await params;
 
-  if (!slug) return NextResponse.json({ error: "Slug requis" }, { status: 400 });
+  if (!slug)
+    return NextResponse.json({ error: "Slug requis" }, { status: 400 });
 
   try {
     const category = await prisma.categorie.findFirst({
@@ -46,7 +47,10 @@ export async function GET(
     });
 
     if (!category) {
-      return NextResponse.json({ error: "Catégorie non trouvée" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Catégorie non trouvée" },
+        { status: 404 }
+      );
     }
 
     // Formatage des données pour un affichage propre côté frontend
@@ -78,7 +82,10 @@ export async function GET(
     return NextResponse.json(formattedCategory);
   } catch (error) {
     console.error(" Erreur lors de la récupération de la catégorie :", error);
-    return NextResponse.json({ error: "Erreur interne du serveur" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Erreur interne du serveur" },
+      { status: 500 }
+    );
   }
 }
 
@@ -97,7 +104,9 @@ export async function PATCH(
 
   try {
     const formData = await req.formData();
-    const updatedCategory = JSON.parse(formData.get("updatedCategory") as string);
+    const updatedCategory = JSON.parse(
+      formData.get("updatedCategory") as string
+    );
     const newImage = formData.get("newImage") as File | null;
 
     console.log("updatedCategory:", updatedCategory);
@@ -110,7 +119,10 @@ export async function PATCH(
     });
 
     if (!existingCategory) {
-      return NextResponse.json({ error: "Catégorie non trouvée" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Catégorie non trouvée" },
+        { status: 404 }
+      );
     }
 
     let imageId = existingCategory.imageId; // Conserver l'image actuelle
@@ -152,7 +164,10 @@ export async function PATCH(
   } catch (error) {
     console.error("Erreur lors de la mise à jour :", error);
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Erreur interne du serveur" },
+      {
+        error:
+          error instanceof Error ? error.message : "Erreur interne du serveur",
+      },
       { status: 500 }
     );
   }
@@ -180,6 +195,9 @@ export async function DELETE(
     return NextResponse.json({ message: "Catégorie supprimée avec succès" });
   } catch (error) {
     console.error("Erreur lors de la suppression :", error);
-    return NextResponse.json({ error: "Erreur interne du serveur" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Erreur interne du serveur" },
+      { status: 500 }
+    );
   }
 }

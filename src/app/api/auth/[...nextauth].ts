@@ -20,12 +20,12 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async session({ session, user }) {
       if (session.user) {
-        session.user.id = user.id; // Ajout de l'ID utilisateur dans la session
+        session.user.id = user.id; 
       }
       return session;
     },
   },
-  secret: process.env.NEXTAUTH_SECRET, // Clé secrète pour la sécurité des sessions
+  secret: process.env.NEXTAUTH_SECRET, 
 };
 
 export default NextAuth(authOptions);

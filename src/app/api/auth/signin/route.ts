@@ -12,7 +12,10 @@ export async function POST(req: Request) {
 
     // Vérification des champs requis
     if (!email || !password) {
-      return NextResponse.json({ message: "Email et mot de passe requis" }, { status: 400 });
+      return NextResponse.json(
+        { message: "Email et mot de passe requis" },
+        { status: 400 }
+      );
     }
 
     // Vérifier si l'utilisateur existe
@@ -20,14 +23,20 @@ export async function POST(req: Request) {
 
     // Vérification si l'utilisateur existe
     if (!user) {
-      return NextResponse.json({ message: "Utilisateur non trouvé" }, { status: 404 });
+      return NextResponse.json(
+        { message: "Utilisateur non trouvé" },
+        { status: 404 }
+      );
     }
 
     // Vérifier si l'utilisateur est bloqué
     if (user.blockedUntil && new Date(user.blockedUntil) > new Date()) {
-      return NextResponse.json({
-        message: 'Trop de tentatives. Réessayez plus tard.',
-      }, { status: 429 });
+      return NextResponse.json(
+        {
+          message: "Trop de tentatives. Réessayez plus tard.",
+        },
+        { status: 429 }
+      );
     }
 
     // Vérifier le mot de passe
@@ -45,7 +54,10 @@ export async function POST(req: Request) {
             blockedUntil: new Date(Date.now() + BLOCK_TIME),
           },
         });
-        return NextResponse.json({ message: 'Compte bloqué temporairement.' }, { status: 429 });
+        return NextResponse.json(
+          { message: "Compte bloqué temporairement." },
+          { status: 429 }
+        );
       }
 
       await prisma.user.update({
@@ -53,7 +65,10 @@ export async function POST(req: Request) {
         data: { loginAttempts: updatedAttempts },
       });
 
-      return NextResponse.json({ message: 'Mot de passe incorrect' }, { status: 401 });
+      return NextResponse.json(
+        { message: "Mot de passe incorrect" },
+        { status: 401 }
+      );
     }
 
     // Réinitialiser les tentatives après un succès
@@ -62,11 +77,12 @@ export async function POST(req: Request) {
       data: { loginAttempts: 0, blockedUntil: null },
     });
 
-    return NextResponse.json({ message: 'Connexion réussie' }, { status: 200 });
-
-
+    return NextResponse.json({ message: "Connexion réussie" }, { status: 200 });
   } catch (error) {
     console.error("Erreur lors de la connexion :", error);
-    return NextResponse.json({ message: "Erreur interne du serveur" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Erreur interne du serveur" },
+      { status: 500 }
+    );
   }
 }
