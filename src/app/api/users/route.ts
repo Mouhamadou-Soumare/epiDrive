@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
-import bcrypt from 'bcryptjs';
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
+import bcrypt from "bcryptjs";
 
 /**
  * Récupère tous les utilisateurs sans leur mot de passe
@@ -17,17 +17,25 @@ export async function GET() {
     });
 
     if (!users.length) {
-      return NextResponse.json({ message: 'Aucun utilisateur trouvé.' }, { status: 404 });
+      return NextResponse.json(
+        { message: "Aucun utilisateur trouvé." },
+        { status: 404 }
+      );
     }
 
     // Suppression des mots de passe avant d'envoyer les données
-    const usersWithoutPassword = users.map(({ password, ...userWithoutPassword }) => userWithoutPassword);
+    const usersWithoutPassword = users.map(
+      ({ password, ...userWithoutPassword }) => userWithoutPassword
+    );
 
     console.log("Utilisateurs récupérés :", usersWithoutPassword.length);
     return NextResponse.json(usersWithoutPassword, { status: 200 });
   } catch (error) {
-    console.error('Erreur lors de la récupération des utilisateurs :', error);
-    return NextResponse.json({ error: 'Erreur interne du serveur.' }, { status: 500 });
+    console.error("Erreur lors de la récupération des utilisateurs :", error);
+    return NextResponse.json(
+      { error: "Erreur interne du serveur." },
+      { status: 500 }
+    );
   }
 }
 
@@ -39,10 +47,17 @@ export async function POST(req: Request) {
     const { username, email, password, role, imagePath } = await req.json();
 
     if (!username || !email || !password || !role) {
-      return NextResponse.json({ error: 'Champs requis manquants.' }, { status: 400 });
+      return NextResponse.json(
+        { error: "Champs requis manquants." },
+        { status: 400 }
+      );
     }
 
-    console.log("Création d'un nouvel utilisateur :", { username, email, role });
+    console.log("Création d'un nouvel utilisateur :", {
+      username,
+      email,
+      role,
+    });
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -74,6 +89,9 @@ export async function POST(req: Request) {
     return NextResponse.json(userWithoutPassword, { status: 201 });
   } catch (error) {
     console.error("Erreur lors de la création de l'utilisateur :", error);
-    return NextResponse.json({ error: 'Erreur interne du serveur.' }, { status: 500 });
+    return NextResponse.json(
+      { error: "Erreur interne du serveur." },
+      { status: 500 }
+    );
   }
 }

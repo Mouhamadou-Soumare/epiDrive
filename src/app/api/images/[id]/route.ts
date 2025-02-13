@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 
 /**
  * Récupère une image par son ID
@@ -11,7 +11,7 @@ export async function GET(
   const { id } = await params;
 
   if (!id) {
-    return NextResponse.json({ error: 'ID requis' }, { status: 400 });
+    return NextResponse.json({ error: "ID requis" }, { status: 400 });
   }
 
   try {
@@ -20,13 +20,16 @@ export async function GET(
     });
 
     if (!image) {
-      return NextResponse.json({ error: 'Image non trouvée' }, { status: 404 });
+      return NextResponse.json({ error: "Image non trouvée" }, { status: 404 });
     }
 
     return NextResponse.json(image, { status: 200 });
   } catch (error) {
-    console.error('Erreur lors de la récupération de l’image :', error);
-    return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
+    console.error("Erreur lors de la récupération de l’image :", error);
+    return NextResponse.json(
+      { error: "Erreur interne du serveur" },
+      { status: 500 }
+    );
   }
 }
 
@@ -40,14 +43,17 @@ export async function PATCH(
   const { id } = await params;
 
   if (!id) {
-    return NextResponse.json({ error: 'ID requis' }, { status: 400 });
+    return NextResponse.json({ error: "ID requis" }, { status: 400 });
   }
 
   try {
     const { path } = await req.json();
 
     if (!path) {
-      return NextResponse.json({ error: 'Le chemin de l’image est requis' }, { status: 400 });
+      return NextResponse.json(
+        { error: "Le chemin de l’image est requis" },
+        { status: 400 }
+      );
     }
 
     const existingImage = await prisma.image.findUnique({
@@ -55,7 +61,7 @@ export async function PATCH(
     });
 
     if (!existingImage) {
-      return NextResponse.json({ error: 'Image non trouvée' }, { status: 404 });
+      return NextResponse.json({ error: "Image non trouvée" }, { status: 404 });
     }
 
     const updatedImage = await prisma.image.update({
@@ -65,8 +71,11 @@ export async function PATCH(
 
     return NextResponse.json(updatedImage, { status: 200 });
   } catch (error) {
-    console.error('Erreur lors de la mise à jour de l’image :', error);
-    return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
+    console.error("Erreur lors de la mise à jour de l’image :", error);
+    return NextResponse.json(
+      { error: "Erreur interne du serveur" },
+      { status: 500 }
+    );
   }
 }
 
@@ -80,7 +89,7 @@ export async function DELETE(
   const { id } = await params;
 
   if (!id) {
-    return NextResponse.json({ error: 'ID requis' }, { status: 400 });
+    return NextResponse.json({ error: "ID requis" }, { status: 400 });
   }
 
   try {
@@ -88,9 +97,15 @@ export async function DELETE(
       where: { id: parseInt(id, 10) },
     });
 
-    return NextResponse.json({ message: 'Image supprimée avec succès' }, { status: 200 });
+    return NextResponse.json(
+      { message: "Image supprimée avec succès" },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error('Erreur lors de la suppression de l’image :', error);
-    return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
+    console.error("Erreur lors de la suppression de l’image :", error);
+    return NextResponse.json(
+      { error: "Erreur interne du serveur" },
+      { status: 500 }
+    );
   }
 }

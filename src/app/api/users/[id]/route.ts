@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import { NextRequest, NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 
 const excludePassword = (user: any) => {
   if (!user) return null;
@@ -7,11 +7,14 @@ const excludePassword = (user: any) => {
   return userWithoutPassword;
 };
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     const userId = parseInt(params.id, 10);
     if (isNaN(userId)) {
-      return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
+      return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
     }
 
     console.log("Fetching user with ID:", userId);
@@ -32,34 +35,40 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     });
 
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     return NextResponse.json(excludePassword(user), { status: 200 });
   } catch (error) {
-    console.error('Error fetching user:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error("Error fetching user:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     const userId = parseInt(params.id, 10);
     if (isNaN(userId)) {
-      return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
+      return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
     }
 
     const body = await req.json();
     const { username, email, role, imageId } = body;
 
-    console.log('Updating user with ID:', userId);
+    console.log("Updating user with ID:", userId);
 
     const existingUser = await prisma.user.findUnique({
       where: { id: userId },
     });
 
     if (!existingUser) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     const sessionUser = await prisma.user.findUnique({
@@ -67,8 +76,8 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       select: { role: true },
     });
 
-    if (!sessionUser || sessionUser.role !== 'ADMIN') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+    if (!sessionUser || sessionUser.role !== "ADMIN") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
     const updatedUser = await prisma.user.update({
@@ -76,19 +85,25 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       data: { username, email, role, imageId },
     });
 
-    console.log('User updated:', updatedUser);
+    console.log("User updated:", updatedUser);
     return NextResponse.json(excludePassword(updatedUser), { status: 200 });
   } catch (error) {
-    console.error('Error updating user:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error("Error updating user:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     const userId = parseInt(params.id, 10);
     if (isNaN(userId)) {
-      return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
+      return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
     }
 
     const existingUser = await prisma.user.findUnique({
@@ -96,7 +111,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     });
 
     if (!existingUser) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     const sessionUser = await prisma.user.findUnique({
@@ -104,13 +119,19 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       select: { role: true },
     });
 
-    if (!sessionUser || sessionUser.role !== 'ADMIN') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+    if (!sessionUser || sessionUser.role !== "ADMIN") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
     await prisma.user.delete({ where: { id: userId } });
-    return NextResponse.json({ message: 'User deleted successfully' }, { status: 200 });
+    return NextResponse.json(
+      { message: "User deleted successfully" },
+      { status: 200 }
+    );
   } catch (error) {
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }

@@ -8,10 +8,14 @@ import { sendCommandeUpdate } from "../updates/route";
 /**
  * Récupère une commande par son ID (slug)
  */
-export async function GET(req: Request, { params }: { params: Promise<{ slug: string }> }) {
+export async function GET(
+  req: Request,
+  { params }: { params: Promise<{ slug: string }> }
+) {
   try {
     const { slug } = await params;
-    if (!slug) return NextResponse.json({ error: "Slug requis" }, { status: 400 });
+    if (!slug)
+      return NextResponse.json({ error: "Slug requis" }, { status: 400 });
 
     const commande = await prisma.commande.findUnique({
       where: { id: parseInt(slug) },
@@ -23,17 +27,24 @@ export async function GET(req: Request, { params }: { params: Promise<{ slug: st
       : NextResponse.json({ error: "Commande introuvable" }, { status: 404 });
   } catch (error) {
     console.error("Erreur lors de la récupération de la commande :", error);
-    return NextResponse.json({ error: "Erreur interne du serveur" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Erreur interne du serveur" },
+      { status: 500 }
+    );
   }
 }
 
 /**
  * Met à jour une commande (statut & livraison)
  */
-export async function PATCH(req: Request, { params }: { params: Promise<{ slug: string }> }) {
+export async function PATCH(
+  req: Request,
+  { params }: { params: Promise<{ slug: string }> }
+) {
   try {
     const { slug } = await params;
-    if (!slug) return NextResponse.json({ error: "Slug requis" }, { status: 400 });
+    if (!slug)
+      return NextResponse.json({ error: "Slug requis" }, { status: 400 });
 
     const { status, livraison } = await req.json();
 
@@ -42,7 +53,11 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ slug: 
       include: { livraison: true },
     });
 
-    if (!existingCommande) return NextResponse.json({ error: "Commande introuvable" }, { status: 404 });
+    if (!existingCommande)
+      return NextResponse.json(
+        { error: "Commande introuvable" },
+        { status: 404 }
+      );
 
     const updatedCommande = await prisma.commande.update({
       where: { id: parseInt(slug) },
@@ -63,20 +78,26 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ slug: 
   } catch (error) {
     console.error(" Erreur lors de la mise à jour de la commande :", error);
     return NextResponse.json(
-      { error: "Erreur interne du serveur", details: error instanceof Error ? error.message : "Erreur inconnue" },
+      {
+        error: "Erreur interne du serveur",
+        details: error instanceof Error ? error.message : "Erreur inconnue",
+      },
       { status: 500 }
     );
   }
 }
 
-
 /**
  * Supprime une commande
  */
-export async function DELETE(req: Request, { params }: { params: Promise<{ slug: string }> }) {
+export async function DELETE(
+  req: Request,
+  { params }: { params: Promise<{ slug: string }> }
+) {
   try {
     const { slug } = await params;
-    if (!slug) return NextResponse.json({ error: "Slug requis" }, { status: 400 });
+    if (!slug)
+      return NextResponse.json({ error: "Slug requis" }, { status: 400 });
 
     const commandeId = parseInt(slug, 10);
 
@@ -85,26 +106,40 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ slug:
       include: { quantites: true, livraison: true },
     });
 
-    if (!existingCommande) return NextResponse.json({ error: "Commande introuvable" }, { status: 404 });
+    if (!existingCommande)
+      return NextResponse.json(
+        { error: "Commande introuvable" },
+        { status: 404 }
+      );
 
     // Suppression des quantités associées
     if (existingCommande.quantites.length > 0) {
-      await prisma.quantiteCommande.deleteMany({ where: { fk_commande: commandeId } });
+      await prisma.quantiteCommande.deleteMany({
+        where: { fk_commande: commandeId },
+      });
     }
 
     // Suppression des informations de livraison si présentes
     if (existingCommande.livraison) {
-      await prisma.livraison.delete({ where: { id: existingCommande.livraison.id } });
+      await prisma.livraison.delete({
+        where: { id: existingCommande.livraison.id },
+      });
     }
 
     // Suppression de la commande
     await prisma.commande.delete({ where: { id: commandeId } });
 
-    return NextResponse.json({ message: "Commande supprimée avec succès" }, { status: 200 });
+    return NextResponse.json(
+      { message: "Commande supprimée avec succès" },
+      { status: 200 }
+    );
   } catch (error) {
     console.error(" Erreur lors de la suppression de la commande :", error);
     return NextResponse.json(
-      { error: "Erreur interne du serveur", details: error instanceof Error ? error.message : "Erreur inconnue" },
+      {
+        error: "Erreur interne du serveur",
+        details: error instanceof Error ? error.message : "Erreur inconnue",
+      },
       { status: 500 }
     );
   }

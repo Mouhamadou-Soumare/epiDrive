@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 import { promises as fs } from "fs";
 import path from "path";
 
@@ -19,10 +19,13 @@ export async function GET() {
 
     if (!products.length) {
       console.log("Aucun produit trouvé.");
-      return NextResponse.json({ message: 'Aucun produit trouvé' }, { status: 404 });
+      return NextResponse.json(
+        { message: "Aucun produit trouvé" },
+        { status: 404 }
+      );
     }
 
-    const transformedProducts = products.map(product => ({
+    const transformedProducts = products.map((product) => ({
       id: product.id,
       name: product.name,
       prix: product.prix,
@@ -47,8 +50,11 @@ export async function GET() {
     console.log(` ${products.length} produits récupérés avec succès.`);
     return NextResponse.json(transformedProducts, { status: 200 });
   } catch (error) {
-    console.error(' Erreur lors de la récupération des produits:', error);
-    return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
+    console.error(" Erreur lors de la récupération des produits:", error);
+    return NextResponse.json(
+      { error: "Erreur interne du serveur" },
+      { status: 500 }
+    );
   }
 }
 
@@ -66,19 +72,26 @@ export async function POST(req: Request) {
 
     // Validation des champs requis
     if (!name || !prix || !description || !categorieId) {
-
-      return NextResponse.json({ error: "Champs requis manquants" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Champs requis manquants" },
+        { status: 400 }
+      );
     }
 
     const slug = name.toLowerCase().replace(/\s+/g, "-");
 
     // Vérifier si le produit existe déjà
-    const existingProduct = await prisma.produit.findUnique({ where: { slug } });
+    const existingProduct = await prisma.produit.findUnique({
+      where: { slug },
+    });
     if (existingProduct) {
-      return NextResponse.json({ error: "Un produit avec ce nom existe déjà" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Un produit avec ce nom existe déjà" },
+        { status: 400 }
+      );
     }
 
-     // Création du produit dans la base de données
+    // Création du produit dans la base de données
     const newProduct = await prisma.produit.create({
       data: {
         name,
@@ -106,7 +119,9 @@ export async function POST(req: Request) {
 
       const imagePath = `/img/product/${fileName}`;
 
-      const newImageRecord = await prisma.image.create({ data: { path: imagePath } });
+      const newImageRecord = await prisma.image.create({
+        data: { path: imagePath },
+      });
 
       imageId = newImageRecord.id;
     }
@@ -116,13 +131,14 @@ export async function POST(req: Request) {
         where: { id: newProduct.id },
         data: { imageid: imageId },
       });
-
     }
 
     return NextResponse.json(newProduct, { status: 201 });
   } catch (error) {
-
     console.error("Erreur lors de la création du produit :", error);
-    return NextResponse.json({ error: "Échec de la création du produit" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Échec de la création du produit" },
+      { status: 500 }
+    );
   }
 }
