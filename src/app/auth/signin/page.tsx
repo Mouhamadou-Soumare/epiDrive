@@ -3,7 +3,7 @@
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import Link from 'next/link'; // Remplace les <a> pour le SEO et la performance
+import Link from 'next/link';
 
 import { ArrowLeftIcon, ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/outline';
 import AuthenticatorCards from '@/components/AuthenticatorCards';
@@ -15,7 +15,6 @@ export default function SignInPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  // Fonction de validation des entrées utilisateur
   const validateInputs = () => {
     if (!email || !password) {
       setError("Veuillez remplir tous les champs.");
@@ -37,14 +36,14 @@ export default function SignInPage() {
     try {
       const result = await signIn('credentials', {
         redirect: false,
-        email: email.trim(), // Trim pour éviter les espaces accidentels
+        email: email.trim(),
         password,
       });
 
       if (result?.error) {
         setError("Identifiants incorrects. Veuillez réessayer.");
       } else {
-        router.push('/dashboard'); // Redirige vers le dashboard après connexion
+        router.push('/profile');
       }
     } catch (err) {
       setError("Une erreur est survenue. Réessayez plus tard.");
@@ -53,7 +52,7 @@ export default function SignInPage() {
 
   useEffect(() => {
     if (status === 'authenticated') {
-      router.push('/dashboard'); // Redirige si déjà connecté
+      router.push('/profile'); 
     }
   }, [status, router]);
 
