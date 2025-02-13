@@ -80,7 +80,6 @@ export default function RegisterPage() {
         return;
       }
 
-      // Connexion automatique après inscription réussie
       const signInResult = await signIn("credentials", {
         redirect: false,
         email: formData.email.trim(),
