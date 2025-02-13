@@ -5,6 +5,7 @@ import SearchInput from "../components/SearchInput";
 import { useGetIngredients, useDeleteIngredient } from "@/hooks/ingredients/useIngredients";
 import { Ingredient } from "types";
 import Link from "next/link";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const IngredientList = () => {
   const { ingredients, loading, error } = useGetIngredients();
@@ -63,7 +64,7 @@ const IngredientList = () => {
   };
 
   if (loading) {
-    return <div className="text-center">Chargement des ingrédients...</div>;
+    return <LoadingSpinner/>  ;
   }
 
   if (error) {

@@ -4,12 +4,13 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import SearchInput from "../components/SearchInput";
 import UtilisateurRow from "./components/UtilisateurRow";
 import { useGetUsers } from "@/hooks/users/useUsers";
-import { User, Role } from "types"; // Assurez-vous que Role est bien importé
+import LoadingSpinner from "../components/LoadingSpinner";
+import { User, Role } from "types"; 
 
 const UtilisateurList = () => {
   const { users, loading, error } = useGetUsers();
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [selectedRole, setSelectedRole] = useState<string>(""); // Nouvel état pour le filtre
+  const [selectedRole, setSelectedRole] = useState<string>(""); 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 10;
 
@@ -43,7 +44,7 @@ const UtilisateurList = () => {
   };
 
   if (loading) {
-    return <div className="text-center text-lg font-medium">🔄 Chargement des utilisateurs...</div>;
+    return <LoadingSpinner/>;
   }
 
   if (error) {

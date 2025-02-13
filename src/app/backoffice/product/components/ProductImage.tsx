@@ -1,4 +1,3 @@
-// components/ProductImage.tsx
 import { Image } from "../../../../../types";
 
 interface ProductImageProps {

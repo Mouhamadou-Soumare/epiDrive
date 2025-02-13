@@ -6,6 +6,8 @@ import SearchInput from "../components/SearchInput";
 import { Recette } from "types";
 import RecetteRow from "./components/RecetteRow";
 import { useGetRecettes } from "@/hooks/recettes/useRecettes";
+import LoaderComponent from "@/components/LoaderComponent";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const RecetteList = () => {
   const { recettes, loading, error } = useGetRecettes();
@@ -39,9 +41,7 @@ const RecetteList = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen text-gray-700 text-lg">
-        Chargement des recettes...
-      </div>
+      <LoadingSpinner/>
     );
   }
 

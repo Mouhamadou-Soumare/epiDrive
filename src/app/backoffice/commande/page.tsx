@@ -4,6 +4,7 @@ import { useState, useMemo, useCallback } from "react";
 import { useGetCommandes } from "@/hooks/commandes/useCommandes";
 import CommandeRow from "./components/CommandeRow";
 import SearchInput from "../components/SearchInput";
+import LoadingSpinner from "../components/LoadingSpinner";
 import { Commande, CommandeStatus } from "types";
 
 const CommandeList = () => {
@@ -38,12 +39,12 @@ const CommandeList = () => {
     setCurrentPage(1);
   }, []);
 
+
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedStatus(e.target.value);
     setCurrentPage(1);
   };
 
-  if (loading) return <div className="text-gray-700 text-center py-6">Chargement des commandes...</div>;
   if (error) return <div className="text-red-500 text-center py-6">Erreur : {error}</div>;
 
   return (

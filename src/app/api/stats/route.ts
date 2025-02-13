@@ -1,50 +1,36 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/lib/prisma';
 
-const prisma = new PrismaClient();
-
+/**
+ * Récupère les statistiques d'un utilisateur (commandes & total dépensé)
+ */
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const userId = searchParams.get('userId');
-
-  if (!userId) {
-    return NextResponse.json(
-      { error: 'User ID is required' },
-      { status: 400 }
-    );
-  }
-
   try {
-    const userOrders = await prisma.commande.findMany({
-      where: {
-        user: {
-          id: parseInt(userId),
-        },
-      }
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get('userId');
+
+    // Vérification de l'ID utilisateur
+    if (!userId || isNaN(parseInt(userId))) {
+      return NextResponse.json({ error: 'User ID invalide ou manquant.' }, { status: 400 });
+    }
+
+    const userIdInt = parseInt(userId, 10);
+
+    // Récupérer toutes les commandes de l'utilisateur
+    const userOrders = await prisma.commande.count({
+      where: { fk_userId: userIdInt },
     });
 
+    // Calcul du total dépensé par l'utilisateur
     const totalSpent = await prisma.quantiteCommande.aggregate({
-      _sum: {
-        prix: true,
-      },
-      where: {
-        commande: {
-          user: {
-            id: parseInt(userId),
-          },
-        },
-      },
+      _sum: { prix: true },
+      where: { commande: { fk_userId: userIdInt } },
     });
 
-    console.log('Successfully retrieved statistics:', {
-      ordersThisMonth: userOrders,
-      totalSpent: totalSpent._sum.prix
-    });
-
-    // Structurer les statistiques
+    // Formatage des résultats
     const stats = {
-      ordersThisMonth: userOrders.length || 0,
-      totalSpent: totalSpent._sum.prix || 0
+      ordersThisMonth: userOrders,
+      totalSpent: totalSpent._sum.prix || 0,
     };
 
     console.log('Statistiques récupérées avec succès:', stats);
@@ -55,7 +41,5 @@ export async function GET(request: Request) {
       { error: 'Une erreur est survenue lors de la récupération des statistiques.' },
       { status: 500 }
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }
