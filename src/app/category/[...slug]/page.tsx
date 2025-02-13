@@ -13,7 +13,7 @@ export default function CategoryPage() {
 
   return (
     <div className="container mx-auto px-6 py-10">
-      <h1 className="text-4xl font-bold text-gray-900 mb-2 ml-12">{currentCategory.name}</h1>
+      <h1 className="text-4xl font-bold text-gray-900 mb-6 ml-8">{currentCategory.name}</h1>
 
       {currentCategory.subcategories && currentCategory.subcategories.length > 0 && (
         <div className="mb-6">

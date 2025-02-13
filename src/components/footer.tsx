@@ -140,23 +140,22 @@ export default function Footer() {
         <div className="mt-16 border-t border-gray-900/10 pt-8 sm:mt-20 lg:mt-24 lg:flex lg:items-center lg:justify-between">
           <div>
             <h3 className="text-sm/6 font-semibold text-gray-900">
-              Subscribe to our newsletter
+              S'inscrire à notre newsletter
             </h3>
             <p className="mt-2 text-sm/6 text-gray-600">
-              The latest news, articles, and resources, sent to your inbox
-              weekly.
+            Les dernières actualités, articles et ressources, envoyés chaque semaine dans votre boîte de réception.
             </p>
           </div>
           <form className="mt-6 sm:flex sm:max-w-md lg:mt-0">
             <label htmlFor="email-address" className="sr-only">
-              Email address
+              Adresse E-mail
             </label>
             <input
               id="email-address"
               name="email-address"
               type="email"
               required
-              placeholder="Enter your email"
+              placeholder="Votre adresse e-mail"
               autoComplete="email"
               className="w-full min-w-0 rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:w-56 sm:text-sm/6"
             />
@@ -165,7 +164,7 @@ export default function Footer() {
                 type="submit"
                 className="flex w-full items-center justify-center rounded-md button-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Subscribe
+                S'inscrire
               </button>
             </div>
           </form>
@@ -184,7 +183,7 @@ export default function Footer() {
             ))}
           </div>
           <p className="mt-8 text-sm/6 text-gray-600 md:order-1 md:mt-0">
-            &copy; 2024 Your Company, Inc. All rights reserved.
+            &copy; 2024 epiDrive. All rights reserved.
           </p>
         </div>
       </div>
