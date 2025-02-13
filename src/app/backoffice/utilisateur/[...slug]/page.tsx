@@ -6,6 +6,7 @@ import CommandeCard from "../components/CommandeCard";
 import { useGetUser } from "@/hooks/users/useUsers";
 import { Commande, User } from "../../../../../types";
 import { useParams } from 'next/navigation';
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const UserDetail = () => {
   const { slug } = useParams() as { slug: string | string[] };
@@ -34,7 +35,7 @@ const UserDetail = () => {
   const handlePrevPage = useCallback(() => setCurrentPage((prev) => Math.max(prev - 1, 1)), []);
   const handleNextPage = useCallback(() => setCurrentPage((prev) => Math.min(prev + 1, totalPages)), [totalPages]);
 
-  if (loading) return <div className="text-center text-lg font-medium">🔄 Chargement...</div>;
+  if (loading) return <LoadingSpinner/>;
   if (error) return <div className="text-center text-red-500 font-medium">❌ Erreur : {error}</div>;
   if (!user) return <div className="text-center text-gray-500">❌ Utilisateur non trouvé</div>;
 

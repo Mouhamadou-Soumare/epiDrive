@@ -6,6 +6,7 @@ import { Categorie } from "../../../../types";
 import SearchInput from "../components/SearchInput";
 import CategorieRow from "./components/CategorieRow";
 import { useGetCategories } from "@/hooks/categories/useCategories";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const CategoryList = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -59,7 +60,7 @@ const CategoryList = () => {
       </div>
 
       {loading ? (
-        <div className="mt-8">Chargement des catégories...</div>
+        <LoadingSpinner/>
       ) : error ? (
         <div className="mt-8 text-red-500">Erreur lors de la récupération des catégories.</div>
       ) : paginatedCategories.length > 0 ? (

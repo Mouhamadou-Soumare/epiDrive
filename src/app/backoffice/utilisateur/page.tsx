@@ -5,6 +5,7 @@ import SearchInput from "../components/SearchInput";
 import UtilisateurRow from "./components/UtilisateurRow";
 import { useGetUsers } from "@/hooks/users/useUsers";
 import { User } from "types";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const UtilisateurList = () => {
   const { users, loading, error } = useGetUsers();
@@ -34,7 +35,7 @@ const UtilisateurList = () => {
   }, []);
 
   if (loading) {
-    return <div className="text-center text-lg font-medium">🔄 Chargement des utilisateurs...</div>;
+    return <LoadingSpinner/>;
   }
 
   if (error) {

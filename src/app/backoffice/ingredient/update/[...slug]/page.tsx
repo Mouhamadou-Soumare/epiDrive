@@ -9,6 +9,7 @@ import { useAddProduit } from "@/hooks/products/useProduits";
 import { useGetCategories } from "@/hooks/categories/useCategories";
 import Alert from "../../../components/Alert";
 import { Categorie, Ingredient } from "types";
+import LoadingSpinner from "@/app/backoffice/components/LoadingSpinner";
 
 export default function AddProductFromIngredientPage() {
   const { slug } = useParams() as { slug: string | string[] };
@@ -88,7 +89,7 @@ export default function AddProductFromIngredientPage() {
   };
 
   if (ingredientLoading || categoriesLoading || addingProduit) {
-    return <div className="lg:pl-72">Chargement...</div>;
+    return <LoadingSpinner/> ;
   }
 
   if (!updatedIngredient) {

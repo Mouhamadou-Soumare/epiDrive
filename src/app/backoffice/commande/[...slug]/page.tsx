@@ -10,6 +10,7 @@ import { useGetUser } from "@/hooks/users/useUsers";
 import { useParams } from 'next/navigation';
 import { Commande, Produit, User, CommandeStatus } from "types";
 import { useEffect, useState } from 'react';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const CommandeDetail = () => {
   const { slug } = useParams() as { slug: string | string[] };
@@ -56,28 +57,13 @@ const CommandeDetail = () => {
     prix: quantite.prix,
   })) || [];
 
-  // Gestion de la mise à jour du statut
-  /*
-  const handleUpdateStatus = async (newStatus: CommandeStatus) => {
-    if (commande) {
-      try {
-        await updateCommande(commande.id, { ...commande, status: newStatus });
-        setMessageCommandeAlert(`Le statut de la commande ${commande.id} est maintenant "${newStatus}".`);
-        setOpenCommandeAlert(true);
-      } catch (error) {
-        console.error("Erreur lors de la mise à jour de la commande :", error);
-      }
-    }
-  };
-  */
-
 
   useEffect(() => {
     if (updatedCommande && updatedCommande.id === localCommande?.id) {
       console.log("🔄 Mise à jour en temps réel de la commande :", updatedCommande);
       setLocalCommande(updatedCommande);
     }
-  }, [updatedCommande, localCommande]); // 🔥 Remplacement de `commande` par `localCommande`  
+  }, [updatedCommande, localCommande]); 
 
   const handleUpdateStatus = async (newStatus: CommandeStatus) => {
     if (commande) {
@@ -105,7 +91,7 @@ const CommandeDetail = () => {
 
   // Gestion des états de chargement et des erreurs
   if (commandeLoading || userLoading || updatingCommande) {
-    return <div className="lg:pl-72">Chargement...</div>;
+    return <LoadingSpinner/>;
   }
 
   if (commandeError || !commande) {

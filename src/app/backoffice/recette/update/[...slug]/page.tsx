@@ -8,6 +8,7 @@ import { useGetProduits } from "@/hooks/products/useProduits";
 import FormInputField from "../../components/FormInputField";
 import ProduitList from "../../components/ProduitList";
 import Alert from "../../components/Alert";
+import LoadingSpinner from "@/app/backoffice/components/LoadingSpinner";
 
 export default function UpdateRecettePage() {
   const router = useRouter();
@@ -82,9 +83,7 @@ export default function UpdateRecettePage() {
 
   if (recetteLoading || produitsLoading || updateLoading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <p className="text-lg font-semibold text-gray-700">Chargement...</p>
-      </div>
+     <LoadingSpinner/>
     );
   }
 

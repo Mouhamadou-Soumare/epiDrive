@@ -13,7 +13,6 @@ export default function CartPage() {
   const { status } = useSession();
   const router = useRouter();
 
-  // 🔥 Utilisation du contexte global CartProvider
   const { cartItems, loading, updateQuantity, deleteProduct } = useCart();
   const [localCart, setLocalCart] = useState(cartItems);
   const updateTimeout = useRef<{ [key: number]: NodeJS.Timeout }>({});
@@ -23,47 +22,39 @@ export default function CartPage() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showRecommendedRecettes, setShowRecommendedRecettes] = useState(false);
 
-  // ✅ Met à jour `localCart` uniquement au premier chargement
   useEffect(() => {
     if (localCart.length === 0) {
       setLocalCart(cartItems);
     }
   }, [cartItems]);
 
-  // ✅ Mise à jour optimisée des quantités (Optimistic UI)
   const handleUpdateQuantity = (productId: number, newQuantity: number) => {
     if (newQuantity < 1) {
       handleRemove(productId);
       return;
     }
 
-    // ✅ Mise à jour instantanée du panier local (optimistic UI)
     setLocalCart((prev) =>
       prev.map((item) =>
         item.produit.id === productId ? { ...item, quantite: newQuantity } : item
       )
     );
 
-    // ✅ Supprime le timeout existant pour éviter le spam API
     if (updateTimeout.current[productId]) {
       clearTimeout(updateTimeout.current[productId]);
     }
 
-    // ✅ Déclenche l'API après un petit délai (évite requêtes multiples)
     updateTimeout.current[productId] = setTimeout(() => {
       updateQuantity(productId, newQuantity);
     }, 300);
   };
 
-  // ✅ Suppression optimisée (optimistic UI)
   const handleRemove = (productId: number) => {
     setLocalCart((prev) => prev.filter((item) => item.produit.id !== productId));
     deleteProduct(productId);
   };
 
-  /**
-   * 🔹 Récupération des recettes recommandées
-   */
+  
   const fetchRecettes = async () => {
     if (cartItems.length === 0) return;
     setIsLoadingRecettes(true);

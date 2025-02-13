@@ -9,6 +9,7 @@ import Alert from "../../components/Alert";
 import { useGetCategories } from "@/hooks/categories/useCategories";
 import { useAddProduit } from "@/hooks/products/useProduits";
 import { Categorie } from "types";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 export default function AddProductPage() {
     const router = useRouter();
@@ -92,7 +93,7 @@ export default function AddProductPage() {
         [product, newImage, addProduit, router]
     );
 
-    if (loadingCategories) return <p>Chargement des catégories...</p>;
+    if (loadingCategories) return <LoadingSpinner/> ;
 
     return (
         <>

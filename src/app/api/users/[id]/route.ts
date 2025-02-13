@@ -1,22 +1,22 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
+/**
+ * Récupère un utilisateur par ID avec ses commandes et livraisons
+ */
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const resolvedParams = await params;
-  const { id } = resolvedParams;
-
-  if (!id) {
-    return NextResponse.json({ error: 'ID is required' }, { status: 400 });
-  }
-
-  const userId = parseInt(id);
-  if (isNaN(userId)) {
-    return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
-  }
-
   try {
-    console.log("Fetching user with ID:", userId);
+    const { id } = await params;
 
+    // Vérification de l'ID utilisateur
+    if (!id || isNaN(parseInt(id, 10))) {
+      return NextResponse.json({ error: 'ID utilisateur invalide ou manquant.' }, { status: 400 });
+    }
+
+    const userId = parseInt(id, 10);
+    console.log("🔍 Récupération de l'utilisateur avec l'ID :", userId);
+
+    // Recherche de l'utilisateur avec ses relations
     const user = await prisma.user.findUnique({
       where: { id: userId },
       include: {
@@ -33,100 +33,90 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     });
 
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Utilisateur introuvable.' }, { status: 404 });
     }
 
-    // Exclure le mot de passe de la réponse
+    // Suppression du mot de passe avant de renvoyer l'utilisateur
     const { password, ...userWithoutPassword } = user;
 
-    console.log('GET API/users/' + id + ': user found:', userWithoutPassword);
+    console.log('Utilisateur trouvé:', userWithoutPassword);
     return NextResponse.json(userWithoutPassword, { status: 200 });
   } catch (error) {
-    console.error('Error fetching user:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('Erreur lors de la récupération de l\'utilisateur:', error);
+    return NextResponse.json({ error: 'Erreur interne du serveur.' }, { status: 500 });
   }
 }
 
 
-
+/**
+ * Met à jour un utilisateur par ID
+ */
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const resolvedParams = await params;
-  const { id } = resolvedParams;
-
-  if (!id) {
-    return NextResponse.json({ error: 'ID is required' }, { status: 400 });
-  }
-
-  const userId = parseInt(id);
-  if (isNaN(userId)) {
-    return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
-  }
-
   try {
+    const { id } = await params;
+
+    // Vérification de l'ID utilisateur
+    if (!id || isNaN(parseInt(id, 10))) {
+      return NextResponse.json({ error: 'ID utilisateur invalide ou manquant.' }, { status: 400 });
+    }
+
+    const userId = parseInt(id, 10);
     const body = await req.json();
     const { username, email, role, imageId } = body;
 
-    console.log('Updating user with ID:', userId);
+    console.log('Mise à jour de l\'utilisateur avec l\'ID :', userId);
 
-    // Check if user exists
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-    });
-
+    // Vérifie si l'utilisateur existe
+    const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Utilisateur introuvable.' }, { status: 404 });
     }
 
-    // Update user
+    // Mise à jour de l'utilisateur
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: { username, email, role, imageId },
     });
 
-    // Exclure le mot de passe de la réponse
+    // Suppression du mot de passe avant de renvoyer l'utilisateur
     const { password, ...userWithoutPassword } = updatedUser;
 
-    console.log('PATCH API/users/' + id + ': user updated:', userWithoutPassword);
+    console.log('Utilisateur mis à jour :', userWithoutPassword);
     return NextResponse.json(userWithoutPassword, { status: 200 });
   } catch (error) {
-    console.error('Error updating user:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('Erreur lors de la mise à jour de l\'utilisateur :', error);
+    return NextResponse.json({ error: 'Erreur interne du serveur.' }, { status: 500 });
   }
 }
 
-
+/**
+ * Supprime un utilisateur par ID
+ */
 export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const resolvedParams = await params;
-  const { id } = resolvedParams;
-
-  if (!id) {
-    return NextResponse.json({ error: 'ID is required' }, { status: 400 });
-  }
-
-  const userId = parseInt(id);
-  if (isNaN(userId)) {
-    return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
-  }
-
   try {
-    console.log('Deleting user with ID:', userId);
+    const { id } = await params;
 
-    // Check if user exists
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-    });
-
-    if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    // Vérification de l'ID utilisateur
+    if (!id || isNaN(parseInt(id, 10))) {
+      return NextResponse.json({ error: 'ID utilisateur invalide ou manquant.' }, { status: 400 });
     }
 
-    // Delete user
+    const userId = parseInt(id, 10);
+    console.log('🗑 Suppression de l\'utilisateur avec l\'ID :', userId);
+
+    // Vérifie si l'utilisateur existe
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (!user) {
+      return NextResponse.json({ error: 'Utilisateur introuvable.' }, { status: 404 });
+    }
+
+    // Suppression de l'utilisateur
     await prisma.user.delete({ where: { id: userId } });
 
-    console.log('DELETE API/users/' + id + ': user deleted');
-    return NextResponse.json({ message: 'User deleted successfully' });
+    console.log('Utilisateur supprimé avec succès :', userId);
+    return NextResponse.json({ message: 'Utilisateur supprimé avec succès.' });
   } catch (error) {
-    console.error('Error deleting user:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('Erreur lors de la suppression de l\'utilisateur :', error);
+    return NextResponse.json({ error: 'Erreur interne du serveur.' }, { status: 500 });
   }
 }

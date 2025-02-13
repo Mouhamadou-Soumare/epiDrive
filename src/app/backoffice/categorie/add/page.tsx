@@ -5,6 +5,7 @@ import Alert from '../../components/Alert';
 import FormInputField from '../components/FormInputField';
 import { Categorie } from "../../../../../types";
 import { useGetCategories, useAddCategory } from "@/hooks/categories/useCategories";
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 export default function AddCategoryPage() {
   const { categories, loading: loadingCategories, error: errorCategories } = useGetCategories();
@@ -57,7 +58,7 @@ export default function AddCategoryPage() {
     }
   };
 
-  if (loadingCategories) return <div>Chargement des catégories...</div>;
+  if (loadingCategories) return <LoadingSpinner/>;
 
   return (
     <>
