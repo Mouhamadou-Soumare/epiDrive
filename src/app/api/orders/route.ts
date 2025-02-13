@@ -1,7 +1,7 @@
-import { getServerSession } from 'next-auth';
+import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
-import prisma from '@/lib/prisma';
-import { NextResponse } from 'next/server';
+import prisma from "@/lib/prisma";
+import { NextResponse } from "next/server";
 
 /**
  * Récupère les commandes de l'utilisateur authentifié
@@ -11,13 +11,16 @@ export async function GET() {
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
+      return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
 
     const userId = parseInt(session.user.id, 10);
 
     if (isNaN(userId)) {
-      return NextResponse.json({ error: 'ID utilisateur invalide' }, { status: 400 });
+      return NextResponse.json(
+        { error: "ID utilisateur invalide" },
+        { status: 400 }
+      );
     }
 
     const orders = await prisma.commande.findMany({
@@ -25,11 +28,14 @@ export async function GET() {
       include: {
         quantites: { include: { produit: true } },
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
 
     if (!orders.length) {
-      return NextResponse.json({ message: 'Aucune commande trouvée' }, { status: 404 });
+      return NextResponse.json(
+        { message: "Aucune commande trouvée" },
+        { status: 404 }
+      );
     }
 
     const formattedOrders = orders.map((order) => ({
@@ -47,9 +53,12 @@ export async function GET() {
 
     return NextResponse.json(formattedOrders, { status: 200 });
   } catch (error) {
-    console.error('Erreur lors de la récupération des commandes :', error);
+    console.error("Erreur lors de la récupération des commandes :", error);
     return NextResponse.json(
-      { error: 'Erreur interne du serveur lors de la récupération des commandes.' },
+      {
+        error:
+          "Erreur interne du serveur lors de la récupération des commandes.",
+      },
       { status: 500 }
     );
   }

@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
 
   req.signal.addEventListener("abort", () => {
     console.log(`🔴 Client SSE déconnecté: ${clientId}`);
-    clients = clients.filter(client => client.id !== clientId);
+    clients = clients.filter((client) => client.id !== clientId);
     writer.close();
   });
 
@@ -34,7 +34,7 @@ export async function GET(req: NextRequest) {
     headers: {
       "Content-Type": "text/event-stream",
       "Cache-Control": "no-cache",
-      "Connection": "keep-alive",
+      Connection: "keep-alive",
     },
   });
 }
@@ -46,7 +46,9 @@ export async function sendCommandeUpdate(updatedCommande: any) {
   const encoder = new TextEncoder();
   clients.forEach(async (client) => {
     try {
-      await client.res.write(encoder.encode(`data: ${JSON.stringify(updatedCommande)}\n\n`));
+      await client.res.write(
+        encoder.encode(`data: ${JSON.stringify(updatedCommande)}\n\n`)
+      );
     } catch (error) {
       console.error(` Erreur envoi SSE client ${client.id}:`, error);
     }

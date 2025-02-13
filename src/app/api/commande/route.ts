@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
-import { CommandeStatus, Livraison_Type } from '@prisma/client';
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
+import { CommandeStatus, Livraison_Type } from "@prisma/client";
 
 interface ProduitCommande {
   id: number;
@@ -36,13 +36,19 @@ export async function GET() {
     });
 
     if (!commandes.length) {
-      return NextResponse.json({ message: 'Aucune commande trouvée' }, { status: 404 });
+      return NextResponse.json(
+        { message: "Aucune commande trouvée" },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json(commandes, { status: 200 });
   } catch (error) {
-    console.error(' Erreur lors de la récupération des commandes :', error);
-    return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
+    console.error(" Erreur lors de la récupération des commandes :", error);
+    return NextResponse.json(
+      { error: "Erreur interne du serveur" },
+      { status: 500 }
+    );
   }
 }
 
@@ -55,19 +61,36 @@ export async function POST(req: Request) {
     const { status, paymentId, userId, infosAdresse, produits, type } = body;
 
     if (!status || !userId || !infosAdresse || !produits.length || !type) {
-      return NextResponse.json({ error: 'Champs requis manquants' }, { status: 400 });
+      return NextResponse.json(
+        { error: "Champs requis manquants" },
+        { status: 400 }
+      );
     }
 
-    if (!infosAdresse.adresse || !infosAdresse.ville || !infosAdresse.codePostal || !infosAdresse.pays) {
-      return NextResponse.json({ error: 'Champs adresse invalides' }, { status: 400 });
+    if (
+      !infosAdresse.adresse ||
+      !infosAdresse.ville ||
+      !infosAdresse.codePostal ||
+      !infosAdresse.pays
+    ) {
+      return NextResponse.json(
+        { error: "Champs adresse invalides" },
+        { status: 400 }
+      );
     }
 
     if (!Object.values(CommandeStatus).includes(status)) {
-      return NextResponse.json({ error: `Statut invalide : ${status}` }, { status: 400 });
+      return NextResponse.json(
+        { error: `Statut invalide : ${status}` },
+        { status: 400 }
+      );
     }
 
     if (!Object.values(Livraison_Type).includes(type)) {
-      return NextResponse.json({ error: `Type de livraison invalide : ${type}` }, { status: 400 });
+      return NextResponse.json(
+        { error: `Type de livraison invalide : ${type}` },
+        { status: 400 }
+      );
     }
 
     const livraisonData = {
@@ -114,7 +137,10 @@ export async function POST(req: Request) {
     // Ajout des produits à la commande
     for (const produit of produits) {
       if (!produit.id || produit.quantite <= 0) {
-        return NextResponse.json({ error: 'Données produit invalides', produit }, { status: 400 });
+        return NextResponse.json(
+          { error: "Données produit invalides", produit },
+          { status: 400 }
+        );
       }
 
       await prisma.quantiteCommande.create({
@@ -125,7 +151,7 @@ export async function POST(req: Request) {
           prix: produit.prix,
         },
       });
-      
+
       // Mise à jour du stock du produit
       await prisma.produit.update({
         where: { id: produit.id },
@@ -139,9 +165,9 @@ export async function POST(req: Request) {
 
     return NextResponse.json(newCommande, { status: 201 });
   } catch (error) {
-    console.error(' Erreur lors de la création de la commande :', error);
+    console.error(" Erreur lors de la création de la commande :", error);
     return NextResponse.json(
-      { error: 'Erreur interne du serveur', details: (error as Error).message },
+      { error: "Erreur interne du serveur", details: (error as Error).message },
       { status: 500 }
     );
   }
