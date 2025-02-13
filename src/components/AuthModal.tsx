@@ -45,7 +45,7 @@ const AuthModal = ({ onClose, onAuthenticate }: AuthModalProps) => {
       return;
     }
 
-    const endpoint = isSigningUp ? '/api/auth/signup' : '/api/auth/signin';
+    const endpoint = isSigningUp ? '/api/auth/register' : '/api/auth/signin';
 
     try {
       const res = await fetch(endpoint, {

@@ -133,6 +133,37 @@ export async function POST(req: Request) {
       });
     }
 
+    // Récupérer toutes les recettes qui contiennent un ingrédient ayant ce nom
+    const recettes = await prisma.recette.findMany({
+      where: {
+        ingredients: {
+          some: {
+            name: name,
+          },
+        },
+      },
+      include: {
+        produits: true,
+      },
+    });
+
+    console.log(`Found ${recettes.length} recipes containing ingredient "${name}"`);
+
+    // Associer le nouveau produit aux recettes trouvées
+    if (recettes.length > 0) {
+      for (const recette of recettes) {
+        await prisma.recette.update({
+          where: { id: recette.id },
+          data: {
+            produits: {
+              connect: { id: newProduct.id }, // Associe le produit à la recette
+            },
+          },
+        });
+      }
+      console.log(`Added new product "${newProduct.name}" to ${recettes.length} recipes`);
+    }
+
     return NextResponse.json(newProduct, { status: 201 });
   } catch (error) {
     console.error("Erreur lors de la création du produit :", error);

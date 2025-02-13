@@ -48,51 +48,38 @@ export async function GET(
   }
 }
 
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(req: Request, { params }: { params: { id: string } }) {
+  const { id } = params;
+
   try {
-    const userId = parseInt(params.id, 10);
-    if (isNaN(userId)) {
-      return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
+    // 🔥 Récupérer les données envoyées en FormData
+    const formData = await req.formData();
+    const username = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const file = formData.get("file"); // Image (optionnel)
+
+    console.log("Updating user with ID:", id);
+    console.log("Received data:", { username, email, file });
+
+    // 🔹 Vérifie que les valeurs existent avant d'exécuter la mise à jour
+    if (!username || !email) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    const body = await req.json();
-    const { username, email, role, imageId } = body;
-
-    console.log("Updating user with ID:", userId);
-
-    const existingUser = await prisma.user.findUnique({
-      where: { id: userId },
-    });
-
-    if (!existingUser) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
-
-    const sessionUser = await prisma.user.findUnique({
-      where: { id: userId },
-      select: { role: true },
-    });
-
-    if (!sessionUser || sessionUser.role !== "ADMIN") {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
-    }
-
+    // 🔥 Mettre à jour l'utilisateur (sans gérer le fichier pour l'instant)
     const updatedUser = await prisma.user.update({
-      where: { id: userId },
-      data: { username, email, role, imageId },
+      where: { id: parseInt(id) },
+      data: { username, email },
     });
 
-    console.log("User updated:", updatedUser);
-    return NextResponse.json(excludePassword(updatedUser), { status: 200 });
+    // Exclure le mot de passe de la réponse
+    const { password, ...userWithoutPassword } = updatedUser;
+    console.log("PATCH API/users/" + id + ": user updated:", userWithoutPassword);
+    
+    return NextResponse.json(userWithoutPassword, { status: 200 });
   } catch (error) {
     console.error("Error updating user:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 

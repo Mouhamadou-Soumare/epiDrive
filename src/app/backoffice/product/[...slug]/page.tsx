@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { CheckIcon } from "@heroicons/react/20/solid";
 
@@ -87,7 +87,7 @@ export default function ProductDetails() {
         </div>
 
         {/* Produit image */}
-        <ProductImage image={produit.image ?? null} altText={produit.name} />
+        <ProductImage image={produit.imageSrc ?? null} altText={produit.name} />
 
         {/* Product actions */}
         <ProductActions productSlug={produit.slug} onDelete={handleDelete} />

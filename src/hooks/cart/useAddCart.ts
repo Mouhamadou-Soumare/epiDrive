@@ -31,6 +31,11 @@ export default function useAddCart() {
     }
 
     try {
+      console.log("Ajout au panier:", JSON.stringify({
+        ...item,
+        sessionId,
+        update: item.update || false, // Nouvel attribut
+      }));
       const response = await fetch("/api/cart", {
         method: "POST",
         headers: {

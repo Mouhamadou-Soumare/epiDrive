@@ -19,6 +19,7 @@ export default function SearchBar() {
       return;
     }
 
+    console.log('useEffect', results);
     setLoading(true);
 
     try {
@@ -139,7 +140,7 @@ export default function SearchBar() {
             >
               <div className="flex items-center">
                 <img
-                  src={product.image?.path || "https://via.placeholder.com/100"}
+                  src={product.imageSrc || "https://via.placeholder.com/100"}
                   alt={`Image de ${product.name}`}
                   className="w-10 h-10 object-cover rounded mr-4"
                 />

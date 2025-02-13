@@ -100,7 +100,7 @@ export default function AddProductPage() {
             {loadingState ? (
                 <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
                     <div className="text-center">
-                        <p className="text-lg font-semibold text-gray-700">🔄 Ajout du produit en cours...</p>
+                        <p className="text-lg font-semibold text-gray-700">Ajout du produit en cours...</p>
                     </div>
                 </div>
             ) : (

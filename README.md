@@ -32,20 +32,20 @@ $ npm install
 Avant de lancer l'application, configurez le fichier `.env` avec vos variables d'environnement :
 
 ```env
-MYSQL_USER="user"
-MYSQL_PASSWORD="password"
-MYSQL_ROOT_PASSWORD="rootpassword"
-DATABASE_URL=""
-SHADOW_DATABASE_URL=""
-RESEND_API_KEY=""
-RESEND_EMAIL_TO=""
-RESEND_EMAIL_FROM="onboarding@resend.dev"
-STRIPE_SECRET_KEY=""
-NEXT_PUBLIC_BASE_URL="http://localhost:3000/"
-CHATGPT_API_KEY=""
-NEXTAUTH_SECRET="secret"
-NEXTAUTH_URL="http://localhost:3000"
-BACKOFFICE_SECRET_PATH=""
+MYSQL_USER=
+MYSQL_PASSWORD=
+MYSQL_ROOT_PASSWORD=
+DATABASE_URL=
+SHADOW_DATABASE_URL=
+RESEND_API_KEY=
+RESEND_EMAIL_TO=
+RESEND_EMAIL_FROM=
+STRIPE_SECRET_KEY=
+NEXT_PUBLIC_BASE_URL=
+CHATGPT_API_KEY=
+NEXTAUTH_SECRET=
+NEXTAUTH_URL=
+BACKOFFICE_SECRET_PATH=
 ```
 
 ### Initialisation de la Base de Données
@@ -59,6 +59,7 @@ $ mysql -h db -u root -p
 
 $ CREATE DATABASE shadow_epidrive;
 
+## Dans le container web de docker ##
 # Appliquer les migrations Prisma
 $ npx prisma migrate dev --name init
 

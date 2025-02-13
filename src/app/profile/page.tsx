@@ -6,12 +6,15 @@ import LoaderComponent from "@/components/LoaderComponent";
 import { useUserProfile } from "@/hooks/users/useUserProfile";
 import {
   ArrowRightOnRectangleIcon,
+  BriefcaseIcon,
   CalendarIcon,
   CurrencyEuroIcon,
   EnvelopeIcon,
   ShoppingBagIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
+import { Role, User } from "types";
+import { useGetUser } from "@/hooks/users/useUsers";
 
 export default function ProfilePage() {
   return <ProfileContent />;
@@ -19,8 +22,11 @@ export default function ProfilePage() {
 
 function ProfileContent() {
   const { session, status, stats, loading, currentDate } = useUserProfile();
+  const { user, loading: userLoading, error } = useGetUser(
+    session?.user?.id ? Number(session.user.id) : null
+  ) as { user: User | null; loading: boolean; error: any };
 
-  if (status === "loading" || loading) {
+  if (status === "loading" || loading || userLoading) {
     return <LoaderComponent />;
   }
 
@@ -52,6 +58,17 @@ function ProfileContent() {
                   Paramètres
                 </Link>
               </li>
+              {user?.role === Role.ADMIN && (
+                <li className="flex items-center space-x-2">
+                  <BriefcaseIcon className="h-5 w-5 text-gray-600" />
+                  <a
+                    href="/backoffice"
+                    className="text-gray-700 hover:text-orange-700 font-medium"
+                  >
+                    Dashboard
+                  </a>
+                </li>
+              )}
               <li className="flex items-center space-x-2">
                 <ArrowRightOnRectangleIcon className="h-5 w-5 text-red-500" />
                 <button
@@ -64,17 +81,17 @@ function ProfileContent() {
             </ul>
           </div>
 
-          {/*  Carte Profil Utilisateur */}
+          {/* 🔹 Carte Profil Utilisateur */}
           <div className="md:col-span-2 bg-white p-6 rounded-xl shadow-lg">
             <h2 className="text-2xl font-semibold text-gray-900 mb-6">
-              Bienvenue, {session?.user?.name || "Utilisateur"}
+              Bienvenue, {user.username || "Utilisateur"}
             </h2>
 
             <div className="flex items-center space-x-6">
               {/* Avatar Utilisateur */}
               <div className="relative">
                 <img
-                  src={session?.user?.image || "/default-avatar.png"}
+                  src={"/default-avatar.png"}
                   alt="Avatar"
                   className="w-24 h-24 rounded-full shadow-md border border-gray-300"
                 />
@@ -84,7 +101,7 @@ function ProfileContent() {
               <div className="text-gray-700 flex flex-col space-y-2">
                 <div className="flex items-center space-x-2">
                   <EnvelopeIcon className="h-5 w-5 text-gray-500" />
-                  <p className="text-sm font-medium">{session?.user?.email}</p>
+                  <p className="text-sm font-medium">{user.email}</p>
                 </div>
 
                 <div className="flex items-center space-x-2">
