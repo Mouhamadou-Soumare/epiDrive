@@ -1,152 +1,53 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { randomBytes } from "crypto";
 import Image from "next/image";
-import groceryCheckout from "../../../public/img/grocery-checkout.webp";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useOrderSummary } from "@/hooks/checkout/useOrderSummary";
+import { useSaveOrder } from "@/hooks/checkout/useSaveOrder";
+import groceryCheckout from "../../../public/img/grocery-checkout.webp";
+import LoaderComponent from "@/components/LoaderComponent";
 
 export default function CheckoutSuccess() {
+  const { data: session } = useSession();
+  const { orderSummary, loading } = useOrderSummary();
+  const { saveOrderToDatabase, saving, orderSaved } = useSaveOrder();
   const router = useRouter();
-  const { data: session, status } = useSession();
-  const [orderSummary, setOrderSummary] = useState<null | {
-    items: {
-      id: number;
-      name: string;
-      quantity: number;
-      price: number;
-      total: number;
-      image: string;
-    }[];
-    totalAmount: number;
-    livraisonType: string;
-    shippingAddress: {
-      adresse: string;
-      ville: string;
-      codePostal: string;
-      pays: string;
-    };
-  }>(null);
-  const [loading, setLoading] = useState(true);
 
-  // Fonction pour sauvegarder la commande en base de données
-  const saveOrderToDatabase = async () => {
-    if (!orderSummary || !session?.user?.id || !session.user.email) {
-      console.error("Données utilisateur ou commande manquantes.");
-      return;
-    }
-  
-    try {
-      setLoading(true);
-  
-      const userId = session.user.id;
-      const userEmail = session.user.email ?? "no-reply@epidrive.com";
-      const userName = session.user.name || "Cher client";
-  
-      const produits = orderSummary.items.map((item) => ({
-        id: item.id,
-        quantite: item.quantity,
-        prix: item.price,
-        image: item.image,
-      }));
-  
-      console.log("🛒 Enregistrement de la commande en base...");
-  
-      const commande = {
-        status: "EN_ATTENTE",
-        type: orderSummary.livraisonType,
-        paymentId: randomBytes(16).toString("hex"),
-        userId,
-        infosAdresse: orderSummary.shippingAddress,
-        produits,
-      };
-  
-      // Exécuter la requête en parallèle avec l'envoi de l'email
-      const response = await fetch("/api/commande", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(commande),
-      });
-  
-      if (!response.ok) throw new Error("Erreur lors de l'enregistrement de la commande");
-  
-      const data = await response.json();
-      const commandeId = data.id;
-  
-      console.log("✅ Commande enregistrée, ID:", commandeId);
-  
-      // Lancer l'envoi de l'email **en parallèle**
-      await Promise.all([
-        sendOrderConfirmation(userName, "mouhamadou-soumare@hotmail.com", commandeId), // Envoi email en parallèle
-      ]);
-      
-    } catch (error) {
-      console.error("❌ Erreur lors du traitement de la commande:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  
-
-  // Fonction pour envoyer l'email de confirmation
-  const sendOrderConfirmation = async (userName: string, email: string, commandeId: number) => {
-    try {
-      console.log("📩 Envoi de l'email de confirmation à:", email);
-
-      const emailResponse = await fetch("/api/sendOrderConfirmation", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userName, email, commandeId }),
-      });
-
-      if (!emailResponse.ok) {
-        throw new Error("Erreur lors de l'envoi de l'email de confirmation");
+  const formattedOrderSummary = orderSummary
+    ? {
+        ...orderSummary,
+        items: orderSummary.items.map((item) => ({
+          id: item.id,
+          quantite: item.quantity, 
+          prix: item.price,
+          image: item.image,
+        })),
       }
+    : null;
 
-      console.log("✅ Email de confirmation envoyé avec succès !");
-    } catch (error) {
-      console.error("❌ Erreur lors de la notification de l'utilisateur:", error);
-    }
-  };
-
-  // Récupération des données de la commande
   useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/auth/signin");
-      return;
+    if (formattedOrderSummary && session?.user && !orderSaved) {
+      saveOrderToDatabase(
+        formattedOrderSummary,
+        session.user.id,
+        session.user.email ?? "no-reply@epidrive.com",
+        session.user.name || "Cher client"
+      );
     }
+  }, [formattedOrderSummary, session, orderSaved]);
 
-    const savedOrder = localStorage.getItem("orderSummary");
-    if (savedOrder) {
-      setOrderSummary(JSON.parse(savedOrder));
-      localStorage.removeItem("orderSummary");
-    }
-
-    localStorage.removeItem("sessionId");
-  }, [status]);
-
-  // Exécution du traitement une fois les données récupérées
-  useEffect(() => {
-    if (orderSummary) {
-      saveOrderToDatabase();
-    }
-  }, [orderSummary, session]);
-
-  if (loading) {
+  if (loading || saving) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center p-6 text-center">
-        <p className="text-lg font-medium text-gray-700">Traitement de votre commande...</p>
-      </div>
+    <LoaderComponent/>
     );
   }
 
   if (!orderSummary) {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center p-6 text-center">
-        <p className="text-lg font-medium text-gray-700">
-          Aucune commande trouvée.
-        </p>
+        <p className="text-lg font-medium text-gray-700">Aucune commande trouvée.</p>
       </div>
     );
   }
@@ -203,52 +104,19 @@ export default function CheckoutSuccess() {
             </dl>
 
             <dl className="mt-16 grid grid-cols-2 gap-x-4 text-sm text-gray-600">
-
-<div>
-
-  <dt className="font-medium text-gray-900">
-
-    Adresse de livraison
-
-  </dt>
-
-
-
-  <dd className="mt-2">
-
-    <address className="not-italic">
-
-      <span className="block">
-
-        {orderSummary.shippingAddress.adresse}
-
-      </span>
-
-
-
-      <span className="block">
-
-        {orderSummary.shippingAddress.ville}
-
-      </span>
-
-
-
-      <span className="block">
-
-        {orderSummary.shippingAddress.codePostal},{" "}
-
-        {orderSummary.shippingAddress.pays}
-
-      </span>
-
-    </address>
-
-  </dd>
-
-</div>
-
-</dl>
+              <div>
+                <dt className="font-medium text-gray-900">Adresse de livraison</dt>
+                <dd className="mt-2">
+                  <address className="not-italic">
+                    <span className="block">{orderSummary.shippingAddress.adresse}</span>
+                    <span className="block">{orderSummary.shippingAddress.ville}</span>
+                    <span className="block">
+                      {orderSummary.shippingAddress.codePostal}, {orderSummary.shippingAddress.pays}
+                    </span>
+                  </address>
+                </dd>
+              </div>
+            </dl>
 
             <div className="mt-16 border-t border-gray-200 py-6 text-right">
               <button

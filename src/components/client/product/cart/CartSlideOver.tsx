@@ -147,7 +147,7 @@ export default function CartSlideOver({ open, setOpen }: CartSlideOverProps) {
                   {/* 🔹 Bouton validation */}
                   <button
                     onClick={() => { window.location.href = '/cart' }}
-                    className="mt-6 flex w-full items-center justify-center rounded-md bg-indigo-600 px-6 py-3 text-base font-medium text-white hover:bg-indigo-700"
+                    className="mt-6 flex w-full items-center justify-center rounded-md button-primary px-6 py-3 text-base font-medium text-white hover:bg-orange-700"
                   >
                     Passer à la caisse
                   </button>

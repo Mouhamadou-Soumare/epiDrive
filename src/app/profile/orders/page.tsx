@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import LoadingSpinner from '@/components/LoadingSpinner';
+import LoaderComponent from '@/components/LoaderComponent';
 
 interface Order {
   id: number;
@@ -27,7 +27,7 @@ export default function OrdersPage() {
     }
   }, [status]);
 
-  if (status === 'loading' || loading) return <LoadingSpinner />;
+  if (status === 'loading' || loading) return <LoaderComponent />;
 
   if (!session) {
     return (

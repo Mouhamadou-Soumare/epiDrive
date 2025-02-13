@@ -310,7 +310,7 @@ export default function Navbar() {
           </button>
         </div>
 
-        <PopoverGroup className="hidden lg:flex lg:gap-x-6 items-center">
+        <PopoverGroup className="hidden lg:flex lg:gap-x-4 items-center">
           <Popover>
             <Popover.Button
               type="button"

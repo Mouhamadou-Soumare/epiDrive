@@ -9,7 +9,7 @@ const ProductActions: React.FC<ProductActionsProps> = ({ productSlug, onDelete }
   <div className="flex gap-4 flex-col">
     <Link
       href={`/backoffice/product/update/${productSlug}`}
-      className="flex w-full items-center justify-center rounded-md px-8 py-3 text-white bg-orange-300 hover:bg-orange-500 focus:ring-2 focus:ring-indigo-500"
+      className="flex w-full items-center justify-center rounded-md px-8 py-3 text-white button-primary hover:bg-orange-500 focus:ring-2 focus:ring-indigo-500"
     >
       Modifier le produit
     </Link>

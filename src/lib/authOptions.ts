@@ -55,7 +55,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (token) {
         session.user = {
-          id: token.id as string | undefined, // ✅ Forcer le typage
+          id: token.id as string | undefined,
           email: token.email,
           name: token.name,
         };

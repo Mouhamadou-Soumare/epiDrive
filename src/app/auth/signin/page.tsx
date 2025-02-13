@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { ArrowLeftIcon, ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import Link from 'next/link';
-import { ArrowLeftIcon, ArrowRightEndOnRectangleIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
 import AuthenticatorCards from '@/components/AuthenticatorCards';
 import { useSignIn } from '@/hooks/auth/useSignIn';
 
@@ -13,7 +13,43 @@ export default function SignInPage() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { error, loading, signInUser } = useSignIn();
+  const [error, setError] = useState('');
+
+  const validateInputs = () => {
+    if (!email || !password) {
+      setError("Veuillez remplir tous les champs.");
+      return false;
+    }
+    if (password.length < 6) {
+      setError("Le mot de passe doit contenir au moins 6 caractères.");
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+
+    if (!validateInputs()) return;
+
+    try {
+      const result = await signIn('credentials', {
+        redirect: false,
+        email: email.trim(),
+        password,
+      });
+
+      if (result?.error) {
+        setError("Identifiants incorrects. Veuillez réessayer.");
+      } else {
+        router.push('/profile');
+      }
+    } catch (err) {
+      setError("Une erreur est survenue. Réessayez plus tard.");
+    }
+  };
+
 
   // Redirige l'utilisateur s'il est déjà connecté
   useEffect(() => {
@@ -88,7 +124,7 @@ export default function SignInPage() {
           <div>
             <button
               type="submit"
-              className="w-full flex justify-center py-3 px-4 mb-4 border border-transparent rounded-md shadow-sm text-2xl font-medium text-white button-primary hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="w-full flex justify-center py-3 px-4 mb-4 border border-transparent rounded-md shadow-sm text-2xl font-medium text-white button-primary hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Connexion
             </button>
