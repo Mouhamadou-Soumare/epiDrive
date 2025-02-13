@@ -492,7 +492,7 @@ Endpoints associés :
 
 ### Déploiement et Sécurité
 
-- Hébergement et mise en production sur O2Switch
+- Hébergement et mise en production sur O2Switch : Configuration complète du serveur incluant gestion en SSH, déploiement de la base de données en production, résolution des bugs liés au build, et optimisation du déploiement pour assurer la stabilité et la performance de l'application.
 - Implémentation de Server-Sent Events (SSE) pour des mises à jour en temps réel (suivi des commandes, notifications, statistiques)
 - Respect des bonnes pratiques de Clean Code
 
