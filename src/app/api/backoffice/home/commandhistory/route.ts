@@ -45,12 +45,18 @@ export async function GET(req: NextRequest) {
         // Sérialisation des données pour éviter les problèmes avec les BigInt
         const serializedData = commandHistory.map((row) => ({
           ...row,
-          count: typeof row.count === "bigint" ? row.count.toString() : row.count,
+          count:
+            typeof row.count === "bigint" ? row.count.toString() : row.count,
         }));
 
-        writer.write(encoder.encode(`data: ${JSON.stringify(serializedData)}\n\n`));
+        writer.write(
+          encoder.encode(`data: ${JSON.stringify(serializedData)}\n\n`)
+        );
       } catch (queryError) {
-        console.error("Erreur lors de la récupération des données:", queryError);
+        console.error(
+          "Erreur lors de la récupération des données:",
+          queryError
+        );
       }
     };
 
