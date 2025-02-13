@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession, signIn } from "next-auth/react";
 import Link from "next/link";
-import { ArrowLeftIcon, ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowLeftIcon,
+  ArrowRightOnRectangleIcon,
+} from "@heroicons/react/24/outline";
 import AuthenticatorCards from "@/components/AuthenticatorCards";
 import { useRegister } from "@/hooks/auth/useRegister";
 
@@ -87,7 +90,9 @@ export default function RegisterPage() {
       });
 
       if (signInResult?.error) {
-        setError("Inscription réussie, mais échec de la connexion automatique.");
+        setError(
+          "Inscription réussie, mais échec de la connexion automatique."
+        );
       } else {
         router.push("/profile");
       }
@@ -126,7 +131,10 @@ export default function RegisterPage() {
         {/* Formulaire */}
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="pb-4">
-            <label htmlFor="name" className="block text-md font-medium text-gray-900 pb-2">
+            <label
+              htmlFor="name"
+              className="block text-md font-medium text-gray-900 pb-2"
+            >
               Nom
             </label>
             <input
@@ -142,7 +150,10 @@ export default function RegisterPage() {
           </div>
 
           <div className="pb-4">
-            <label htmlFor="email" className="block text-md font-medium text-gray-900 pb-2">
+            <label
+              htmlFor="email"
+              className="block text-md font-medium text-gray-900 pb-2"
+            >
               Adresse email
             </label>
             <input
@@ -158,7 +169,10 @@ export default function RegisterPage() {
           </div>
 
           <div className="pb-8">
-            <label htmlFor="password" className="block text-md font-medium text-gray-900 pb-2">
+            <label
+              htmlFor="password"
+              className="block text-md font-medium text-gray-900 pb-2"
+            >
               Mot de passe
             </label>
             <input

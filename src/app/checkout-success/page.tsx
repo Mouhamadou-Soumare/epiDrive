@@ -20,7 +20,7 @@ export default function CheckoutSuccess() {
         ...orderSummary,
         items: orderSummary.items.map((item) => ({
           id: item.id,
-          quantite: item.quantity, 
+          quantite: item.quantity,
           prix: item.price,
           image: item.image,
         })),
@@ -39,15 +39,15 @@ export default function CheckoutSuccess() {
   }, [formattedOrderSummary, session, orderSaved]);
 
   if (loading || saving) {
-    return (
-    <LoaderComponent/>
-    );
+    return <LoaderComponent />;
   }
 
   if (!orderSummary) {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center p-6 text-center">
-        <p className="text-lg font-medium text-gray-700">Aucune commande trouvée.</p>
+        <p className="text-lg font-medium text-gray-700">
+          Aucune commande trouvée.
+        </p>
       </div>
     );
   }
@@ -65,15 +65,21 @@ export default function CheckoutSuccess() {
       <div>
         <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8 lg:py-32 xl:gap-x-24">
           <div className="lg:col-start-2">
-            <h1 className="text-sm font-medium text-indigo-600">Paiement réussi</h1>
+            <h1 className="text-sm font-medium text-indigo-600">
+              Paiement réussi
+            </h1>
             <p className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
               Merci pour votre commande
             </p>
             <p className="mt-2 text-base text-gray-500">
-              Votre commande a été enregistrée avec succès. Vous recevrez un email de confirmation sous peu.
+              Votre commande a été enregistrée avec succès. Vous recevrez un
+              email de confirmation sous peu.
             </p>
 
-            <ul role="list" className="mt-6 divide-y divide-gray-200 border-t border-gray-200 text-sm font-medium text-gray-500">
+            <ul
+              role="list"
+              className="mt-6 divide-y divide-gray-200 border-t border-gray-200 text-sm font-medium text-gray-500"
+            >
               {orderSummary.items.map((item, index) => (
                 <li key={index} className="flex space-x-6 py-6 items-center">
                   <img
@@ -85,7 +91,9 @@ export default function CheckoutSuccess() {
                     <h3 className="text-gray-900">{item.name}</h3>
                     <p>Quantité : {item.quantity}</p>
                   </div>
-                  <p className="flex-none font-medium text-gray-900">{item.total.toFixed(2)} €</p>
+                  <p className="flex-none font-medium text-gray-900">
+                    {item.total.toFixed(2)} €
+                  </p>
                 </li>
               ))}
             </ul>
@@ -94,24 +102,36 @@ export default function CheckoutSuccess() {
               <div className="flex justify-between">
                 <dt>Sous-total</dt>
                 <dd className="text-gray-900">
-                  {orderSummary.items.reduce((acc, item) => acc + item.total, 0).toFixed(2)} €
+                  {orderSummary.items
+                    .reduce((acc, item) => acc + item.total, 0)
+                    .toFixed(2)}{" "}
+                  €
                 </dd>
               </div>
               <div className="flex items-center justify-between border-t border-gray-200 pt-6 text-gray-900">
                 <dt className="text-base">Total</dt>
-                <dd className="text-base">{orderSummary.totalAmount.toFixed(2)} €</dd>
+                <dd className="text-base">
+                  {orderSummary.totalAmount.toFixed(2)} €
+                </dd>
               </div>
             </dl>
 
             <dl className="mt-16 grid grid-cols-2 gap-x-4 text-sm text-gray-600">
               <div>
-                <dt className="font-medium text-gray-900">Adresse de livraison</dt>
+                <dt className="font-medium text-gray-900">
+                  Adresse de livraison
+                </dt>
                 <dd className="mt-2">
                   <address className="not-italic">
-                    <span className="block">{orderSummary.shippingAddress.adresse}</span>
-                    <span className="block">{orderSummary.shippingAddress.ville}</span>
                     <span className="block">
-                      {orderSummary.shippingAddress.codePostal}, {orderSummary.shippingAddress.pays}
+                      {orderSummary.shippingAddress.adresse}
+                    </span>
+                    <span className="block">
+                      {orderSummary.shippingAddress.ville}
+                    </span>
+                    <span className="block">
+                      {orderSummary.shippingAddress.codePostal},{" "}
+                      {orderSummary.shippingAddress.pays}
                     </span>
                   </address>
                 </dd>

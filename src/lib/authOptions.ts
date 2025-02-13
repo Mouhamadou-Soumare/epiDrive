@@ -8,7 +8,11 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email", placeholder: "you@example.com" },
+        email: {
+          label: "Email",
+          type: "email",
+          placeholder: "you@example.com",
+        },
         password: { label: "Mot de passe", type: "password" },
       },
       async authorize(credentials) {
@@ -21,7 +25,10 @@ export const authOptions: NextAuthOptions = {
         });
 
         if (user && user.password) {
-          const isValidPassword = await bcrypt.compare(credentials.password, user.password);
+          const isValidPassword = await bcrypt.compare(
+            credentials.password,
+            user.password
+          );
 
           if (isValidPassword) {
             return {

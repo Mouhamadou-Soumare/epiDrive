@@ -50,7 +50,9 @@ export default function CartPage() {
               </div>
               <div className="flex items-center space-x-2">
                 <button
-                  onClick={() => handleUpdateQuantity(item.produit.id, item.quantite - 1)}
+                  onClick={() =>
+                    handleUpdateQuantity(item.produit.id, item.quantite - 1)
+                  }
                   className="px-3 py-1 bg-red-500 text-white rounded-md disabled:bg-gray-300"
                   disabled={item.quantite <= 1}
                 >
@@ -58,7 +60,9 @@ export default function CartPage() {
                 </button>
                 <span className="font-semibold">{item.quantite}</span>
                 <button
-                  onClick={() => handleUpdateQuantity(item.produit.id, item.quantite + 1)}
+                  onClick={() =>
+                    handleUpdateQuantity(item.produit.id, item.quantite + 1)
+                  }
                   className="px-3 py-1 bg-blue-600 text-white rounded-md"
                 >
                   +
@@ -77,7 +81,6 @@ export default function CartPage() {
             Total: {totalAmount.toFixed(2)} €
           </div>
 
-         
           {status === "authenticated" ? (
             <button
               onClick={() => router.push("/checkout")}
@@ -94,9 +97,11 @@ export default function CartPage() {
             </button>
           )}
 
-<div className="mt-2">
+          <div className="mt-2">
             <button
-              onClick={() => setShowRecommendedRecettes(!showRecommendedRecettes)}
+              onClick={() =>
+                setShowRecommendedRecettes(!showRecommendedRecettes)
+              }
               className="mt-4 bg-blue-500 hover:bg-blue-700 py-2 px-10 rounded-lg text-white"
             >
               {showRecommendedRecettes
@@ -106,16 +111,21 @@ export default function CartPage() {
 
             {showRecommendedRecettes &&
               (isLoadingRecettes ? (
-                <div className="text-center mt-4">Chargement des recettes...</div>
+                <div className="text-center mt-4">
+                  Chargement des recettes...
+                </div>
               ) : recommendedRecettes.length === 0 ? (
-                <div className="text-center mt-4">Aucune recette recommandée</div>
+                <div className="text-center mt-4">
+                  Aucune recette recommandée
+                </div>
               ) : (
                 <RecommendedRecettes allRecettes={recommendedRecettes} />
               ))}
           </div>
 
-
-          {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
+          {showAuthModal && (
+            <AuthModal onClose={() => setShowAuthModal(false)} />
+          )}
         </div>
       )}
     </div>

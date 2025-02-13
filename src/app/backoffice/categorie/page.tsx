@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { useState } from "react";
@@ -9,15 +9,16 @@ import { useGetCategories } from "@/hooks/categories/useCategories";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 const CategoryList = () => {
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 10;
-  
+
   const { categories, loading, error } = useGetCategories();
 
-  const filteredCategories = categories?.filter((categorie: Categorie) =>
-    categorie.name.toLowerCase().includes(searchQuery.toLowerCase())
-  ) || [];
+  const filteredCategories =
+    categories?.filter((categorie: Categorie) =>
+      categorie.name.toLowerCase().includes(searchQuery.toLowerCase())
+    ) || [];
 
   // Pagination logic
   const totalPages = Math.ceil(filteredCategories.length / itemsPerPage);
@@ -35,7 +36,9 @@ const CategoryList = () => {
     <div className="mx-auto max-w-2xl py-4 sm:py-4 lg:max-w-7xl">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-base font-semibold text-gray-900">Liste des catégories</h1>
+          <h1 className="text-base font-semibold text-gray-900">
+            Liste des catégories
+          </h1>
           <p className="mt-2 text-sm text-gray-700">
             Listing des catégories du commerce.
           </p>
@@ -51,18 +54,20 @@ const CategoryList = () => {
       </div>
 
       <div className="flex flex-col mt-4 sm:flex-row gap-4 w-full">
-        <SearchInput 
-          searchQuery={searchQuery} 
-          onSearchChange={handleSearchChange} 
+        <SearchInput
+          searchQuery={searchQuery}
+          onSearchChange={handleSearchChange}
           placeholder="Rechercher une catégorie"
           aria_label="Rechercher une catégorie"
         />
       </div>
 
       {loading ? (
-        <LoadingSpinner/>
+        <LoadingSpinner />
       ) : error ? (
-        <div className="mt-8 text-red-500">Erreur lors de la récupération des catégories.</div>
+        <div className="mt-8 text-red-500">
+          Erreur lors de la récupération des catégories.
+        </div>
       ) : paginatedCategories.length > 0 ? (
         <div className="mt-8 flow-root">
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -70,10 +75,18 @@ const CategoryList = () => {
               <table className="min-w-full divide-y divide-gray-300">
                 <thead>
                   <tr>
-                    <th className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">ID</th>
-                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Nom</th>
-                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Slug</th>
-                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Info</th>
+                    <th className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+                      ID
+                    </th>
+                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                      Nom
+                    </th>
+                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                      Slug
+                    </th>
+                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                      Info
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -93,10 +106,14 @@ const CategoryList = () => {
             >
               Précédent
             </button>
-            <span>Page {currentPage} sur {totalPages}</span>
+            <span>
+              Page {currentPage} sur {totalPages}
+            </span>
             <button
               className="px-4 py-2 border rounded-md disabled:opacity-50"
-              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
               disabled={currentPage === totalPages}
             >
               Suivant

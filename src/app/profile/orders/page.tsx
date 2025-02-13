@@ -25,24 +25,30 @@ function OrdersContent() {
   if (!session) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <p className="text-lg text-gray-600">Vous devez être connecté pour voir vos commandes.</p>
+        <p className="text-lg text-gray-600">
+          Vous devez être connecté pour voir vos commandes.
+        </p>
       </div>
     );
   }
 
-
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-5xl mx-auto px-6 sm:px-8">
-
-      <div className="mb-6">
-          <Link href="/profile" className="inline-flex items-center a-primary a-primary-hover font-medium transition">
+        <div className="mb-6">
+          <Link
+            href="/profile"
+            className="inline-flex items-center a-primary a-primary-hover font-medium transition"
+          >
             <ArrowLeftIcon className="h-5 w-5 mr-2 a-primary a-primary-hover" />
             Retour au profil
           </Link>
         </div>
 
-        <h1 className="text-3xl font-bold text-center text-gray-800 mb-8"> Vos Commandes</h1>
+        <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
+          {" "}
+          Vos Commandes
+        </h1>
 
         {/* Gestion des erreurs */}
         {error && (
@@ -87,17 +93,24 @@ function OrdersContent() {
                 <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700">
                   <p className="flex items-center space-x-2">
                     <CalendarIcon className="h-5 w-5 text-gray-500" />
-                    <span><strong>Date :</strong> {new Date(order.createdAt).toLocaleDateString()}</span>
+                    <span>
+                      <strong>Date :</strong>{" "}
+                      {new Date(order.createdAt).toLocaleDateString()}
+                    </span>
                   </p>
                   <p className="flex items-center space-x-2">
                     <CurrencyEuroIcon className="h-5 w-5 text-gray-500" />
-                    <span><strong>Total :</strong> {order.total.toFixed(2)}€</span>
+                    <span>
+                      <strong>Total :</strong> {order.total.toFixed(2)}€
+                    </span>
                   </p>
                 </div>
 
                 {/* Liste des Produits */}
                 <div className="mt-4">
-                  <h3 className="text-lg font-medium text-gray-800 mb-3">🛍 Produits :</h3>
+                  <h3 className="text-lg font-medium text-gray-800 mb-3">
+                    🛍 Produits :
+                  </h3>
                   <ul className="space-y-3 border-t border-gray-200 pt-3">
                     {order.products.map((product) => (
                       <li
@@ -112,9 +125,6 @@ function OrdersContent() {
                     ))}
                   </ul>
                 </div>
-
-              
-
               </div>
             ))}
           </div>
