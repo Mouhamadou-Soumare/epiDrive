@@ -4,22 +4,22 @@ const incentives = [
   {
     name: 'Livraison rapide et locale',
     description: "Recevez vos courses chez vous en un temps record, simple et pratique.",
-    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-delivery-light.svg',
+    imageSrc: 'https://tailwindui.com/plus-assets/img/ecommerce/icons/icon-fast-checkout-light.svg',
   },
   {
     name: 'Support client 24/7',
     description: "Besoin d’aide ? Nos experts sont disponibles à tout moment.",
-    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-chat-light.svg',
+    imageSrc: 'https://tailwindui.com/plus-assets/img/ecommerce/icons/icon-chat-light.svg',
   },
   {
     name: 'Commande express',
     description: "Ajoutez vos produits en un clic et recevez-les rapidement, sans stress.",
-    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-fast-checkout-light.svg',
+    imageSrc: 'https://tailwindui.com/plus-assets/img/ecommerce/icons/icon-fast-checkout-light.svg',
   },
   {
     name: 'Suggérez un produit/recette',
     description: "Partagez vos suggestions, et nous enrichirons notre catalogue pour vous.",
-    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-warranty-light.svg',
+    imageSrc: 'https://tailwindui.com/plus-assets/img/ecommerce/icons/icon-warranty-light.svg',
   },
 ];
 
