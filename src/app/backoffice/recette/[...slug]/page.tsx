@@ -9,6 +9,7 @@ import IngredientCard from "../components/IngredientCard";
 import Alert from "../components/Alert";
 import { Produit, Recette, Ingredient } from "types";
 import { useGetRecette, useDeleteRecette } from "@/hooks/recettes/useRecettes";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 export default function RecetteDetails() {
   const router = useRouter();
@@ -42,12 +43,7 @@ export default function RecetteDetails() {
 
   if (recetteLoading || deleteRecetteLoading || isDeleting) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
-        <div className="text-center">
-          <p className="text-lg font-semibold text-gray-700">Chargement...</p>
-          <div className="mt-4 animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid"></div>
-        </div>
-      </div>
+      <LoadingSpinner/>
     );
   }
 

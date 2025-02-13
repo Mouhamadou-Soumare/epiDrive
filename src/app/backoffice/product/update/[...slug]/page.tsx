@@ -9,6 +9,7 @@ import { useGetCategories } from "@/hooks/categories/useCategories";
 import Alert from "../../../components/Alert";
 import { Categorie, Produit } from "types";
 import SelectInput from "../../components/SelectInput";
+import LoadingSpinner from "@/app/backoffice/components/LoadingSpinner";
 
 export default function UpdateProductPage() {
   const router = useRouter();
@@ -99,11 +100,7 @@ export default function UpdateProductPage() {
 
   if (productLoading || categoriesLoading || updatingProduct) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
-        <div className="text-center">
-          <p className="text-lg font-semibold text-gray-700">Chargement du produit...</p>
-        </div>
-      </div>
+      <LoadingSpinner/>
     );
   }
 

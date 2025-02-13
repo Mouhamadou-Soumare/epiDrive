@@ -6,6 +6,7 @@ import { Categorie } from "../../../../../../types";
 import FormInputField from "../../components/FormInputField";
 import Alert from "../../../components/Alert";
 import { useGetCategory, useGetCategories, useUpdateCategory } from "@/hooks/categories/useCategories";
+import LoadingSpinner from '@/app/backoffice/components/LoadingSpinner';
 
 export default function UpdateCategoryPage() {
   const { slug } = useParams() as { slug: string };
@@ -56,7 +57,7 @@ export default function UpdateCategoryPage() {
     }
   };
 
-  if (categoryLoading || categoriesLoading || updateLoading) return <div className="lg:pl-72">Chargement...</div>;
+  if (categoryLoading || categoriesLoading || updateLoading) return <LoadingSpinner/>;
   if (categoryError || categoriesError) return <div className="lg:pl-72 text-red-500">Erreur lors du chargement des données.</div>;
   if (!updatedCategory) return <div className="lg:pl-72">Catégorie non trouvée.</div>;
 
