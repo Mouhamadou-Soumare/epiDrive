@@ -50,8 +50,6 @@ export default function SignInPage() {
     }
   };
 
-
-  // Redirige l'utilisateur s'il est déjà connecté
   useEffect(() => {
     if (status === 'authenticated') {
       router.push('/');
