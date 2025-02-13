@@ -1,133 +1,114 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useGetUser, useUpdateUser } from "@/hooks/users/useUsers";
+import { useRouter } from "next/navigation";
 
-export default function SettingsPage() {
-  const { data: session, status } = useSession();
+const UpdateUserPage = () => {
+  const { data: session, status } = useSession(); 
+  const userId = session?.user?.id ? Number(session.user.id) : null;
+  const { user, loading: loadingUser, error: errorUser } = useGetUser(userId);
+  const { updateUser, loading: loadingUpdate, error: errorUpdate } = useUpdateUser();
   const router = useRouter();
-  const [name, setName] = useState<string>(session?.user?.name || '');
-  const [email, setEmail] = useState<string>(session?.user?.email || '');
-  const [profileImage, setProfileImage] = useState<File | null>(null);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setProfileImage(file);
-      setPreviewImage(URL.createObjectURL(file));
+  const [formData, setFormData] = useState<{ username: string; email: string }>({
+    username: "",
+    email: "",
+  });
+
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        username: user.username,
+        email: user.email,
+      });
     }
+  }, [user]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    setSuccessMessage(null);
+
+    if (!userId) {
+      console.error("Utilisateur non connecté");
+      return;
+    }
 
     try {
-      // Préparer les données JSON
-      const payload = {
-        action: 'updateProfile',
-        userId: session?.user?.id, // Assurez-vous que l'ID utilisateur est accessible via la session
-        username: name,
-        email: email,
-        imagePath: profileImage?.name || null, // Exemple : nom du fichier image
-      };
-
-      console.log('Payload envoyé:', payload); // Ajouter un log du payload
-
-      const response = await fetch('/api/profile/update', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json', // Indique que le payload est au format JSON
-        },
-        body: JSON.stringify(payload), // Envoyer les données JSON
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Réponse API:', data); // Ajouter un log de la réponse
-        router.push('/profile');
-      } else {
-        const errorData = await response.json();
-        console.error('Erreur lors de la mise à jour du profil:', errorData.message || 'Erreur inconnue');
-      }
+      await updateUser(userId, { username: formData.username, email: formData.email });
+      setSuccessMessage("Votre profil a été mis à jour avec succès !");
+      setTimeout(() => router.refresh(), 2000);
     } catch (error) {
-      console.error('Erreur de requête:', error);
-    } finally {
-      setIsSubmitting(false);
+      console.error("Erreur de mise à jour :", error);
     }
   };
 
-  if (status === 'loading') {
-    return <div>Loading...</div>;
+  if (status === "loading" || loadingUser) {
+    return <div className="text-center text-lg font-medium">Chargement des informations...</div>;
   }
 
-  if (!session) {
-    return <div>Vous devez être connecté pour accéder à cette page.</div>;
+  if (!session || !userId) {
+    return <div className="text-center text-red-500 font-medium">Vous devez être connecté pour modifier votre profil.</div>;
+  }
+
+  if (errorUser) {
+    return <div className="text-center text-red-500 font-medium">Erreur : {errorUser}</div>;
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white text-black p-4">
-      <div className="max-w-lg w-full bg-gray-200 rounded-lg shadow-lg p-8">
-        <h1 className="text-3xl font-bold mb-6 text-center">Paramètres du Profil</h1>
+    <div className="max-w-lg mx-auto m-10 bg-white p-6 rounded-lg shadow-md">
+      <h1 className="text-xl font-semibold text-gray-900 mb-4">Modifier votre profil</h1>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="flex flex-col items-center">
-            <div className="mb-4">
-              <Image
-                src={previewImage || session?.user?.image || '/default-avatar.png'}
-                alt="Image de profil"
-                width={120}
-                height={120}
-                className="rounded-full border border-gray-300"
-              />
-            </div>
+      {errorUpdate && <p className="text-red-500">{errorUpdate}</p>}
+      {successMessage && <p className="text-green-500">{successMessage}</p>}
 
-            <label className="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-semibold py-2 px-4 rounded-full shadow-lg transform transition-transform duration-300 hover:scale-105 cursor-pointer">
-              <span>Choisir un fichier</span>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="hidden"
-              />
-            </label>
-          </div>
+      <form onSubmit={handleSubmit}>
+        {/* Champ Username */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Nom d'utilisateur</label>
+          <input
+            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 p-2"
+            required
+          />
+        </div>
 
-          <div>
-            <label className="block text-gray-600 mb-1">Nom</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full p-3 bg-white rounded-md border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              required
-            />
-          </div>
+        {/* Champ Email */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Email</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 p-2"
+            required
+          />
+        </div>
 
-          <div>
-            <label className="block text-gray-600 mb-1">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-3 bg-white rounded-md border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              required
-            />
-          </div>
-
+        {/* Bouton de mise à jour */}
+        <div className="mt-4 flex justify-between">
           <button
             type="submit"
-            disabled={isSubmitting}
-            className="w-full bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-bold py-3 px-4 rounded-full shadow-lg transform transition-transform duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 disabled:opacity-50"
+            disabled={loadingUpdate}
           >
-            {isSubmitting ? 'Enregistrement...' : 'Sauvegarder les modifications'}
+            {loadingUpdate ? "Mise à jour..." : "Mettre à jour"}
           </button>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   );
-}
+};
+
+export default UpdateUserPage;

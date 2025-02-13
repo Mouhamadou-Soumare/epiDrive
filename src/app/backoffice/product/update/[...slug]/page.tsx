@@ -9,6 +9,7 @@ import { useGetCategories } from "@/hooks/categories/useCategories";
 import Alert from "../../../components/Alert";
 import { Categorie, Produit } from "types";
 import SelectInput from "../../components/SelectInput";
+import LoadingSpinner from "@/app/backoffice/components/LoadingSpinner";
 
 export default function UpdateProductPage() {
   const router = useRouter();
@@ -23,6 +24,14 @@ export default function UpdateProductPage() {
   const [submitResult, setSubmitResult] = useState<string | null>(null);
   const [loadingState, setLoadingState] = useState<boolean>(false);
 
+  const [newImage, setNewImage] = useState<File | null>(null);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files && e.target.files[0]) {
+      setNewImage(e.target.files[0]);
+      }
+  };
+  
   useEffect(() => {
     if (produit) {
       console.log("Produit chargé", produit);
@@ -76,7 +85,7 @@ export default function UpdateProductPage() {
     }
 
     setLoadingState(true);
-    const success = await updateProduit(productSlug, updatedProduit, updatedProduit.image?.path || "");
+    const success = await updateProduit(productSlug, updatedProduit, newImage);
     
     if (success) {
       setSubmitResult("Le produit a été mis à jour avec succès !");
@@ -91,11 +100,7 @@ export default function UpdateProductPage() {
 
   if (productLoading || categoriesLoading || updatingProduct) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
-        <div className="text-center">
-          <p className="text-lg font-semibold text-gray-700">Chargement du produit...</p>
-        </div>
-      </div>
+      <LoadingSpinner/>
     );
   }
 
@@ -155,13 +160,18 @@ export default function UpdateProductPage() {
         />
 
         {updatedProduit.image && (
-          <TextInput
-            label="Chemin de l'image"
-            id="imagePath"
-            name="imagePath"
-            value={updatedProduit.image.path}
-            onChange={handleInputChange}
-          />
+          <div className="mb-5">
+              <label htmlFor="productImage" className="block mb-2 text-sm font-medium text-gray-900">Chemin de l'image</label>
+              <input
+              type="file"
+              id="productImage"
+              name="productImage"
+              accept="image/*"
+              
+              className="mt-1 block w-full text-sm text-gray-500 border-gray-300 rounded-md"
+              onChange={handleImageChange}
+              />
+          </div>
         )}
 
         <SelectInput

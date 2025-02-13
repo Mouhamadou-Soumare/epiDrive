@@ -1,4 +1,3 @@
-// components/ProductActions.tsx
 import Link from "next/link";
 
 interface ProductActionsProps {

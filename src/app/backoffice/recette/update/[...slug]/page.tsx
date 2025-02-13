@@ -8,6 +8,7 @@ import { useGetProduits } from "@/hooks/products/useProduits";
 import FormInputField from "../../components/FormInputField";
 import ProduitList from "../../components/ProduitList";
 import Alert from "../../components/Alert";
+import LoadingSpinner from "@/app/backoffice/components/LoadingSpinner";
 
 export default function UpdateRecettePage() {
   const router = useRouter();
@@ -22,6 +23,14 @@ export default function UpdateRecettePage() {
   const [localRecette, setLocalRecette] = useState<Recette | null>(recette);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
+
+  const [newImage, setNewImage] = useState<File | null>(null);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files && e.target.files[0]) {
+          setNewImage(e.target.files[0]);
+      }
+  };
 
   useEffect(() => {
     if (recette) setLocalRecette(recette);
@@ -67,16 +76,14 @@ export default function UpdateRecettePage() {
       return;
     }
 
-    await updateRecette(localRecette!.id, localRecette!);
+    await updateRecette(localRecette!.id, localRecette!, newImage);
     setSubmitSuccess(true);
     setTimeout(() => router.push(`/backoffice/recette/${recetteSlug}`), 2000);
   };
 
   if (recetteLoading || produitsLoading || updateLoading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <p className="text-lg font-semibold text-gray-700">Chargement...</p>
-      </div>
+     <LoadingSpinner/>
     );
   }
 
@@ -95,6 +102,19 @@ export default function UpdateRecettePage() {
         <FormInputField id="title" name="title" value={localRecette.title} label="Titre" onChange={handleInputChange} />
         <FormInputField id="description" name="description" value={localRecette.description} label="Description" type="textarea" onChange={handleInputChange} />
         <FormInputField id="instructions" name="instructions" value={localRecette.instructions} label="Instructions" type="textarea" onChange={handleInputChange} />
+
+        <div className="mb-5">
+            <label htmlFor="productImage" className="block mb-2 text-sm font-medium text-gray-900">Chemin de l'image</label>
+            <input
+            type="file"
+            id="productImage"
+            name="productImage"
+            accept="image/*"
+            
+            className="mt-1 block w-full text-sm text-gray-500 border-gray-300 rounded-md"
+            onChange={handleImageChange}
+            />
+        </div>
 
         <div className="mb-5">
           <label htmlFor="produit" className="block mb-2 text-sm font-medium text-gray-900">Ingrédients</label>

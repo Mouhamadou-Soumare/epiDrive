@@ -1,136 +1,115 @@
-import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import { promises as fs } from "fs";
+import path from "path";
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 
+/**
+ *  Récupère toutes les catégories avec leurs sous-catégories et images
+ */
 export async function GET() {
   try {
-    console.log("📢 API /categories: Début du traitement...");
-
-    // Vérifier si Prisma est bien initialisé
-    if (!prisma) {
-      console.error("❌ Prisma Client n'est pas initialisé correctement.");
-      return NextResponse.json({ error: "Erreur interne du serveur: Prisma Client non initialisé." }, { status: 500 });
-    }
-
-    console.log("🛠 Récupération des catégories depuis la base de données...");
-
-    // Récupération des catégories avec sous-catégories et images
     const categories = await prisma.categorie.findMany({
       include: {
         image: true,
-        subcategories: {
-          include: {
-            image: true,
-          },
-        },
+        subcategories: { include: { image: true } },
       },
     });
 
-    console.log(`✅ Récupération réussie : ${categories.length} catégories trouvées.`);
-
-    if (categories.length === 0) {
-      console.warn("⚠️ Aucune catégorie trouvée.");
+    if (!categories.length) {
       return NextResponse.json({ error: "Aucune catégorie trouvée." }, { status: 404 });
     }
 
-    // Formattage des catégories
-    const formattedCategories = categories.map((
-      categorie: {
-        id: number,
-        name: string,
-        slug: string,
-        parentId: number | null,
-        image: { path: string } | null,
-        subcategories: {
-          id: number,
-          name: string,
-          slug: string,
-          parentId: number | null,
-          image: { path: string } | null
-        }[]
-      }
-    ) => ({
-      id: categorie.id,
-      name: categorie.name,
-      slug: categorie.slug,
-      parentId: categorie.parentId || null, // Ajout du parentId pour la catégorie principale
-      imageSrc: categorie.image?.path || 'https://via.placeholder.com/300',
-      imageAlt: `Image de la catégorie ${categorie.name}`,
-      subcategories: categorie.subcategories.map(subcategorie => ({
-        id: subcategorie.id,
-        name: subcategorie.name,
-        slug: subcategorie.slug,
-        parentId: subcategorie.parentId || null, // Ajout du parentId pour chaque sous-catégorie
-        imageSrc: subcategorie.image?.path || 'https://via.placeholder.com/300',
-        imageAlt: `Image de la sous-catégorie ${subcategorie.name}`,
+    const formattedCategories = categories.map(({ id, name, slug, parentId, image, subcategories }) => ({
+      id,
+      name,
+      slug,
+      parentId: parentId || null,
+      imageSrc: image?.path || "https://via.placeholder.com/300",
+      imageAlt: `Image de la catégorie ${name}`,
+      subcategories: subcategories.map(({ id, name, slug, parentId, image }) => ({
+        id,
+        name,
+        slug,
+        parentId: parentId || null,
+        imageSrc: image?.path || "https://via.placeholder.com/300",
+        imageAlt: `Image de la sous-catégorie ${name}`,
       })),
     }));
 
-    console.log("✅ Catégories formatées avec succès.");
-    
     return NextResponse.json(formattedCategories, { status: 200 });
-  } catch (error: any) {
-    console.error("❌ ERREUR DANS API /categories:", error);
-
-    let errorMessage = "Erreur inconnue.";
-    
-    // Erreur Prisma spécifique
-    if (error instanceof Error) {
-      if (error.message.includes("P2021")) {
-        errorMessage = "La table demandée dans la base de données est introuvable.";
-      } else if (error.message.includes("P2002")) {
-        errorMessage = "Conflit de clé unique dans la base de données.";
-      } else if (error.message.includes("P1001")) {
-        errorMessage = "Connexion à la base de données échouée. Vérifiez DATABASE_URL.";
-      } else {
-        errorMessage = `Erreur Prisma: ${error.message}`;
-      }
-    }
-
-    return NextResponse.json({ error: `Échec de la récupération des catégories: ${errorMessage}` }, { status: 500 });
+  } catch (error) {
+    console.error(" Erreur lors de la récupération des catégories :", error);
+    return NextResponse.json({ error: "Erreur interne du serveur" }, { status: 500 });
   }
 }
 
-
+/**
+ * Création d'une nouvelle catégorie avec gestion optionnelle d'image
+ */
 export async function POST(req: Request) {
-  const body = await req.json();
-  
-  const { name, description, parentId, path } = body;
-
   try {
-    if (!name || !description) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    const formData = await req.formData();
+    const name = formData.get("name") as string;
+    const description = formData.get("description") as string;
+    const parentId = formData.get("parentId") ? parseInt(formData.get("parentId") as string, 10) : null;
+    const newImage = formData.get("newImage") as File | null;
+
+    if (!name || !description || !newImage) {
+      return NextResponse.json({ error: "Champs requis manquants" }, { status: 400 });
     }
 
-    const slug = name.toLowerCase().replace(/ /g, '-');
-  
-    const newcategorie = await prisma.categorie.create({
+    const slug = name.toLowerCase().replace(/\s+/g, "-");
+
+    // Création de la catégorie sans image
+    const newCategory = await prisma.categorie.create({
       data: {
-        name: name,
-        description: description,
-        slug: slug,
-        parentId: parentId ? parseInt(body.parentId.toString()) : null,
+        name,
+        description,
+        slug,
+        parentId: parentId ? parseInt(parentId.toString(), 10) : null,
       },
     });
 
-    if (path) {
-      const newImage = await prisma.image.create({
-        data: {
-          path: body.path
-        },
+    let imageId = null;
+
+    if (newImage) {
+      const bytes = await newImage.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+
+      const uploadDir = path.join(process.cwd(), "public/img/category");
+      await fs.mkdir(uploadDir, { recursive: true }); // Crée le dossier s'il n'existe pas
+
+      const fileName = `${Date.now()}-${newImage.name}`;
+      const filePath = path.join(uploadDir, fileName);
+      await fs.writeFile(filePath, buffer);
+
+      const imagePath = `/img/category/${fileName}`; // Chemin relatif pour l'image
+
+      // Ajouter l'image dans la base de données
+      const newImageRecord = await prisma.image.create({
+        data: { path: imagePath },
       });
 
-      await prisma.categorie.update({
-        where: { id: newcategorie.id },
-        data: {
-          imageId: newImage.id,
-        },
-      });
-
+      imageId = newImageRecord.id;
     }
 
-    return NextResponse.json(newcategorie, { status: 201 });
+    // Mise à jour de la catégorie avec l'image (si une image a été uploadée)
+    if (imageId) {
+      await prisma.categorie.update({
+        where: { id: newCategory.id },
+        data: { imageId },
+      });
+    }
+
+    // Récupérer la catégorie mise à jour avec l'image
+    const createdCategory = await prisma.categorie.findUnique({
+      where: { id: newCategory.id },
+      include: { image: true },
+    });
+
+    return NextResponse.json(createdCategory, { status: 201 });
   } catch (error) {
-      console.error("Error in POST API/categorie:", error);
-      return new Response(JSON.stringify({ error: 'Failed to create categorie' }), { status: 500 });
+    console.error("Erreur lors de la création de la catégorie :", error);
+    return NextResponse.json({ error: "Échec de la création de la catégorie" }, { status: 500 });
   }
 }

@@ -1,35 +1,34 @@
-import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import { NextRequest, NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 
 interface SSEClient {
   id: string;
   res: WritableStreamDefaultWriter<Uint8Array>;
 }
 
-let clients: SSEClient[] = []; // Stock des clients SSE connectés
+let clients: SSEClient[] = [];
 
 /**
- * 🔥 SSE: Permet aux clients d'écouter les mises à jour du panier en temps réel
+ * Gère la récupération du panier ou l'établissement d'une connexion SSE.
  */
 export async function GET(req: NextRequest) {
   const { sessionId, userId, sse } = Object.fromEntries(new URL(req.url).searchParams);
 
+  // Gestion des connexions SSE pour les mises à jour en temps réel
   if (sse === "true") {
-    // 🔗 Établir une connexion SSE
     const stream = new TransformStream();
     const writer = stream.writable.getWriter();
     const encoder = new TextEncoder();
 
     const clientId = crypto.randomUUID();
-    const newClient: SSEClient = { id: clientId, res: writer };
-    clients.push(newClient);
+    clients.push({ id: clientId, res: writer });
 
-    console.log(`📢 Client SSE connecté : ${clientId}`);
+    console.log(` Client SSE connecté : ${clientId}`);
 
     await writer.write(encoder.encode("data: Connexion établie\n\n"));
 
-    req.signal.addEventListener('abort', () => {
-      console.log(`❌ Client SSE déconnecté : ${clientId}`);
+    req.signal.addEventListener("abort", () => {
+      console.log(`Client SSE déconnecté : ${clientId}`);
       clients = clients.filter(client => client.id !== clientId);
       writer.close();
     });
@@ -47,7 +46,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Session ID ou User ID requis" }, { status: 400 });
   }
 
-  // 📦 Récupération du panier avec les produits
+  // Récupération du panier de l'utilisateur ou de la session
   const panier = await prisma.panier.findFirst({
     where: {
       fk_userId: userId ? parseInt(userId) : undefined,
@@ -68,7 +67,7 @@ export async function GET(req: NextRequest) {
 }
 
 /**
- * ➕ Ajoute un produit au panier ou met à jour sa quantité
+ * Ajoute un produit au panier et déclenche une mise à jour SSE.
  */
 export async function POST(req: NextRequest) {
   try {
@@ -83,6 +82,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Produit non trouvé" }, { status: 404 });
     }
 
+    // Création ou récupération du panier existant
     const panier = await prisma.panier.upsert({
       where: {
         fk_userId: userId ?? undefined,
@@ -95,6 +95,7 @@ export async function POST(req: NextRequest) {
       update: {},
     });
 
+    // Ajout ou mise à jour du produit dans le panier
     const item = await prisma.quantitePanier.upsert({
       where: {
         fk_panier_fk_produit: {
@@ -109,21 +110,21 @@ export async function POST(req: NextRequest) {
         prix: produit.prix,
       },
       update: update
-        ? { quantite: quantity } // Remplace la quantité si `update` est `true`
-        : { quantite: { increment: quantity } }, // Sinon, incrémente
+        ? { quantite: quantity }
+        : { quantite: { increment: quantity } },
     });
 
-    await sendCartUpdate(panier.id); // 🔥 Envoi de la mise à jour SSE
+    await sendCartUpdate(panier.id); // Notifie les clients SSE
 
     return NextResponse.json(item, { status: 201 });
   } catch (error) {
-    console.error("❌ Erreur lors de l'ajout au panier :", error);
+    console.error("Erreur lors de l'ajout au panier :", error);
     return NextResponse.json({ error: "Erreur interne du serveur" }, { status: 500 });
   }
 }
 
 /**
- * 🔄 Met à jour la quantité d'un produit dans le panier
+ * Met à jour la quantité d'un produit dans le panier
  */
 export async function PUT(req: NextRequest) {
   try {
@@ -135,7 +136,7 @@ export async function PUT(req: NextRequest) {
 
     const panier = await prisma.panier.findFirst({
       where: {
-        fk_userId: userId ? parseInt(userId) : undefined,
+        fk_userId: userId ? parseInt(userId, 10) : undefined,
         sessionId: sessionId ?? undefined,
       },
     });
@@ -154,17 +155,17 @@ export async function PUT(req: NextRequest) {
       data: { quantite: quantity },
     });
 
-    await sendCartUpdate(panier.id); // 🔥 Envoi de la mise à jour SSE
+    await sendCartUpdate(panier.id); // Envoi mise à jour aux clients SSE
 
     return NextResponse.json(updatedItem, { status: 200 });
   } catch (error) {
-    console.error("❌ Erreur lors de la mise à jour du produit :", error);
+    console.error(" Erreur lors de la mise à jour du produit :", error);
     return NextResponse.json({ error: "Erreur interne" }, { status: 500 });
   }
 }
 
 /**
- * ❌ Supprime un produit du panier
+ * Supprime un produit du panier
  */
 export async function DELETE(req: NextRequest) {
   try {
@@ -176,7 +177,7 @@ export async function DELETE(req: NextRequest) {
 
     const panier = await prisma.panier.findFirst({
       where: {
-        fk_userId: userId ? parseInt(userId) : undefined,
+        fk_userId: userId ? parseInt(userId, 10) : undefined,
         sessionId: sessionId ?? undefined,
       },
     });
@@ -194,17 +195,17 @@ export async function DELETE(req: NextRequest) {
       },
     });
 
-    await sendCartUpdate(panier.id); // 🔥 Envoi de la mise à jour SSE
+    await sendCartUpdate(panier.id); // Notifie la suppression aux clients SSE
 
     return NextResponse.json({ message: "Produit supprimé du panier" }, { status: 200 });
   } catch (error) {
-    console.error("❌ Erreur lors de la suppression du produit :", error);
+    console.error(" Erreur lors de la suppression du produit :", error);
     return NextResponse.json({ error: "Erreur interne du serveur" }, { status: 500 });
   }
 }
 
 /**
- * 📢 Envoie la mise à jour SSE aux clients connectés
+ * Envoie une mise à jour du panier aux clients SSE connectés
  */
 async function sendCartUpdate(panierId: number) {
   const updatedCart = await prisma.quantitePanier.findMany({

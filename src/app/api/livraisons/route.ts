@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-// GET all livraisons
+/**
+ * Récupère toutes les livraisons
+ */
 export async function GET() {
   try {
-    console.log("Fetching all livraisons...");
-
     const livraisons = await prisma.livraison.findMany({
       include: {
         user: true,
@@ -14,14 +14,13 @@ export async function GET() {
       },
     });
 
-    if (livraisons.length === 0) {
-      return NextResponse.json({ message: 'No livraisons found' }, { status: 404 });
+    if (!livraisons.length) {
+      return NextResponse.json({ message: 'Aucune livraison trouvée' }, { status: 404 });
     }
 
-    console.log("GET API/livraisons: livraisons found:", livraisons);
     return NextResponse.json(livraisons, { status: 200 });
   } catch (error) {
-    console.error('Error fetching livraisons:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('Erreur lors de la récupération des livraisons :', error);
+    return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
   }
 }

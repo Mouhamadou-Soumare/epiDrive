@@ -1,30 +1,36 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from "@/lib/authOptions";
 import prisma from '@/lib/prisma';
+import { NextResponse } from 'next/server';
 
+/**
+ * Récupère les commandes de l'utilisateur authentifié
+ */
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
 
-    if (!session || !session.user || !session.user.id) {
-      return new Response(JSON.stringify({ error: 'Non autorisé' }), { status: 401 });
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
     }
 
-    const userId = parseInt(session.user.id, 10); // ✅ Conversion sécurisée en nombre
+    const userId = parseInt(session.user.id, 10);
 
     if (isNaN(userId)) {
-      return new Response(JSON.stringify({ error: 'ID utilisateur invalide' }), { status: 400 });
+      return NextResponse.json({ error: 'ID utilisateur invalide' }, { status: 400 });
     }
 
     const orders = await prisma.commande.findMany({
       where: { fk_userId: userId },
       include: {
-        quantites: {
-          include: { produit: true },
-        },
+        quantites: { include: { produit: true } },
       },
       orderBy: { createdAt: 'desc' },
     });
+
+    if (!orders.length) {
+      return NextResponse.json({ message: 'Aucune commande trouvée' }, { status: 404 });
+    }
 
     const formattedOrders = orders.map((order) => ({
       id: order.id,
@@ -39,11 +45,11 @@ export async function GET() {
       })),
     }));
 
-    return new Response(JSON.stringify(formattedOrders), { status: 200 });
+    return NextResponse.json(formattedOrders, { status: 200 });
   } catch (error) {
-    console.error('Erreur lors de la récupération des commandes:', error);
-    return new Response(
-      JSON.stringify({ error: 'Erreur serveur lors de la récupération des commandes.' }),
+    console.error('Erreur lors de la récupération des commandes :', error);
+    return NextResponse.json(
+      { error: 'Erreur interne du serveur lors de la récupération des commandes.' },
       { status: 500 }
     );
   }

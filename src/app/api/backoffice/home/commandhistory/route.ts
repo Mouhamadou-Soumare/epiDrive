@@ -1,23 +1,23 @@
-import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import { NextRequest, NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 
-// Handler GET avec TypeScript correctement défini
 export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url);
-    const groupBy = url.searchParams.get('groupBy') || 'day';
+    const groupBy = url.searchParams.get("groupBy") || "day"; // Par défaut, on groupe par jour
 
+    // Définition du format de regroupement par date
     let dateFormat: string;
     switch (groupBy) {
-      case 'week':
-        dateFormat = `%Y-%u`; // Année et numéro de semaine
+      case "week":
+        dateFormat = `%Y-%u`; // Semaine de l'année
         break;
-      case 'month':
-        dateFormat = `%Y-%m`; // Année et mois
+      case "month":
+        dateFormat = `%Y-%m`; // Mois de l'année
         break;
-      case 'day':
+      case "day":
       default:
-        dateFormat = `%Y-%m-%d`; // Par défaut, on regroupe par jour
+        dateFormat = `%Y-%m-%d`; // Jour précis
         break;
     }
 
@@ -25,9 +25,9 @@ export async function GET(req: NextRequest) {
     const writer = writable.getWriter();
     const encoder = new TextEncoder();
 
+    // Fonction pour envoyer les mises à jour en temps réel
     const sendUpdate = async () => {
       try {
-        // Correction du typage de `commandHistory`
         const commandHistory: Array<{
           dateGroup: string;
           status: string;
@@ -42,10 +42,10 @@ export async function GET(req: NextRequest) {
           ORDER BY dateGroup ASC;
         `;
 
-        // Conversion du type bigint en string si nécessaire
+        // Sérialisation des données pour éviter les problèmes avec les BigInt
         const serializedData = commandHistory.map((row) => ({
           ...row,
-          count: typeof row.count === 'bigint' ? row.count.toString() : row.count,
+          count: typeof row.count === "bigint" ? row.count.toString() : row.count,
         }));
 
         writer.write(encoder.encode(`data: ${JSON.stringify(serializedData)}\n\n`));
@@ -54,29 +54,28 @@ export async function GET(req: NextRequest) {
       }
     };
 
-    // Envoyer une première mise à jour immédiatement
-    await sendUpdate();
+    await sendUpdate(); // Envoi initial
 
-    // Programmer des mises à jour toutes les 5 secondes
+    // Envoi des mises à jour toutes les 5 secondes
     const intervalId = setInterval(sendUpdate, 5000);
 
-    // Gestion de l'annulation si la connexion est fermée
-    req.signal.addEventListener('abort', () => {
+    // Gestion de l'arrêt de la connexion SSE
+    req.signal.addEventListener("abort", () => {
       clearInterval(intervalId);
       writer.close();
     });
 
     return new Response(readable, {
       headers: {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive',
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+        Connection: "keep-alive",
       },
     });
   } catch (error) {
-    console.error('Erreur lors de la récupération des données SSE:', error);
+    console.error("Erreur lors de la récupération des données SSE:", error);
     return NextResponse.json(
-      { success: false, error: 'Erreur lors de la récupération des données' },
+      { success: false, error: "Erreur lors de la récupération des données" },
       { status: 500 }
     );
   }

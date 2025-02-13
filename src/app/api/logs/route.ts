@@ -1,56 +1,45 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-// GET all logs
+/**
+ * Récupère tous les logs
+ */
 export async function GET() {
   try {
-    console.log("Fetching all logs...");
-
     const logs = await prisma.log.findMany({
-      include: {
-        user: true,
-      },
+      include: { user: true },
     });
 
-    if (logs.length === 0) {
-      return NextResponse.json({ message: 'No logs found' }, { status: 404 });
+    if (!logs.length) {
+      return NextResponse.json({ message: 'Aucun log trouvé' }, { status: 404 });
     }
 
-    console.log("GET API/logs: logs found:", logs);
     return NextResponse.json(logs, { status: 200 });
   } catch (error) {
-    console.error('Error fetching logs:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error(' Erreur lors de la récupération des logs :', error);
+    return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
   }
 }
 
-// POST create a new log
+/**
+ * Crée un nouveau log
+ */
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { action, metadata, fk_userId } = body;
+    const { action, metadata, fk_userId } = await req.json();
 
     if (!action || !fk_userId) {
-      return NextResponse.json({ error: 'Missing required fields: action or fk_userId' }, { status: 400 });
+      return NextResponse.json({ error: 'Champs requis manquants : action ou fk_userId' }, { status: 400 });
     }
 
-    console.log('Creating log with body:', body);
-
     const newLog = await prisma.log.create({
-      data: {
-        action,
-        metadata,
-        fk_userId,
-      },
-      include: {
-        user: true,
-      },
+      data: { action, metadata, fk_userId },
+      include: { user: true },
     });
 
-    console.log('POST API/logs: log created:', newLog);
     return NextResponse.json(newLog, { status: 201 });
   } catch (error) {
-    console.error('Error creating log:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('Erreur lors de la création du log :', error);
+    return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
   }
 }

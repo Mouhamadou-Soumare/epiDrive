@@ -1,51 +1,36 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/lib/prisma';
 
-const prisma = new PrismaClient();
-
-export async function GET() {
+/**
+ * Récupère les statistiques d'un utilisateur (commandes & total dépensé)
+ */
+export async function GET(request: Request) {
   try {
-    const now = new Date();
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get('userId');
 
-    // Récupération parallèle des statistiques
-    const [ordersThisMonth, totalSpent, favoriteItems, purchaseHistory] = await Promise.all([
-      // Nombre de commandes depuis le début du mois
-      prisma.commande.count({
-        where: { createdAt: { gte: startOfMonth } },
-      }),
-      // Somme totale des commandes
-      prisma.quantiteCommande.aggregate({
-        _sum: { prix: true },
-      }),
-      // Nombre total de produits (supposés comme favoris)
-      prisma.produit.count(),
-      // Historique des commandes
-      prisma.commande.findMany({
-        where: { createdAt: { gte: startOfMonth } },
-        select: { createdAt: true },
-      }),
-    ]);
+    // Vérification de l'ID utilisateur
+    if (!userId || isNaN(parseInt(userId))) {
+      return NextResponse.json({ error: 'User ID invalide ou manquant.' }, { status: 400 });
+    }
 
-    // Grouper les résultats par jour
-    const groupedHistory = purchaseHistory.reduce((acc, curr) => {
-      const date = curr.createdAt.toISOString().split('T')[0];
-      acc[date] = (acc[date] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
+    const userIdInt = parseInt(userId, 10);
 
-    // Formatter les données en tableau pour le graphique
-    const formattedHistory = Object.keys(groupedHistory).map((date) => ({
-      date,
-      total: groupedHistory[date],
-    }));
+    // Récupérer toutes les commandes de l'utilisateur
+    const userOrders = await prisma.commande.count({
+      where: { fk_userId: userIdInt },
+    });
 
-    // Structurer les statistiques
+    // Calcul du total dépensé par l'utilisateur
+    const totalSpent = await prisma.quantiteCommande.aggregate({
+      _sum: { prix: true },
+      where: { commande: { fk_userId: userIdInt } },
+    });
+
+    // Formatage des résultats
     const stats = {
-      ordersThisMonth: ordersThisMonth || 0,
+      ordersThisMonth: userOrders,
       totalSpent: totalSpent._sum.prix || 0,
-      favoriteItems: favoriteItems || 0,
-      purchaseHistory: formattedHistory,
     };
 
     console.log('Statistiques récupérées avec succès:', stats);
@@ -56,7 +41,5 @@ export async function GET() {
       { error: 'Une erreur est survenue lors de la récupération des statistiques.' },
       { status: 500 }
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }

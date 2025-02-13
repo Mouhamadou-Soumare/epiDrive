@@ -9,6 +9,7 @@ import ProductActions from "../components/ProductActions";
 import Alert from "../../components/Alert";
 
 import { useGetProduit, useDeleteProduit } from "@/hooks/products/useProduits";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 export default function ProductDetails() {
   const router = useRouter();
@@ -42,12 +43,7 @@ export default function ProductDetails() {
 
   if (productLoading || deletingProduct || isDeleting) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
-        <div className="text-center">
-          <p className="text-lg font-semibold text-gray-700">Chargement...</p>
-          <div className="mt-4 animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid"></div>
-        </div>
-      </div>
+       <LoadingSpinner/>
     );
   }
 

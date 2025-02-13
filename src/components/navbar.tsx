@@ -67,7 +67,7 @@ const products = [
   },
 ];
 const callsToAction = [
-  { name: "Voir la démo", href: "#", icon: PlayCircleIcon },
+  { name: "Poser des questions à notre IA", href: "/chatIA", icon: PlayCircleIcon },
   { name: "Contactez-nous", href: "#", icon: PhoneIcon },
   { name: "Voir toutes les catégories", href: "#", icon: RectangleGroupIcon },
 ];
@@ -283,18 +283,21 @@ export default function Navbar() {
           {status === "loading" ? (
             <div className="text-gray-500">Chargement...</div>
           ) : session ? (
-            <button
-              onClick={() => signOut()}
-              className="p-2 hover:scale-110 transition-transform"
-            >
-              <UserCircleIcon className="h-7 w-7 text-indigo-500" />
-            </button>
+            <a href="/profile" className="flex items-center gap-2 hover:text-indigo-700">
+
+              <button
+                onClick={() => signOut()}
+                className="p-2 hover:scale-110 transition-transform"
+              >
+                <UserCircleIcon className="h-7 w-7 text-orange-400 hover:text-gray-500" />
+              </button>
+            </a>
           ) : (
             <a
               href="/auth/signin"
               className="p-2 hover:scale-110 transition-transform"
             >
-              <UserCircleIcon className="h-7 w-7 text-gray-500" />
+              <UserCircleIcon className="h-7 w-7 text-orange-400 hover:text-gray-500" />
             </a>
           )}
 
@@ -470,10 +473,12 @@ export default function Navbar() {
               <div className="text-gray-500">Chargement...</div>
             ) : session ? (
               <div className="flex items-center gap-2">
-                <UserCircleIcon className="h-8 w-8 text-indigo-500" />
-                <span className="font-medium text-gray-800">
-                  {session.user?.name}
-                </span>
+                <a href="/profile" className="flex items-center gap-2 hover:text-indigo-700">
+                  <UserCircleIcon className="h-8 w-8 text-orange-400 hover:text-gray-500" />
+                  <span className="font-medium text-gray-800">
+                    {session.user?.name}
+                  </span>
+                </a>
                 <button
                   onClick={() => signOut()}
                   className="flex items-center gap-2 px-4 py-2.5 text-dark rounded-lg hover:bg-red-50"

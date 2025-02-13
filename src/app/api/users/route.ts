@@ -2,9 +2,12 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 
+/**
+ * Récupère tous les utilisateurs sans leur mot de passe
+ */
 export async function GET() {
   try {
-    console.log("Fetching all users...");
+    console.log("Récupération de tous les utilisateurs...");
 
     const users = await prisma.user.findMany({
       include: {
@@ -13,39 +16,37 @@ export async function GET() {
       },
     });
 
-    if (users.length === 0) {
-      return NextResponse.json({ message: 'No users found' }, { status: 404 });
+    if (!users.length) {
+      return NextResponse.json({ message: 'Aucun utilisateur trouvé.' }, { status: 404 });
     }
 
-    // Typage sécurisé sans `any`
-    type UserWithoutPassword = Omit<typeof users[number], "password">;
+    // Suppression des mots de passe avant d'envoyer les données
+    const usersWithoutPassword = users.map(({ password, ...userWithoutPassword }) => userWithoutPassword);
 
-    const usersWithoutPassword = users.map(({ password: _, ...userWithoutPassword }) => userWithoutPassword);
-
-    console.log("GET API/users: users found:", usersWithoutPassword);
+    console.log("Utilisateurs récupérés :", usersWithoutPassword.length);
     return NextResponse.json(usersWithoutPassword, { status: 200 });
   } catch (error) {
-    console.error('Error fetching users:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('Erreur lors de la récupération des utilisateurs :', error);
+    return NextResponse.json({ error: 'Erreur interne du serveur.' }, { status: 500 });
   }
 }
 
-
+/**
+ * Crée un nouvel utilisateur avec hachage du mot de passe
+ */
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { username, email, password, role, imagePath } = body;
+    const { username, email, password, role, imagePath } = await req.json();
 
     if (!username || !email || !password || !role) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+      return NextResponse.json({ error: 'Champs requis manquants.' }, { status: 400 });
     }
 
-    console.log('Creating user with body:', body);
+    console.log("Création d'un nouvel utilisateur :", { username, email, role });
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create the new user
+    // Création de l'utilisateur
     const newUser = await prisma.user.create({
       data: {
         username,
@@ -55,29 +56,24 @@ export async function POST(req: Request) {
       },
     });
 
-    // Create the image if imagePath is provided
     if (imagePath) {
-      const newImage = await prisma.image.create({
+      await prisma.image.create({
         data: {
           path: imagePath,
-          users: {
-            connect: {
-              id: newUser.id,
-            },
-          },
+          users: { connect: { id: newUser.id } },
         },
       });
 
-      console.log('Image created:', newImage);
+      console.log("Image associée à l'utilisateur :", imagePath);
     }
 
-    // Remove the password from the response
+    // Suppression du mot de passe avant de renvoyer l'utilisateur
     const { password: _, ...userWithoutPassword } = newUser;
 
-    console.log('POST API/users: user created:', userWithoutPassword);
+    console.log("Utilisateur créé :", userWithoutPassword);
     return NextResponse.json(userWithoutPassword, { status: 201 });
   } catch (error) {
-    console.error('Error creating user:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error("Erreur lors de la création de l'utilisateur :", error);
+    return NextResponse.json({ error: 'Erreur interne du serveur.' }, { status: 500 });
   }
 }

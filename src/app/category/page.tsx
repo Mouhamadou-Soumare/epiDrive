@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import LoaderComponent from '@/components/LoaderComponent';
 
 type Category = { 
   name: string; 
@@ -35,7 +36,7 @@ export default function AllCategoriesPage() {
   }, []);
   console.log(categories);
 
-  if (loading) return <div className='min-h-screen min-w-screen mx-auto flex justify-center items-center'><span className="loader-cate-prod"></span></div>;
+  if (loading) return <LoaderComponent />;
   if (!categories) return <div>Aucune catégorie trouvée</div>;
 
   return (

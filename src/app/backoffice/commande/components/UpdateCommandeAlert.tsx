@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useCallback } from "react";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { ExclamationTriangleIcon, XMarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline';
+import { useUpdateCommandeAlert } from '@/hooks/commandes/UpdateCommandeAlert';
 
 interface UpdateCommandeAlertProps {
   message: string;
@@ -12,50 +12,16 @@ interface UpdateCommandeAlertProps {
   commandeId: number;
 }
 
-export const UpdateCommandeAlert = ({ message: initialMessage, open, setOpen, user, commandeId }: UpdateCommandeAlertProps) => {
-  const [message, setMessage] = useState(initialMessage);
-  const [loading, setLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+export const UpdateCommandeAlert = ({ message, open, setOpen, user, commandeId }: UpdateCommandeAlertProps) => {
+  const {
+    message: updatedMessage,
+    loading,
+    successMessage,
+    errorMessage,
+    handleInputChange,
+    handleSubmit,
+  } = useUpdateCommandeAlert({ initialMessage: message, user, commandeId, setOpen });
 
-  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage(e.target.value);
-  }, []);
-
-  const handleSubmit = useCallback(async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setSuccessMessage(null);
-    setErrorMessage(null);
-
-    try {
-      const payload = {
-        subject: `Mise à jour de la commande #${commandeId}`,
-        message: message.trim(),
-        userName: user.username,
-        commandeId,
-      };
-
-      console.log("📩 Payload envoyé :", payload);
-
-      const response = await fetch('/api/sendEmail', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        throw new Error("Erreur lors de l'envoi de l'email");
-      }
-
-      setSuccessMessage("✅ Email envoyé avec succès !");
-      setTimeout(() => setOpen(false), 2000);
-    } catch (error) {
-      setErrorMessage("❌ Une erreur s'est produite lors de l'envoi.");
-    } finally {
-      setLoading(false);
-    }
-  }, [message, commandeId, user, setOpen]);
 
   return (
     <Dialog open={open} onClose={() => setOpen(false)} className="fixed inset-0 z-50 flex justify-center items-center">
