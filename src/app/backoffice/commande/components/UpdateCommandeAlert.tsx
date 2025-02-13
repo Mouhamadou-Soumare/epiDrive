@@ -82,7 +82,7 @@ export const UpdateCommandeAlert = ({ message, open, setOpen, user, commandeId }
               className={`inline-flex w-full sm:w-auto justify-center rounded-md px-4 py-2 text-sm font-semibold shadow-sm transition duration-200 ${
                 loading
                   ? "bg-indigo-400 cursor-not-allowed"
-                  : "bg-indigo-600 hover:bg-indigo-500 text-white"
+                  : "button-primary hover:bg-indigo-500 text-white"
               }`}
             >
               {loading ? (

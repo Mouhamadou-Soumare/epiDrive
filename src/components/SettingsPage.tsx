@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import LoaderComponent from './LoaderComponent';
 
 export default function SettingsPage() {
   const { data: session, status } = useSession();
@@ -13,7 +14,7 @@ export default function SettingsPage() {
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null); // État pour gérer les erreurs
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); 
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -56,7 +57,7 @@ export default function SettingsPage() {
   };
 
   if (status === 'loading') {
-    return <div>Loading...</div>;
+    return <LoaderComponent/>;
   }
 
   if (!session) {
