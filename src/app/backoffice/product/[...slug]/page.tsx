@@ -87,7 +87,7 @@ export default function ProductDetails() {
         </div>
 
         {/* Produit image */}
-        <ProductImage image={produit.imageSrc ?? null} altText={produit.name} />
+        <ProductImage image={produit.image ?? null} altText={produit.name} />
 
         {/* Product actions */}
         <ProductActions productSlug={produit.slug} onDelete={handleDelete} />
