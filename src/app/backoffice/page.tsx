@@ -66,7 +66,6 @@ export default function Backoffice() {
     return (
       <div className="text-red-500 text-center py-10">
         <p> Une erreur est survenue lors du chargement des données.</p>
-        <p>{errorUsers || errorCommandes || errorProducts}</p>
 
       </div>
     );
