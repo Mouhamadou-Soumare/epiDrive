@@ -16,7 +16,6 @@ export async function middleware(req: NextRequest) {
 
     console.log("Middleware check:", { urlPath, isAuthenticated, isAdmin });
 
-    // 🔒 Redirection des utilisateurs non-admin du Backoffice
     if (isBackOfficeRoute) {
       if (!isAdmin) {
         console.log("Redirection vers /auth/signin car utilisateur non admin");
@@ -24,7 +23,6 @@ export async function middleware(req: NextRequest) {
       }
     }
 
-    // 🔒 Protection des routes API sensibles
     if (isAuthRoute || isProfileRoute || isBackOfficeApiRoute) {
       if (!isAuthenticated) {
         console.log("Blocage: Accès non autorisé aux API sensibles");
@@ -39,7 +37,6 @@ export async function middleware(req: NextRequest) {
   }
 }
 
-// Appliquer le middleware aux routes spécifiques
 export const config = {
   matcher: [
     "/backoffice/:path*", 

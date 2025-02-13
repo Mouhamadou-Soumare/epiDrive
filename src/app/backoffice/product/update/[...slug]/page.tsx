@@ -188,7 +188,7 @@ export default function UpdateProductPage() {
           <button
             type="submit"
             disabled={loadingState}
-            className="px-5 py-2.5 bg-indigo-600 text-white text-sm font-medium rounded-md shadow-sm hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-300 transition duration-200"
+            className="px-5 py-2.5 button-primary text-white text-sm font-medium rounded-md shadow-sm hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-300 transition duration-200"
           >
             Mettre à jour le produit
           </button>

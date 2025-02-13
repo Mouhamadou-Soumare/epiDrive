@@ -20,7 +20,6 @@ export default function HeroSectionHomepage() {
   return (
     <div className="bg-white">
       <div className="relative isolate pt-14">
-        {/* Top Blur Background */}
         <div
           aria-hidden="true"
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -30,7 +29,6 @@ export default function HeroSectionHomepage() {
           />
         </div>
 
-        {/* Content Section */}
         <div className=" lg:pb-40">
           <div className="mx-auto max-w-7xl px-6 lg:px-8 herosectionHome">
             <div className="mx-auto max-w-2xl text-center">
@@ -54,7 +52,6 @@ export default function HeroSectionHomepage() {
           </div>
         </div>
 
-        {/* Bottom Blur Background */}
         <div
           aria-hidden="true"
           className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"

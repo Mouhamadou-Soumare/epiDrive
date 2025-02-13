@@ -8,14 +8,10 @@ import foodImage from "../../../../public/img/food_recommended_recettes-removebg
 import Image from "next/image";
 
 interface RecommendedRecettesProps {
-  // sessionId: string;
-  // setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
   allRecettes: Recette[];
 }
 
 const RecommendedRecettes: React.FC<RecommendedRecettesProps> = ({
-  // sessionId,
-  // setCartItems,
   allRecettes,
 }) => {
   const [recommendedRecettes, setRecommendedRecettes] = useState<Recette[]>([]);
@@ -34,13 +30,11 @@ const RecommendedRecettes: React.FC<RecommendedRecettesProps> = ({
     }
   }, [allRecettes]);
 
-  /** 🔹 Ouvre la modal et stocke les produits de la recette */
   const openModal = (recette: Recette) => {
     setSelectedRecette(recette);
     setIsModalOpen(true);
   };
 
-  /** 🔹 Ajoute un produit au panier */
   const handleAddToCart = (productId: number, quantity: number) => {
     const product = selectedRecette?.produits.find((p) => p.id === productId);
     if (!product) return;
@@ -68,13 +62,12 @@ const RecommendedRecettes: React.FC<RecommendedRecettesProps> = ({
           <p>Chargement des recommandations...</p>
         </div>
       ) : (
-        <div className="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3 xl:gap-x-8">
+        <div className="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-1 sm:gap-x-6 lg:grid-cols-3 xl:gap-x-8">
         {recommendedRecettes.map((recette) => (
           <div
             key={recette.id}
             className="bg-white shadow-lg rounded-2xl overflow-hidden transition transform hover:scale-105"
           >
-            {/* Image de la recette */}
             <div className="relative w-full h-48 bg-gray-200">
               {recette.image ? (
                 <Image

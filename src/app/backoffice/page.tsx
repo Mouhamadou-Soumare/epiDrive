@@ -1,13 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
-import { User } from "../../../types";
-
 import { useGetUsers } from "@/hooks/users/useUsers";
 import { useGetCommandes } from "@/hooks/commandes/useCommandes";
 import { useGetProduits } from "@/hooks/products/useProduits";

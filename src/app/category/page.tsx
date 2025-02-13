@@ -1,43 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import LoaderComponent from '@/components/LoaderComponent';
-
-type Category = { 
-  name: string; 
-  slug: string; 
-  imageSrc?: string;   
-  imageAlt?: string; 
-};
+import { useGetCategories } from '@/hooks/categories/useCategories';
 
 export default function AllCategoriesPage() {
-  const [categories, setCategories] = useState<Category[] | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchCategories() {
-      try {
-        const res = await fetch('/api/categories');
-        const data = await res.json();
-        if (res.ok) {
-          setCategories(data);
-        } else {
-          console.error('Error fetching categories:', data.error);
-        }
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchCategories();
-  }, []);
-  console.log(categories);
+  const { categories, loading, error } = useGetCategories();
 
   if (loading) return <LoaderComponent />;
-  if (!categories) return <div>Aucune catégorie trouvée</div>;
+  if (error) return <div className="text-red-600">{error}</div>;
+  if (!categories || categories.length === 0) return <div>Aucune catégorie trouvée</div>;
 
   return (
     <div className="bg-white">
@@ -49,8 +21,8 @@ export default function AllCategoriesPage() {
             <Link key={category.slug} href={`/category/${category.slug}`} className="group">
               <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
                 <img
-                  alt={category.imageAlt || `Image de la catégorie ${category.name}`}
-                  src={category.imageSrc || 'https://via.placeholder.com/300'}
+                  alt={category.name || `Image de la catégorie ${category.name}`}
+                  src={category.imageSrc  || 'https://via.placeholder.com/300'}
                   className="h-full w-full object-cover object-center group-hover:opacity-75"
                 />
               </div>

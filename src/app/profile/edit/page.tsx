@@ -122,7 +122,7 @@ function EditProfilePageContent() {
 
           <button
             type="submit"
-            className={`w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-full ${
+            className={`w-full button-primary hover:bg-orange-700 text-white py-2 px-4 rounded-full ${
               isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
             }`}
             disabled={isSubmitting}
