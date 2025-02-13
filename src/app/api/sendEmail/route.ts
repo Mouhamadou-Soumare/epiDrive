@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
+import { NextResponse } from "next/server";
+import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -10,14 +10,17 @@ export async function POST(req: Request) {
   try {
     const { subject, message, userName, commandeId } = await req.json();
 
-    console.log('Payload reçu:', { subject, message, userName, commandeId });
+    console.log("Payload reçu:", { subject, message, userName, commandeId });
 
     const recipientEmail = process.env.RESEND_EMAIL_TO;
     const senderEmail = process.env.RESEND_EMAIL_FROM;
 
     if (!recipientEmail || !senderEmail) {
       return NextResponse.json(
-        { error: "Les adresses email RESEND_EMAIL_TO et RESEND_EMAIL_FROM doivent être définies." },
+        {
+          error:
+            "Les adresses email RESEND_EMAIL_TO et RESEND_EMAIL_FROM doivent être définies.",
+        },
         { status: 500 }
       );
     }
@@ -139,27 +142,30 @@ export async function POST(req: Request) {
     `;
 
     const filledTemplate = htmlTemplate
-      .replace('{{commandeId}}', commandeId)
-      .replace('{{statutCommande}}', message)
-      .replace('{{userName}}', userName);
+      .replace("{{commandeId}}", commandeId)
+      .replace("{{statutCommande}}", message)
+      .replace("{{userName}}", userName);
 
     const { data, error } = await resend.emails.send({
-      from: senderEmail, 
+      from: senderEmail,
       to: [recipientEmail],
       subject: subject || `Mise à jour de la commande #${commandeId}`,
       html: filledTemplate,
     });
 
-    console.log('Réponse Resend:', { data, error });
+    console.log("Réponse Resend:", { data, error });
 
     if (error) {
-      console.error('Erreur Resend:', error);
+      console.error("Erreur Resend:", error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
     return NextResponse.json({ success: true, data });
   } catch (error) {
-    console.error('Erreur lors de l\'envoi de l\'email:', error);
-    return NextResponse.json({ error: 'Erreur lors de l\'envoi de l\'email.' }, { status: 500 });
+    console.error("Erreur lors de l'envoi de l'email:", error);
+    return NextResponse.json(
+      { error: "Erreur lors de l'envoi de l'email." },
+      { status: 500 }
+    );
   }
 }

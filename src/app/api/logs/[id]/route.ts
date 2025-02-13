@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 
 /**
  * Récupère un log spécifique par ID
@@ -12,7 +12,7 @@ export async function GET(
   const logId = parseInt(id, 10);
 
   if (!id || isNaN(logId)) {
-    return NextResponse.json({ error: 'ID invalide' }, { status: 400 });
+    return NextResponse.json({ error: "ID invalide" }, { status: 400 });
   }
 
   try {
@@ -22,13 +22,16 @@ export async function GET(
     });
 
     if (!log) {
-      return NextResponse.json({ error: 'Log introuvable' }, { status: 404 });
+      return NextResponse.json({ error: "Log introuvable" }, { status: 404 });
     }
 
     return NextResponse.json(log, { status: 200 });
   } catch (error) {
-    console.error('Erreur lors de la récupération du log :', error);
-    return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
+    console.error("Erreur lors de la récupération du log :", error);
+    return NextResponse.json(
+      { error: "Erreur interne du serveur" },
+      { status: 500 }
+    );
   }
 }
 
@@ -43,21 +46,27 @@ export async function DELETE(
   const logId = parseInt(id, 10);
 
   if (!id || isNaN(logId)) {
-    return NextResponse.json({ error: 'ID invalide' }, { status: 400 });
+    return NextResponse.json({ error: "ID invalide" }, { status: 400 });
   }
 
   try {
     const log = await prisma.log.findUnique({ where: { id: logId } });
 
     if (!log) {
-      return NextResponse.json({ error: 'Log introuvable' }, { status: 404 });
+      return NextResponse.json({ error: "Log introuvable" }, { status: 404 });
     }
 
     await prisma.log.delete({ where: { id: logId } });
 
-    return NextResponse.json({ message: 'Log supprimé avec succès' }, { status: 200 });
+    return NextResponse.json(
+      { message: "Log supprimé avec succès" },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error(' Erreur lors de la suppression du log :', error);
-    return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
+    console.error(" Erreur lors de la suppression du log :", error);
+    return NextResponse.json(
+      { error: "Erreur interne du serveur" },
+      { status: 500 }
+    );
   }
 }

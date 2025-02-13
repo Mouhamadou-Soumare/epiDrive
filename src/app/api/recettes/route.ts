@@ -1,9 +1,8 @@
-import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
-import { Produit, Ingredient } from 'types';
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
+import { Produit, Ingredient } from "types";
 import { promises as fs } from "fs";
 import path from "path";
-
 
 /**
  * Récupère toutes les recettes avec leurs détails
@@ -24,7 +23,10 @@ export async function GET() {
 
     if (recettes.length === 0) {
       console.log("Aucune recette trouvée.");
-      return NextResponse.json({ message: 'Aucune recette trouvée.' }, { status: 404 });
+      return NextResponse.json(
+        { message: "Aucune recette trouvée." },
+        { status: 404 }
+      );
     }
 
     const transformedRecettes = recettes.map((recette) => ({
@@ -32,8 +34,10 @@ export async function GET() {
       title: recette.title,
       description: recette.description,
       instructions: recette.instructions,
-      image: recette.image || '/img/placeholder.webp',
-      user: recette.user ? { id: recette.user.id, username: recette.user.username } : null,
+      image: recette.image || "/img/placeholder.webp",
+      user: recette.user
+        ? { id: recette.user.id, username: recette.user.username }
+        : null,
       produits: recette.produits.map((produit: Produit) => ({
         id: produit.id,
         name: produit.name,
@@ -54,10 +58,12 @@ export async function GET() {
 
     console.log(`${recettes.length} recettes trouvées.`);
     return NextResponse.json(transformedRecettes, { status: 200 });
-
   } catch (error) {
-    console.error('Erreur lors de la récupération des recettes :', error);
-    return NextResponse.json({ error: 'Erreur interne du serveur.' }, { status: 500 });
+    console.error("Erreur lors de la récupération des recettes :", error);
+    return NextResponse.json(
+      { error: "Erreur interne du serveur." },
+      { status: 500 }
+    );
   }
 }
 
@@ -72,11 +78,16 @@ export async function POST(request: Request) {
     const description = formData.get("description") as string;
     const instructions = formData.get("instructions") as string;
     const userId = parseInt(formData.get("userId") as string, 10);
-    const produits = formData.get("produits") ? JSON.parse(formData.get("produits") as string) : [];
+    const produits = formData.get("produits")
+      ? JSON.parse(formData.get("produits") as string)
+      : [];
     const newImage = formData.get("newImage") as File | null;
 
     if (!title || !description || !instructions || isNaN(userId)) {
-      return NextResponse.json({ error: "Champs requis manquants" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Champs requis manquants" },
+        { status: 400 }
+      );
     }
 
     let imagePath = "/img/recette/default.webp";
@@ -109,9 +120,11 @@ export async function POST(request: Request) {
 
     console.log(`Recette créée avec succès : ${title}`);
     return NextResponse.json(newRecette, { status: 201 });
-
   } catch (error) {
     console.error("Erreur lors de la création de la recette :", error);
-    return NextResponse.json({ error: "Échec de la création de la recette" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Échec de la création de la recette" },
+      { status: 500 }
+    );
   }
 }
