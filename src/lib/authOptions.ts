@@ -8,11 +8,7 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: {
-          label: "Email",
-          type: "email",
-          placeholder: "you@example.com",
-        },
+        email: { label: "Email", type: "email", placeholder: "you@example.com" },
         password: { label: "Mot de passe", type: "password" },
       },
       async authorize(credentials) {
@@ -24,29 +20,29 @@ export const authOptions: NextAuthOptions = {
           where: { email: credentials.email },
         });
 
-        if (user && user.password) {
-          const isValidPassword = await bcrypt.compare(
-            credentials.password,
-            user.password
-          );
-
-          if (isValidPassword) {
-            return {
-              id: user.id.toString(),
-              name: user.username,
-              email: user.email,
-            };
-          }
+        if (!user || !user.password) {
+          return null;
         }
 
-        return null;
+        const isValidPassword = await bcrypt.compare(credentials.password, user.password);
+
+        if (!isValidPassword) {
+          return null;
+        }
+
+        return {
+          id: user.id.toString(),
+          name: user.username,
+          email: user.email,
+          role: user.role, 
+        };
       },
     }),
   ],
 
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60,
+    maxAge: 30 * 24 * 60 * 60, // 30 jours
   },
 
   callbacks: {
@@ -55,6 +51,7 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.email = user.email;
         token.name = user.name;
+        token.role = user.role; 
       }
       return token;
     },
@@ -62,13 +59,19 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (token) {
         session.user = {
-          id: token.id as string | undefined,
+          id: token.id as string,
           email: token.email,
           name: token.name,
+          role: token.role,
         };
       }
       return session;
     },
+  },
+
+  pages: {
+    signIn: "/auth/signin", 
+    error: "/auth/error", 
   },
 
   secret: process.env.NEXTAUTH_SECRET,

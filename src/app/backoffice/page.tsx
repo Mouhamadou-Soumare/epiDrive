@@ -1,42 +1,25 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import { Session } from 'next-auth';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-import { User } from "../../../types";
-
-import { useGetUser, useGetUsers } from '@/hooks/users/useUsers';
+import { useGetUsers } from '@/hooks/users/useUsers';
 import { useGetCommandes } from '@/hooks/commandes/useCommandes';
 import { useGetProduits } from '@/hooks/products/useProduits';
 import CommandHistoryChart from '@/components/backoffice/CommandHistoryChart';
 import StatCard from './components/StatCard';
 
-interface ExtendedSession extends Session {
-  user: {
-    id: string;
-    name?: string;
-    email?: string;
-    image?: string;
-    role: string;
-  };
-}
-
 export default function Backoffice() {
-  const { data: session, status } = useSession() as { data: ExtendedSession | null; status: string };
+  const { data: session, status } = useSession();
   const router = useRouter();
 
-  // Redirection si l'utilisateur n'est pas admin
+  // Redirection si l'utilisateur n'est pas connecté ou n'est pas admin
   useEffect(() => {
     if (status === 'loading') return;
-    
-    if (!session || !session.user) {
-      const { user } = useGetUser(
-        isNaN(Number(session.user.id)) ? null : Number(session.user.id)
-      ) as { user: User | null, loading: any, error: any };
-
-      if (user?.role !== "ADMIN") router.push('/');
+    if (!session?.user || session.user.role !== 'ADMIN') {
+      router.push('/');
+      return;
     }
   }, [session, status, router]);
 

@@ -19,6 +19,7 @@ import {
   ArrowRightIcon,
   Bars3Icon,
   ChartPieIcon,
+  ChatBubbleLeftIcon,
   CursorArrowRaysIcon,
   FingerPrintIcon,
   MagnifyingGlassIcon,
@@ -209,6 +210,9 @@ export default function Navbar() {
     (category) => !mesCoursesCategories.includes(category.name)
   );
 
+  console.log("Session:", session);
+  console.log("User:", session?.user);
+
   return (
     <header className="relative isolate z-10 ">
       <div aria-label="Top">
@@ -245,7 +249,7 @@ export default function Navbar() {
         <div className="flex lg:flex-1">
           <a href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
-            <Image alt="" src={logoWhite} className="h-10 w-auto" />
+            <Image alt="" src={logoWhite} className="h-10 w-auto min-w-150 mr-2" />
           </a>
         </div>
         <div className="flex items-center lg:hidden space-x-4">
@@ -431,6 +435,16 @@ export default function Navbar() {
               </div>
             </PopoverPanel>
           </Popover>
+          {session?.user?.role === "ADMIN" && (
+            <a
+              href="/backoffice"
+              className="flex items-center gap-2 px-4 py-2.5 bg-gray-800 text-white rounded-lg shadow hover:bg-gray-700 transition"
+            >
+              <ChartPieIcon className="h-6 w-6" />
+              <span>Dashboard</span>
+            </a>
+          )}
+
           <a
             href="/snap-and-cook"
             className="flex items-center gap-2 px-4 py-2.5  text-dark rounded-lg transition-colors duration-200 min-w-40 text-nav-hover"
@@ -486,7 +500,11 @@ export default function Navbar() {
                   </span>
                 </a>
                 <button
-                  onClick={() => signOut()}
+                  onClick={() =>
+                    signOut({
+                      callbackUrl: process.env.NEXT_PUBLIC_BASE_URL || "/",
+                    })
+                  }
                   className="flex items-center gap-2 px-4 py-2.5 text-dark rounded-lg hover:bg-red-50"
                 >
                   <ArrowRightIcon className="h-6 w-6 text-red-500" />
@@ -524,6 +542,47 @@ export default function Navbar() {
             >
               <XMarkIcon className="h-6 w-6" />
             </button>
+          </div>
+
+          <div className="flex flex-col gap-4 mt-10">
+            {session?.user?.role === "ADMIN" && (
+              <a
+                href="/backoffice"
+                className="flex items-center gap-3 px-4 py-3 bg-gray-800 text-white rounded-lg shadow hover:bg-gray-700 transition"
+              >
+                <ChartPieIcon className="h-6 w-6" />
+                <span>Dashboard</span>
+              </a>
+            )}
+
+            <a
+              href="/snap-and-cook"
+              className="flex items-center gap-3 px-4 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
+            >
+              <Image
+                src={logoSnapAndCook}
+                alt="Snap & Cook"
+                width={30}
+                height={30}
+              />
+              <span>Snap & Cook</span>
+            </a>
+
+            <a
+              href="/chatIA"
+              className="flex items-center gap-3 px-4 py-3 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 transition"
+            >
+              <ChatBubbleLeftIcon className="h-6 w-6" />
+              <span>Poser une question à l’IA</span>
+            </a>
+
+            <a
+              href="/category"
+              className="flex items-center gap-3 px-4 py-3 bg-gray-600 text-white rounded-lg shadow hover:bg-gray-700 transition"
+            >
+              <RectangleGroupIcon className="h-6 w-6" />
+              <span>Voir toutes les catégories</span>
+            </a>
           </div>
 
           <div className="mt-10">

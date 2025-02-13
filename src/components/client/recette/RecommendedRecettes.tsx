@@ -53,7 +53,7 @@ const RecommendedRecettes: React.FC<RecommendedRecettesProps> = ({
 
   return (
     <div className="mx-auto max-w-2xl pt-16 px-4 pb-16 sm:px-6 sm:pb-24 lg:max-w-7xl lg:px-8">
-      <h2 className="mt-2 text-xl font-bold tracking-tight text-gray-900 sm:text-4xl text-center">
+      <h2 className="mt-4 text-xl font-bold tracking-tight text-gray-900 sm:text-4xl text-center">
         Epidrive vous recommande
       </h2>
 
