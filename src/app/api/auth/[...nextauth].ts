@@ -4,18 +4,18 @@ import EmailProvider from "next-auth/providers/email";
 import prisma from "@/lib/prisma";
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma), // Utilisation de Prisma pour la gestion des utilisateurs
+  adapter: PrismaAdapter(prisma),
   providers: [
     EmailProvider({
-      server: process.env.EMAIL_SERVER, // Serveur SMTP pour l'authentification par email
-      from: process.env.EMAIL_FROM, // Adresse email utilisée pour envoyer les liens d'authentification
+      server: process.env.EMAIL_SERVER, 
+      from: process.env.EMAIL_FROM, 
     }),
   ],
   pages: {
-    signIn: "/auth/signin", // Redirection vers une page personnalisée de connexion
+    signIn: "/auth/signin", 
   },
   session: {
-    strategy: "jwt", // Utilisation de JWT pour les sessions (meilleure scalabilité)
+    strategy: "jwt", 
   },
   callbacks: {
     async session({ session, user }) {
