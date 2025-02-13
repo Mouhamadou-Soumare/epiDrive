@@ -1,62 +1,32 @@
 'use client';
 
-import { signIn, useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import Link from 'next/link'; // Remplace les <a> pour le SEO et la performance
-
-import { ArrowLeftIcon, ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/outline';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { ArrowLeftIcon, ArrowRightEndOnRectangleIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
 import AuthenticatorCards from '@/components/AuthenticatorCards';
+import { useSignIn } from '@/hooks/auth/useSignIn';
 
 export default function SignInPage() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const { error, loading, signInUser } = useSignIn();
 
-  // Fonction de validation des entrées utilisateur
-  const validateInputs = () => {
-    if (!email || !password) {
-      setError("Veuillez remplir tous les champs.");
-      return false;
-    }
-    if (password.length < 6) {
-      setError("Le mot de passe doit contenir au moins 6 caractères.");
-      return false;
-    }
-    return true;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-
-    if (!validateInputs()) return;
-
-    try {
-      const result = await signIn('credentials', {
-        redirect: false,
-        email: email.trim(), // Trim pour éviter les espaces accidentels
-        password,
-      });
-
-      if (result?.error) {
-        setError("Identifiants incorrects. Veuillez réessayer.");
-      } else {
-        router.push('/'); // Redirige vers le dashboard après connexion
-      }
-    } catch (err) {
-      setError("Une erreur est survenue. Réessayez plus tard.");
-    }
-  };
-
+  // Redirige l'utilisateur s'il est déjà connecté
   useEffect(() => {
     if (status === 'authenticated') {
-      router.push('/'); // Redirige si déjà connecté
+      router.push('/');
     }
   }, [status, router]);
 
+  // Gestion de la soumission du formulaire
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    signInUser(email, password);
+  };
   return (
     <div className="bg-auth h-screen flex flex-wrap pb-0">
       <div className="w-full md:w-1/2 lg:w-1/2 px-8 py-4 items-center content-center flex-auth-form">

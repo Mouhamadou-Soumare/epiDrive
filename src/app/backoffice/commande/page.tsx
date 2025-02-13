@@ -5,6 +5,7 @@ import { useGetCommandes } from "@/hooks/commandes/useCommandes";
 import CommandeRow from "./components/CommandeRow";
 import SearchInput from "../components/SearchInput";
 import { Commande } from "types";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const CommandeList = () => {
   const { commandes, loading, error } = useGetCommandes();
@@ -30,7 +31,7 @@ const CommandeList = () => {
     setCurrentPage(1);
   }, []);
 
-  if (loading) return <div className="text-gray-700 text-center py-6">Chargement des commandes...</div>;
+  if (loading) return <LoadingSpinner/>;
   if (error) return <div className="text-red-500 text-center py-6">Erreur : {error}</div>;
 
   return (

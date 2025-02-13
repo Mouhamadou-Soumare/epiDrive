@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { Session } from 'next-auth';
 import { useRouter } from 'next/navigation';
@@ -13,6 +12,7 @@ import { useGetCommandes } from '@/hooks/commandes/useCommandes';
 import { useGetProduits } from '@/hooks/products/useProduits';
 import CommandHistoryChart from '@/components/backoffice/CommandHistoryChart';
 import StatCard from './components/StatCard';
+import LoadingSpinner from './components/LoadingSpinner';
 
 interface ExtendedSession extends Session {
   user: {
@@ -48,7 +48,7 @@ export default function Backoffice() {
 
   // Chargement en cours
   if (loadingUsers || loadingCommandes || loadingProducts) {
-    return <div className="text-center py-10 text-lg font-medium">Chargement...</div>;
+    return <LoadingSpinner/>;
   }
 
   // Gestion des erreurs

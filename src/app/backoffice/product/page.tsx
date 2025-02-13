@@ -7,6 +7,7 @@ import ProductRow from "./components/ProductRow";
 import Alert from "../components/Alert";
 import { useGetProduits } from "@/hooks/products/useProduits";
 import { Produit } from "types";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const ProductList = () => {
   const { produits, loading, error } = useGetProduits();
@@ -42,7 +43,7 @@ const ProductList = () => {
   const handleNextPage = useCallback(() => setCurrentPage((prev) => Math.min(prev + 1, totalPages)), [totalPages]);
 
   if (loading) {
-    return <div className="text-center text-lg font-medium">🔄 Chargement des produits...</div>;
+    return <LoadingSpinner/>;
   }
 
   if (error) {

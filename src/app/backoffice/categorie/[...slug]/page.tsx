@@ -8,6 +8,7 @@ import { CheckIcon } from "@heroicons/react/20/solid";
 import CategorieRow from "../components/CategorieRow";
 import { Categorie } from "types";
 import { useGetCategory, useDeleteCategory } from "@/hooks/categories/useCategories";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function CategoryDetails() {
   const params = useParams();
@@ -23,7 +24,7 @@ export default function CategoryDetails() {
     }
   };
 
-  if (categoryLoading || deleteLoading) return <div className="lg:pl-72">Chargement...</div>;
+  if (categoryLoading || deleteLoading) return <LoadingSpinner/>;
   if (categoryError) return <div className="lg:pl-72 text-red-500">Erreur lors de la récupération de la catégorie.</div>;
   if (!category) return <div className="lg:pl-72">Catégorie non trouvée.</div>;
 
