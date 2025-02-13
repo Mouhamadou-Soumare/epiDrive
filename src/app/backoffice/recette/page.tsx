@@ -48,7 +48,7 @@ const RecetteList = () => {
   if (error) {
     return (
       <div className="text-center text-red-600 text-lg">
-        ❌ Une erreur est survenue : {error}
+         Une erreur est survenue : {error}
       </div>
     );
   }
@@ -131,7 +131,7 @@ const RecetteList = () => {
         </div>
       ) : (
         <div className="mt-8 text-center text-gray-500">
-          ❌ Aucune recette trouvée
+           Aucune recette trouvée
         </div>
       )}
     </div>

@@ -2,21 +2,17 @@ const fs = require('fs');
 const path = require('path');
 const ts = require('typescript');
 
-// Dossiers des API et des tests
-const apiDir = path.join(__dirname, 'src/app/api'); // Répertoire des scripts API
-const testDir = path.join(__dirname, 'src/tests/api'); // Répertoire des tests
+const apiDir = path.join(__dirname, 'src/app/api'); 
+const testDir = path.join(__dirname, 'src/tests/api'); 
 
-// Alias définis dans votre projet (ajoutez ceux nécessaires)
 const aliases = {
   '@': path.join(__dirname, 'src'),
 };
 
-// Assurez-vous que le répertoire des tests existe
 if (!fs.existsSync(testDir)) {
   fs.mkdirSync(testDir, { recursive: true });
 }
 
-// Convertir un alias en chemin absolu si nécessaire
 function resolveAlias(filePath) {
   for (const alias in aliases) {
     if (filePath.startsWith(alias)) {
@@ -26,7 +22,6 @@ function resolveAlias(filePath) {
   return filePath;
 }
 
-// Générer un modèle de test basé sur les exports du module cible
 const generateTestTemplate = (name, filePath, exports) => `
 import { ${exports.join(', ')} } from '${filePath.replace(/\\/g, '/')}'${exports.length === 0 ? '' : ';'}
 
@@ -45,7 +40,6 @@ ${exports.map(exp => `
 });
 `;
 
-// Extraire les exports d'un fichier TypeScript
 function getExports(filePath) {
   const content = fs.readFileSync(filePath, 'utf8');
   const sourceFile = ts.createSourceFile(filePath, content, ts.ScriptTarget.ESNext, true);
@@ -66,7 +60,6 @@ function getExports(filePath) {
   return exports;
 }
 
-// Générer un fichier de test pour un script donné
 function generateTestFile(filePath) {
   const fileName = path.basename(filePath, path.extname(filePath));
   const resolvedPath = resolveAlias(path.relative(testDir, filePath));
@@ -83,7 +76,6 @@ function generateTestFile(filePath) {
   console.log(`Created test file: ${testFilePath}`);
 }
 
-// Parcourir les fichiers du répertoire et générer les tests
 function walkDir(dir) {
   fs.readdirSync(dir).forEach(file => {
     const fullPath = path.join(dir, file);
@@ -95,5 +87,4 @@ function walkDir(dir) {
   });
 }
 
-// Lancer la génération des tests
 walkDir(apiDir);

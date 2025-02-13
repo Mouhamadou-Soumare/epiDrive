@@ -48,7 +48,7 @@ export async function sendCommandeUpdate(updatedCommande: any) {
     try {
       await client.res.write(encoder.encode(`data: ${JSON.stringify(updatedCommande)}\n\n`));
     } catch (error) {
-      console.error(`❌ Erreur envoi SSE client ${client.id}:`, error);
+      console.error(` Erreur envoi SSE client ${client.id}:`, error);
     }
   });
 }

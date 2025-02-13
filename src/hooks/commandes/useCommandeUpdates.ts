@@ -15,7 +15,7 @@ export function useCommandeUpdates() {
         console.log("📢 Mise à jour de la commande reçue:", commande);
         setUpdatedCommande(commande);
       } catch (error) {
-        console.error("❌ Erreur de parsing SSE:", error);
+        console.error(" Erreur de parsing SSE:", error);
       }
     };
 

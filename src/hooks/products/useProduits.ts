@@ -47,11 +47,11 @@ export function useGetProduit(id: string | null) {
       try {
         setLoading(true);
         const response = await fetch(`${API_BASE_URL}/${id}`);
-        const data = await response.json(); // ✅ On ne fait pas `.map()`, car on attend UN SEUL produit
+        const data = await response.json(); //  On ne fait pas `.map()`, car on attend UN SEUL produit
 
         if (!response.ok) throw new Error((data as unknown as FetchError).message || 'Failed to fetch product');
 
-        // ✅ Assurer que `data` est bien un objet et non un tableau
+        //  Assurer que `data` est bien un objet et non un tableau
         const produitFormate: Produit = {
           id: data.id,
           name: data.name,
@@ -63,7 +63,7 @@ export function useGetProduit(id: string | null) {
           stock: data.stock || 0,
         };
 
-        setProduit(produitFormate); // ✅ Maintenant, `setProduit` reçoit bien un seul produit
+        setProduit(produitFormate); //  Maintenant, `setProduit` reçoit bien un seul produit
       } catch (err) {
         setError((err as Error).message);
       } finally {

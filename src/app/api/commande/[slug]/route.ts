@@ -102,7 +102,7 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ slug:
 
     return NextResponse.json({ message: "Commande supprimée avec succès" }, { status: 200 });
   } catch (error) {
-    console.error("❌ Erreur lors de la suppression de la commande :", error);
+    console.error(" Erreur lors de la suppression de la commande :", error);
     return NextResponse.json(
       { error: "Erreur interne du serveur", details: error instanceof Error ? error.message : "Erreur inconnue" },
       { status: 500 }

@@ -14,7 +14,7 @@ export default function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);
 
   if (loading) return <LoaderComponent />;
-  if (error || !product) return <div className="text-center text-lg font-semibold text-red-500">❌ Produit non trouvé</div>;
+  if (error || !product) return <div className="text-center text-lg font-semibold text-red-500"> Produit non trouvé</div>;
 
   return (
     <div className="bg-white">
@@ -74,7 +74,7 @@ export default function ProductDetailPage() {
                   </select>
                 </div>
               ) : (
-                <div className="text-red-500 text-lg font-semibold">❌ Ce produit est en rupture de stock</div>
+                <div className="text-red-500 text-lg font-semibold"> Ce produit est en rupture de stock</div>
               )}
 
               <div className="mt-10">

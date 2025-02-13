@@ -10,10 +10,9 @@ export async function middleware(req: NextRequest) {
     const protectedRoutes = ["/api/auth", "/api/profile", "/api/backoffice"];
     const isProtectedRoute = protectedRoutes.some((route) => urlPath.startsWith(route));
 
-    const isAdmin = token?.id === "ADMIN";  // ✅ Correction ici
+    const isAdmin = token?.id === "ADMIN"; 
     const isAuthenticated = !!token;
 
-    // Debug uniquement en développement
     if (process.env.NODE_ENV === "development") {
       console.log("Middleware check:", { urlPath, isAuthenticated, isAdmin });
     }
@@ -33,7 +32,7 @@ export async function middleware(req: NextRequest) {
   }
 }
 
-// 🎯 Configuration des routes protégées
+// Configuration des routes protégées
 export const config = {
   matcher: ["/backoffice/:path*", "/api/auth/:path*", "/api/profile/:path*", "/api/backoffice/:path*"],
 };

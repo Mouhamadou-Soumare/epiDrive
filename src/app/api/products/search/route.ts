@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
     const products = await prisma.produit.findMany({
       where: {
         name: {
-          contains: query.toLowerCase(), // ✅ Conversion en minuscule pour éviter la casse
+          contains: query.toLowerCase(), //  Conversion en minuscule pour éviter la casse
         },
       },
       select: {
