@@ -1,20 +1,26 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-/**
- * Récupère un utilisateur par ID avec ses commandes et livraisons
- */
-export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  try {
-    const { id } = await params;
+// 🔍 Fonction utilitaire pour exclure le mot de passe de la réponse
+const excludePassword = (user: any) => {
+  if (!user) return null;
+  const { password, ...userWithoutPassword } = user;
+  return userWithoutPassword;
+};
 
-    // Vérification de l'ID utilisateur
-    if (!id || isNaN(parseInt(id, 10))) {
-      return NextResponse.json({ error: 'ID utilisateur invalide ou manquant.' }, { status: 400 });
+/** 
+ * 📌 GET /api/users/[id]
+ * Récupérer un utilisateur par ID
+ */
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    const userId = parseInt(params.id, 10);
+    if (isNaN(userId)) {
+      return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
     }
 
-    const userId = parseInt(id, 10);
-    console.log("🔍 Récupération de l'utilisateur avec l'ID :", userId);
+    console.log("Fetching user with ID:", userId);
+
 
     // Recherche de l'utilisateur avec ses relations
     const user = await prisma.user.findUnique({
@@ -36,41 +42,50 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
       return NextResponse.json({ error: 'Utilisateur introuvable.' }, { status: 404 });
     }
 
-    // Suppression du mot de passe avant de renvoyer l'utilisateur
-    const { password, ...userWithoutPassword } = user;
+    return NextResponse.json(excludePassword(user), { status: 200 });
 
-    console.log('Utilisateur trouvé:', userWithoutPassword);
-    return NextResponse.json(userWithoutPassword, { status: 200 });
   } catch (error) {
     console.error('Erreur lors de la récupération de l\'utilisateur:', error);
     return NextResponse.json({ error: 'Erreur interne du serveur.' }, { status: 500 });
   }
 }
 
-
-/**
- * Met à jour un utilisateur par ID
+/** 
+ * 📌 PATCH /api/users/[id]
+ * Mettre à jour un utilisateur (nécessite ADMIN)
  */
-export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const { id } = await params;
-
-    // Vérification de l'ID utilisateur
-    if (!id || isNaN(parseInt(id, 10))) {
-      return NextResponse.json({ error: 'ID utilisateur invalide ou manquant.' }, { status: 400 });
+    const userId = parseInt(params.id, 10);
+    if (isNaN(userId)) {
+      return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
     }
 
-    const userId = parseInt(id, 10);
+
     const body = await req.json();
     const { username, email } = body;
 
-    console.log('Mise à jour de l\'utilisateur avec l\'ID :', userId);
+    console.log('Updating user with ID:', userId);
 
-    // Vérifie si l'utilisateur existe
-    const user = await prisma.user.findUnique({ where: { id: userId } });
-    if (!user) {
-      return NextResponse.json({ error: 'Utilisateur introuvable.' }, { status: 404 });
+    // Vérifier si l'utilisateur existe
+    const existingUser = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!existingUser) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
+
+    // Vérifier si l'utilisateur qui effectue la requête est un ADMIN
+    const sessionUser = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { role: true },
+    });
+
+    if (!sessionUser || sessionUser.role !== 'ADMIN') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+    }
+
 
     // Mise à jour de l'utilisateur
     const updatedUser = await prisma.user.update({
@@ -78,43 +93,53 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
       data: { username, email },
     });
 
-    // Suppression du mot de passe avant de renvoyer l'utilisateur
-    const { password, ...userWithoutPassword } = updatedUser;
+    console.log('User updated:', updatedUser);
+    return NextResponse.json(excludePassword(updatedUser), { status: 200 });
 
-    console.log('Utilisateur mis à jour :', userWithoutPassword);
-    return NextResponse.json(userWithoutPassword, { status: 200 });
   } catch (error) {
     console.error('Erreur lors de la mise à jour de l\'utilisateur :', error);
     return NextResponse.json({ error: 'Erreur interne du serveur.' }, { status: 500 });
   }
 }
 
-/**
- * Supprime un utilisateur par ID
+/** 
+ * 📌 DELETE /api/users/[id]
+ * Supprimer un utilisateur (nécessite ADMIN)
  */
-export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const { id } = await params;
-
-    // Vérification de l'ID utilisateur
-    if (!id || isNaN(parseInt(id, 10))) {
-      return NextResponse.json({ error: 'ID utilisateur invalide ou manquant.' }, { status: 400 });
+    const userId = parseInt(params.id, 10);
+    if (isNaN(userId)) {
+      return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
     }
 
-    const userId = parseInt(id, 10);
-    console.log('🗑 Suppression de l\'utilisateur avec l\'ID :', userId);
+    console.log('Deleting user with ID:', userId);
 
-    // Vérifie si l'utilisateur existe
-    const user = await prisma.user.findUnique({ where: { id: userId } });
-    if (!user) {
-      return NextResponse.json({ error: 'Utilisateur introuvable.' }, { status: 404 });
+    // Vérifier si l'utilisateur existe
+    const existingUser = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!existingUser) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    }
+
+    // Vérifier si l'utilisateur qui effectue la requête est un ADMIN
+    const sessionUser = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { role: true },
+    });
+
+    if (!sessionUser || sessionUser.role !== 'ADMIN') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
     // Suppression de l'utilisateur
     await prisma.user.delete({ where: { id: userId } });
 
-    console.log('Utilisateur supprimé avec succès :', userId);
-    return NextResponse.json({ message: 'Utilisateur supprimé avec succès.' });
+    console.log('User deleted:', userId);
+    return NextResponse.json({ message: 'User deleted successfully' }, { status: 200 });
+
   } catch (error) {
     console.error('Erreur lors de la suppression de l\'utilisateur :', error);
     return NextResponse.json({ error: 'Erreur interne du serveur.' }, { status: 500 });

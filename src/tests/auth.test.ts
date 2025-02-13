@@ -2,7 +2,7 @@ import { registerUser, loginUser, resetUsers } from '../services/auth';
 
 describe('Auth Service', () => {
   beforeEach(() => {
-    resetUsers(); // Réinitialiser les utilisateurs avant chaque test
+    resetUsers();
   });
 
   describe('registerUser', () => {
