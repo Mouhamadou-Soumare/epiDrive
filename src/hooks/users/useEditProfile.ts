@@ -37,18 +37,24 @@ export function useEditProfile() {
     setErrorMessage("");
 
     try {
+      const userId = session?.user?.id ? Number(session.user.id) : null;
+      if (!userId) {
+        throw new Error("User ID not found");
+      }
+
       const formData = new FormData();
       formData.append("name", name);
       formData.append("email", email);
-
+      formData.append("userId", userId.toString());
+      
       if (profileImage) {
         formData.append("file", profileImage);
       }
-
-      const res = await fetch("/api/profile/update", {
-        method: "POST",
-        body: formData,
-      });
+      
+      const res = await fetch(`/api/users/${userId}`, {
+        method: "PATCH",
+        body: formData, 
+      });      
 
       const data = await res.json();
 

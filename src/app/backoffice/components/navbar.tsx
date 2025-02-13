@@ -95,29 +95,6 @@ export default function Navbar() {
                       ))}
                     </ul>
                   </li>
-                  <li className="mt-auto">
-                    <a
-                      href="#"
-                      className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
-                    >
-                      <Cog6ToothIcon
-                        aria-hidden="true"
-                        className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600"
-                      />
-                      Settings
-                    </a>
-
-                    <a
-                      href="#"
-                      className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
-                    >
-                      <BellIcon
-                        aria-hidden="true"
-                        className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600"
-                      />
-                      Notifications
-                    </a>
-                  </li>
                 </ul>
               </nav>
             </div>
@@ -184,29 +161,6 @@ export default function Navbar() {
                     </li>
                   ))}
                 </ul>
-              </li>
-              <li className="mt-auto">
-                <a
-                  href="#"
-                  className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 a-primary-hover"
-                >
-                  <Cog6ToothIcon
-                    aria-hidden="true"
-                    className="h-6 w-6 shrink-0 "
-                  />
-                  Settings
-                </a>
-
-                <a
-                  href="#"
-                  className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 a-primary-hover"
-                >
-                  <BellIcon
-                    aria-hidden="true"
-                    className="h-6 w-6 shrink-0 text-gray-400 "
-                  />
-                  Notifications
-                </a>
               </li>
             </ul>
           </nav>

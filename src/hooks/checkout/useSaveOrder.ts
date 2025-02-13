@@ -38,7 +38,6 @@ export function useSaveOrder() {
     }
 
     try {
-      setSaving(true);
       const produits = orderSummary.items.map((item) => ({
         id: item.id,
         quantite: item.quantite,
@@ -55,6 +54,7 @@ export function useSaveOrder() {
         produits,
       };
 
+      if (saving) return;
       const response = await fetch("/api/commande", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -66,9 +66,11 @@ export function useSaveOrder() {
       const data = await response.json();
       const commandeId = data.id;
 
-      setOrderSaved(true);
-
       await sendOrderConfirmation(userName, "mouhamadou-soumare@hotmail.com", commandeId);
+      
+      setOrderSaved(true);
+      setSaving(true);
+
     } catch (error) {
       setError("Erreur lors de l'enregistrement de la commande.");
       console.error(error);

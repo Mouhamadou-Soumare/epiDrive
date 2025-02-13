@@ -34,7 +34,7 @@ export async function GET(req: NextRequest, { params }: Params) {
       id: product.id,
       name: product.name,
       prix: product.prix,
-      image: product.image?.path || "",
+      image: product.image,
       slug: product.slug,
       description: product.description,
       categorie: product.categorie?.name || "Non catégorisé",

@@ -70,7 +70,7 @@ const CommandHistoryRealtimeChart = () => {
 
   return (
     <div>
-      {loading && <p className="text-center text-lg font-medium">🔄 Chargement des données en temps réel...</p>}
+      {loading && <p className="text-center text-lg font-medium">Chargement des données en temps réel...</p>}
       {error && <p className="text-red-500 text-center"> Erreur : {error}</p>}
 
       {data && data.length > 0 && (

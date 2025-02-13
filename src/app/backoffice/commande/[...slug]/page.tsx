@@ -77,7 +77,7 @@ const CommandeDetail = () => {
   useEffect(() => {
     if (updatedCommande && updatedCommande.id === localCommande?.id) {
       console.log(
-        "🔄 Mise à jour en temps réel de la commande :",
+        "Mise à jour en temps réel de la commande :",
         updatedCommande
       );
       setLocalCommande(updatedCommande);
