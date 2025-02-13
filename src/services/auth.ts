@@ -3,7 +3,7 @@ interface User {
     password: string;
   }
   
-  let users: User[] = []; // Simule une base de données
+  let users: User[] = []; 
   
   export function registerUser(username: string, password: string): string {
     if (users.find(user => user.username === username)) {
@@ -21,7 +21,6 @@ interface User {
     return 'Login successful';
   }
   
-  // Ajoutez cette fonction pour réinitialiser la "base de données"
   export function resetUsers(): void {
     users = [];
   }

@@ -11,10 +11,13 @@ export async function middleware(req: NextRequest) {
     const isProfileRoute = urlPath.startsWith("/api/profile");
     const isBackOfficeApiRoute = urlPath.startsWith("/api/backoffice");
 
-    const isAdmin = token?.id === "ADMIN";
+    const isAdmin = token?.id === "ADMIN"; 
     const isAuthenticated = !!token;
 
-    console.log("Middleware check:", { urlPath, isAuthenticated, isAdmin });
+    if (process.env.NODE_ENV === "development") {
+      console.log("Middleware check:", { urlPath, isAuthenticated, isAdmin });
+    }
+
 
     if (isBackOfficeRoute) {
       if (!isAdmin) {
@@ -36,6 +39,8 @@ export async function middleware(req: NextRequest) {
     return NextResponse.json({ message: "Erreur interne du serveur" }, { status: 500 });
   }
 }
+
+// Configuration des routes protégées
 
 export const config = {
   matcher: [

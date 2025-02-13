@@ -38,7 +38,7 @@ body {
 .a-primary-hover:hover, 
 .a-primary-hover:hover svg{
   --tw-text-opacity: 1;
-    color: #bc6c25;
+    color: #bc5e85;
     transition: ease-in-out O.5s;
 }
 

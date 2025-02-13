@@ -45,10 +45,10 @@ export function useUpdateCommandeAlert({ initialMessage, user, commandeId, setOp
         throw new Error("Erreur lors de l'envoi de l'email");
       }
 
-      setSuccessMessage("✅ Email envoyé avec succès !");
+      setSuccessMessage(" Email envoyé avec succès !");
       setTimeout(() => setOpen(false), 5000);
     } catch (error) {
-      setErrorMessage("❌ Une erreur s'est produite lors de l'envoi.");
+      setErrorMessage(" Une erreur s'est produite lors de l'envoi.");
     } finally {
       setLoading(false);
     }

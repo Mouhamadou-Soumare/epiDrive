@@ -36,50 +36,31 @@ export function useGetUsers() {
 }
 
 // Hook pour récupérer un utilisateur spécifique
-export function useGetUser(id: number | null) {
+export function useGetUser(userId: number | null) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!id) return;
+    if (!userId) return;
 
-    const fetchUser = async () => {
+    async function fetchUser() {
       try {
         setLoading(true);
-        const response = await fetch(`${API_BASE_URL}/${id}`);
-        if (!response.ok) throw new Error("Failed to fetch user");
+        const response = await fetch(`/api/users/${userId}`);
+        if (!response.ok) throw new Error("Erreur lors de la récupération de l'utilisateur");
 
-        const data: Partial<User> = await response.json();
-
-        // Vérification et conversion de role en Enum
-        const normalizedUser: User = {
-          id: data.id || 0,
-          username: data.username || "Unknown",
-          email: data.email || "",
-          password: "", // Le mot de passe n'est pas retourné par l'API
-          createdAt: data.createdAt ? new Date(data.createdAt) : new Date(),
-          updatedAt: data.updatedAt ? new Date(data.updatedAt) : new Date(),
-          role: typeof data.role === "string" ? (Role[data.role as keyof typeof Role] ?? Role.USER) : Role.USER,
-          imageId: data.imageId || null,
-          image: data.image || undefined,
-          commandes: data.commandes || [],
-          recettes: data.recettes || [],
-          panier: data.panier || undefined,
-          livraisons: data.livraisons || [],
-          logs: data.logs || [],
-        };
-
-        setUser(normalizedUser);
+        const data = await response.json();
+        setUser(data);
       } catch (err) {
-        setError((err as Error).message);
+        setError("Impossible de récupérer les informations utilisateur.");
       } finally {
         setLoading(false);
       }
-    };
+    }
 
     fetchUser();
-  }, [id]);
+  }, [userId]);
 
   return { user, loading, error };
 }
@@ -117,20 +98,20 @@ export function useUpdateUser() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const updateUser = async (id: number, updatedUser: Partial<Omit<User, 'id'>>): Promise<User> => {
+  const updateUser = async (userId: number, updates: { username: string; email: string }) => {
     try {
       setLoading(true);
-      const response = await fetch(`${API_BASE_URL}/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedUser),
+      const response = await fetch(`/api/users/${userId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updates),
       });
-      const data: User = await response.json();
-      if (!response.ok) throw new Error((data as unknown as FetchError).message || 'Failed to update user');
-      return data;
+
+      if (!response.ok) throw new Error("Erreur lors de la mise à jour de l'utilisateur");
+      
+      return await response.json();
     } catch (err) {
-      setError((err as Error).message);
-      throw err;
+      setError("Impossible de mettre à jour l'utilisateur.");
     } finally {
       setLoading(false);
     }
@@ -138,6 +119,7 @@ export function useUpdateUser() {
 
   return { updateUser, loading, error };
 }
+
 
 // Hook pour supprimer un utilisateur
 export function useDeleteUser() {

@@ -63,7 +63,7 @@ export function useGetCart() {
     };
 
     eventSource.onerror = (error) => {
-      console.error("❌ Erreur SSE:", error);
+      console.error(" Erreur SSE:", error);
       eventSource.close();
     };
 

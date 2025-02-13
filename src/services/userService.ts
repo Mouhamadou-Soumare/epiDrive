@@ -1,10 +1,8 @@
-// src/services/userService.ts
 import { PrismaClient } from '@prisma/client';
 import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
-// Fonction pour créer un utilisateur avec un mot de passe haché
 export async function createUser(email: string, password: string, username: string) {
   const passwordHash = await bcrypt.hash(password, 10);
   // Logique pour créer l'utilisateur dans la base de données

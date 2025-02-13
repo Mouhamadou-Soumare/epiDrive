@@ -105,7 +105,7 @@ export default function UpdateProductPage() {
   }
 
   if (!updatedProduit) {
-    return <div className="text-center text-gray-500">❌ Produit non trouvé</div>;
+    return <div className="text-center text-gray-500"> Produit non trouvé</div>;
   }
 
   return (

@@ -52,7 +52,7 @@ export default function RecetteDetails() {
   }
 
   if (!recette) {
-    return <div className="text-center text-gray-500">❌ Recette non trouvée</div>;
+    return <div className="text-center text-gray-500"> Recette non trouvée</div>;
   }
 
   return (
