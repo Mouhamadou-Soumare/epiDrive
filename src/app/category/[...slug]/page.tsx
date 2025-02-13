@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { ProductGrid } from '@/components/client/product/productGrid';
+import LoaderComponent from '@/components/LoaderComponent';
 
 type Product = { 
   id: number; 
@@ -50,7 +51,7 @@ export default function CategoryPage() {
     fetchCategory();
   }, [slug]);
 
-  if (loading) return <div className='min-h-screen min-w-screen mx-auto flex justify-center items-center'><span className="loader-cate-prod"></span></div>;
+  if (loading) return <LoaderComponent />;
   if (!currentCategory) return <div>Catégorie non trouvée</div>;
   return (
     <div className="bg-white">

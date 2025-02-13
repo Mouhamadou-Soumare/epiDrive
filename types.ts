@@ -1,21 +1,21 @@
 export enum Role {
     USER = "USER",
     ADMIN = "ADMIN",
-    MAGASINIER = "MAGASINIER",
+    MAGASINIER = "MAGASINIER"
 }
 
 export enum CommandeStatus {
-    EN_ATTENTE,
-    EN_PREPARATION,
-    EXPEDIEE,
-    LIVREE,
-    ANNULEE, // Enum pour les statuts de commande
+    EN_ATTENTE = "EN_ATTENTE",
+    EN_PREPARATION = "EN_PREPARATION",
+    EXPEDIEE = "EXPEDIE",
+    LIVREE = "LIVREE",
+    ANNULEE = "ANNULEE"
 }
 
 export enum Livraison_Type {
-    DOMICILE,
-    DRIVE,
-    EMPORTER
+    DOMICILE = "DOMICILE",
+    DRIVE = "DRIVE",
+    EMPORTER = "EMPORTER"
 }
 
 export interface User {
@@ -73,6 +73,7 @@ export interface Produit {
     quantitePaniers?: QuantitePanier[]; // Produits dans des paniers
     quantiteCommandes?: QuantiteCommande[]; // Produits dans des commandes
     recettes?: Recette[]; // Relation avec des recettes
+    stock: number;
 }
 
 export interface Ingredient {
@@ -81,6 +82,8 @@ export interface Ingredient {
     description: string;
     prix: number;
     categorie: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export interface QuantitePanier {

@@ -1,15 +1,15 @@
 'use client';
 
-import { signIn, useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-
 import { ArrowLeftIcon, ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/outline';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import AuthenticatorCards from '@/components/AuthenticatorCards';
+import { useSignIn } from '@/hooks/auth/useSignIn';
 
 export default function SignInPage() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -50,12 +50,19 @@ export default function SignInPage() {
     }
   };
 
+
+  // Redirige l'utilisateur s'il est déjà connecté
   useEffect(() => {
     if (status === 'authenticated') {
-      router.push('/profile'); 
+      router.push('/');
     }
   }, [status, router]);
 
+  // Gestion de la soumission du formulaire
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    signInUser(email, password);
+  };
   return (
     <div className="bg-auth h-screen flex flex-wrap pb-0">
       <div className="w-full md:w-1/2 lg:w-1/2 px-8 py-4 items-center content-center flex-auth-form">

@@ -1,20 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import prisma from '@/lib/prisma';
 
+/**
+ * Recherche de produits par nom avec récupération des images et catégories associées.
+ */
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const query = searchParams.get('query');
-
-  if (!query) {
-    return NextResponse.json({ error: 'Query parameter is required' }, { status: 400 });
-  }
-
   try {
+    const { searchParams } = new URL(req.url);
+    const query = searchParams.get('query');
+
+    if (!query) {
+      return NextResponse.json({ error: 'Le paramètre de recherche est requis' }, { status: 400 });
+    }
+
+    console.log(`🔍 Recherche de produits contenant : ${query}`);
+
     const products = await prisma.produit.findMany({
       where: {
         name: {
-          contains: query,
+          contains: query.toLowerCase(), // ✅ Conversion en minuscule pour éviter la casse
         },
       },
       select: {
@@ -23,45 +27,50 @@ export async function GET(req: NextRequest) {
         slug: true,
         description: true,
         prix: true,
-        image: {
-          select: { path: true },
-        },
-        categorie: {
-          select: { id: true, name: true, slug: true },
-        },
+        imageid: true,
+        categorieId: true,
       },
     });
 
-    /*
-    const formattedProducts = products.map((product: { id: number; name: string; slug: string; description: string; prix: number; image: { path: string } | null; categorie: { id: number; name: string; slug: string } | null }) => ({
-      ...product,
-      imageSrc: product.image?.path ? `/img/product/${product.slug}.webp` : 'https://via.placeholder.com/300',
-      imageAlt: `Image de ${product.name}`,
-    }));
-    */
-   
+    if (!products.length) {
+      return NextResponse.json({ message: 'Aucun produit trouvé' }, { status: 404 });
+    }
+
+    // Récupération des images et catégories associées
+    const images = await prisma.image.findMany({
+      where: { id: { in: products.map((p) => p.imageid).filter(Boolean) } },
+      select: { id: true, path: true },
+    });
+
+    const categories = await prisma.categorie.findMany({
+      where: { id: { in: products.map((p) => p.categorieId).filter(Boolean) } },
+      select: { id: true, name: true, slug: true },
+    });
+
+    // Mapping des produits avec leurs images et catégories
     const formattedProducts = products.map((product) => ({
       id: product.id,
       name: product.name,
       prix: product.prix,
       slug: product.slug,
       description: product.description,
-      image: product.image, // On retourne l'objet Image
-      categorie: product.categorie?.name || 'Uncategorized',
+      imageSrc: images.find((img) => img.id === product.imageid)?.path || 'https://via.placeholder.com/300',
+      imageAlt: `Image de ${product.name}`,
+      categorie: categories.find((cat) => cat.id === product.categorieId) || { id: null, name: 'Non catégorisé', slug: '' },
     }));
-    
 
-    const uniqueCategories = Array.from(
-      new Set(products.map((product: { categorie: { id: number; name: string; slug: string } | null }) => product.categorie))
-    ).map((category) => ({
-      id: (category as { id: number; name: string; slug: string } | null)?.id,
-      name: (category as { id: number; name: string; slug: string } | null)?.name,
-      slug: (category as { id: number; name: string; slug: string } | null)?.slug,
-    })).filter(Boolean);
+    // Extraction des catégories uniques
+    const uniqueCategories = categories.map((category) => ({
+      id: category.id,
+      name: category.name,
+      slug: category.slug,
+    }));
 
-    return NextResponse.json({ products: formattedProducts, categories: uniqueCategories });
+    console.log(` ${formattedProducts.length} produits trouvés`);
+    return NextResponse.json({ products: formattedProducts, categories: uniqueCategories }, { status: 200 });
+
   } catch (error) {
-    console.error("Erreur lors de la recherche des produits:", error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('Erreur lors de la recherche des produits:', error);
+    return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
   }
 }

@@ -1,35 +1,38 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
+/**
+ * Récupère un ingrédient par son slug
+ */
 export async function GET(
   req: Request,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  const { slug } = await params; // Awaiting params before extracting slug
+  const { slug } = await params;
 
   if (!slug) {
-    return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
+    return NextResponse.json({ error: 'Le slug est requis' }, { status: 400 });
   }
 
   try {
-    console.log("Fetching ingredient with slug:", slug);
-
     const ingredient = await prisma.ingredient.findUnique({
-      where: { id: parseInt(slug) },
+      where: { id: parseInt(slug, 10) },
     });
 
     if (!ingredient) {
-      return NextResponse.json({ error: 'Ingredient not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Ingrédient non trouvé' }, { status: 404 });
     }
 
-    console.log("GET API/ingredients/" + slug + ": Ingredient found:", ingredient);
     return NextResponse.json(ingredient, { status: 200 });
   } catch (error) {
-    console.error('Error fetching ingredient:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('Erreur lors de la récupération de l’ingrédient :', error);
+    return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
   }
 }
 
+/**
+ * Supprime un ingrédient par son slug
+ */
 export async function DELETE(
   req: Request,
   { params }: { params: Promise<{ slug: string }> }
@@ -37,26 +40,23 @@ export async function DELETE(
   const { slug } = await params;
 
   if (!slug) {
-    return NextResponse.json({ error: 'Slug is required' }, { status: 400 });
+    return NextResponse.json({ error: 'Le slug est requis' }, { status: 400 });
   }
 
   try {
-    console.log("Deleting ingredient with slug:", slug);
-
     const ingredient = await prisma.ingredient.findUnique({
-      where: { id: parseInt(slug) },
+      where: { id: parseInt(slug, 10) },
     });
 
     if (!ingredient) {
-      return NextResponse.json({ error: 'Ingredient not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Ingrédient non trouvé' }, { status: 404 });
     }
 
-    // Proceed with deletion logic
-    await prisma.ingredient.delete({ where: { id: parseInt(slug) } });
-    console.log('DELETE API/ingredients/' + slug + ': Ingredient deleted');
-    return NextResponse.json({ message: 'Ingredient deleted successfully' }, { status: 200 });
+    await prisma.ingredient.delete({ where: { id: parseInt(slug, 10) } });
+
+    return NextResponse.json({ message: 'Ingrédient supprimé avec succès' }, { status: 200 });
   } catch (error) {
-    console.error('Error deleting ingredient:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('Erreur lors de la suppression de l’ingrédient :', error);
+    return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
   }
 }

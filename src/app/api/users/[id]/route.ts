@@ -21,6 +21,8 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
     console.log("Fetching user with ID:", userId);
 
+
+    // Recherche de l'utilisateur avec ses relations
     const user = await prisma.user.findUnique({
       where: { id: userId },
       include: {
@@ -37,13 +39,14 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     });
 
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Utilisateur introuvable.' }, { status: 404 });
     }
 
     return NextResponse.json(excludePassword(user), { status: 200 });
+
   } catch (error) {
-    console.error('Error fetching user:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('Erreur lors de la récupération de l\'utilisateur:', error);
+    return NextResponse.json({ error: 'Erreur interne du serveur.' }, { status: 500 });
   }
 }
 
@@ -58,8 +61,9 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
     }
 
+
     const body = await req.json();
-    const { username, email, role, imageId } = body;
+    const { username, email } = body;
 
     console.log('Updating user with ID:', userId);
 
@@ -82,17 +86,19 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
+
     // Mise à jour de l'utilisateur
     const updatedUser = await prisma.user.update({
       where: { id: userId },
-      data: { username, email, role, imageId },
+      data: { username, email },
     });
 
     console.log('User updated:', updatedUser);
     return NextResponse.json(excludePassword(updatedUser), { status: 200 });
+
   } catch (error) {
-    console.error('Error updating user:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('Erreur lors de la mise à jour de l\'utilisateur :', error);
+    return NextResponse.json({ error: 'Erreur interne du serveur.' }, { status: 500 });
   }
 }
 
@@ -133,8 +139,9 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
     console.log('User deleted:', userId);
     return NextResponse.json({ message: 'User deleted successfully' }, { status: 200 });
+
   } catch (error) {
-    console.error('Error deleting user:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('Erreur lors de la suppression de l\'utilisateur :', error);
+    return NextResponse.json({ error: 'Erreur interne du serveur.' }, { status: 500 });
   }
 }

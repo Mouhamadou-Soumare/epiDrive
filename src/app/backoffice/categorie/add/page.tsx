@@ -5,10 +5,12 @@ import Alert from '../../components/Alert';
 import FormInputField from '../components/FormInputField';
 import { Categorie } from "../../../../../types";
 import { useGetCategories, useAddCategory } from "@/hooks/categories/useCategories";
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 export default function AddCategoryPage() {
   const { categories, loading: loadingCategories, error: errorCategories } = useGetCategories();
   const { addCategory, loading: addingCategory, error: addError } = useAddCategory();
+  const [newImage, setNewImage] = useState<File | null>(null);
 
   const [category, setCategory] = useState<Categorie>({
     id: 0,
@@ -20,30 +22,31 @@ export default function AddCategoryPage() {
     subcategories: []
   });
 
-  const [imagePath, setImagePath] = useState<string>('');
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setNewImage(e.target.files[0]);
+    }
+  };
+
   const [submitResult, setSubmitResult] = useState<string | null>(null);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    if (name === "imagePath") {
-      setImagePath(value); // Mise à jour de l'imagePath séparément
-    } else {
-      setCategory({ ...category, [name]: name === "imageId" || name === "parentId" ? parseInt(value) : value });
-    }
+    setCategory({ ...category, [name]: name === "imageId" || name === "parentId" ? parseInt(value) : value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!category.name || !category.description || !imagePath) {
+    if (!category.name || !category.description || !newImage) {
       setSubmitResult('400'); // Message d'erreur si des champs requis sont vides
       return;
     }
 
     // Appel au hook personnalisé `addCategory`
-    const success = await addCategory(category, imagePath);
+    const success = await addCategory(category, newImage);
     if (success) {
       setSubmitResult('201');
       setTimeout(() => {
@@ -55,7 +58,7 @@ export default function AddCategoryPage() {
     }
   };
 
-  if (loadingCategories) return <div>Chargement des catégories...</div>;
+  if (loadingCategories) return <LoadingSpinner/>;
 
   return (
     <>
@@ -83,12 +86,12 @@ export default function AddCategoryPage() {
           onChange={handleInputChange}
         />
         <FormInputField
+          type="image"
           id="imagePath"
           name="imagePath"
-          value={imagePath}
-          label="Image Path"
-          type="text"
-          onChange={handleInputChange}
+          value=""
+          label="Chemin de l'image"
+          onChange={handleImageChange}
         />
 
         <div className="mb-5">

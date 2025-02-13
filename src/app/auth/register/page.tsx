@@ -2,45 +2,28 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { signIn, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { ArrowLeftIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
 import AuthenticatorCards from '@/components/AuthenticatorCards';
-
+import { useRegister } from '@/hooks/auth/useRegister';
 export default function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const { error, loading, registerUser } = useRegister();
   const router = useRouter();
   const { status } = useSession();
 
-  // Vérifie si l'utilisateur est déjà connecté
+  // Redirige l'utilisateur s'il est déjà authentifié
   useEffect(() => {
     if (status === 'authenticated') {
-      router.push('/'); 
+      router.push('/');
     }
   }, [status, router]);
 
-  // Vérification des entrées
-  const validateInputs = () => {
-    if (!name.trim() || !email.trim() || !password.trim()) {
-      setError("Tous les champs sont obligatoires.");
-      return false;
-    }
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      setError("Veuillez entrer une adresse email valide.");
-      return false;
-    }
-    if (password.length < 8 || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
-      setError("Le mot de passe doit contenir au moins 8 caractères, une majuscule et un chiffre.");
-      return false;
-    }
-    return true;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Envoi du formulaire
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
@@ -80,8 +63,9 @@ export default function RegisterPage() {
     } finally {
       setLoading(false);
     }
-  };
 
+  };
+  
   return (
     <div className="bg-auth h-screen flex flex-wrap pb-0">
       <div className="w-full md:w-1/2 lg:w-1/2 px-8 py-4 items-center content-center flex-auth-form">

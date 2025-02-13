@@ -9,6 +9,8 @@ import { useGetCommandes } from "@/hooks/commandes/useCommandes";
 import { useGetProduits } from "@/hooks/products/useProduits";
 import CommandHistoryChart from "@/components/backoffice/CommandHistoryChart";
 import StatCard from "@/app/backoffice/components/StatCard";
+import LoadingSpinner from './components/LoadingSpinner';
+
 
 
 interface ExtendedSession extends Session {
@@ -51,7 +53,8 @@ export default function Backoffice() {
   const { produits, loading: loadingProducts, error: errorProducts } = useGetProduits();
 
   if (loadingUsers || loadingCommandes || loadingProducts) {
-    return <div className="text-center py-10 text-lg font-medium">Chargement des données...</div>;
+
+    return <LoadingSpinner/>;
   }
 
   if (errorUsers || errorCommandes || errorProducts) {

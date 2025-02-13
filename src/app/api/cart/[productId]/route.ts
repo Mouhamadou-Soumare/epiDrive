@@ -1,19 +1,19 @@
-import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import { NextRequest, NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 
 export async function PUT(
-  request: Request,
-  { params }: { params: Promise<{ productId: string }> }
+  request: NextRequest,
+  { params }: { params: { productId: string } }
 ) {
-  const { productId } = await params; // Attendre la résolution de params
-  const { quantity, sessionId, userId } = await request.json();
-
-  if (!productId || (!sessionId && !userId)) {
-    return NextResponse.json({ error: "Paramètres requis manquants" }, { status: 400 });
-  }
-
   try {
-    // Récupérer le panier de l'utilisateur ou de la session
+    const { productId } = params;
+    const { quantity, sessionId, userId } = await request.json();
+
+    if (!productId || (!sessionId && !userId)) {
+      return NextResponse.json({ error: "Paramètres requis manquants" }, { status: 400 });
+    }
+
+    // Récupération du panier associé à l'utilisateur ou à la session
     const panier = await prisma.panier.findFirst({
       where: {
         fk_userId: userId ? parseInt(userId, 10) : undefined,
@@ -25,7 +25,7 @@ export async function PUT(
       return NextResponse.json({ error: "Panier non trouvé" }, { status: 404 });
     }
 
-    // Vérifier si le produit est déjà dans le panier
+    // Vérification de l'existence du produit dans le panier
     const existingItem = await prisma.quantitePanier.findUnique({
       where: {
         fk_panier_fk_produit: {
@@ -39,7 +39,7 @@ export async function PUT(
       return NextResponse.json({ error: "Produit non trouvé dans le panier" }, { status: 404 });
     }
 
-    // Mettre à jour la quantité
+    // Mise à jour de la quantité du produit dans le panier
     const updatedItem = await prisma.quantitePanier.update({
       where: {
         fk_panier_fk_produit: {
@@ -57,21 +57,20 @@ export async function PUT(
   }
 }
 
-// Handler pour DELETE
 export async function DELETE(
-  request: Request,
-  { params }: { params: Promise<{ productId: string }> }
+  request: NextRequest,
+  { params }: { params: { productId: string } }
 ) {
-  const { productId } = await params; // Attendre la résolution de params
-  const { sessionId, userId } = Object.fromEntries(new URL(request.url).searchParams);
-
-  if (!productId || (!sessionId && !userId)) {
-    return NextResponse.json({ error: "Paramètres requis manquants" }, { status: 400 });
-  }
-
-  console.log("DELETE API/cart/[productId]:", { productId, sessionId, userId });
-
   try {
+    const { productId } = params;
+    const { sessionId, userId } = Object.fromEntries(new URL(request.url).searchParams);
+
+    if (!productId || (!sessionId && !userId)) {
+      return NextResponse.json({ error: "Paramètres requis manquants" }, { status: 400 });
+    }
+
+
+    // Récupération du panier de l'utilisateur ou de la session
     const panier = await prisma.panier.findFirst({
       where: {
         fk_userId: userId ? parseInt(userId, 10) : undefined,
@@ -83,6 +82,7 @@ export async function DELETE(
       return NextResponse.json({ error: "Panier non trouvé" }, { status: 404 });
     }
 
+    // Suppression du produit du panier
     await prisma.quantitePanier.delete({
       where: {
         fk_panier_fk_produit: {
@@ -98,4 +98,3 @@ export async function DELETE(
     return NextResponse.json({ error: "Erreur interne lors de la suppression du produit" }, { status: 500 });
   }
 }
-

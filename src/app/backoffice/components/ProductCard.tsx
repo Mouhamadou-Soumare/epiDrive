@@ -1,30 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import Link from "next/link";
-import { Produit, Categorie } from "../../../../types";
+import { Produit } from "types";
+import { useProductCategory } from "@/hooks/products/useProductCategory";
+
 
 export const ProductCard = ({ product }: { product: Produit }) => {
-  const [categorie, setCategorie] = useState<Categorie | null>(null);
-
-  useEffect(() => {
-    const fetchCategorie = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/api/categories/${product.categorieId}`);
-        if (!response.ok) {
-          throw new Error('Erreur de chargement de la catégorie');
-        }
-        const data = await response.json();
-        setCategorie(data);
-      } catch (error) {
-        console.error('Erreur lors du chargement de la catégorie :', error);
-      }
-    };
-
-    if (product.categorieId) {
-      fetchCategorie();
-    }
-  }, [product.categorieId]);
+  const { categorie, error, loading } = useProductCategory({ categorieId: product.categorieId });
 
   return (
     <>
