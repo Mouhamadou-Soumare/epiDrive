@@ -1,22 +1,21 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-/**
- * Récupère un utilisateur par ID avec ses commandes et livraisons
- */
-export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  try {
-    const { id } = await params;
+const excludePassword = (user: any) => {
+  if (!user) return null;
+  const { password, ...userWithoutPassword } = user;
+  return userWithoutPassword;
+};
 
-    // Vérification de l'ID utilisateur
-    if (!id || isNaN(parseInt(id, 10))) {
-      return NextResponse.json({ error: 'ID utilisateur invalide ou manquant.' }, { status: 400 });
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    const userId = parseInt(params.id, 10);
+    if (isNaN(userId)) {
+      return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
     }
 
-    const userId = parseInt(id, 10);
-    console.log("🔍 Récupération de l'utilisateur avec l'ID :", userId);
+    console.log("Fetching user with ID:", userId);
 
-    // Recherche de l'utilisateur avec ses relations
     const user = await prisma.user.findUnique({
       where: { id: userId },
       include: {
@@ -33,90 +32,85 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     });
 
     if (!user) {
-      return NextResponse.json({ error: 'Utilisateur introuvable.' }, { status: 404 });
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    // Suppression du mot de passe avant de renvoyer l'utilisateur
-    const { password, ...userWithoutPassword } = user;
-
-    console.log('Utilisateur trouvé:', userWithoutPassword);
-    return NextResponse.json(userWithoutPassword, { status: 200 });
+    return NextResponse.json(excludePassword(user), { status: 200 });
   } catch (error) {
-    console.error('Erreur lors de la récupération de l\'utilisateur:', error);
-    return NextResponse.json({ error: 'Erreur interne du serveur.' }, { status: 500 });
+    console.error('Error fetching user:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
-
-/**
- * Met à jour un utilisateur par ID
- */
-export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const { id } = await params;
-
-    // Vérification de l'ID utilisateur
-    if (!id || isNaN(parseInt(id, 10))) {
-      return NextResponse.json({ error: 'ID utilisateur invalide ou manquant.' }, { status: 400 });
+    const userId = parseInt(params.id, 10);
+    if (isNaN(userId)) {
+      return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
     }
 
-    const userId = parseInt(id, 10);
     const body = await req.json();
-    const { username, email } = body;
+    const { username, email, role, imageId } = body;
 
-    console.log('Mise à jour de l\'utilisateur avec l\'ID :', userId);
+    console.log('Updating user with ID:', userId);
 
-    // Vérifie si l'utilisateur existe
-    const user = await prisma.user.findUnique({ where: { id: userId } });
-    if (!user) {
-      return NextResponse.json({ error: 'Utilisateur introuvable.' }, { status: 404 });
-    }
-
-    // Mise à jour de l'utilisateur
-    const updatedUser = await prisma.user.update({
+    const existingUser = await prisma.user.findUnique({
       where: { id: userId },
-      data: { username, email },
     });
 
-    // Suppression du mot de passe avant de renvoyer l'utilisateur
-    const { password, ...userWithoutPassword } = updatedUser;
+    if (!existingUser) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    }
 
-    console.log('Utilisateur mis à jour :', userWithoutPassword);
-    return NextResponse.json(userWithoutPassword, { status: 200 });
+    const sessionUser = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { role: true },
+    });
+
+    if (!sessionUser || sessionUser.role !== 'ADMIN') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: { username, email, role, imageId },
+    });
+
+    console.log('User updated:', updatedUser);
+    return NextResponse.json(excludePassword(updatedUser), { status: 200 });
   } catch (error) {
-    console.error('Erreur lors de la mise à jour de l\'utilisateur :', error);
-    return NextResponse.json({ error: 'Erreur interne du serveur.' }, { status: 500 });
+    console.error('Error updating user:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
-/**
- * Supprime un utilisateur par ID
- */
-export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const { id } = await params;
-
-    // Vérification de l'ID utilisateur
-    if (!id || isNaN(parseInt(id, 10))) {
-      return NextResponse.json({ error: 'ID utilisateur invalide ou manquant.' }, { status: 400 });
+    const userId = parseInt(params.id, 10);
+    if (isNaN(userId)) {
+      return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
     }
 
-    const userId = parseInt(id, 10);
-    console.log('🗑 Suppression de l\'utilisateur avec l\'ID :', userId);
+    const existingUser = await prisma.user.findUnique({
+      where: { id: userId },
+    });
 
-    // Vérifie si l'utilisateur existe
-    const user = await prisma.user.findUnique({ where: { id: userId } });
-    if (!user) {
-      return NextResponse.json({ error: 'Utilisateur introuvable.' }, { status: 404 });
+    if (!existingUser) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    // Suppression de l'utilisateur
+    const sessionUser = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { role: true },
+    });
+
+    if (!sessionUser || sessionUser.role !== 'ADMIN') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+    }
+
     await prisma.user.delete({ where: { id: userId } });
-
-    console.log('Utilisateur supprimé avec succès :', userId);
-    return NextResponse.json({ message: 'Utilisateur supprimé avec succès.' });
+    return NextResponse.json({ message: 'User deleted successfully' }, { status: 200 });
   } catch (error) {
-    console.error('Erreur lors de la suppression de l\'utilisateur :', error);
-    return NextResponse.json({ error: 'Erreur interne du serveur.' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
