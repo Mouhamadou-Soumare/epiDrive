@@ -3,7 +3,6 @@ generator client {
   binaryTargets = ["native", "debian-openssl-1.1.x", "linux-arm64-openssl-1.1.x", "debian-openssl-1.0.x"]
 }
 
-
 datasource db {
   provider          = "mysql"
   url               = env("DATABASE_URL")
@@ -11,21 +10,23 @@ datasource db {
 }
 
 model User {
-  id          Int         @id @default(autoincrement())
-  username    String
-  email       String      @unique
-  role        Role        @default(USER)
-  imageId     Int?
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  password    String
-  preferences Json?
-  commandes   Commande[]
-  livraisons  Livraison[]
-  logs        Log[]
-  panier      Panier?
-  recettes    Recette[]
-  image       Image?      @relation(fields: [imageId], references: [id], map: "User_Image_fkey")
+  id            Int         @id @default(autoincrement())
+  username      String
+  email         String      @unique
+  role          Role        @default(USER)
+  imageId       Int?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  password      String
+  preferences   Json?
+  commandes     Commande[]
+  livraisons    Livraison[]
+  logs          Log[]
+  panier        Panier?
+  recettes      Recette[]
+  image         Image?      @relation(fields: [imageId], references: [id], map: "User_Image_fkey")
+  loginAttempts Int        @default(0)
+  blockedUntil  DateTime?
 
   @@index([imageId], map: "User_Image_fkey")
 }

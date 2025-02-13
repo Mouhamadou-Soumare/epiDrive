@@ -87,10 +87,10 @@ import {
         { id: 2, name: 'Banana', price: 1.0, quantity: 3 },
       ];
   
-      const { subtotal, total } = calculateTotalWithTax(cart, 0.2); // 20% TVA
+      const { subtotal, total } = calculateTotalWithTax(cart, 0.2); 
   
-      expect(subtotal).toBe(6.0); // (1.5 * 2) + (1.0 * 3)
-      expect(total).toBe(7.2); // subtotal + 20% tax
+      expect(subtotal).toBe(6.0); 
+      expect(total).toBe(7.2); 
     });
   
     it('should return 0 for both subtotal and total if the cart is empty', () => {
