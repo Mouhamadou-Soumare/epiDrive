@@ -1,18 +1,15 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useSession, signOut } from 'next-auth/react';
-import { Session } from 'next-auth';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useSession } from "next-auth/react";
+import { Session } from "next-auth";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useGetUsers } from "@/hooks/users/useUsers";
+import { useGetCommandes } from "@/hooks/commandes/useCommandes";
+import { useGetProduits } from "@/hooks/products/useProduits";
+import CommandHistoryChart from "@/components/backoffice/CommandHistoryChart";
+import StatCard from "@/app/backoffice/components/StatCard";
 
-import { User } from "../../../types";
-
-import { useGetUser, useGetUsers } from '@/hooks/users/useUsers';
-import { useGetCommandes } from '@/hooks/commandes/useCommandes';
-import { useGetProduits } from '@/hooks/products/useProduits';
-import CommandHistoryChart from '@/components/backoffice/CommandHistoryChart';
-import StatCard from './components/StatCard';
 
 interface ExtendedSession extends Session {
   user: {
@@ -27,31 +24,36 @@ interface ExtendedSession extends Session {
 export default function Backoffice() {
   const { data: session, status } = useSession() as { data: ExtendedSession | null; status: string };
   const router = useRouter();
+  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
 
-  // Redirection si l'utilisateur n'est pas admin
   useEffect(() => {
-    if (status === 'loading') return;
-    
-    if (!session || !session.user) {
-      const { user } = useGetUser(
-        isNaN(Number(session.user.id)) ? null : Number(session.user.id)
-      ) as { user: User | null, loading: any, error: any };
+    if (status === "loading") return;
 
-      if (user?.role !== "ADMIN") router.push('/');
+    if (status === "unauthenticated" || !session?.user) {
+      router.push("/");
+      return;
     }
+
+    if (session.user.role !== "ADMIN") {
+      router.push("/");
+      return;
+    }
+
+    setIsAdmin(true);
   }, [session, status, router]);
 
-  // Récupération des données
+  if (isAdmin === null) {
+    return <div className="text-center py-10 text-lg font-medium">Chargement...</div>;
+  }
+
   const { users, loading: loadingUsers, error: errorUsers } = useGetUsers();
   const { commandes, loading: loadingCommandes, error: errorCommandes } = useGetCommandes();
   const { produits, loading: loadingProducts, error: errorProducts } = useGetProduits();
 
-  // Chargement en cours
   if (loadingUsers || loadingCommandes || loadingProducts) {
-    return <div className="text-center py-10 text-lg font-medium">Chargement...</div>;
+    return <div className="text-center py-10 text-lg font-medium">Chargement des données...</div>;
   }
 
-  // Gestion des erreurs
   if (errorUsers || errorCommandes || errorProducts) {
     return (
       <div className="text-red-500 text-center py-10">
