@@ -1,8 +1,17 @@
-'use client';
+"use client";
 
-import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
-import { ExclamationTriangleIcon, XMarkIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline';
-import { useUpdateCommandeAlert } from '@/hooks/commandes/UpdateCommandeAlert';
+import {
+  Dialog,
+  DialogBackdrop,
+  DialogPanel,
+  DialogTitle,
+} from "@headlessui/react";
+import {
+  ExclamationTriangleIcon,
+  XMarkIcon,
+  PaperAirplaneIcon,
+} from "@heroicons/react/24/outline";
+import { useUpdateCommandeAlert } from "@/hooks/commandes/UpdateCommandeAlert";
 
 interface UpdateCommandeAlertProps {
   message: string;
@@ -12,7 +21,13 @@ interface UpdateCommandeAlertProps {
   commandeId: number;
 }
 
-export const UpdateCommandeAlert = ({ message, open, setOpen, user, commandeId }: UpdateCommandeAlertProps) => {
+export const UpdateCommandeAlert = ({
+  message,
+  open,
+  setOpen,
+  user,
+  commandeId,
+}: UpdateCommandeAlertProps) => {
   const {
     message: updatedMessage,
     loading,
@@ -20,11 +35,19 @@ export const UpdateCommandeAlert = ({ message, open, setOpen, user, commandeId }
     errorMessage,
     handleInputChange,
     handleSubmit,
-  } = useUpdateCommandeAlert({ initialMessage: message, user, commandeId, setOpen });
-
+  } = useUpdateCommandeAlert({
+    initialMessage: message,
+    user,
+    commandeId,
+    setOpen,
+  });
 
   return (
-    <Dialog open={open} onClose={() => setOpen(false)} className="fixed inset-0 z-50 flex justify-center items-center">
+    <Dialog
+      open={open}
+      onClose={() => setOpen(false)}
+      className="fixed inset-0 z-50 flex justify-center items-center"
+    >
       <DialogBackdrop className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
 
       <div className="flex min-h-full w-full items-center justify-center p-4 text-center sm:p-0">
@@ -47,18 +70,36 @@ export const UpdateCommandeAlert = ({ message, open, setOpen, user, commandeId }
               <ExclamationTriangleIcon className="h-6 w-6 text-yellow-600" />
             </div>
             <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
-              <DialogTitle as="h3" className="text-lg font-semibold text-gray-900">
+              <DialogTitle
+                as="h3"
+                className="text-lg font-semibold text-gray-900"
+              >
                 Envoyer une mise à jour à {user.username}
               </DialogTitle>
               <p className="text-sm text-gray-500">
-                Vous êtes sur le point d'envoyer une notification concernant la commande <strong>#{commandeId}</strong>.
+                Vous êtes sur le point d'envoyer une notification concernant la
+                commande <strong>#{commandeId}</strong>.
               </p>
             </div>
           </div>
 
           {/* Messages de succès et d'erreur */}
-          {successMessage && <p className="mt-4 text-green-600 font-semibold text-sm" aria-live="polite">{successMessage}</p>}
-          {errorMessage && <p className="mt-4 text-red-600 font-semibold text-sm" aria-live="assertive">{errorMessage}</p>}
+          {successMessage && (
+            <p
+              className="mt-4 text-green-600 font-semibold text-sm"
+              aria-live="polite"
+            >
+              {successMessage}
+            </p>
+          )}
+          {errorMessage && (
+            <p
+              className="mt-4 text-red-600 font-semibold text-sm"
+              aria-live="assertive"
+            >
+              {errorMessage}
+            </p>
+          )}
 
           {/* Champ de texte */}
           <div className="mt-4">
@@ -87,9 +128,23 @@ export const UpdateCommandeAlert = ({ message, open, setOpen, user, commandeId }
             >
               {loading ? (
                 <>
-                  <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                  <svg
+                    className="animate-spin h-5 w-5 mr-2"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v8z"
+                    ></path>
                   </svg>
                   Envoi...
                 </>

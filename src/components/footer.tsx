@@ -1,36 +1,36 @@
 // src/components/Footer.tsx
 
-'use client';
+"use client";
 
-import Image from 'next/image';
-import logo from "../../public/img/logo_white_bg.png"
-import Incentives from './client/modules/Incentives';
+import Image from "next/image";
+import logo from "../../public/img/logo_white_bg.png";
+import Incentives from "./client/modules/Incentives";
 
 const navigation = {
   solutions: [
-    { name: 'Catalogue', href: '/catalogue' },
-    { name: 'Promotions', href: '/promotions' },
-    { name: 'Abonnement', href: '/abonnement' },
+    { name: "Catalogue", href: "/catalogue" },
+    { name: "Promotions", href: "/promotions" },
+    { name: "Abonnement", href: "/abonnement" },
   ],
   support: [
-    { name: 'Assistance', href: '/support' },
-    { name: 'FAQ', href: '/faq' },
-    { name: 'Contact', href: '/contact' },
+    { name: "Assistance", href: "/support" },
+    { name: "FAQ", href: "/faq" },
+    { name: "Contact", href: "/contact" },
   ],
   company: [
-    { name: 'À propos', href: '/about' },
-    { name: 'Blog', href: '/blog' },
-    { name: 'Carrières', href: '/jobs' },
-    { name: 'Presse', href: '/press' },
+    { name: "À propos", href: "/about" },
+    { name: "Blog", href: "/blog" },
+    { name: "Carrières", href: "/jobs" },
+    { name: "Presse", href: "/press" },
   ],
   legal: [
-    { name: 'Conditions générales', href: '/terms' },
-    { name: 'Politique de confidentialité', href: '/privacy' },
+    { name: "Conditions générales", href: "/terms" },
+    { name: "Politique de confidentialité", href: "/privacy" },
   ],
   social: [
     {
-      name: 'Facebook',
-      href: '#',
+      name: "Facebook",
+      href: "#",
       icon: (props: React.SVGProps<SVGSVGElement>) => (
         <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
           <path
@@ -42,8 +42,8 @@ const navigation = {
       ),
     },
     {
-      name: 'Instagram',
-      href: '#',
+      name: "Instagram",
+      href: "#",
       icon: (props: React.SVGProps<SVGSVGElement>) => (
         <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
           <path
@@ -59,23 +59,24 @@ const navigation = {
 
 export default function Footer() {
   return (
-<footer className="bg-white">
-    <Incentives  />
+    <footer className="bg-white">
+      <Incentives />
       <div className="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-32">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
-          <Image
-            alt="Company name"
-            src={logo}
-            className="h-auto max-w-52"
-          />
+          <Image alt="Company name" src={logo} className="h-auto max-w-52" />
           <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
-                <h3 className="text-sm/6 font-semibold text-gray-900">Solutions</h3>
+                <h3 className="text-sm/6 font-semibold text-gray-900">
+                  Solutions
+                </h3>
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation.solutions.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-sm/6 text-gray-600 hover:text-gray-900">
+                      <a
+                        href={item.href}
+                        className="text-sm/6 text-gray-600 hover:text-gray-900"
+                      >
                         {item.name}
                       </a>
                     </li>
@@ -83,11 +84,16 @@ export default function Footer() {
                 </ul>
               </div>
               <div className="mt-10 md:mt-0">
-                <h3 className="text-sm/6 font-semibold text-gray-900">Support</h3>
+                <h3 className="text-sm/6 font-semibold text-gray-900">
+                  Support
+                </h3>
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation.support.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-sm/6 text-gray-600 hover:text-gray-900">
+                      <a
+                        href={item.href}
+                        className="text-sm/6 text-gray-600 hover:text-gray-900"
+                      >
                         {item.name}
                       </a>
                     </li>
@@ -97,11 +103,16 @@ export default function Footer() {
             </div>
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
-                <h3 className="text-sm/6 font-semibold text-gray-900">Company</h3>
+                <h3 className="text-sm/6 font-semibold text-gray-900">
+                  Company
+                </h3>
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation.company.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-sm/6 text-gray-600 hover:text-gray-900">
+                      <a
+                        href={item.href}
+                        className="text-sm/6 text-gray-600 hover:text-gray-900"
+                      >
                         {item.name}
                       </a>
                     </li>
@@ -113,7 +124,10 @@ export default function Footer() {
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation.legal.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-sm/6 text-gray-600 hover:text-gray-900">
+                      <a
+                        href={item.href}
+                        className="text-sm/6 text-gray-600 hover:text-gray-900"
+                      >
                         {item.name}
                       </a>
                     </li>
@@ -125,9 +139,12 @@ export default function Footer() {
         </div>
         <div className="mt-16 border-t border-gray-900/10 pt-8 sm:mt-20 lg:mt-24 lg:flex lg:items-center lg:justify-between">
           <div>
-            <h3 className="text-sm/6 font-semibold text-gray-900">Subscribe to our newsletter</h3>
+            <h3 className="text-sm/6 font-semibold text-gray-900">
+              Subscribe to our newsletter
+            </h3>
             <p className="mt-2 text-sm/6 text-gray-600">
-              The latest news, articles, and resources, sent to your inbox weekly.
+              The latest news, articles, and resources, sent to your inbox
+              weekly.
             </p>
           </div>
           <form className="mt-6 sm:flex sm:max-w-md lg:mt-0">
@@ -156,7 +173,11 @@ export default function Footer() {
         <div className="mt-8 border-t border-gray-900/10 pt-8 md:flex md:items-center md:justify-between">
           <div className="flex gap-x-6 md:order-2">
             {navigation.social.map((item) => (
-              <a key={item.name} href={item.href} className="text-gray-600 hover:text-gray-800">
+              <a
+                key={item.name}
+                href={item.href}
+                className="text-gray-600 hover:text-gray-800"
+              >
                 <span className="sr-only">{item.name}</span>
                 <item.icon aria-hidden="true" className="size-6" />
               </a>

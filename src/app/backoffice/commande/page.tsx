@@ -17,8 +17,12 @@ const CommandeList = () => {
   // Filtrage des commandes
   const filteredCommandes = useMemo(() => {
     return commandes.filter((commande: Commande) => {
-      const matchSearch = commande.id.toString().toLowerCase().includes(searchQuery.toLowerCase());
-      const matchStatus = selectedStatus === "" || commande.status === selectedStatus;
+      const matchSearch = commande.id
+        .toString()
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+      const matchStatus =
+        selectedStatus === "" || commande.status === selectedStatus;
       return matchSearch && matchStatus;
     });
   }, [commandes, searchQuery, selectedStatus]);
@@ -34,25 +38,34 @@ const CommandeList = () => {
   }, [filteredCommandes, currentPage]);
 
   // Gestion des événements
-  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-    setCurrentPage(1);
-  }, []);
-
+  const handleSearchChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchQuery(e.target.value);
+      setCurrentPage(1);
+    },
+    []
+  );
 
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedStatus(e.target.value);
     setCurrentPage(1);
   };
 
-  if (error) return <div className="text-red-500 text-center py-6">Erreur : {error}</div>;
+  if (error)
+    return (
+      <div className="text-red-500 text-center py-6">Erreur : {error}</div>
+    );
 
   return (
     <div className="mx-auto max-w-2xl py-4 sm:py-4 lg:max-w-7xl">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-lg font-semibold text-gray-900">Liste des commandes</h1>
-          <p className="mt-2 text-sm text-gray-700">Listing des commandes du commerce</p>
+          <h1 className="text-lg font-semibold text-gray-900">
+            Liste des commandes
+          </h1>
+          <p className="mt-2 text-sm text-gray-700">
+            Listing des commandes du commerce
+          </p>
         </div>
       </div>
 
@@ -88,10 +101,18 @@ const CommandeList = () => {
               <table className="min-w-full divide-y divide-gray-300">
                 <thead>
                   <tr>
-                    <th className="py-3.5 text-left text-sm font-semibold text-gray-900">Id</th>
-                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Total</th>
-                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Statut</th>
-                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Détails</th>
+                    <th className="py-3.5 text-left text-sm font-semibold text-gray-900">
+                      Id
+                    </th>
+                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                      Total
+                    </th>
+                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                      Statut
+                    </th>
+                    <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                      Détails
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -112,10 +133,14 @@ const CommandeList = () => {
             >
               Précédent
             </button>
-            <span>Page {currentPage} sur {totalPages}</span>
+            <span>
+              Page {currentPage} sur {totalPages}
+            </span>
             <button
               className="px-4 py-2 border rounded-md disabled:opacity-50"
-              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
               disabled={currentPage === totalPages}
             >
               Suivant
@@ -123,7 +148,9 @@ const CommandeList = () => {
           </div>
         </div>
       ) : (
-        <div className="mt-8 text-gray-700 text-center">Aucune commande trouvée</div>
+        <div className="mt-8 text-gray-700 text-center">
+          Aucune commande trouvée
+        </div>
       )}
     </div>
   );

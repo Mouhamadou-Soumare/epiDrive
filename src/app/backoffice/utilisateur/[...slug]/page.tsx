@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
 import { useState, useMemo, useCallback } from "react";
-import { UsersIcon } from '@heroicons/react/24/outline';
+import { UsersIcon } from "@heroicons/react/24/outline";
 import CommandeCard from "../components/CommandeCard";
 import { useGetUser } from "@/hooks/users/useUsers";
 import { Commande, User } from "../../../../../types";
-import { useParams } from 'next/navigation';
+import { useParams } from "next/navigation";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
 const UserDetail = () => {
@@ -15,7 +15,7 @@ const UserDetail = () => {
 
   const { user, loading, error } = useGetUser(
     isNaN(userIdNumber) ? null : userIdNumber
-  ) as { user: User | null, loading: boolean, error: any };
+  ) as { user: User | null; loading: boolean; error: any };
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 10;
@@ -32,12 +32,27 @@ const UserDetail = () => {
   }, [commandes, currentPage]);
 
   // Pagination optimisée avec useCallback
-  const handlePrevPage = useCallback(() => setCurrentPage((prev) => Math.max(prev - 1, 1)), []);
-  const handleNextPage = useCallback(() => setCurrentPage((prev) => Math.min(prev + 1, totalPages)), [totalPages]);
+  const handlePrevPage = useCallback(
+    () => setCurrentPage((prev) => Math.max(prev - 1, 1)),
+    []
+  );
+  const handleNextPage = useCallback(
+    () => setCurrentPage((prev) => Math.min(prev + 1, totalPages)),
+    [totalPages]
+  );
 
-  if (loading) return <LoadingSpinner/>;
-  if (error) return <div className="text-center text-red-500 font-medium"> Erreur : {error}</div>;
-  if (!user) return <div className="text-center text-gray-500"> Utilisateur non trouvé</div>;
+  if (loading) return <LoadingSpinner />;
+  if (error)
+    return (
+      <div className="text-center text-red-500 font-medium">
+        {" "}
+        Erreur : {error}
+      </div>
+    );
+  if (!user)
+    return (
+      <div className="text-center text-gray-500"> Utilisateur non trouvé</div>
+    );
 
   return (
     <div className="mx-auto max-w-2xl py-4 sm:py-4 lg:max-w-7xl">
@@ -47,16 +62,22 @@ const UserDetail = () => {
             <div className="absolute rounded-md button-primary text-dark p-3">
               <UsersIcon aria-hidden="true" className="h-6 w-6 text-white" />
             </div>
-            <p className="ml-16 truncate text-sm font-medium text-gray-500">{user.email}</p>
+            <p className="ml-16 truncate text-sm font-medium text-gray-500">
+              {user.email}
+            </p>
           </dt>
           <dd className="ml-16 flex items-baseline">
-            <p className="text-2xl font-semibold text-gray-900">{user.username}</p>
+            <p className="text-2xl font-semibold text-gray-900">
+              {user.username}
+            </p>
           </dd>
         </div>
       </div>
 
       <div className="mx-auto p-4 sm:p-6 lg:p-8">
-        <h1 className="text-base font-semibold text-gray-900">Liste commandes de l'utilisateur</h1>
+        <h1 className="text-base font-semibold text-gray-900">
+          Liste commandes de l'utilisateur
+        </h1>
 
         {paginatedCommandes.length > 0 ? (
           <div className="mt-8 flow-root">
@@ -80,7 +101,9 @@ const UserDetail = () => {
               >
                 Précédent
               </button>
-              <span>Page {currentPage} sur {totalPages}</span>
+              <span>
+                Page {currentPage} sur {totalPages}
+              </span>
               <button
                 className="px-4 py-2 border rounded-md disabled:opacity-50 focus:ring-2 focus:ring-indigo-500"
                 onClick={handleNextPage}
@@ -92,7 +115,9 @@ const UserDetail = () => {
             </div>
           </div>
         ) : (
-          <div className="mt-4 text-sm text-gray-700">Cet utilisateur n'a pas encore passé de commande.</div>
+          <div className="mt-4 text-sm text-gray-700">
+            Cet utilisateur n'a pas encore passé de commande.
+          </div>
         )}
       </div>
     </div>
