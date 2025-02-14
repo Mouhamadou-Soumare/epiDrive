@@ -485,6 +485,7 @@ Endpoints associés :
 
 - Mise en place de la première version de l'application (backend, frontend, base de données)
 - Création du jeu de données complet avec images optimisées en WebP
+- CRUD front-office des catégories, produits, panier...
 - Implémentation des catégories et sous-catégories de produits
 - Développement de 90% du frontend et création des templates d’email
 - Workflow commande : Ajout au panier ➝ Validation de commande ➝ Paiement Stripe
