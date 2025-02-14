@@ -1,15 +1,32 @@
-'use client';
+"use client";
 
-import { useSession, signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import { Chart, LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend } from 'chart.js';
-import { Line } from 'react-chartjs-2';
-import Link from 'next/link';
+import { useSession, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import {
+  Chart,
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+import Link from "next/link";
 
 // Enregistrer les composants Chart.js
-Chart.register(LineElement, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend);
+Chart.register(
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 export default function ProfilePage() {
   return <ProfileContent />;
@@ -18,15 +35,15 @@ export default function ProfilePage() {
 function ProfileContent() {
   const { data: session, status } = useSession();
   const router = useRouter();
-    
+
   const [stats, setStats] = useState<any>(null);
   const [recentOrders, setRecentOrders] = useState<any[]>([]);
   const [activityLogs, setActivityLogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/auth/signin');
+    if (status === "unauthenticated") {
+      router.push("/auth/signin");
     }
   }, [status, router]);
 
@@ -34,9 +51,9 @@ function ProfileContent() {
     async function fetchData() {
       try {
         const [statsRes, ordersRes, logsRes] = await Promise.all([
-          fetch('/api/stats'),
-          fetch('/api/orders/recent'),
-          fetch('/api/logs/recent'),
+          fetch("/api/stats"),
+          fetch("/api/orders/recent"),
+          fetch("/api/logs/recent"),
         ]);
 
         const statsData = await statsRes.json();
@@ -47,7 +64,7 @@ function ProfileContent() {
         setRecentOrders(ordersData);
         setActivityLogs(logsData);
       } catch (error) {
-        console.error('Erreur de récupération des données:', error);
+        console.error("Erreur de récupération des données:", error);
       } finally {
         setLoading(false);
       }
@@ -56,13 +73,14 @@ function ProfileContent() {
     fetchData();
   }, []);
 
-  if (status === 'loading' || loading) {
+  if (status === "loading" || loading) {
     return <LoadingSpinner />;
   }
 
   // Calcul du statut de fidélité
   const totalSpent = stats?.totalSpent || 0;
-  const loyaltyStatus = totalSpent >= 500 ? 'Or' : totalSpent >= 250 ? 'Argent' : 'Bronze';
+  const loyaltyStatus =
+    totalSpent >= 500 ? "Or" : totalSpent >= 250 ? "Argent" : "Bronze";
   const nextLevel = totalSpent >= 500 ? 1000 : totalSpent >= 250 ? 500 : 250;
   const progressPercentage = Math.min((totalSpent / nextLevel) * 100, 100);
 
@@ -71,10 +89,10 @@ function ProfileContent() {
     labels: stats?.purchaseHistory.map((item: any) => item.date) || [],
     datasets: [
       {
-        label: 'Achats journaliers',
+        label: "Achats journaliers",
         data: stats?.purchaseHistory.map((item: any) => item.total) || [],
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: "rgba(54, 162, 235, 0.2)",
+        borderColor: "rgba(54, 162, 235, 1)",
         borderWidth: 1,
         fill: true,
       },
@@ -85,16 +103,43 @@ function ProfileContent() {
     <div className="min-h-screen bg-white py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
           {/* Sidebar */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-bold mb-4 text-black">Navigation</h2>
             <ul className="space-y-3">
-              <li><Link href="/profile" className="text-blue-600 hover:text-blue-800">Mon Profil</Link></li>
-              <li><Link href="/profile/orders" className="text-blue-600 hover:text-blue-800">Commandes</Link></li>
-              <li><Link href="/profile/settings" className="text-blue-600 hover:text-blue-800">Paramètres</Link></li>
               <li>
-                <button onClick={() =>signOut({ callbackUrl: process.env.NEXT_PUBLIC_BASE_URL || "/" })} className="text-red-600 hover:text-red-800">
+                <Link
+                  href="/profile"
+                  className="text-blue-600 hover:text-blue-800"
+                >
+                  Mon Profil
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/profile/orders"
+                  className="text-blue-600 hover:text-blue-800"
+                >
+                  Commandes
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/profile/settings"
+                  className="text-blue-600 hover:text-blue-800"
+                >
+                  Paramètres
+                </Link>
+              </li>
+              <li>
+                <button
+                  onClick={async () => {
+                    await signOut();
+                    window.location.href =
+                      process.env.NEXT_PUBLIC_BASE_URL || "/";
+                  }}
+                  className="text-red-600 hover:text-red-800"
+                >
                   Déconnexion
                 </button>
               </li>
@@ -107,12 +152,23 @@ function ProfileContent() {
               Bienvenue sur Epidrive, {session?.user?.name}
             </h2>
             <div className="flex items-center space-x-6">
-              <img src={session?.user?.image || '/default-avatar.png'} alt="Avatar" className="w-24 h-24 rounded-full shadow-md" />
+              <img
+                src={session?.user?.image || "/default-avatar.png"}
+                alt="Avatar"
+                className="w-24 h-24 rounded-full shadow-md"
+              />
               <div>
-                <p><strong>Email :</strong> {session?.user?.email}</p>
-                <p><strong>Statut fidélité :</strong> {loyaltyStatus}</p>
+                <p>
+                  <strong>Email :</strong> {session?.user?.email}
+                </p>
+                <p>
+                  <strong>Statut fidélité :</strong> {loyaltyStatus}
+                </p>
                 <div className="w-full bg-gray-200 rounded-full mt-2">
-                  <div className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-1 leading-none rounded-full" style={{ width: `${progressPercentage}%` }}>
+                  <div
+                    className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-1 leading-none rounded-full"
+                    style={{ width: `${progressPercentage}%` }}
+                  >
                     {progressPercentage.toFixed(0)}%
                   </div>
                 </div>
@@ -126,7 +182,10 @@ function ProfileContent() {
             <ul>
               {recentOrders.map((order) => (
                 <li key={order.id} className="bg-gray-100 p-4 rounded-lg mb-2">
-                  <p><strong>Commande #{order.id}</strong> - {order.total}€ - {order.status}</p>
+                  <p>
+                    <strong>Commande #{order.id}</strong> - {order.total}€ -{" "}
+                    {order.status}
+                  </p>
                 </li>
               ))}
             </ul>
@@ -138,7 +197,12 @@ function ProfileContent() {
             <ul>
               {activityLogs.map((log, index) => (
                 <li key={index} className="bg-gray-100 p-4 rounded-lg mb-2">
-                  <p>{log.action} - <span className="text-gray-600">{new Date(log.date).toLocaleString()}</span></p>
+                  <p>
+                    {log.action} -{" "}
+                    <span className="text-gray-600">
+                      {new Date(log.date).toLocaleString()}
+                    </span>
+                  </p>
                 </li>
               ))}
             </ul>
