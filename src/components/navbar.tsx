@@ -249,7 +249,11 @@ export default function Navbar() {
         <div className="flex lg:flex-1">
           <a href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
-            <Image alt="" src={logoWhite} className="h-10 w-auto min-w-150 mr-2" />
+            <Image
+              alt=""
+              src={logoWhite}
+              className="h-10 w-auto min-w-150 mr-2"
+            />
           </a>
         </div>
         <div className="flex items-center lg:hidden space-x-4">
@@ -500,16 +504,17 @@ export default function Navbar() {
                   </span>
                 </a>
                 <button
-  onClick={async () => {
-    await signOut();
-    window.location.href = process.env.NEXT_PUBLIC_BASE_URL || "https://epidriveprod.rusu2228.odns.fr";
-  }}
-  className="flex items-center gap-2 px-4 py-2.5 text-dark rounded-lg hover:bg-red-50"
->
-  <ArrowRightIcon className="h-6 w-6 text-red-500" />
-  <span>Déconnexion</span>
-</button>
-
+                  onClick={async () => {
+                    await signOut();
+                    window.location.href =
+                      process.env.NEXT_PUBLIC_BASE_URL ||
+                      "https://epidriveprod.rusu2228.odns.fr";
+                  }}
+                  className="flex items-center gap-2 px-4 py-2.5 text-dark rounded-lg hover:bg-red-50"
+                >
+                  <ArrowRightIcon className="h-6 w-6 text-red-500" />
+                  <span>Déconnexion</span>
+                </button>
               </div>
             ) : (
               <a

@@ -22,9 +22,15 @@ export default function ProfilePage() {
 
 function ProfileContent() {
   const { session, status, stats, loading, currentDate } = useUserProfile();
-  const { user, loading: userLoading, error } = useGetUser(
-    session?.user?.id ? Number(session.user.id) : null
-  ) as { user: User | null; loading: boolean; error: any };
+  const {
+    user,
+    loading: userLoading,
+    error,
+  } = useGetUser(session?.user?.id ? Number(session.user.id) : null) as {
+    user: User | null;
+    loading: boolean;
+    error: any;
+  };
 
   if (status === "loading" || loading || userLoading) {
     return <LoaderComponent />;
@@ -72,7 +78,11 @@ function ProfileContent() {
               <li className="flex items-center space-x-2">
                 <ArrowRightOnRectangleIcon className="h-5 w-5 text-red-500" />
                 <button
-                  onClick={() => signOut({ callbackUrl: process.env.NEXT_PUBLIC_BASE_URL || "/" })}
+                  onClick={async () => {
+                    await signOut();
+                    window.location.href =
+                      process.env.NEXT_PUBLIC_BASE_URL || "/";
+                  }}
                   className="text-red-600 hover:text-red-800 font-medium"
                 >
                   Déconnexion
