@@ -502,7 +502,7 @@ export default function Navbar() {
                 <button
                   onClick={() =>
                     signOut({
-                      callbackUrl: process.env.NEXT_PUBLIC_BASE_URL || "/",
+                      callbackUrl: "https://epidriveprod.rusu2228.odns.fr",
                     })
                   }
                   className="flex items-center gap-2 px-4 py-2.5 text-dark rounded-lg hover:bg-red-50"
