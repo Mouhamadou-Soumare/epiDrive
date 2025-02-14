@@ -210,9 +210,7 @@ export default function Navbar() {
     (category) => !mesCoursesCategories.includes(category.name)
   );
 
-  console.log("Session:", session);
-  console.log("User:", session?.user);
-
+  
   return (
     <header className="relative isolate z-10 ">
       <div aria-label="Top">
