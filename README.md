@@ -1,9 +1,16 @@
-# EpiDrive
+<h1 align="center">
+  <br>
+  <a href="#"><img src="https://github.com/Mouhamadou-Soumare/epiDrive/blob/main/public/img/logo.png" alt="epiDrive" width="100"></a>
+  <br>
+  EpiDrive
+  <br>
+</h1>
 
-<p align="center">
-  <a href="#"><img src="https://github.com/Mouhamadou-Soumare/epiDrive/blob/main/public/img/logo.png" alt="EpiDrive" width="100"></a>
-</p>
-Epidrive - Faites de vos courses un plaisir, alliant saveurs et praticité en un clic.
+<h4 align="center">EpiDrive - Faites de vos courses un plaisir, alliant saveurs et praticité en un clic.</h4>
+
+<br/>
+<br/>
+
 
 **Site en production :** [EpiDrive](https://epidriveprod.rusu2228.odns.fr/)
 **Tableau kanban :** [Notion](https://believed-joggers-659.notion.site/11accd89483e80e19d77f1dc809ec0d4?v=12accd89483e80658149000c9e74ea8e&pvs=4)
