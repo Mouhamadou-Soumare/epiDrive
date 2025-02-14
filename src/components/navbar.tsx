@@ -502,7 +502,7 @@ export default function Navbar() {
                 <button
   onClick={async () => {
     await signOut();
-    window.location.href = "https://epidriveprod.rusu2228.odns.fr";
+    window.location.href = process.env.NEXT_PUBLIC_BASE_URL || "https://epidriveprod.rusu2228.odns.fr";
   }}
   className="flex items-center gap-2 px-4 py-2.5 text-dark rounded-lg hover:bg-red-50"
 >
@@ -514,7 +514,7 @@ export default function Navbar() {
             ) : (
               <a
                 href="/auth/signin"
-                className="flex items-center gap-2 px-4 py-2.5 text-dark rounded-lg hover:text-indigo-700"
+                className="flex items-center gap-2 px-4 py-2.5 text-dark rounded-lg hover:text-orange-700"
               >
                 <ArrowRightIcon className="h-6 w-6" />
                 <span>Se connecter</span>
