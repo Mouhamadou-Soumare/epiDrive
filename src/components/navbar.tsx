@@ -501,18 +501,20 @@ export default function Navbar() {
                     {session.user?.name}
                   </span>
                 </a>
-                <button
-                  onClick={async () => {
-                    await signOut();
-                    window.location.href =
-                      process.env.NEXT_PUBLIC_BASE_URL ||
-                      "https://epidriveprod.rusu2228.odns.fr";
-                  }}
-                  className="flex items-center gap-2 px-4 py-2.5 text-dark rounded-lg hover:bg-red-50"
-                >
-                  <ArrowRightIcon className="h-6 w-6 text-red-500" />
-                  <span>Déconnexion</span>
-                </button>
+                {session.user?.role !== "ADMIN" && (
+        <button
+          onClick={async () => {
+            await signOut();
+            window.location.href =
+              process.env.NEXT_PUBLIC_BASE_URL ||
+              "https://epidriveprod.rusu2228.odns.fr";
+          }}
+          className="flex items-center gap-2 px-4 py-2.5 text-dark rounded-lg hover:bg-red-50"
+        >
+          <ArrowRightIcon className="h-6 w-6 text-red-500" />
+          <span>Déconnexion</span>
+        </button>
+      )}
               </div>
             ) : (
               <a
