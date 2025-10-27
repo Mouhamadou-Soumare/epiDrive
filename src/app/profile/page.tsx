@@ -98,14 +98,101 @@ function ProfileContent() {
             </h2>
 
             <div className="flex items-center space-x-6">
-              {/* Avatar Utilisateur */}
+              {/* Avatar Utilisateur (modifiable & persistant via localStorage) */}
               <div className="relative">
-                <img
-                  src={"/default-avatar.png"}
-                  alt="Avatar"
-                  className="w-24 h-24 rounded-full shadow-md border border-gray-300"
-                />
+              <img
+                id="avatar-img"
+                src={
+                typeof window !== "undefined" && localStorage.getItem("avatar")
+                  ? (localStorage.getItem("avatar") as string)
+                  : "/default-avatar.png"
+                }
+                alt="Avatar"
+                className="w-24 h-24 rounded-full shadow-md border border-gray-300 object-cover"
+              />
               </div>
+
+              <div className="flex flex-col space-y-2">
+              {/* Hidden file input */}
+              <input
+                id="avatarInput"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                const file = (e.target as HTMLInputElement).files?.[0];
+                if (!file) return;
+                // optional size check (2MB)
+                const maxSize = 2 * 1024 * 1024;
+                if (file.size > maxSize) {
+                  alert("Image trop grande. Taille maximale recommandée : 2MB.");
+                  (e.target as HTMLInputElement).value = "";
+                  return;
+                }
+                const reader = new FileReader();
+                reader.onload = () => {
+                  const dataUrl = reader.result as string;
+                  const img = document.getElementById(
+                  "avatar-img"
+                  ) as HTMLImageElement | null;
+                  if (img) {
+                  img.src = dataUrl;
+                  }
+                  try {
+                  localStorage.setItem("avatar", dataUrl);
+                  } catch {
+                  // storage may fail if too large or disabled; silently ignore
+                  }
+                };
+                reader.readAsDataURL(file);
+                }}
+              />
+
+              <div className="flex space-x-2">
+                <button
+                type="button"
+                className="bg-orange-500 text-white px-3 py-1 rounded-md text-sm hover:bg-orange-600"
+                onClick={() =>
+                  (
+                  document.getElementById("avatarInput") as
+                    | HTMLInputElement
+                    | null
+                  )?.click()
+                }
+                >
+                Changer l'image
+                </button>
+
+                <button
+                type="button"
+                className="border border-gray-300 px-3 py-1 rounded-md text-sm text-gray-700 hover:bg-gray-50"
+                onClick={() => {
+                  const img = document.getElementById(
+                  "avatar-img"
+                  ) as HTMLImageElement | null;
+                  if (img) {
+                  img.src = "/default-avatar.png";
+                  }
+                  const input = document.getElementById(
+                  "avatarInput"
+                  ) as HTMLInputElement | null;
+                  if (input) input.value = "";
+                  try {
+                  localStorage.removeItem("avatar");
+                  } catch {
+                  /* ignore */
+                  }
+                }}
+                >
+                Réinitialiser
+                </button>
+              </div>
+
+              <p className="text-sm text-gray-500">
+                Formats supportés : JPG, PNG. Taille max recommandée : 2MB.
+              </p>
+              </div>
+            </div>
 
               {/* Informations Utilisateur */}
               <div className="text-gray-700 flex flex-col space-y-2">
@@ -138,13 +225,13 @@ function ProfileContent() {
                 <p className="text-gray-700">Commandes total</p>
               </div>
 
-              <div className="bg-green-100 p-6 rounded-lg text-center">
+                <div className="bg-green-100 p-6 rounded-lg text-center">
                 <CurrencyEuroIcon className="h-8 w-8 text-green-600 mx-auto mb-2" />
                 <h4 className="text-2xl font-bold text-green-600">
-                  {stats?.totalSpent || 0}€
+                  {(Number(stats?.totalSpent ?? 0)).toFixed(2)}€
                 </h4>
                 <p className="text-gray-700">Total dépensé</p>
-              </div>
+                </div>
 
               <div className="bg-yellow-100 p-6 rounded-lg text-center">
                 <UserIcon className="h-8 w-8 text-yellow-600 mx-auto mb-2" />
@@ -155,6 +242,7 @@ function ProfileContent() {
           </div>
         </div>
       </div>
-    </div>
+
+    
   );
-}
+} 

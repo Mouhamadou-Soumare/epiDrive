@@ -38,7 +38,7 @@ export default function Pagination({ totalItems, itemsPerPage, currentPage, onPa
             onClick={() => handlePageChange(page)}
             className={`inline-flex items-center border-t-2 px-4 pt-4 text-sm font-medium ${
               page === currentPage
-                ? 'border-indigo-500 text-indigo-600'
+                ? 'border-orange-500 text-orange-600'
                 : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
             }`}
           >

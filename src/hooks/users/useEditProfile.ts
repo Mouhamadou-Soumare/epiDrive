@@ -17,9 +17,23 @@ export function useEditProfile() {
     if (status === "unauthenticated") {
       router.push("/auth/signin");
     } else if (status === "authenticated" && session?.user) {
-      setName(session.user.name || "");
-      setEmail(session.user.email || "");
-      setPreviewImage(session.user.image ? session.user.image : "/default-avatar.png");
+      // Prefer locally stored values (set after a successful edit) so the
+      // settings form shows the updated name/email/avatar immediately.
+      if (typeof window !== "undefined") {
+        const storedName = localStorage.getItem("username");
+        const storedEmail = localStorage.getItem("email");
+        const storedAvatar = localStorage.getItem("avatar");
+
+        setName(storedName ?? session.user.name ?? "");
+        setEmail(storedEmail ?? session.user.email ?? "");
+        setPreviewImage(
+          storedAvatar ?? (session.user.image ? session.user.image : "/default-avatar.png")
+        );
+      } else {
+        setName(session.user.name || "");
+        setEmail(session.user.email || "");
+        setPreviewImage(session.user.image ? session.user.image : "/default-avatar.png");
+      }
     }
   }, [status, session, router]);
 
@@ -59,6 +73,21 @@ export function useEditProfile() {
       const data = await res.json();
 
       if (res.ok) {
+        // Persist name/email locally so other client components (navbar, profile preview)
+        // can read the updated values immediately without waiting for session refresh.
+        try {
+          if (typeof window !== "undefined") {
+            localStorage.setItem("username", name);
+            localStorage.setItem("email", email);
+            // If API returned an image URL, prefer storing it as 'avatar'
+            if (data?.image) {
+              localStorage.setItem("avatar", data.image);
+            }
+          }
+        } catch {
+          // ignore localStorage errors
+        }
+
         router.push("/profile");
       } else {
         setErrorMessage(data.message || "Erreur lors de la mise à jour");

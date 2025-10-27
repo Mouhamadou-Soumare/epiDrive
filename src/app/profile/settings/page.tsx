@@ -39,19 +39,42 @@ function EditProfileContent() {
           <div className="text-center">
             <label htmlFor="profileImage" className="cursor-pointer block">
               <img
-                src={previewImage || "/default-avatar.png"}
-                alt="Avatar Preview"
-                className="w-24 h-24 rounded-full mx-auto object-cover shadow-md border border-gray-300"
+          src={
+            // prefer a persisted data URL (stored under 'avatar') if present,
+            // otherwise use previewImage or default
+            typeof window !== "undefined"
+              ? localStorage.getItem("avatar") || previewImage || "/default-avatar.png"
+              : previewImage || "/default-avatar.png"
+          }
+          alt="Avatar Preview"
+          className="w-24 h-24 rounded-full mx-auto object-cover shadow-md border border-gray-300"
               />
-              <span className="text-indigo-600 text-sm block mt-2">
-                Changer l'image
+              <span className="text-orange-600 text-sm block mt-2">
+          Changer l'image
               </span>
             </label>
             <input
               type="file"
               id="profileImage"
               accept="image/*"
-              onChange={handleImageChange}
+              onChange={(e) => {
+          // keep existing hook behavior
+          handleImageChange(e);
+
+          // also persist the chosen image as a data URL so it survives refresh
+          const file = (e.target as HTMLInputElement).files?.[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = () => {
+            try {
+              // store as data URL under the same key that the profile page reads
+              localStorage.setItem("avatar", String(reader.result));
+            } catch {
+              // ignore localStorage failures (quota, privacy mode, etc.)
+            }
+          };
+          reader.readAsDataURL(file);
+              }}
               className="hidden"
             />
           </div>
@@ -63,7 +86,7 @@ function EditProfileContent() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 focus:outline-none focus:border-indigo-500"
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 focus:outline-none focus:border-orange-500"
               required
             />
           </div>
@@ -75,7 +98,7 @@ function EditProfileContent() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 focus:outline-none focus:border-indigo-500"
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 focus:outline-none focus:border-orange-500"
               required
             />
           </div>

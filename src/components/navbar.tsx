@@ -295,7 +295,7 @@ export default function Navbar() {
           ) : session ? (
             <a
               href="/profile"
-              className="flex items-center gap-2 hover:text-indigo-700"
+              className="flex items-center gap-2 hover:text-orange-700"
             >
               <button
                 onClick={() => signOut()}
@@ -326,12 +326,12 @@ export default function Navbar() {
             <Popover.Button
               type="button"
               className={`inline-flex items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold shadow-sm 
-              ${
-                open
-                  ? "bg-indigo-500 text-dark"
-                  : "button-secondary text-dark hover:button-primary"
-              } 
-              focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+                ${
+                  open
+                    ? "bg-orange-500 text-dark"
+                    : "button-secondary text-dark hover:button-primary"
+                } 
+                focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600`}
             >
               Rayons
               <Bars3Icon
@@ -498,7 +498,13 @@ export default function Navbar() {
                 >
                   <UserCircleIcon className="h-8 w-8 text-orange-400 hover:text-gray-500" />
                   <span className="font-medium text-gray-800">
-                    {session.user?.name}
+                    {
+                      // prefer locally-stored username (set by settings) so the navbar
+                      // updates immediately after change; fallback to session
+                      typeof window !== "undefined" && localStorage.getItem("username")
+                        ? (localStorage.getItem("username") as string)
+                        : session.user?.name
+                    }
                   </span>
                 </a>
                 {session.user?.role !== "ADMIN" && (
@@ -575,7 +581,7 @@ export default function Navbar() {
 
             <a
               href="/chatIA"
-              className="flex items-center gap-3 px-4 py-3 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 transition"
+              className="flex items-center gap-3 px-4 py-3 bg-orange-600 text-white rounded-lg shadow hover:bg-orange-700 transition"
             >
               <ChatBubbleLeftIcon className="h-6 w-6" />
               <span>Poser une question à l’IA</span>

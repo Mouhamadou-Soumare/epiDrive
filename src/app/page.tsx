@@ -13,7 +13,7 @@ import {
 import RecommendedProducts from "@/components/client/product/RecommendedProducts";
 import { useGetAllProducts } from "@/hooks/products/useGetAllProducts";
 import HeroSectionHomepage from "@/components/HeroSectionHomepage";
-import romanticSurprise from "../../public/img/ballon-cadeau-saint-valentin.jpg";
+import heroPromo from "../../public/img/food_presentation.webp";
 import donation from "../../public/img/donation_png.png";
 
 export default function HomePage() {
@@ -106,26 +106,25 @@ export default function HomePage() {
 
         <div className="flex flex-col md:flex-row">
           <section
-            aria-labelledby="love-donation-heading"
+            aria-labelledby="promo-heading"
             className="mx-auto max-w-full px-4 py-24 sm:px-6 sm:py-32 lg:px-8"
           >
             <div className="relative overflow-hidden rounded-lg">
               <div className="absolute inset-0">
                 <Image
-                  alt="Don romantique"
-                  src={romanticSurprise}
+                  alt="Nos produits"
+                  src={heroPromo}
                   className="size-full object-cover"
                 />
               </div>
-              <div className="relative bg-red-700/75 px-6 py-32 sm:px-12 sm:py-40 lg:px-16">
+              <div className="relative bg-orange-700/70 px-6 py-32 sm:px-12 sm:py-40 lg:px-16">
                 <div className="relative mx-auto flex max-w-3xl flex-col items-center text-center">
                   <h3 className="text-3xl font-bold text-white sm:text-4xl">
-                    Offrez une surprise inoubliable
+                    Découvrez nos coffrets gourmands
                   </h3>
 
                   <p className="mt-3 text-xl text-white">
-                    Chaque coffret contient une sélection de chocolats, vins et
-                    douceurs pour une soirée magique en amoureux.
+                    Des sélections gourmandes, sélectionnées pour toutes les occasions.
                   </p>
                   <a
                     href="#"
@@ -150,7 +149,7 @@ export default function HomePage() {
                   className="size-full object-cover"
                 />
               </div>
-              <div className="relative bg-red-700/75 px-6 py-32 sm:px-12 sm:py-40 lg:px-16">
+              <div className="relative bg-orange-700/70 px-6 py-32 sm:px-12 sm:py-40 lg:px-16">
                 <div className="relative mx-auto flex max-w-3xl flex-col items-center text-center">
                   <h3
                     id="love-donation-heading"

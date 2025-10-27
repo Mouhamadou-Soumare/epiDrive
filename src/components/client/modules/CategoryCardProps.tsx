@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
 import Image from "next/image";
-import chocolates from "../../../../public/img/chocolates-stvalentin.webp";
-import romanticDinner from "../../../../public/img/diner_stvalentin.webp";
-import loveDecor from "../../../../public/img/deco_stvalentin.webp";
-import valentineGift from "../../../../public/img/cadeaux_stvalentin.webp";
+import epicerieFine from "../../../../public/img/category/epicerie-fine-regionale.webp";
+import patisseries from "../../../../public/img/category/patisseries.webp";
+import maison from "../../../../public/img/category/maison-et-hygiene.webp";
+import cadeaux from "../../../../public/img/category/produits-regionaux-et-locaux.webp";
 
 interface CategoryCardProps {
   icon: ReactNode;
@@ -14,42 +14,42 @@ const categories = [
   {
     icon: (
       <Image
-        src={chocolates}
-        alt="Chocolats de Saint-Valentin"
+        src={epicerieFine}
+        alt="Épicerie fine"
         className="rounded-full w-h-category-card-props"
       />
     ),
-    title: "Délices chocolatés",
+    title: "Épicerie fine",
   },
   {
     icon: (
       <Image
-        src={romanticDinner}
-        alt="Dîner romantique"
+        src={patisseries}
+        alt="Pâtisseries"
         className="rounded-full w-h-category-card-props"
       />
     ),
-    title: "Dîner en amoureux",
+    title: "Pâtisseries",
   },
   {
     icon: (
       <Image
-        src={loveDecor}
-        alt="Décoration romantique"
+        src={maison}
+        alt="Maison & hygiène"
         className="rounded-full w-h-category-card-props"
       />
     ),
-    title: "Ambiance romantique",
+    title: "Maison & Hygiène",
   },
   {
     icon: (
       <Image
-        src={valentineGift}
-        alt="Cadeaux de Saint-Valentin"
+        src={cadeaux}
+        alt="Produits régionaux"
         className="rounded-full w-h-category-card-props"
       />
     ),
-    title: "Cadeaux & surprises",
+    title: "Produits régionaux",
   },
 ];
 
@@ -64,7 +64,7 @@ const CategoryCard = ({ icon, title }: CategoryCardProps) => (
 
 export default function Categories() {
   return (
-    <div className="bg-pink-50 py-6 rounded-lg mt-10 categoriesCardGrid">
+    <div className="bg-white py-6 rounded-lg mt-10 categoriesCardGrid">
       <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-6 px-4 sm:px-6 lg:px-8">
         {categories.map((category, index) => (
           <CategoryCard

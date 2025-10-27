@@ -126,7 +126,7 @@ const AuthModal = ({ onClose, onAuthenticate }: AuthModalProps) => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="block w-full bg-gray-100 py-3 px-3 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="block w-full bg-gray-100 py-3 px-3 rounded-md border-gray-300 shadow-sm focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
               />
             </div>
           )}
@@ -138,7 +138,7 @@ const AuthModal = ({ onClose, onAuthenticate }: AuthModalProps) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="block w-full bg-gray-100 py-3 px-3 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="block w-full bg-gray-100 py-3 px-3 rounded-md border-gray-300 shadow-sm focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
             />
           </div>
 
@@ -149,13 +149,13 @@ const AuthModal = ({ onClose, onAuthenticate }: AuthModalProps) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="block w-full bg-gray-100 py-3 px-3 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="block w-full bg-gray-100 py-3 px-3 rounded-md border-gray-300 shadow-sm focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
             />
           </div>
 
           <button
             type="submit"
-            className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-xl font-medium text-white button-primary hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+            className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-xl font-medium text-white button-primary hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 ${
               loading ? 'opacity-50 cursor-not-allowed' : ''
             }`}
             disabled={loading}

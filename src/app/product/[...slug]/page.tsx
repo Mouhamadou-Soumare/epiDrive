@@ -57,7 +57,7 @@ export default function ProductDetailPage() {
           <div className="mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center">
             <div className="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg h-96">
               <img
-                src={product.image.path}
+                src={typeof product.image === "string" ? product.image : (product.image as any)?.path}
                 alt={product.name}
                 className="h-full w-full object-cover object-center"
               />
@@ -86,21 +86,50 @@ export default function ProductDetailPage() {
                   >
                     Quantité
                   </label>
-                  <select
-                    id="quantity"
-                    name="quantity"
-                    value={quantity}
-                    onChange={(e) => setQuantity(Number(e.target.value))}
-                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  >
-                    {Array.from({ length: product.stock }, (_, i) => i + 1).map(
-                      (qty) => (
-                        <option key={qty} value={qty}>
-                          {qty}
-                        </option>
-                      )
-                    )}
-                  </select>
+                  {/* Ergonomic qty selector: decrement button, numeric input, increment button */}
+                  <div className="mt-1 flex items-center gap-2 w-40">
+                    <button
+                      type="button"
+                      aria-label="Réduire la quantité"
+                      onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                      className="h-9 w-9 flex items-center justify-center rounded-md border border-gray-300 bg-white text-lg hover:bg-gray-50"
+                      disabled={quantity <= 1}
+                    >
+                      −
+                    </button>
+
+                    <input
+                      id="quantity"
+                      name="quantity"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      value={quantity}
+                      onChange={(e) => {
+                        const val = parseInt(e.target.value, 10);
+                        if (Number.isNaN(val)) return setQuantity(1);
+                        // clamp between 1 and stock
+                        setQuantity(Math.max(1, Math.min(product.stock, val)));
+                      }}
+                      onBlur={(e) => {
+                        // ensure non-empty and valid on blur
+                        const val = parseInt(e.target.value, 10);
+                        if (Number.isNaN(val) || val < 1) setQuantity(1);
+                        else if (val > product.stock) setQuantity(product.stock);
+                      }}
+                      className="block text-center w-full flex-1 rounded-md border border-gray-300 px-2 py-2 focus:outline-none"
+                    />
+
+                    <button
+                      type="button"
+                      aria-label="Augmenter la quantité"
+                      onClick={() => setQuantity((q) => Math.min(product.stock, q + 1))}
+                      className="h-9 w-9 flex items-center justify-center rounded-md border border-gray-300 bg-white text-lg hover:bg-gray-50"
+                      disabled={quantity >= product.stock}
+                    >
+                      +
+                    </button>
+                  </div>
+                  <p className="mt-2 text-sm text-gray-500">Stock disponible : {product.stock}</p>
                 </div>
               ) : (
                 <div className="text-red-500 text-lg font-semibold">
@@ -112,7 +141,7 @@ export default function ProductDetailPage() {
               <div className="mt-10">
                 <button
                   type="submit"
-                  className={`flex w-full items-center justify-center rounded-md px-8 py-3 text-white text-black focus:ring-2 focus:ring-indigo-500 
+                  className={`flex w-full items-center justify-center rounded-md px-8 py-3 text-white text-black focus:ring-2 focus:ring-orange-500 
       ${
         product.stock > 0
           ? "button-primary hover:bg-orange-500"

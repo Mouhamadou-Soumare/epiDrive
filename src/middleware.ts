@@ -26,7 +26,7 @@ export async function middleware(req: NextRequest) {
 
     return NextResponse.next();
   } catch (error) {
-    console.error("❌ Erreur dans le middleware :", error);
+    console.error("Erreur dans le middleware :", error);
     return NextResponse.json(
       { message: "Erreur interne du serveur" },
       { status: 500 }

@@ -89,7 +89,7 @@ export default function SettingsPage() {
               />
             </div>
 
-            <label className="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-semibold py-2 px-4 rounded-full cursor-pointer">
+            <label className="bg-gradient-to-r from-orange-500 to-yellow-400 hover:from-orange-600 hover:to-yellow-500 text-white font-semibold py-2 px-4 rounded-full cursor-pointer">
               <span>Choisir un fichier</span>
               <input
                 type="file"
@@ -125,7 +125,7 @@ export default function SettingsPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold py-3 px-4 rounded-full"
+            className="w-full bg-gradient-to-r from-orange-500 to-yellow-400 text-white font-bold py-3 px-4 rounded-full"
           >
             {isSubmitting
               ? "Enregistrement..."

@@ -108,7 +108,7 @@ function getColorForStatus(status: string) {
     EN_PREPARATION: "#36A2EB", // Bleu
     EXPEDIEE: "#FFCE56", // Jaune
     LIVREE: "#4BC0C0", // Vert
-    ANNULEE: "#9966FF", // Violet
+  ANNULEE: "#F97316", // Orange (was violet)
     ALL: "#CCCCCC", // Gris
   };
   return colors[status] || "#CCCCCC"; // Couleur par défaut (gris)

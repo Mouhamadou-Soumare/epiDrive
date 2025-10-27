@@ -24,12 +24,14 @@
 
 
 ## Compte Admin DEMO en prod
+
 - Identifiant: admindemo@epidrive.com
 - Mdp : Epidrivedemo1234
 
 ---
 
 ## 🛠 **Technologies Utilisées**
+
 - **Frontend** : Next.js (App Router, Tailwind CSS)
 - **Backend** : Node.js, API Next.js
 - **Base de données** : PostgreSQL
@@ -88,8 +90,8 @@ BACKOFFICE_SECRET_PATH=
 $ docker-compose up -d
 
 # Se rendre sur le container MySQL et créer une base de données shadow
+$ sudo docker exec -it epidrive_db_1 bash
 $ mysql -h db -u root -p
-
 $ CREATE DATABASE shadow_epidrive;
 
 ## Dans le container web de docker ##
@@ -510,6 +512,7 @@ Endpoints associés :
 - Respect des bonnes pratiques de Clean Code
 
 ### Gestion de projet
+
 - Suivi des tâches et organisation sous méthodologie Agile
 - Coordination avec l’équipe pour garantir un développement structuré et efficace
 
@@ -529,6 +532,6 @@ Endpoints associés :
 
 Pour toute question ou suggestion, contactez-nous via :
 
-- mouhamadou.etu@gmail.com
-- choeurtis.tchounga@gmail.com
-- ibrahimabarry1503@gmail.com
+- mailto:mouhamadou.etu@gmail.com
+- mailto:choeurtis.tchounga@gmail.com
+- mailto:ibrahimabarry1503@gmail.com

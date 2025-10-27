@@ -12,6 +12,36 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
+// Utility to render a status badge with consistent colors/labels
+function renderStatusBadge(status?: string | null) {
+  const s = String(status ?? "").toLowerCase();
+  let label = status ?? "Inconnu";
+  let classes = "bg-gray-100 text-gray-700";
+
+  if (s.includes("liv")) {
+    label = "Livrée";
+    classes = "bg-green-100 text-green-600";
+  } else if (s.includes("prepar") || s.includes("en cours") || s.includes("en_preparation")) {
+    label = "En préparation";
+    classes = "bg-yellow-100 text-yellow-600";
+  } else if (s.includes("attente")) {
+    label = "En attente";
+    classes = "bg-gray-100 text-gray-700";
+  } else if (s.includes("exped") || s.includes("expédi") || s.includes("expedie")) {
+    label = "Expédiée";
+    classes = "bg-orange-100 text-orange-700";
+  } else if (s.includes("annul")) {
+    label = "Annulée";
+    classes = "bg-red-100 text-red-600";
+  }
+
+  return (
+    <span className={`px-3 py-1 rounded-full text-sm font-semibold ${classes}`}>
+      {label}
+    </span>
+  );
+}
+
 export default function OrdersPage() {
   return <OrdersContent />;
 }
@@ -76,17 +106,7 @@ function OrdersContent() {
                     <ClipboardDocumentListIcon className="h-6 w-6 text-orange-400" />
                     <span>Commande #{order.id}</span>
                   </h2>
-                  <span
-                    className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                      order.status === "Livrée"
-                        ? "bg-green-100 text-green-600"
-                        : order.status === "En cours"
-                        ? "bg-yellow-100 text-yellow-600"
-                        : "bg-red-100 text-red-600"
-                    }`}
-                  >
-                    {order.status}
-                  </span>
+                  {renderStatusBadge(order.status)}
                 </div>
 
                 {/* Infos Générales */}
